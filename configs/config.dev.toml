@@ -96,6 +96,8 @@ PrintConfig = true
     Password = "abc-123"
     # 显示的真实姓名
     RealName = "超级管理员"
+    FirstName = "管理员"
+    LastName = "超级"
 
 # redis配置信息
 [Redis]

@@ -89,9 +89,11 @@ func (c *Config) IsDebugMode() bool {
 
 // Root root用户
 type Root struct {
-	UserName string
-	Password string
-	RealName string
+	UserName  string
+	Password  string
+	RealName  string
+	FirstName string
+	LastName  string
 }
 
 // Monitor 监控配置参数

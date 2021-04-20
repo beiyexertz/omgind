@@ -14,10 +14,12 @@ import (
 func GetRootUser() *User {
 	user := config.C.Root
 	return &User{
-		ID:       user.UserName,
-		UserName: user.UserName,
-		RealName: user.RealName,
-		Password: hash.MD5String(user.Password),
+		ID:        user.UserName,
+		UserName:  user.UserName,
+		RealName:  user.RealName,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Password:  hash.MD5String(user.Password),
 	}
 }
 
@@ -31,6 +33,8 @@ type User struct {
 	ID        string    `json:"id"`                                    // 唯一标识
 	UserName  string    `json:"user_name" binding:"required"`          // 用户名
 	RealName  string    `json:"real_name" binding:"required"`          // 真实姓名
+	FirstName string    `json:"first_name" binding:"required"`         // 真实姓名
+	LastName  string    `json:"last_name" binding:"required"`          // 真实姓名
 	Password  string    `json:"password"`                              // 密码
 	Phone     string    `json:"phone"`                                 // 手机号
 	Email     string    `json:"email"`                                 // 邮箱
@@ -171,6 +175,8 @@ type UserShow struct {
 	ID        string    `json:"id"`         // 唯一标识
 	UserName  string    `json:"user_name"`  // 用户名
 	RealName  string    `json:"real_name"`  // 真实姓名
+	FirstName string    `json:"first_name"` // 真实名
+	LastName  string    `json:"last_name"`  // 真实姓
 	Phone     string    `json:"phone"`      // 手机号
 	Email     string    `json:"email"`      // 邮箱
 	Status    int       `json:"status"`     // 用户状态(1:启用 2:停用)

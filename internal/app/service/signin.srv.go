@@ -125,6 +125,8 @@ func (a *Login) GetLoginInfo(ctx context.Context, userID string) (*schema.UserLo
 		loginInfo := &schema.UserLoginInfo{
 			UserName: root.UserName,
 			RealName: root.RealName,
+			FistName: root.FirstName,
+			LastName: root.LastName,
 		}
 		return loginInfo, nil
 	}
