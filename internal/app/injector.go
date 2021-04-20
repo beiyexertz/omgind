@@ -17,5 +17,5 @@ type Injector struct {
 	Engine         *gin.Engine
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
-	MenuBll        *service.Menu
+	MenuSrv        *service.Menu
 }

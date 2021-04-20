@@ -914,7 +914,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.UserLoginInfo"
+                            "$ref": "#/definitions/schema.UserSignInInfo"
                         }
                     },
                     "401": {
@@ -945,7 +945,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginParam"
+                            "$ref": "#/definitions/schema.SignInParam"
                         }
                     }
                 ],
@@ -953,7 +953,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginTokenInfo"
+                            "$ref": "#/definitions/schema.SignInTokenInfo"
                         }
                     },
                     "400": {
@@ -1024,7 +1024,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginCaptcha"
+                            "$ref": "#/definitions/schema.SignInCaptcha"
                         }
                     }
                 }
@@ -1061,7 +1061,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginTokenInfo"
+                            "$ref": "#/definitions/schema.SignInTokenInfo"
                         }
                     },
                     "401": {
@@ -1944,59 +1944,6 @@ var doc = `{
                 }
             }
         },
-        "schema.LoginCaptcha": {
-            "type": "object",
-            "properties": {
-                "captcha_id": {
-                    "description": "验证码ID",
-                    "type": "string"
-                }
-            }
-        },
-        "schema.LoginParam": {
-            "type": "object",
-            "required": [
-                "captcha_code",
-                "captcha_id",
-                "password",
-                "user_name"
-            ],
-            "properties": {
-                "captcha_code": {
-                    "description": "验证码",
-                    "type": "string"
-                },
-                "captcha_id": {
-                    "description": "验证码ID",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "密码(md5加密)",
-                    "type": "string"
-                },
-                "user_name": {
-                    "description": "用户名",
-                    "type": "string"
-                }
-            }
-        },
-        "schema.LoginTokenInfo": {
-            "type": "object",
-            "properties": {
-                "access_token": {
-                    "description": "访问令牌",
-                    "type": "string"
-                },
-                "expires_at": {
-                    "description": "令牌到期时间戳",
-                    "type": "integer"
-                },
-                "token_type": {
-                    "description": "令牌类型",
-                    "type": "string"
-                }
-            }
-        },
         "schema.Menu": {
             "type": "object",
             "required": [
@@ -2268,6 +2215,59 @@ var doc = `{
                 }
             }
         },
+        "schema.SignInCaptcha": {
+            "type": "object",
+            "properties": {
+                "captcha_id": {
+                    "description": "验证码ID",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.SignInParam": {
+            "type": "object",
+            "required": [
+                "captcha_code",
+                "captcha_id",
+                "password",
+                "user_name"
+            ],
+            "properties": {
+                "captcha_code": {
+                    "description": "验证码",
+                    "type": "string"
+                },
+                "captcha_id": {
+                    "description": "验证码ID",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码(md5加密)",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.SignInTokenInfo": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "description": "访问令牌",
+                    "type": "string"
+                },
+                "expires_at": {
+                    "description": "令牌到期时间戳",
+                    "type": "integer"
+                },
+                "token_type": {
+                    "description": "令牌类型",
+                    "type": "string"
+                }
+            }
+        },
         "schema.StatusResult": {
             "type": "object",
             "properties": {
@@ -2297,7 +2297,8 @@ var doc = `{
         "schema.User": {
             "type": "object",
             "required": [
-                "real_name",
+                "first_name",
+                "last_name",
                 "status",
                 "user_name",
                 "user_roles"
@@ -2315,8 +2316,16 @@ var doc = `{
                     "description": "邮箱",
                     "type": "string"
                 },
+                "first_name": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
                 "id": {
                     "description": "唯一标识",
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "真实姓名",
                     "type": "string"
                 },
                 "password": {
@@ -2348,30 +2357,6 @@ var doc = `{
                 }
             }
         },
-        "schema.UserLoginInfo": {
-            "type": "object",
-            "properties": {
-                "real_name": {
-                    "description": "真实姓名",
-                    "type": "string"
-                },
-                "roles": {
-                    "description": "角色列表",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/schema.Role"
-                    }
-                },
-                "user_id": {
-                    "description": "用户ID",
-                    "type": "string"
-                },
-                "user_name": {
-                    "description": "用户名",
-                    "type": "string"
-                }
-            }
-        },
         "schema.UserRole": {
             "type": "object",
             "properties": {
@@ -2400,8 +2385,16 @@ var doc = `{
                     "description": "邮箱",
                     "type": "string"
                 },
+                "first_name": {
+                    "description": "真实名",
+                    "type": "string"
+                },
                 "id": {
                     "description": "唯一标识",
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "真实姓",
                     "type": "string"
                 },
                 "phone": {
@@ -2422,6 +2415,38 @@ var doc = `{
                 "status": {
                     "description": "用户状态(1:启用 2:停用)",
                     "type": "integer"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.UserSignInInfo": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "real_name": {
+                    "description": "真实姓名",
+                    "type": "string"
+                },
+                "roles": {
+                    "description": "角色列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.Role"
+                    }
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
                 },
                 "user_name": {
                     "description": "用户名",

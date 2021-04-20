@@ -30,9 +30,9 @@ type SignIn struct {
 }
 
 // GetCaptcha 获取图形验证码信息
-func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.LoginCaptcha, error) {
+func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.SignInCaptcha, error) {
 	captchaID := captcha.NewLen(length)
-	item := &schema.LoginCaptcha{
+	item := &schema.SignInCaptcha{
 		CaptchaID: captchaID,
 	}
 	return item, nil
@@ -83,13 +83,13 @@ func (a *SignIn) Verify(ctx context.Context, userName, password string) (*schema
 }
 
 // GenerateToken 生成令牌
-func (a *SignIn) GenerateToken(ctx context.Context, userID string) (*schema.LoginTokenInfo, error) {
+func (a *SignIn) GenerateToken(ctx context.Context, userID string) (*schema.SignInTokenInfo, error) {
 	tokenInfo, err := a.Auth.GenerateToken(ctx, userID)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
 
-	item := &schema.LoginTokenInfo{
+	item := &schema.SignInTokenInfo{
 		AccessToken: tokenInfo.GetAccessToken(),
 		TokenType:   tokenInfo.GetTokenType(),
 		ExpiresAt:   tokenInfo.GetExpiresAt(),
@@ -119,10 +119,10 @@ func (a *SignIn) checkAndGetUser(ctx context.Context, userID string) (*schema.Us
 }
 
 // GetLoginInfo 获取当前用户登录信息
-func (a *SignIn) GetLoginInfo(ctx context.Context, userID string) (*schema.UserLoginInfo, error) {
+func (a *SignIn) GetSignInInfo(ctx context.Context, userID string) (*schema.UserSignInInfo, error) {
 	if isRoot := schema.CheckIsRootUser(ctx, userID); isRoot {
 		root := schema.GetRootUser()
-		loginInfo := &schema.UserLoginInfo{
+		loginInfo := &schema.UserSignInInfo{
 			UserName: root.UserName,
 			RealName: root.RealName,
 			FistName: root.FirstName,
@@ -136,7 +136,7 @@ func (a *SignIn) GetLoginInfo(ctx context.Context, userID string) (*schema.UserL
 		return nil, err
 	}
 
-	info := &schema.UserLoginInfo{
+	info := &schema.UserSignInInfo{
 		UserID:   user.ID,
 		UserName: user.UserName,
 		RealName: user.RealName,

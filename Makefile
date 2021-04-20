@@ -2,7 +2,7 @@
 
 NOW = $(shell date -u '+%Y%m%d%I%M%S')
 
-RELEASE_VERSION = v7.0.0
+RELEASE_VERSION = v1.0.0
 
 APP 			= omgind
 SERVER_BIN  	= ./cmd/${APP}/${APP}

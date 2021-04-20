@@ -109,7 +109,7 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 
 	// 初始化菜单数据
 	if config.C.Menu.Enable && config.C.Menu.Data != "" {
-		err = injector.MenuBll.InitData(ctx, config.C.Menu.Data)
+		err = injector.MenuSrv.InitData(ctx, config.C.Menu.Data)
 		if err != nil {
 			return nil, err
 		}

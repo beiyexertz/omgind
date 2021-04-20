@@ -131,7 +131,7 @@ func BuildInjector() (*Injector, func(), error) {
 		Engine:         engine,
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
-		MenuBll:        serviceMenu,
+		MenuSrv:        serviceMenu,
 	}
 	return injector, func() {
 		cleanup3()

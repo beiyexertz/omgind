@@ -56,9 +56,9 @@ func (a *SignIn) ResCaptcha(c *gin.Context) {
 }
 
 // SignIn 用户登录
-func (a *SignIn) Login(c *gin.Context) {
+func (a *SignIn) SignIn(c *gin.Context) {
 	ctx := c.Request.Context()
-	var item schema.LoginParam
+	var item schema.SignInParam
 	if err := ginx.ParseJSON(c, &item); err != nil {
 		ginx.ResError(c, err)
 		return
@@ -122,7 +122,7 @@ func (a *SignIn) RefreshToken(c *gin.Context) {
 // GetUserInfo 获取当前用户信息
 func (a *SignIn) GetUserInfo(c *gin.Context) {
 	ctx := c.Request.Context()
-	info, err := a.SigninSrv.GetLoginInfo(ctx, ginx.GetUserID(c))
+	info, err := a.SigninSrv.GetSignInInfo(ctx, ginx.GetUserID(c))
 	if err != nil {
 		ginx.ResError(c, err)
 		return

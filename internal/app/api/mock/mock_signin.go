@@ -15,7 +15,7 @@ type SignIn struct {
 // GetCaptcha 获取验证码信息
 // @Tags 登录管理
 // @Summary 获取验证码信息
-// @Success 200 {object} schema.LoginCaptcha
+// @Success 200 {object} schema.SignInCaptcha
 // @Router /api/v1/pub/login/captchaid [get]
 func (a *SignIn) GetCaptcha(c *gin.Context) {
 }
@@ -33,15 +33,15 @@ func (a *SignIn) GetCaptcha(c *gin.Context) {
 func (a *SignIn) ResCaptcha(c *gin.Context) {
 }
 
-// Login 用户登录
+// SignIn 用户登录
 // @Tags 登录管理
 // @Summary 用户登录
-// @Param body body schema.LoginParam true "请求参数"
-// @Success 200 {object} schema.LoginTokenInfo
+// @Param body body schema.SignInParam true "请求参数"
+// @Success 200 {object} schema.SignInTokenInfo
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
 // @Router /api/v1/pub/login [post]
-func (a *SignIn) Login(c *gin.Context) {
+func (a *SignIn) SignIn(c *gin.Context) {
 }
 
 // Logout 用户登出
@@ -56,7 +56,7 @@ func (a *SignIn) Logout(c *gin.Context) {
 // @Tags 登录管理
 // @Summary 刷新令牌
 // @Security ApiKeyAuth
-// @Success 200 {object} schema.LoginTokenInfo
+// @Success 200 {object} schema.SignInTokenInfo
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
 // @Router /api/v1/pub/refresh-token [post]
@@ -67,7 +67,7 @@ func (a *SignIn) RefreshToken(c *gin.Context) {
 // @Tags 登录管理
 // @Summary 获取当前用户信息
 // @Security ApiKeyAuth
-// @Success 200 {object} schema.UserLoginInfo
+// @Success 200 {object} schema.UserSignInInfo
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
 // @Router /api/v1/pub/current/user [get]
