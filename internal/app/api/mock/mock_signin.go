@@ -16,7 +16,7 @@ type SignIn struct {
 // @Tags 登录管理
 // @Summary 获取验证码信息
 // @Success 200 {object} schema.SignInCaptcha
-// @Router /api/v1/pub/login/captchaid [get]
+// @Router /api/v1/pub/signin/captchaid [get]
 func (a *SignIn) GetCaptcha(c *gin.Context) {
 }
 
@@ -29,7 +29,7 @@ func (a *SignIn) GetCaptcha(c *gin.Context) {
 // @Success 200 "图形验证码"
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
-// @Router /api/v1/pub/login/captcha [get]
+// @Router /api/v1/pub/signin/captcha [get]
 func (a *SignIn) ResCaptcha(c *gin.Context) {
 }
 
@@ -40,7 +40,7 @@ func (a *SignIn) ResCaptcha(c *gin.Context) {
 // @Success 200 {object} schema.SignInTokenInfo
 // @Failure 400 {object} schema.ErrorResult "{error:{code:0,message:无效的请求参数}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
-// @Router /api/v1/pub/login [post]
+// @Router /api/v1/pub/signin [post]
 func (a *SignIn) SignIn(c *gin.Context) {
 }
 
@@ -48,7 +48,7 @@ func (a *SignIn) SignIn(c *gin.Context) {
 // @Tags 登录管理
 // @Summary 用户登出
 // @Success 200 {object} schema.StatusResult "{status:OK}"
-// @Router /api/v1/pub/login/exit [post]
+// @Router /api/v1/pub/signin/exit [post]
 func (a *SignIn) Logout(c *gin.Context) {
 }
 

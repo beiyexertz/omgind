@@ -10,7 +10,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	g := app.Group("/api")
 
 	g.Use(middleware.UserAuthMiddleware(a.Auth,
-		middleware.AllowPathPrefixSkipper("/api/v1/pub/login"),
+		middleware.AllowPathPrefixSkipper("/api/v1/pub/signin"),
 	))
 
 	g.Use(middleware.CasbinMiddleware(a.CasbinEnforcer,
@@ -23,12 +23,12 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	{
 		pub := v1.Group("/pub")
 		{
-			gLogin := pub.Group("login")
+			gSignIn := pub.Group("signin")
 			{
-				gLogin.GET("captchaid", a.SignInAPI.GetCaptcha)
-				gLogin.GET("captcha", a.SignInAPI.ResCaptcha)
-				gLogin.POST("", a.SignInAPI.SignIn)
-				gLogin.POST("exit", a.SignInAPI.Logout)
+				gSignIn.GET("captchaid", a.SignInAPI.GetCaptcha)
+				gSignIn.GET("captcha", a.SignInAPI.ResCaptcha)
+				gSignIn.POST("", a.SignInAPI.SignIn)
+				gSignIn.POST("exit", a.SignInAPI.Logout)
 			}
 
 			gCurrent := pub.Group("current")

@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/wanhello/omgind/internal/app/config"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -68,8 +70,12 @@ func (a *SignIn) SignIn(c *gin.Context) {
 		ginx.ResError(c, errors.New400Response("无效的验证码"))
 		return
 	}
+	fmt.Println(" ----- ", item.UserName)
+	fmt.Println(" ----- ", item.Password)
 
 	user, err := a.SigninSrv.Verify(ctx, item.UserName, item.Password)
+	fmt.Println(" ----- ", err)
+
 	if err != nil {
 		ginx.ResError(c, err)
 		return

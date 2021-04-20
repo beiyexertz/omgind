@@ -932,7 +932,40 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/pub/login": {
+        "/api/v1/pub/refresh-token": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "登录管理"
+                ],
+                "summary": "刷新令牌",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.SignInTokenInfo"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pub/signin": {
             "post": {
                 "tags": [
                     "登录管理"
@@ -971,7 +1004,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/pub/login/captcha": {
+        "/api/v1/pub/signin/captcha": {
             "get": {
                 "produces": [
                     "image/png"
@@ -1014,7 +1047,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/pub/login/captchaid": {
+        "/api/v1/pub/signin/captchaid": {
             "get": {
                 "tags": [
                     "登录管理"
@@ -1030,7 +1063,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/pub/login/exit": {
+        "/api/v1/pub/signin/exit": {
             "post": {
                 "tags": [
                     "登录管理"
@@ -1041,39 +1074,6 @@ var doc = `{
                         "description": "{status:OK}",
                         "schema": {
                             "$ref": "#/definitions/schema.StatusResult"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/pub/refresh-token": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "tags": [
-                    "登录管理"
-                ],
-                "summary": "刷新令牌",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/schema.SignInTokenInfo"
-                        }
-                    },
-                    "401": {
-                        "description": "{error:{code:0,message:未授权}}",
-                        "schema": {
-                            "$ref": "#/definitions/schema.ErrorResult"
-                        }
-                    },
-                    "500": {
-                        "description": "{error:{code:0,message:服务器错误}}",
-                        "schema": {
-                            "$ref": "#/definitions/schema.ErrorResult"
                         }
                     }
                 }

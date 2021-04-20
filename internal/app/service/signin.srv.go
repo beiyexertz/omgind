@@ -15,7 +15,7 @@ import (
 	"github.com/google/wire"
 )
 
-// SignInSet 注入Login
+// SignInSet 注入SignIn
 var SignInSet = wire.NewSet(wire.Struct(new(SignIn), "*"))
 
 // SignIn 登录管理
@@ -118,17 +118,17 @@ func (a *SignIn) checkAndGetUser(ctx context.Context, userID string) (*schema.Us
 	return user, nil
 }
 
-// GetLoginInfo 获取当前用户登录信息
+// GetSignInInfo 获取当前用户登录信息
 func (a *SignIn) GetSignInInfo(ctx context.Context, userID string) (*schema.UserSignInInfo, error) {
 	if isRoot := schema.CheckIsRootUser(ctx, userID); isRoot {
 		root := schema.GetRootUser()
-		loginInfo := &schema.UserSignInInfo{
+		signinInfo := &schema.UserSignInInfo{
 			UserName: root.UserName,
 			RealName: root.RealName,
 			FistName: root.FirstName,
 			LastName: root.LastName,
 		}
-		return loginInfo, nil
+		return signinInfo, nil
 	}
 
 	user, err := a.checkAndGetUser(ctx, userID)
