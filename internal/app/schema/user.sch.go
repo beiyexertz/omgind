@@ -32,7 +32,7 @@ func CheckIsRootUser(ctx context.Context, userID string) bool {
 type User struct {
 	ID        string    `json:"id"`                                    // 唯一标识
 	UserName  string    `json:"user_name" binding:"required"`          // 用户名
-	RealName  string    `json:"real_name" binding:"required"`          // 真实姓名
+	RealName  string    `json:"real_name"`                             // 真实姓名
 	FirstName string    `json:"first_name" binding:"required"`         // 真实姓名
 	LastName  string    `json:"last_name" binding:"required"`          // 真实姓名
 	Password  string    `json:"password"`                              // 密码

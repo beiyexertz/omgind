@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/wanhello/omgind/internal/app/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/wanhello/omgind/internal/app/middleware"
 )
 
 // RegisterAPI register api group router
@@ -25,19 +25,19 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		{
 			gLogin := pub.Group("login")
 			{
-				gLogin.GET("captchaid", a.LoginAPI.GetCaptcha)
-				gLogin.GET("captcha", a.LoginAPI.ResCaptcha)
-				gLogin.POST("", a.LoginAPI.Login)
-				gLogin.POST("exit", a.LoginAPI.Logout)
+				gLogin.GET("captchaid", a.SignInAPI.GetCaptcha)
+				gLogin.GET("captcha", a.SignInAPI.ResCaptcha)
+				gLogin.POST("", a.SignInAPI.Login)
+				gLogin.POST("exit", a.SignInAPI.Logout)
 			}
 
 			gCurrent := pub.Group("current")
 			{
-				gCurrent.PUT("password", a.LoginAPI.UpdatePassword)
-				gCurrent.GET("user", a.LoginAPI.GetUserInfo)
-				gCurrent.GET("menutree", a.LoginAPI.QueryUserMenuTree)
+				gCurrent.PUT("password", a.SignInAPI.UpdatePassword)
+				gCurrent.GET("user", a.SignInAPI.GetUserInfo)
+				gCurrent.GET("menutree", a.SignInAPI.QueryUserMenuTree)
 			}
-			pub.POST("/refresh-token", a.LoginAPI.RefreshToken)
+			pub.POST("/refresh-token", a.SignInAPI.RefreshToken)
 		}
 
 		gDemo := v1.Group("demos")

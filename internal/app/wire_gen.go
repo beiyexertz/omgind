@@ -65,7 +65,7 @@ func BuildInjector() (*Injector, func(), error) {
 		DemoModel: demo,
 	}
 	apiDemo := &api.Demo{
-		DemoBll: serviceDemo,
+		DemoSrv: serviceDemo,
 	}
 	menu := &repo.Menu{
 		DB: db,
@@ -73,7 +73,7 @@ func BuildInjector() (*Injector, func(), error) {
 	menuAction := &repo.MenuAction{
 		DB: db,
 	}
-	login := &service.Login{
+	signIn := &service.SignIn{
 		Auth:            auther,
 		UserModel:       user,
 		UserRoleModel:   userRole,
@@ -82,8 +82,8 @@ func BuildInjector() (*Injector, func(), error) {
 		MenuModel:       menu,
 		MenuActionModel: menuAction,
 	}
-	apiLogin := &api.Login{
-		LoginBll: login,
+	apiSignIn := &api.SignIn{
+		SigninSrv: signIn,
 	}
 	trans := &repo.Trans{
 		DB: db,
@@ -95,7 +95,7 @@ func BuildInjector() (*Injector, func(), error) {
 		MenuActionResourceModel: menuActionResource,
 	}
 	apiMenu := &api.Menu{
-		MenuBll: serviceMenu,
+		MenuSrv: serviceMenu,
 	}
 	serviceRole := &service.Role{
 		Enforcer:      syncedEnforcer,
@@ -105,7 +105,7 @@ func BuildInjector() (*Injector, func(), error) {
 		UserModel:     user,
 	}
 	apiRole := &api.Role{
-		RoleBll: serviceRole,
+		RoleSrv: serviceRole,
 	}
 	serviceUser := &service.User{
 		Enforcer:      syncedEnforcer,
@@ -115,13 +115,13 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleModel:     role,
 	}
 	apiUser := &api.User{
-		UserBll: serviceUser,
+		UserSrv: serviceUser,
 	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
 		DemoAPI:        apiDemo,
-		LoginAPI:       apiLogin,
+		SignInAPI:      apiSignIn,
 		MenuAPI:        apiMenu,
 		RoleAPI:        apiRole,
 		UserAPI:        apiUser,

@@ -14,7 +14,7 @@ var RoleSet = wire.NewSet(wire.Struct(new(Role), "*"))
 
 // Role 角色管理
 type Role struct {
-	RoleBll *service.Role
+	RoleSrv *service.Role
 }
 
 // Query 查询数据
@@ -27,7 +27,7 @@ func (a *Role) Query(c *gin.Context) {
 	}
 
 	params.Pagination = true
-	result, err := a.RoleBll.Query(ctx, params, schema.RoleQueryOptions{
+	result, err := a.RoleSrv.Query(ctx, params, schema.RoleQueryOptions{
 		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
 	})
 	if err != nil {
@@ -46,7 +46,7 @@ func (a *Role) QuerySelect(c *gin.Context) {
 		return
 	}
 
-	result, err := a.RoleBll.Query(ctx, params, schema.RoleQueryOptions{
+	result, err := a.RoleSrv.Query(ctx, params, schema.RoleQueryOptions{
 		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
 	})
 	if err != nil {
@@ -59,7 +59,7 @@ func (a *Role) QuerySelect(c *gin.Context) {
 // Get 查询指定数据
 func (a *Role) Get(c *gin.Context) {
 	ctx := c.Request.Context()
-	item, err := a.RoleBll.Get(ctx, c.Param("id"))
+	item, err := a.RoleSrv.Get(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -77,7 +77,7 @@ func (a *Role) Create(c *gin.Context) {
 	}
 
 	item.Creator = ginx.GetUserID(c)
-	result, err := a.RoleBll.Create(ctx, item)
+	result, err := a.RoleSrv.Create(ctx, item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -94,7 +94,7 @@ func (a *Role) Update(c *gin.Context) {
 		return
 	}
 
-	err := a.RoleBll.Update(ctx, c.Param("id"), item)
+	err := a.RoleSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -105,7 +105,7 @@ func (a *Role) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *Role) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.RoleBll.Delete(ctx, c.Param("id"))
+	err := a.RoleSrv.Delete(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -116,7 +116,7 @@ func (a *Role) Delete(c *gin.Context) {
 // Enable 启用数据
 func (a *Role) Enable(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.RoleBll.UpdateStatus(ctx, c.Param("id"), 1)
+	err := a.RoleSrv.UpdateStatus(ctx, c.Param("id"), 1)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -127,7 +127,7 @@ func (a *Role) Enable(c *gin.Context) {
 // Disable 禁用数据
 func (a *Role) Disable(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.RoleBll.UpdateStatus(ctx, c.Param("id"), 2)
+	err := a.RoleSrv.UpdateStatus(ctx, c.Param("id"), 2)
 	if err != nil {
 		ginx.ResError(c, err)
 		return

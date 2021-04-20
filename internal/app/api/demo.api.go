@@ -14,7 +14,7 @@ var DemoSet = wire.NewSet(wire.Struct(new(Demo), "*"))
 
 // Demo 示例程序
 type Demo struct {
-	DemoBll *service.Demo
+	DemoSrv *service.Demo
 }
 
 // Query 查询数据
@@ -27,7 +27,7 @@ func (a *Demo) Query(c *gin.Context) {
 	}
 
 	params.Pagination = true
-	result, err := a.DemoBll.Query(ctx, params)
+	result, err := a.DemoSrv.Query(ctx, params)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -39,7 +39,7 @@ func (a *Demo) Query(c *gin.Context) {
 // Get 查询指定数据
 func (a *Demo) Get(c *gin.Context) {
 	ctx := c.Request.Context()
-	item, err := a.DemoBll.Get(ctx, c.Param("id"))
+	item, err := a.DemoSrv.Get(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -57,7 +57,7 @@ func (a *Demo) Create(c *gin.Context) {
 	}
 
 	item.Creator = ginx.GetUserID(c)
-	result, err := a.DemoBll.Create(ctx, item)
+	result, err := a.DemoSrv.Create(ctx, item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -74,7 +74,7 @@ func (a *Demo) Update(c *gin.Context) {
 		return
 	}
 
-	err := a.DemoBll.Update(ctx, c.Param("id"), item)
+	err := a.DemoSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -85,7 +85,7 @@ func (a *Demo) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *Demo) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DemoBll.Delete(ctx, c.Param("id"))
+	err := a.DemoSrv.Delete(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -96,7 +96,7 @@ func (a *Demo) Delete(c *gin.Context) {
 // Enable 启用数据
 func (a *Demo) Enable(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DemoBll.UpdateStatus(ctx, c.Param("id"), 1)
+	err := a.DemoSrv.UpdateStatus(ctx, c.Param("id"), 1)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -107,7 +107,7 @@ func (a *Demo) Enable(c *gin.Context) {
 // Disable 禁用数据
 func (a *Demo) Disable(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DemoBll.UpdateStatus(ctx, c.Param("id"), 2)
+	err := a.DemoSrv.UpdateStatus(ctx, c.Param("id"), 2)
 	if err != nil {
 		ginx.ResError(c, err)
 		return

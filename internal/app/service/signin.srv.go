@@ -15,11 +15,11 @@ import (
 	"github.com/google/wire"
 )
 
-// LoginSet 注入Login
-var LoginSet = wire.NewSet(wire.Struct(new(Login), "*"))
+// SignInSet 注入Login
+var SignInSet = wire.NewSet(wire.Struct(new(SignIn), "*"))
 
-// Login 登录管理
-type Login struct {
+// SignIn 登录管理
+type SignIn struct {
 	Auth            auth.Auther
 	UserModel       *repo.User
 	UserRoleModel   *repo.UserRole
@@ -30,7 +30,7 @@ type Login struct {
 }
 
 // GetCaptcha 获取图形验证码信息
-func (a *Login) GetCaptcha(ctx context.Context, length int) (*schema.LoginCaptcha, error) {
+func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.LoginCaptcha, error) {
 	captchaID := captcha.NewLen(length)
 	item := &schema.LoginCaptcha{
 		CaptchaID: captchaID,
@@ -39,7 +39,7 @@ func (a *Login) GetCaptcha(ctx context.Context, length int) (*schema.LoginCaptch
 }
 
 // ResCaptcha 生成并响应图形验证码
-func (a *Login) ResCaptcha(ctx context.Context, w http.ResponseWriter, captchaID string, width, height int) error {
+func (a *SignIn) ResCaptcha(ctx context.Context, w http.ResponseWriter, captchaID string, width, height int) error {
 	err := captcha.WriteImage(w, captchaID, width, height)
 	if err != nil {
 		if err == captcha.ErrNotFound {
@@ -56,7 +56,7 @@ func (a *Login) ResCaptcha(ctx context.Context, w http.ResponseWriter, captchaID
 }
 
 // Verify 登录验证
-func (a *Login) Verify(ctx context.Context, userName, password string) (*schema.User, error) {
+func (a *SignIn) Verify(ctx context.Context, userName, password string) (*schema.User, error) {
 	// 检查是否是超级用户
 	root := schema.GetRootUser()
 	if userName == root.UserName && root.Password == password {
@@ -83,7 +83,7 @@ func (a *Login) Verify(ctx context.Context, userName, password string) (*schema.
 }
 
 // GenerateToken 生成令牌
-func (a *Login) GenerateToken(ctx context.Context, userID string) (*schema.LoginTokenInfo, error) {
+func (a *SignIn) GenerateToken(ctx context.Context, userID string) (*schema.LoginTokenInfo, error) {
 	tokenInfo, err := a.Auth.GenerateToken(ctx, userID)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -98,7 +98,7 @@ func (a *Login) GenerateToken(ctx context.Context, userID string) (*schema.Login
 }
 
 // DestroyToken 销毁令牌
-func (a *Login) DestroyToken(ctx context.Context, tokenString string) error {
+func (a *SignIn) DestroyToken(ctx context.Context, tokenString string) error {
 	err := a.Auth.DestroyToken(ctx, tokenString)
 	if err != nil {
 		return errors.WithStack(err)
@@ -106,7 +106,7 @@ func (a *Login) DestroyToken(ctx context.Context, tokenString string) error {
 	return nil
 }
 
-func (a *Login) checkAndGetUser(ctx context.Context, userID string) (*schema.User, error) {
+func (a *SignIn) checkAndGetUser(ctx context.Context, userID string) (*schema.User, error) {
 	user, err := a.UserModel.Get(ctx, userID)
 	if err != nil {
 		return nil, err
@@ -119,7 +119,7 @@ func (a *Login) checkAndGetUser(ctx context.Context, userID string) (*schema.Use
 }
 
 // GetLoginInfo 获取当前用户登录信息
-func (a *Login) GetLoginInfo(ctx context.Context, userID string) (*schema.UserLoginInfo, error) {
+func (a *SignIn) GetLoginInfo(ctx context.Context, userID string) (*schema.UserLoginInfo, error) {
 	if isRoot := schema.CheckIsRootUser(ctx, userID); isRoot {
 		root := schema.GetRootUser()
 		loginInfo := &schema.UserLoginInfo{
@@ -164,7 +164,7 @@ func (a *Login) GetLoginInfo(ctx context.Context, userID string) (*schema.UserLo
 }
 
 // QueryUserMenuTree 查询当前用户的权限菜单树
-func (a *Login) QueryUserMenuTree(ctx context.Context, userID string) (schema.MenuTrees, error) {
+func (a *SignIn) QueryUserMenuTree(ctx context.Context, userID string) (schema.MenuTrees, error) {
 	isRoot := schema.CheckIsRootUser(ctx, userID)
 	// 如果是root用户，则查询所有显示的菜单树
 	if isRoot {
@@ -242,7 +242,7 @@ func (a *Login) QueryUserMenuTree(ctx context.Context, userID string) (schema.Me
 }
 
 // UpdatePassword 更新当前用户登录密码
-func (a *Login) UpdatePassword(ctx context.Context, userID string, params schema.UpdatePasswordParam) error {
+func (a *SignIn) UpdatePassword(ctx context.Context, userID string, params schema.UpdatePasswordParam) error {
 	if schema.CheckIsRootUser(ctx, userID) {
 		return errors.New400Response("root用户不允许更新密码")
 	}

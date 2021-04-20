@@ -17,7 +17,7 @@ var UserSet = wire.NewSet(wire.Struct(new(User), "*"))
 
 // User 用户管理
 type User struct {
-	UserBll *service.User
+	UserSrv *service.User
 }
 
 // Query 查询数据
@@ -33,7 +33,7 @@ func (a *User) Query(c *gin.Context) {
 	}
 
 	params.Pagination = true
-	result, err := a.UserBll.QueryShow(ctx, params)
+	result, err := a.UserSrv.QueryShow(ctx, params)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -44,7 +44,7 @@ func (a *User) Query(c *gin.Context) {
 // Get 查询指定数据
 func (a *User) Get(c *gin.Context) {
 	ctx := c.Request.Context()
-	item, err := a.UserBll.Get(ctx, c.Param("id"))
+	item, err := a.UserSrv.Get(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -65,7 +65,7 @@ func (a *User) Create(c *gin.Context) {
 	}
 
 	item.Creator = ginx.GetUserID(c)
-	result, err := a.UserBll.Create(ctx, item)
+	result, err := a.UserSrv.Create(ctx, item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -82,7 +82,7 @@ func (a *User) Update(c *gin.Context) {
 		return
 	}
 
-	err := a.UserBll.Update(ctx, c.Param("id"), item)
+	err := a.UserSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -93,7 +93,7 @@ func (a *User) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *User) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.UserBll.Delete(ctx, c.Param("id"))
+	err := a.UserSrv.Delete(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -104,7 +104,7 @@ func (a *User) Delete(c *gin.Context) {
 // Enable 启用数据
 func (a *User) Enable(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.UserBll.UpdateStatus(ctx, c.Param("id"), 1)
+	err := a.UserSrv.UpdateStatus(ctx, c.Param("id"), 1)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -115,7 +115,7 @@ func (a *User) Enable(c *gin.Context) {
 // Disable 禁用数据
 func (a *User) Disable(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.UserBll.UpdateStatus(ctx, c.Param("id"), 2)
+	err := a.UserSrv.UpdateStatus(ctx, c.Param("id"), 2)
 	if err != nil {
 		ginx.ResError(c, err)
 		return

@@ -1,11 +1,11 @@
 package router
 
 import (
-	"github.com/wanhello/omgind/internal/app/api"
-	"github.com/wanhello/omgind/pkg/auth"
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/wanhello/omgind/internal/app/api"
+	"github.com/wanhello/omgind/pkg/auth"
 )
 
 var _ IRouter = (*Router)(nil)
@@ -24,7 +24,7 @@ type Router struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
 	DemoAPI        *api.Demo
-	LoginAPI       *api.Login
+	SignInAPI      *api.SignIn
 	MenuAPI        *api.Menu
 	RoleAPI        *api.Role
 	UserAPI        *api.User
