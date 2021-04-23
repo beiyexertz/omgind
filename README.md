@@ -83,7 +83,7 @@ make wire
 wire gen ./internal/app
 ```
 
-## [omgind-cli](https://github.com/omgind/omgind-cli) 工具使用
+## [omgind-cli](https://github.com/wanhello/omgind-cli) 工具使用
 
 ### 创建项目
 
