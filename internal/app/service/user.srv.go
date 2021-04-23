@@ -83,7 +83,9 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 		return nil, err
 	}
 
-	item.Password = hash.SHA1String(item.Password)
+	pword, _ := hash.MakePassword(item.Password)
+	item.Password = pword
+
 	item.ID = uuid.MustString()
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		for _, urItem := range item.UserRoles {
@@ -137,7 +139,8 @@ func (a *User) Update(ctx context.Context, id string, item schema.User) error {
 	}
 
 	if item.Password != "" {
-		item.Password = hash.SHA1String(item.Password)
+		pword, _ := hash.MakePassword(item.Password)
+		item.Password = pword
 	} else {
 		item.Password = oldItem.Password
 	}

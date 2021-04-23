@@ -23,7 +23,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	{
 		pub := v1.Group("/pub")
 		{
-			gSignIn := pub.Group("signin")
+			gSignIn := pub.Group("/signin")
 			{
 				gSignIn.GET("captchaid", a.SignInAPI.GetCaptcha)
 				gSignIn.GET("captcha", a.SignInAPI.ResCaptcha)

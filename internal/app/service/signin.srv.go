@@ -73,7 +73,8 @@ func (a *SignIn) Verify(ctx context.Context, userName, password string) (*schema
 	}
 
 	item := result.Data[0]
-	if item.Password != hash.SHA1String(password) {
+	ok, err := hash.CheckPassword(password, item.Password)
+	if err != nil || !ok {
 		return nil, errors.ErrInvalidPassword
 	} else if item.Status != 1 {
 		return nil, errors.ErrUserDisable
@@ -250,8 +251,11 @@ func (a *SignIn) UpdatePassword(ctx context.Context, userID string, params schem
 	user, err := a.checkAndGetUser(ctx, userID)
 	if err != nil {
 		return err
-	} else if hash.SHA1String(params.OldPassword) != user.Password {
-		return errors.New400Response("旧密码不正确")
+	} else {
+		ok, err := hash.CheckPassword(params.OldPassword, user.Password)
+		if err != nil || !ok {
+			return errors.New400Response("旧密码不正确")
+		}
 	}
 
 	params.NewPassword = hash.SHA1String(params.NewPassword)

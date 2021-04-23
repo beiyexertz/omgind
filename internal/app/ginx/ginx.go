@@ -57,6 +57,7 @@ func GetBody(c *gin.Context) []byte {
 // ParseJSON 解析请求JSON
 func ParseJSON(c *gin.Context, obj interface{}) error {
 	if err := c.ShouldBindJSON(obj); err != nil {
+		fmt.Printf(" 00000 ---- %+v \n", err)
 		return errors.Wrap400Response(err, fmt.Sprintf("解析请求参数发生错误 - %s", err.Error()))
 	}
 	return nil

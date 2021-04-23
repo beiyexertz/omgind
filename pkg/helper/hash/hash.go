@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"crypto/sha1"
 	"fmt"
+
+	hashers "github.com/meehow/go-django-hashers"
 )
 
 // MD5 MD5哈希值
@@ -28,4 +30,14 @@ func SHA1(b []byte) string {
 // SHA1String SHA1哈希值
 func SHA1String(s string) string {
 	return SHA1([]byte(s))
+}
+
+func CheckPassword(cleartext, encoded string) (bool, error) {
+	ok, err := hashers.CheckPassword(cleartext, encoded)
+	return ok, err
+}
+
+func MakePassword(cleartext string) (string, error) {
+	encoded, err := hashers.MakePassword(cleartext)
+	return encoded, err
 }
