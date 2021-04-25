@@ -23,3 +23,7 @@
 .idea
 .vscode
 /vendor
+
+/configs/config.toml
+# ln -s /configs/config.dev.toml /configs/config.toml
+

@@ -7,7 +7,8 @@ import (
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/hash"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
+
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
@@ -86,10 +87,10 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 	pword, _ := hash.MakePassword(item.Password)
 	item.Password = pword
 
-	item.ID = uuid.MustString()
+	item.ID = uid.MustString()
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		for _, urItem := range item.UserRoles {
-			urItem.ID = uuid.MustString()
+			urItem.ID = uid.MustString()
 			urItem.UserID = item.ID
 			err := a.UserRoleModel.Create(ctx, *urItem)
 			if err != nil {
@@ -151,7 +152,7 @@ func (a *User) Update(ctx context.Context, id string, item schema.User) error {
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		addUserRoles, delUserRoles := a.compareUserRoles(ctx, oldItem.UserRoles, item.UserRoles)
 		for _, rmitem := range addUserRoles {
-			rmitem.ID = uuid.MustString()
+			rmitem.ID = uid.MustString()
 			rmitem.UserID = id
 			err := a.UserRoleModel.Create(ctx, *rmitem)
 			if err != nil {

@@ -6,7 +6,8 @@ import (
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/errors"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
+
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 
 	"github.com/google/wire"
 )
@@ -59,7 +60,7 @@ func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.IDResult, 
 		return nil, err
 	}
 
-	item.ID = uuid.MustString()
+	item.ID = uid.MustString()
 	err = a.DemoModel.Create(ctx, item)
 	if err != nil {
 		return nil, err

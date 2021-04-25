@@ -7,6 +7,7 @@ import (
 
 // RegisterAPI register api group router
 func (a *Router) RegisterAPI(app *gin.Engine) {
+
 	g := app.Group("/api")
 
 	g.Use(middleware.UserAuthMiddleware(a.Auth,

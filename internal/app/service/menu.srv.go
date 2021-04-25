@@ -8,8 +8,9 @@ import (
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/errors"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
 	"github.com/wanhello/omgind/pkg/helper/yaml"
+
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 
 	"github.com/google/wire"
 )
@@ -176,7 +177,7 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 		return nil, err
 	}
 	item.ParentPath = parentPath
-	item.ID = uuid.MustString()
+	item.ID = uid.MustString()
 
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		err := a.createActions(ctx, item.ID, item.Actions)
@@ -196,7 +197,7 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 // 创建动作数据
 func (a *Menu) createActions(ctx context.Context, menuID string, items schema.MenuActions) error {
 	for _, item := range items {
-		item.ID = uuid.MustString()
+		item.ID = uid.MustString()
 		item.MenuID = menuID
 		err := a.MenuActionModel.Create(ctx, *item)
 		if err != nil {
@@ -204,7 +205,7 @@ func (a *Menu) createActions(ctx context.Context, menuID string, items schema.Me
 		}
 
 		for _, ritem := range item.Resources {
-			ritem.ID = uuid.MustString()
+			ritem.ID = uid.MustString()
 			ritem.ActionID = item.ID
 			err := a.MenuActionResourceModel.Create(ctx, *ritem)
 			if err != nil {
@@ -321,7 +322,7 @@ func (a *Menu) updateActions(ctx context.Context, menuID string, oldItems, newIt
 		// 计算需要更新的资源配置（只包括新增和删除的，更新的不关心）
 		addResources, delResources := a.compareResources(ctx, oitem.Resources, item.Resources)
 		for _, aritem := range addResources {
-			aritem.ID = uuid.MustString()
+			aritem.ID = uid.MustString()
 			aritem.ActionID = oitem.ID
 			err := a.MenuActionResourceModel.Create(ctx, *aritem)
 			if err != nil {

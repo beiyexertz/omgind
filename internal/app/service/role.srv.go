@@ -6,7 +6,8 @@ import (
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/errors"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
+
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
@@ -65,10 +66,10 @@ func (a *Role) Create(ctx context.Context, item schema.Role) (*schema.IDResult, 
 		return nil, err
 	}
 
-	item.ID = uuid.MustString()
+	item.ID = uid.MustString()
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		for _, rmItem := range item.RoleMenus {
-			rmItem.ID = uuid.MustString()
+			rmItem.ID = uid.MustString()
 			rmItem.RoleID = item.ID
 			err := a.RoleMenuModel.Create(ctx, *rmItem)
 			if err != nil {
@@ -117,7 +118,7 @@ func (a *Role) Update(ctx context.Context, id string, item schema.Role) error {
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		addRoleMenus, delRoleMenus := a.compareRoleMenus(ctx, oldItem.RoleMenus, item.RoleMenus)
 		for _, rmitem := range addRoleMenus {
-			rmitem.ID = uuid.MustString()
+			rmitem.ID = uid.MustString()
 			rmitem.RoleID = id
 			err := a.RoleMenuModel.Create(ctx, *rmitem)
 			if err != nil {
