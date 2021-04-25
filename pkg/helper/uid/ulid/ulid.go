@@ -35,7 +35,7 @@ func (up *ulidProvider) ID() (string, error) {
 	return id.String(), nil
 }
 
-// MustString Create uuid
+// MustString Create ulid
 func MustString() string {
 	idp := New()
 	id, err := idp.ID()

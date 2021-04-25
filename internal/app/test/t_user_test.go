@@ -6,7 +6,7 @@ import (
 
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/helper/hash"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -19,7 +19,7 @@ func TestUser(t *testing.T) {
 
 	// post /menus
 	addMenuItem := &schema.Menu{
-		Name:       uuid.MustUUID().String(),
+		Name:       uid.MustString(),
 		ShowStatus: 1,
 		Status:     1,
 	}
@@ -31,7 +31,7 @@ func TestUser(t *testing.T) {
 
 	// post /roles
 	addRoleItem := &schema.Role{
-		Name:   uuid.MustUUID().String(),
+		Name:   uid.MustString(),
 		Status: 1,
 		RoleMenus: schema.RoleMenus{
 			&schema.RoleMenu{
@@ -47,8 +47,8 @@ func TestUser(t *testing.T) {
 
 	// post /users
 	addItem := &schema.User{
-		UserName: uuid.MustUUID().String(),
-		RealName: uuid.MustUUID().String(),
+		UserName: uid.MustString(),
+		RealName: uid.MustString(),
 		Status:   1,
 		Password: hash.MD5String("test"),
 		UserRoles: schema.UserRoles{
@@ -75,7 +75,7 @@ func TestUser(t *testing.T) {
 
 	// put /users/:id
 	putItem := getItem
-	putItem.UserName = uuid.MustUUID().String()
+	putItem.UserName = uid.MustString()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)

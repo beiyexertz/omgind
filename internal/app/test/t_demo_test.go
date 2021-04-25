@@ -4,10 +4,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
-
 	"github.com/stretchr/testify/assert"
+
+	"github.com/wanhello/omgind/internal/app/schema"
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 )
 
 func TestDemo(t *testing.T) {
@@ -18,8 +18,8 @@ func TestDemo(t *testing.T) {
 
 	// post /demos
 	addItem := &schema.Demo{
-		Code:   uuid.MustUUID().String(),
-		Name:   uuid.MustUUID().String(),
+		Code:   uid.MustString(),
+		Name:   uid.MustString(),
 		Status: 1,
 	}
 	engine.ServeHTTP(w, newPostRequest(router, addItem))
@@ -41,7 +41,7 @@ func TestDemo(t *testing.T) {
 
 	// put /demos/:id
 	putItem := getItem
-	putItem.Name = uuid.MustUUID().String()
+	putItem.Name = uid.MustString()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)

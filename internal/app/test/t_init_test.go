@@ -9,13 +9,13 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/gin-gonic/gin"
 	"github.com/wanhello/omgind/internal/app"
 	"github.com/wanhello/omgind/internal/app/config"
-	"github.com/gin-gonic/gin"
 )
 
 const (
-	configFile = "../../../configs/config.toml"
+	configFile = "../../../configs/config.dev.toml"
 	modelFile  = "../../../configs/model.conf"
 	apiPrefix  = "/api/"
 )

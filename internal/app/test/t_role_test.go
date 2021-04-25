@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/pkg/helper/uuid"
+	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,7 +18,7 @@ func TestRole(t *testing.T) {
 
 	// post /menus
 	addMenuItem := &schema.Menu{
-		Name:       uuid.MustUUID().String(),
+		Name:       uid.MustString(),
 		ShowStatus: 1,
 		Status:     1,
 	}
@@ -30,7 +30,7 @@ func TestRole(t *testing.T) {
 
 	// post /roles
 	addItem := &schema.Role{
-		Name:   uuid.MustUUID().String(),
+		Name:   uid.MustString(),
 		Status: 1,
 		RoleMenus: schema.RoleMenus{
 			&schema.RoleMenu{
@@ -56,7 +56,7 @@ func TestRole(t *testing.T) {
 
 	// put /roles/:id
 	putItem := getItem
-	putItem.Name = uuid.MustUUID().String()
+	putItem.Name = uid.MustString()
 	engine.ServeHTTP(w, newPutRequest("%s/%s", putItem, router, getItem.ID))
 	assert.Equal(t, 200, w.Code)
 	err = parseOK(w.Body)
