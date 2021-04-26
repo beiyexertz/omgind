@@ -10,7 +10,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/LyricTian/captcha"
 	"github.com/go-redis/redis"
 	"github.com/mojocn/base64Captcha"
 	"github.com/wanhello/omgind/internal/app/config"
@@ -141,7 +140,7 @@ func InitCaptcha() {
 			Addr:     rc.Addr,
 			Password: rc.Password,
 			DB:       cfg.RedisDB,
-		}, captcha.Expiration, logger.StandardLogger(), cfg.RedisPrefix))
+		}, time.Minute*time.Duration(cfg.Duration), logger.StandardLogger(), cfg.RedisPrefix))
 
 	}
 

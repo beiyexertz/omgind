@@ -31,6 +31,7 @@ type SignIn struct {
 
 // GetCaptcha 获取图形验证码信息
 func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.SignInCaptcha, error) {
+
 	captchaID := captcha.NewLen(length)
 	item := &schema.SignInCaptcha{
 		CaptchaID: captchaID,

@@ -16,6 +16,7 @@ type CaptchaConfig struct {
 	Source          string
 	BgColor         *color.RGBA //
 	Fonts           []string    //
+	Duration        int
 
 	RedisDB     int
 	RedisPrefix string

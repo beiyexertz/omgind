@@ -21,7 +21,6 @@ func NewRedisStore(opts *redis.Options, expiration time.Duration, out Logger,
 	if opts == nil {
 		panic("options cannot be nil")
 	}
-	//return &RedisStore{redisClient: redis.NewClient(opts)}
 	return NewRedisStoreWithCli(
 		redis.NewClient(opts),
 		expiration,
