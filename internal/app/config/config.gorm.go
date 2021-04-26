@@ -1,7 +1,7 @@
 package config
 
 // Gorm gorm配置参数
-type Gorm struct {
+type GormConfig struct {
 	Debug             bool
 	DBType            string
 	MaxLifetime       int

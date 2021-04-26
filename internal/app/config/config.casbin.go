@@ -1,7 +1,7 @@
 package config
 
 // Casbin casbin配置参数
-type Casbin struct {
+type CasbinConfig struct {
 	Enable           bool
 	Debug            bool
 	Model            string

@@ -1,7 +1,7 @@
 package config
 
 // JWTAuth 用户认证
-type JWTAuth struct {
+type JWTAuthConfig struct {
 	Enable        bool
 	SigningMethod string
 	SigningKey    string
@@ -13,7 +13,7 @@ type JWTAuth struct {
 }
 
 // HTTP http配置参数
-type HTTP struct {
+type HTTPConfig struct {
 	Host             string
 	Port             int
 	CertFile         string
@@ -24,7 +24,7 @@ type HTTP struct {
 }
 
 // Captcha 图形验证码配置参数
-type Captcha struct {
+type CaptchaConfig struct {
 	Store       string
 	Length      int
 	Width       int
@@ -34,14 +34,14 @@ type Captcha struct {
 }
 
 // RateLimiter 请求频率限制配置参数
-type RateLimiter struct {
+type RateLimiterConfig struct {
 	Enable  bool
 	Count   int64
 	RedisDB int
 }
 
 // CORS 跨域请求配置参数
-type CORS struct {
+type CORSConfig struct {
 	Enable           bool
 	AllowOrigins     []string
 	AllowMethods     []string
@@ -51,7 +51,7 @@ type CORS struct {
 }
 
 // GZIP gzip压缩
-type GZIP struct {
+type GZIPConfig struct {
 	Enable             bool
 	ExcludedExtentions []string
 	ExcludedPaths      []string

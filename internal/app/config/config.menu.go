@@ -1,7 +1,7 @@
 package config
 
 // Menu 菜单配置参数
-type Menu struct {
+type MenuConfig struct {
 	Enable bool
 	Data   string
 }

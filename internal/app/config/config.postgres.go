@@ -5,7 +5,7 @@ import (
 )
 
 // Postgres postgres配置参数
-type Postgres struct {
+type PostgresConfig struct {
 	Host     string
 	Port     int
 	User     string
@@ -15,7 +15,7 @@ type Postgres struct {
 }
 
 // DSN 数据库连接串
-func (a Postgres) DSN() string {
+func (a PostgresConfig) DSN() string {
 	return fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=%s",
 		a.Host, a.Port, a.User, a.DBName, a.Password, a.SSLMode)
 }

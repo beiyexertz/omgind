@@ -13,7 +13,7 @@ import (
 
 // InitGinEngine 初始化gin引擎
 func InitGinEngine(r router.IRouter) *gin.Engine {
-	gin.SetMode(config.C.RunMode)
+	gin.SetMode(config.C.System.RunMode)
 
 	app := gin.New()
 	app.NoMethod(middleware.NoMethodHandler())
@@ -50,12 +50,12 @@ func InitGinEngine(r router.IRouter) *gin.Engine {
 	r.Register(app)
 
 	// Swagger
-	if config.C.Swagger {
+	if config.C.System.Swagger {
 		app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
 	// Website
-	if dir := config.C.WWW; dir != "" {
+	if dir := config.C.System.WWW; dir != "" {
 		app.Use(middleware.WWWMiddleware(dir, middleware.AllowPathPrefixSkipper(prefixes...)))
 	}
 

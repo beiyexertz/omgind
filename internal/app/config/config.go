@@ -46,7 +46,7 @@ func MustLoad(fpaths ...string) {
 
 // PrintWithJSON 基于JSON格式输出配置
 func PrintWithJSON() {
-	if C.PrintConfig {
+	if C.System.PrintConfig {
 		b, err := json.MarshalIndent(C, "", " ")
 		if err != nil {
 			os.Stdout.WriteString("[CONFIG] JSON marshal error: " + err.Error())
@@ -58,47 +58,28 @@ func PrintWithJSON() {
 
 // Config 配置参数
 type Config struct {
-	RunMode      string
-	WWW          string
-	Swagger      bool
-	PrintConfig  bool
-	HTTP         HTTP
-	Menu         Menu
-	Casbin       Casbin
-	Log          Log
+	System       SystemConfig `mapstructure:"System"  json:"system"`
+	HTTP         HTTPConfig   `mapstructure:"HTTP" json:"http"`
+	Menu         MenuConfig   `mapstructure:"menu" json:"menu"`
+	Casbin       CasbinConfig `mapstructure:"Casbin" json:"casbin"`
+	Log          LogConfig    `mapstructure:"Log" json:"log"`
 	LogGormHook  LogGormHook
 	LogMongoHook LogMongoHook
-	Root         Root
-	JWTAuth      JWTAuth
-	Monitor      Monitor
-	Captcha      Captcha
-	RateLimiter  RateLimiter
-	CORS         CORS
-	GZIP         GZIP
-	Redis        Redis
-	Gorm         Gorm
-	MySQL        MySQL
-	Postgres     Postgres
-	Sqlite3      Sqlite3
+	Root         RootConfig        `mapstructure:"Root" json:"root"`
+	JWTAuth      JWTAuthConfig     `mapstructure:"JWTAuth" json:"jwtAuth"`
+	Monitor      MonitorConfig     `mapstructure:"Monitor" json:"monitor"`
+	Captcha      CaptchaConfig     `mapstructure:"Captcha" json:"captcha"`
+	RateLimiter  RateLimiterConfig `mapstructure:"RateLimiter" json:"rateLimiter"`
+	CORS         CORSConfig        `mapstructure:"CORS" json:"CORS"`
+	GZIP         GZIPConfig        `mapstructure:"GZIP" json:"GZIP"`
+	Redis        RedisConfig       `mapstructure:"Redis" json:"redis"`
+	Gorm         GormConfig        `mapstructure:"Gorm" json:"gorm"`
+	MySQL        MySQLConfig       `mapstructure:"MySQL" json:"mysql"`
+	Postgres     PostgresConfig    `mapstructure:"Postgres" json:"postgres"`
+	Sqlite3      Sqlite3Config     `mapstructure:"Sqlite3" json:"sqlite3"`
 }
 
 // IsDebugMode 是否是debug模式
 func (c *Config) IsDebugMode() bool {
-	return c.RunMode == "debug"
-}
-
-// Root root用户
-type Root struct {
-	UserName  string
-	Password  string
-	RealName  string
-	FirstName string
-	LastName  string
-}
-
-// Monitor 监控配置参数
-type Monitor struct {
-	Enable    bool
-	Addr      string
-	ConfigDir string
+	return c.System.RunMode == "debug"
 }

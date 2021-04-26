@@ -1,14 +1,16 @@
-# 运行模式(debug:调试,test:测试,release:正式)
-RunMode = "debug"
+[System]
 
-# 静态站点目录(也可以启动服务时使用-www指定)
-WWW = ""
+    # 运行模式(debug:调试,test:测试,release:正式)
+    RunMode = "debug"
 
-# 是否启用swagger
-Swagger = true
+    # 静态站点目录(也可以启动服务时使用-www指定)
+    WWW = ""
 
-# 启动时是否打印配置参数
-PrintConfig = true
+    # 是否启用swagger
+    Wwagger = true
+
+    # 启动时是否打印配置参数
+    PrintConfig = true
 
 [HTTP]
     # http监听地址
@@ -26,7 +28,7 @@ PrintConfig = true
     # 允许输出的最大日志长度
     MaxLoggerLength = 4096
 
-    [Menu]
+[Menu]
     # 使用启用初始化菜单数据
     Enable = true
     # 数据文件(yaml,也可以启动服务时使用-menu指定)
@@ -126,6 +128,7 @@ PrintConfig = true
     RedisDB = 10
     # 存储到redis数据库中的键名前缀
     RedisPrefix = "auth_"
+
 
 [Captcha]
     # 存储方式(支持：memory/redis)

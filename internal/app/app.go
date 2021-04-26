@@ -80,14 +80,14 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 		config.C.Casbin.Model = v
 	}
 	if v := o.WWWDir; v != "" {
-		config.C.WWW = v
+		config.C.System.WWW = v
 	}
 	if v := o.MenuFile; v != "" {
 		config.C.Menu.Data = v
 	}
 	config.PrintWithJSON()
 
-	logger.WithContext(ctx).Printf("服务启动，运行模式：%s，版本号：%s，进程号：%d", config.C.RunMode, o.Version, os.Getpid())
+	logger.WithContext(ctx).Printf("服务启动，运行模式：%s，版本号：%s，进程号：%d", config.C.System.RunMode, o.Version, os.Getpid())
 
 	// 初始化日志模块
 	loggerCleanFunc, err := InitLogger()

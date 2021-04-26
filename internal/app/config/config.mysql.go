@@ -5,7 +5,7 @@ import (
 )
 
 // MySQL mysql配置参数
-type MySQL struct {
+type MySQLConfig struct {
 	Host       string
 	Port       int
 	User       string
@@ -15,7 +15,7 @@ type MySQL struct {
 }
 
 // DSN 数据库连接串
-func (a MySQL) DSN() string {
+func (a MySQLConfig) DSN() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?%s",
 		a.User, a.Password, a.Host, a.Port, a.DBName, a.Parameters)
 }

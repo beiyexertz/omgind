@@ -1,7 +1,7 @@
 package config
 
 // Log 日志配置参数
-type Log struct {
+type LogConfig struct {
 	Level         int
 	Format        string
 	Output        string
