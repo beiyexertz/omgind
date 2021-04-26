@@ -94,14 +94,14 @@ func (a *SignIn) SignIn(c *gin.Context) {
 	ginx.ResSuccess(c, tokenInfo)
 }
 
-// Logout 用户登出
-func (a *SignIn) Logout(c *gin.Context) {
+// SignOut 用户登出
+func (a *SignIn) SignOut(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	// 检查用户是否处于登录状态，如果是则执行销毁
 	userID := ginx.GetUserID(c)
 	if userID != "" {
-		ctx = logger.NewTagContext(ctx, "__logout__")
+		ctx = logger.NewTagContext(ctx, "__signOut__")
 		err := a.SigninSrv.DestroyToken(ctx, ginx.GetToken(c))
 		if err != nil {
 			logger.WithContext(ctx).Errorf(err.Error())

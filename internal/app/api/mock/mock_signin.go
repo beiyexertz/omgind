@@ -44,12 +44,12 @@ func (a *SignIn) ResCaptcha(c *gin.Context) {
 func (a *SignIn) SignIn(c *gin.Context) {
 }
 
-// Logout 用户登出
+// SignOut 用户登出
 // @Tags 登录管理
 // @Summary 用户登出
 // @Success 200 {object} schema.StatusResult "{status:OK}"
 // @Router /api/v1/pub/signin/exit [post]
-func (a *SignIn) Logout(c *gin.Context) {
+func (a *SignIn) SignOut(c *gin.Context) {
 }
 
 // RefreshToken 刷新令牌

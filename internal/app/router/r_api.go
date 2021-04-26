@@ -29,7 +29,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 				gSignIn.GET("captchaid", a.SignInAPI.GetCaptcha)
 				gSignIn.GET("captcha", a.SignInAPI.ResCaptcha)
 				gSignIn.POST("", a.SignInAPI.SignIn)
-				gSignIn.POST("exit", a.SignInAPI.Logout)
+				gSignIn.POST("exit", a.SignInAPI.SignOut)
 			}
 
 			gCurrent := pub.Group("current")
