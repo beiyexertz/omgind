@@ -40,6 +40,7 @@ func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.SignInCapt
 
 // ResCaptcha 生成并响应图形验证码
 func (a *SignIn) ResCaptcha(ctx context.Context, w http.ResponseWriter, captchaID string, width, height int) error {
+
 	err := captcha.WriteImage(w, captchaID, width, height)
 	if err != nil {
 		if err == captcha.ErrNotFound {
@@ -52,6 +53,7 @@ func (a *SignIn) ResCaptcha(ctx context.Context, w http.ResponseWriter, captchaI
 	w.Header().Set("Pragma", "no-cache")
 	w.Header().Set("Expires", "0")
 	w.Header().Set("Content-Type", "image/png")
+
 	return nil
 }
 

@@ -27,7 +27,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/meehow/go-django-hashers v0.0.0-20171231135116-5e5d6afe52db
-	github.com/mojocn/base64Captcha v1.3.4 // indirect
+	github.com/mojocn/base64Captcha v1.3.4
 	github.com/oklog/ulid/v2 v2.0.2
 	github.com/pkg/errors v0.9.1
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

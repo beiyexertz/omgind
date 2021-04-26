@@ -10,12 +10,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/LyricTian/captcha"
+	"github.com/go-redis/redis"
+	"github.com/mojocn/base64Captcha"
 	"github.com/wanhello/omgind/internal/app/config"
 	"github.com/wanhello/omgind/pkg/logger"
 
-	"github.com/LyricTian/captcha"
-	"github.com/LyricTian/captcha/store"
-	"github.com/go-redis/redis"
+	"github.com/wanhello/omgind/pkg/captcha/store"
+
 	"github.com/google/gops/agent"
 
 	// 引入swagger
@@ -129,14 +131,20 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 // InitCaptcha 初始化图形验证码
 func InitCaptcha() {
 	cfg := config.C.Captcha
+
 	if cfg.Store == "redis" {
 		rc := config.C.Redis
-		captcha.SetCustomStore(store.NewRedisStore(&redis.Options{
+
+		driver := base64Captcha.NewDriverString(cfg.Height, cfg.Width, cfg.NoiseCount, cfg.ShowLineOptions, cfg.Length, cfg.Source, cfg.BgColor, cfg.Fonts)
+
+		base64Captcha.NewCaptcha(driver.ConvertFonts(), store.NewRedisStore(&redis.Options{
 			Addr:     rc.Addr,
 			Password: rc.Password,
 			DB:       cfg.RedisDB,
 		}, captcha.Expiration, logger.StandardLogger(), cfg.RedisPrefix))
+
 	}
+
 }
 
 // InitMonitor 初始化服务监控

@@ -135,7 +135,7 @@
 [Captcha]
 
     # 存储方式(支持：memory/redis)
-    Store = "memory"
+    Store = "redis"
     # 数字长度
     Length = 4
     # 图片宽度
@@ -143,12 +143,30 @@
     # 图片高度
     Height = 160
 
+    # 干扰字符的个数
+    NoiseCount = 5
+    
+    # 干扰线 ShowLineOptions := OptionShowHollowLine | OptionShowSlimeLine | OptionShowSineLine . 
+    # 2 | 4 | 8
+    showLineOptions = 8
+
+    # 字符源
+    Source = "23456789qwertyuiopasdfghjkzxcvbnmQWERTYUPASDFGHJKLZXCVBNM"
+    
+    # 字体
+    Fonts = ["wqy-microhei.ttc", "3Dumb.ttf", "ApothecaryFont.ttf", "Comismsh.ttf", "DENNEthree-dee.ttf", "DeborahFancyDress.ttf", "Flim-Flam.ttf", "RitaSmith.ttf", "actionj.ttf",]
+    
+    [Captcha.BgColor] 
+        R = 254
+        G = 254
+        B = 254
+        A = 254
+
     # redis数据库(如果存储方式是redis，则指定存储的数据库)
     RedisDB = 10
     # 存储到redis数据库中的键名前缀
     RedisPrefix = "captcha_"
-
-
+    
 # 请求频率限制(如果redis可用则使用redis，否则使用内存存储)
 [RateLimiter]
     # 是否启用

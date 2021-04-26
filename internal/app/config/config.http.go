@@ -1,17 +1,5 @@
 package config
 
-// JWTAuth 用户认证
-type JWTAuthConfig struct {
-	Enable        bool
-	SigningMethod string
-	SigningKey    string
-	Expired       int
-	Store         string
-	FilePath      string
-	RedisDB       int
-	RedisPrefix   string
-}
-
 // HTTP http配置参数
 type HTTPConfig struct {
 	Host             string
@@ -23,14 +11,16 @@ type HTTPConfig struct {
 	MaxLoggerLength  int `default:"4096"`
 }
 
-// Captcha 图形验证码配置参数
-type CaptchaConfig struct {
-	Store       string
-	Length      int
-	Width       int
-	Height      int
-	RedisDB     int
-	RedisPrefix string
+// JWTAuth 用户认证
+type JWTAuthConfig struct {
+	Enable        bool
+	SigningMethod string
+	SigningKey    string
+	Expired       int
+	Store         string
+	FilePath      string
+	RedisDB       int
+	RedisPrefix   string
 }
 
 // RateLimiter 请求频率限制配置参数
