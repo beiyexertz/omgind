@@ -7,7 +7,7 @@
     WWW = ""
 
     # 是否启用swagger
-    Wwagger = true
+    Swagger = true
 
     # 启动时是否打印配置参数
     PrintConfig = true
