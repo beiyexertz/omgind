@@ -4,23 +4,23 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wanhello/omgind/internal/app/config"
-	"github.com/wanhello/omgind/internal/app/ginx"
-	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/go-redis/redis_rate"
+	"github.com/wanhello/omgind/internal/app/ginx"
+	"github.com/wanhello/omgind/pkg/errors"
+	"github.com/wanhello/omgind/pkg/global"
 	"golang.org/x/time/rate"
 )
 
 // RateLimiterMiddleware 请求频率限制中间件
 func RateLimiterMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
-	cfg := config.C.RateLimiter
+	cfg := global.C.RateLimiter
 	if !cfg.Enable {
 		return EmptyMiddleware()
 	}
 
-	rc := config.C.Redis
+	rc := global.C.Redis
 	ring := redis.NewRing(&redis.RingOptions{
 		Addrs: map[string]string{
 			"server1": rc.Addr,

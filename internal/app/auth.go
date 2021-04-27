@@ -1,18 +1,18 @@
 package app
 
 import (
-	"github.com/wanhello/omgind/internal/app/config"
 	"github.com/wanhello/omgind/pkg/auth"
 	"github.com/wanhello/omgind/pkg/auth/jwtauth"
 	"github.com/wanhello/omgind/pkg/auth/jwtauth/store/buntdb"
 	"github.com/wanhello/omgind/pkg/auth/jwtauth/store/redis"
+	"github.com/wanhello/omgind/pkg/global"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
 // InitAuth 初始化用户认证
 func InitAuth() (auth.Auther, func(), error) {
-	cfg := config.C.JWTAuth
+	cfg := global.C.JWTAuth
 
 	var opts []jwtauth.Option
 	opts = append(opts, jwtauth.SetExpired(cfg.Expired))
@@ -38,7 +38,7 @@ func InitAuth() (auth.Auther, func(), error) {
 	var store jwtauth.Storer
 	switch cfg.Store {
 	case "redis":
-		rcfg := config.C.Redis
+		rcfg := global.C.Redis
 		store = redis.NewStore(&redis.Config{
 			Addr:      rcfg.Addr,
 			Password:  rcfg.Password,

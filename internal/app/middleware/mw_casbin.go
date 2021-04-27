@@ -1,16 +1,16 @@
 package middleware
 
 import (
-	"github.com/wanhello/omgind/internal/app/config"
-	"github.com/wanhello/omgind/internal/app/ginx"
-	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/wanhello/omgind/internal/app/ginx"
+	"github.com/wanhello/omgind/pkg/errors"
+	"github.com/wanhello/omgind/pkg/global"
 )
 
 // CasbinMiddleware casbin中间件
 func CasbinMiddleware(enforcer *casbin.SyncedEnforcer, skippers ...SkipperFunc) gin.HandlerFunc {
-	cfg := config.C.Casbin
+	cfg := global.C.Casbin
 	if !cfg.Enable {
 		return EmptyMiddleware()
 	}

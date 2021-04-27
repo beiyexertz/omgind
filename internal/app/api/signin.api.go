@@ -1,11 +1,11 @@
 package api
 
 import (
-	"github.com/wanhello/omgind/internal/app/config"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/pkg/errors"
+	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
 
 	"github.com/LyricTian/captcha"
@@ -24,7 +24,7 @@ type SignIn struct {
 // GetCaptcha 获取验证码信息
 func (a *SignIn) GetCaptcha(c *gin.Context) {
 	ctx := c.Request.Context()
-	item, err := a.SigninSrv.GetCaptcha(ctx, config.C.Captcha.Length)
+	item, err := a.SigninSrv.GetCaptcha(ctx, global.C.Captcha.Length)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -48,7 +48,7 @@ func (a *SignIn) ResCaptcha(c *gin.Context) {
 		}
 	}
 
-	cfg := config.C.Captcha
+	cfg := global.C.Captcha
 	err := a.SigninSrv.ResCaptcha(ctx, c.Writer, captchaID, cfg.Width, cfg.Height)
 	if err != nil {
 		ginx.ResError(c, err)

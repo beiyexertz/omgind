@@ -11,11 +11,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/wanhello/omgind/internal/app"
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/wanhello/omgind/pkg/global"
 )
 
 const (
-	configFile = "../../../configs/config.dev.toml"
+	configFile = "../../../configs/config.toml"
 	modelFile  = "../../../configs/model.conf"
 	apiPrefix  = "/api/"
 )
@@ -24,15 +24,15 @@ var engine *gin.Engine
 
 func init() {
 	// 初始化配置文件
-	config.MustLoad(configFile)
+	global.MustLoad(configFile)
 
-	config.C.RunMode = "test"
-	config.C.Log.Level = 2
-	config.C.JWTAuth.Enable = false
-	config.C.Casbin.Enable = false
-	config.C.Casbin.Model = modelFile
-	config.C.Gorm.Debug = false
-	config.C.Gorm.DBType = "sqlite3"
+	global.C.System.RunMode = "test"
+	global.C.Log.Level = 2
+	global.C.JWTAuth.Enable = false
+	global.C.Casbin.Enable = false
+	global.C.Casbin.Model = modelFile
+	global.C.Gorm.Debug = false
+	global.C.Gorm.DBType = "sqlite3"
 
 	injector, _, err := app.BuildInjector()
 	if err != nil {

@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/wanhello/omgind/internal/app/config"
 	"github.com/wanhello/omgind/internal/app/middleware"
 	"github.com/wanhello/omgind/internal/app/router"
+	"github.com/wanhello/omgind/pkg/global"
 
 	"github.com/LyricTian/gzip"
 	"github.com/gin-gonic/gin"
@@ -13,7 +13,7 @@ import (
 
 // InitGinEngine 初始化gin引擎
 func InitGinEngine(r router.IRouter) *gin.Engine {
-	gin.SetMode(config.C.System.RunMode)
+	gin.SetMode(global.C.System.RunMode)
 
 	app := gin.New()
 	app.NoMethod(middleware.NoMethodHandler())
@@ -34,15 +34,15 @@ func InitGinEngine(r router.IRouter) *gin.Engine {
 	app.Use(middleware.RecoveryMiddleware())
 
 	// CORS
-	if config.C.CORS.Enable {
+	if global.C.CORS.Enable {
 		app.Use(middleware.CORSMiddleware())
 	}
 
 	// GZIP
-	if config.C.GZIP.Enable {
+	if global.C.GZIP.Enable {
 		app.Use(gzip.Gzip(gzip.BestCompression,
-			gzip.WithExcludedExtensions(config.C.GZIP.ExcludedExtentions),
-			gzip.WithExcludedPaths(config.C.GZIP.ExcludedPaths),
+			gzip.WithExcludedExtensions(global.C.GZIP.ExcludedExtentions),
+			gzip.WithExcludedPaths(global.C.GZIP.ExcludedPaths),
 		))
 	}
 
@@ -50,12 +50,12 @@ func InitGinEngine(r router.IRouter) *gin.Engine {
 	r.Register(app)
 
 	// Swagger
-	if config.C.System.Swagger {
+	if global.C.System.Swagger {
 		app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
 	// Website
-	if dir := config.C.System.WWW; dir != "" {
+	if dir := global.C.System.WWW; dir != "" {
 		app.Use(middleware.WWWMiddleware(dir, middleware.AllowPathPrefixSkipper(prefixes...)))
 	}
 

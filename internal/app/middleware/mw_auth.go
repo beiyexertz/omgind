@@ -1,13 +1,13 @@
 package middleware
 
 import (
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/gin-gonic/gin"
 	"github.com/wanhello/omgind/internal/app/contextx"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/pkg/auth"
 	"github.com/wanhello/omgind/pkg/errors"
+	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
-	"github.com/gin-gonic/gin"
 )
 
 func wrapUserAuthContext(c *gin.Context, userID string) {
@@ -19,9 +19,9 @@ func wrapUserAuthContext(c *gin.Context, userID string) {
 
 // UserAuthMiddleware 用户授权中间件
 func UserAuthMiddleware(a auth.Auther, skippers ...SkipperFunc) gin.HandlerFunc {
-	if !config.C.JWTAuth.Enable {
+	if !global.C.JWTAuth.Enable {
 		return func(c *gin.Context) {
-			wrapUserAuthContext(c, config.C.Root.UserName)
+			wrapUserAuthContext(c, global.C.Root.UserName)
 			c.Next()
 		}
 	}
@@ -35,8 +35,8 @@ func UserAuthMiddleware(a auth.Auther, skippers ...SkipperFunc) gin.HandlerFunc 
 		userID, err := a.ParseUserID(c.Request.Context(), ginx.GetToken(c))
 		if err != nil {
 			if err == auth.ErrInvalidToken {
-				if config.C.IsDebugMode() {
-					wrapUserAuthContext(c, config.C.Root.UserName)
+				if global.C.IsDebugMode() {
+					wrapUserAuthContext(c, global.C.Root.UserName)
 					c.Next()
 					return
 				}

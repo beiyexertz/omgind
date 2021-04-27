@@ -3,7 +3,7 @@ package app
 import (
 	"time"
 
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/wanhello/omgind/pkg/global"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/persist"
@@ -11,7 +11,7 @@ import (
 
 // InitCasbin 初始化casbin
 func InitCasbin(adapter persist.Adapter) (*casbin.SyncedEnforcer, func(), error) {
-	cfg := config.C.Casbin
+	cfg := global.C.Casbin
 	if cfg.Model == "" {
 		return new(casbin.SyncedEnforcer), nil, nil
 	}

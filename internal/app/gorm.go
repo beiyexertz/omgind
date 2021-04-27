@@ -5,15 +5,15 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/wanhello/omgind/internal/app/config"
 	"github.com/wanhello/omgind/internal/app/model/gormx"
+	"github.com/wanhello/omgind/pkg/global"
 
 	"github.com/jinzhu/gorm"
 )
 
 // InitGormDB 初始化gorm存储
 func InitGormDB() (*gorm.DB, func(), error) {
-	cfg := config.C.Gorm
+	cfg := global.C.Gorm
 	db, cleanFunc, err := NewGormDB()
 	if err != nil {
 		return nil, cleanFunc, err
@@ -31,7 +31,7 @@ func InitGormDB() (*gorm.DB, func(), error) {
 
 // NewGormDB 创建DB实例
 func NewGormDB() (*gorm.DB, func(), error) {
-	cfg := config.C
+	cfg := global.C
 	var dsn string
 	switch cfg.Gorm.DBType {
 	case "mysql":

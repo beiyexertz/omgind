@@ -10,12 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/go-redis/redis"
-	"github.com/mojocn/base64Captcha"
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
-
-	"github.com/wanhello/omgind/pkg/captcha/store"
 
 	"github.com/google/gops/agent"
 
@@ -76,19 +72,19 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 		opt(&o)
 	}
 
-	config.MustLoad(o.ConfigFile)
+	global.MustLoad(o.ConfigFile)
 	if v := o.ModelFile; v != "" {
-		config.C.Casbin.Model = v
+		global.C.Casbin.Model = v
 	}
 	if v := o.WWWDir; v != "" {
-		config.C.System.WWW = v
+		global.C.System.WWW = v
 	}
 	if v := o.MenuFile; v != "" {
-		config.C.Menu.Data = v
+		global.C.Menu.Data = v
 	}
-	config.PrintWithJSON()
+	global.PrintWithJSON()
 
-	logger.WithContext(ctx).Printf("服务启动，运行模式：%s，版本号：%s，进程号：%d", config.C.System.RunMode, o.Version, os.Getpid())
+	logger.WithContext(ctx).Printf("服务启动，运行模式：%s，版本号：%s，进程号：%d", global.C.System.RunMode, o.Version, os.Getpid())
 
 	// 初始化日志模块
 	loggerCleanFunc, err := InitLogger()
@@ -100,8 +96,13 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 	monitorCleanFunc := InitMonitor(ctx)
 
 	// 初始化图形验证码
-	InitCaptcha()
+	redisCli, redisCleanFunc, _ := InitRedisCli()
+	global.RdsCli = redisCli
 
+	cptc := InitCaptcha(global.RdsCli)
+	if cptc != nil {
+
+	}
 	// 初始化依赖注入器
 	injector, injectorCleanFunc, err := BuildInjector()
 	if err != nil {
@@ -109,8 +110,8 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 	}
 
 	// 初始化菜单数据
-	if config.C.Menu.Enable && config.C.Menu.Data != "" {
-		err = injector.MenuSrv.InitData(ctx, config.C.Menu.Data)
+	if global.C.Menu.Enable && global.C.Menu.Data != "" {
+		err = injector.MenuSrv.InitData(ctx, global.C.Menu.Data)
 		if err != nil {
 			return nil, err
 		}
@@ -120,6 +121,7 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 	httpServerCleanFunc := InitHTTPServer(ctx, injector.Engine)
 
 	return func() {
+		redisCleanFunc()
 		httpServerCleanFunc()
 		injectorCleanFunc()
 		monitorCleanFunc()
@@ -127,28 +129,9 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 	}, nil
 }
 
-// InitCaptcha 初始化图形验证码
-func InitCaptcha() {
-	cfg := config.C.Captcha
-
-	if cfg.Store == "redis" {
-		rc := config.C.Redis
-
-		driver := base64Captcha.NewDriverString(cfg.Height, cfg.Width, cfg.NoiseCount, cfg.ShowLineOptions, cfg.Length, cfg.Source, cfg.BgColor, cfg.Fonts)
-
-		base64Captcha.NewCaptcha(driver.ConvertFonts(), store.NewRedisStore(&redis.Options{
-			Addr:     rc.Addr,
-			Password: rc.Password,
-			DB:       cfg.RedisDB,
-		}, time.Minute*time.Duration(cfg.Duration), logger.StandardLogger(), cfg.RedisPrefix))
-
-	}
-
-}
-
 // InitMonitor 初始化服务监控
 func InitMonitor(ctx context.Context) func() {
-	if c := config.C.Monitor; c.Enable {
+	if c := global.C.Monitor; c.Enable {
 		// ShutdownCleanup set false to prevent automatically closes on os.Interrupt
 		// and close agent manually before service shutting down
 		err := agent.Listen(agent.Options{Addr: c.Addr, ConfigDir: c.ConfigDir, ShutdownCleanup: false})
@@ -164,7 +147,7 @@ func InitMonitor(ctx context.Context) func() {
 
 // InitHTTPServer 初始化http服务
 func InitHTTPServer(ctx context.Context, handler http.Handler) func() {
-	cfg := config.C.HTTP
+	cfg := global.C.HTTP
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 	srv := &http.Server{
 		Addr:         addr,

@@ -4,10 +4,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wanhello/omgind/internal/app/config"
-	"github.com/wanhello/omgind/internal/app/model/gormx/entity"
-	"github.com/wanhello/omgind/pkg/logger"
 	"github.com/jinzhu/gorm"
+	"github.com/wanhello/omgind/internal/app/model/gormx/entity"
+	"github.com/wanhello/omgind/pkg/global"
+	"github.com/wanhello/omgind/pkg/logger"
 
 	// gorm存储注入
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -62,7 +62,7 @@ func NewDB(c *Config) (*gorm.DB, func(), error) {
 
 // AutoMigrate 自动映射数据表
 func AutoMigrate(db *gorm.DB) error {
-	if dbType := config.C.Gorm.DBType; strings.ToLower(dbType) == "mysql" {
+	if dbType := global.C.Gorm.DBType; strings.ToLower(dbType) == "mysql" {
 		db = db.Set("gorm:table_options", "ENGINE=InnoDB")
 	}
 

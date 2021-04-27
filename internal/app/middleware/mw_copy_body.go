@@ -7,15 +7,15 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/wanhello/omgind/internal/app/config"
-	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/gin-gonic/gin"
+	"github.com/wanhello/omgind/internal/app/ginx"
+	"github.com/wanhello/omgind/pkg/global"
 )
 
 // CopyBodyMiddleware Copy body
 func CopyBodyMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 	var maxMemory int64 = 64 << 20 // 64 MB
-	if v := config.C.HTTP.MaxContentLength; v > 0 {
+	if v := global.C.HTTP.MaxContentLength; v > 0 {
 		maxMemory = v
 	}
 

@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
 
 	"github.com/casbin/casbin/v2"
@@ -30,7 +30,7 @@ func init() {
 
 // LoadCasbinPolicy 异步加载casbin权限策略
 func LoadCasbinPolicy(ctx context.Context, e *casbin.SyncedEnforcer) {
-	if !config.C.Casbin.Enable {
+	if !global.C.Casbin.Enable {
 		return
 	}
 

@@ -6,7 +6,7 @@ Swagger 文档规则请参考：https://github.com/swaggo/swag#declarative-comme
 使用方式：
 
 	go get -u github.com/swaggo/swag/cmd/swag
-	swag init --generalInfo ./cmd/omgind/main.go --output ./internal/app/swagger */
+	swag init --generalInfo ./cmd/omgind/global.go --output ./internal/app/swagger */
 package main
 
 import (

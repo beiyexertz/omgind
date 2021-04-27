@@ -1,10 +1,11 @@
 package schema
 
+import "C"
 import (
 	"context"
 	"time"
 
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/helper/hash"
 	"github.com/wanhello/omgind/pkg/helper/json"
 	"github.com/wanhello/omgind/pkg/helper/structure"
@@ -12,7 +13,7 @@ import (
 
 // GetRootUser 获取root用户
 func GetRootUser() *User {
-	user := config.C.Root
+	user := global.C.Root
 	return &User{
 		ID:        user.UserName,
 		UserName:  user.UserName,

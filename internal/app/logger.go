@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/wanhello/omgind/internal/app/config"
+	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
 	loggerhook "github.com/wanhello/omgind/pkg/logger/hook"
 	loggergormhook "github.com/wanhello/omgind/pkg/logger/hook/gorm"
@@ -15,7 +15,7 @@ import (
 
 // InitLogger 初始化日志模块
 func InitLogger() (func(), error) {
-	c := config.C.Log
+	c := global.C.Log
 	logger.SetLevel(c.Level)
 	logger.SetFormatter(c.Format)
 
@@ -54,16 +54,16 @@ func InitLogger() (func(), error) {
 
 		switch {
 		case c.Hook.IsGorm():
-			hc := config.C.LogGormHook
+			hc := global.C.LogGormHook
 
 			var dsn string
 			switch hc.DBType {
 			case "mysql":
-				dsn = config.C.MySQL.DSN()
+				dsn = global.C.MySQL.DSN()
 			case "sqlite3":
-				dsn = config.C.Sqlite3.DSN()
+				dsn = global.C.Sqlite3.DSN()
 			case "postgres":
-				dsn = config.C.Postgres.DSN()
+				dsn = global.C.Postgres.DSN()
 			default:
 				return nil, errors.New("unknown db")
 			}

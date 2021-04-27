@@ -8,33 +8,32 @@ import (
 	"github.com/mojocn/base64Captcha"
 )
 
-type redisStore struct {
-	cli        *redis.Client
+type RedisStore struct {
+	cli redis.Cmdable
+
 	prefix     string
-	out        Logger
 	expiration time.Duration
 }
 
-// NewRedisStore create an instance of a redis store
-func NewRedisStore(opts *redis.Options, expiration time.Duration, out Logger,
+// NewStore create an instance of a redis store
+func NewStore(opts *redis.Options, expiration time.Duration,
 	prefix ...string) base64Captcha.Store {
 	if opts == nil {
 		panic("options cannot be nil")
 	}
-	return NewRedisStoreWithCli(
+	return NewRedisStore(
 		redis.NewClient(opts),
 		expiration,
-		out,
 		prefix...,
 	)
 }
 
 // NewRedisStoreWithCli create an instance of a redis store
-func NewRedisStoreWithCli(cli *redis.Client, expiration time.Duration, out Logger, prefix ...string) base64Captcha.Store {
-	store := &redisStore{
+func NewRedisStore(cli redis.Cmdable, expiration time.Duration,
+	prefix ...string) base64Captcha.Store {
+	store := &RedisStore{
 		cli:        cli,
 		expiration: expiration,
-		out:        out,
 	}
 	if len(prefix) > 0 {
 		store.prefix = prefix[0]
@@ -42,11 +41,11 @@ func NewRedisStoreWithCli(cli *redis.Client, expiration time.Duration, out Logge
 	return store
 }
 
-func (rs *redisStore) Set(id string, value string) {
-	rs.cli.Set(rs.prefix+id, value, time.Minute*5)
+func (rs *RedisStore) Set(id string, value string) {
+	rs.cli.Set(rs.prefix+id, value, rs.expiration)
 }
 
-func (rs *redisStore) Get(id string, clear bool) string {
+func (rs *RedisStore) Get(id string, clear bool) string {
 	str := rs.cli.Get(rs.prefix + id).Val()
 	if clear && str != "" {
 		rs.cli.Del("captcha:" + id)
@@ -54,7 +53,7 @@ func (rs *redisStore) Get(id string, clear bool) string {
 	return str
 }
 
-func (rs *redisStore) Verify(id, answer string, clear bool) bool {
+func (rs *RedisStore) Verify(id, answer string, clear bool) bool {
 	vv := rs.Get(id, clear)
 	vv = strings.TrimSpace(vv)
 	return vv == strings.TrimSpace(answer)

@@ -1,12 +1,33 @@
-package captcha
+package vcode
 
 import (
-	"image/color"
+	"time"
 
-	"github.com/google/uuid"
+	"github.com/go-redis/redis"
 	"github.com/mojocn/base64Captcha"
+	config2 "github.com/wanhello/omgind/pkg/config"
+	"github.com/wanhello/omgind/pkg/vcode/store"
 )
 
+type Captcha struct {
+	Storer base64Captcha.Store
+	cli    redis.Cmdable
+}
+
+func New(cli redis.Cmdable, cfg config2.CaptchaConfig) *Captcha {
+
+	storer := store.NewRedisStore(cli, time.Minute*time.Duration(cfg.Duration), cfg.RedisPrefix)
+
+	driver := base64Captcha.NewDriverString(cfg.Height, cfg.Width, cfg.NoiseCount, cfg.ShowLineOptions, cfg.Length, cfg.Source, cfg.BgColor, cfg.Fonts)
+
+	base64Captcha.NewCaptcha(driver.ConvertFonts(), storer)
+	return &Captcha{
+		Storer: storer,
+		cli:    cli,
+	}
+}
+
+/*
 //configJsonBody json request body.
 type configJsonBody struct {
 	Id            string
@@ -39,3 +60,4 @@ func DriverDigitFunc(store base64Captcha.Store) (id, b64s string, err error) {
 
 	return capt.Generate()
 }
+*/
