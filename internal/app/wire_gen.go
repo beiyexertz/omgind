@@ -73,6 +73,14 @@ func BuildInjector() (*Injector, func(), error) {
 	menuAction := &repo.MenuAction{
 		DB: db,
 	}
+	cmdable, cleanup4, err := InitRedisCli()
+	if err != nil {
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	captcha := InitVcode(cmdable)
 	signIn := &service.SignIn{
 		Auth:            auther,
 		UserModel:       user,
@@ -81,6 +89,7 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleMenuModel:   roleMenu,
 		MenuModel:       menu,
 		MenuActionModel: menuAction,
+		Vcode:           captcha,
 	}
 	apiSignIn := &api.SignIn{
 		SigninSrv: signIn,
@@ -132,8 +141,10 @@ func BuildInjector() (*Injector, func(), error) {
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
 		MenuSrv:        serviceMenu,
+		RedisCli:       cmdable,
 	}
 	return injector, func() {
+		cleanup4()
 		cleanup3()
 		cleanup2()
 		cleanup()

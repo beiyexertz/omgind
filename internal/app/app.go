@@ -99,10 +99,10 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 	redisCli, redisCleanFunc, _ := InitRedisCli()
 	global.RdsCli = redisCli
 
-	cptc := InitCaptcha(global.RdsCli)
-	if cptc != nil {
+	//cptc := InitVcode(global.RdsCli)
+	//if cptc != nil {
+	//}
 
-	}
 	// 初始化依赖注入器
 	injector, injectorCleanFunc, err := BuildInjector()
 	if err != nil {

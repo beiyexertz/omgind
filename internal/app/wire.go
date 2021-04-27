@@ -19,6 +19,8 @@ func BuildInjector() (*Injector, func(), error) {
 	wire.Build(
 		// mock.MockSet,
 		InitGormDB,
+		InitRedisCli,
+		InitVcode,
 		repo.RepoSet,
 		InitAuth,
 		InitCasbin,

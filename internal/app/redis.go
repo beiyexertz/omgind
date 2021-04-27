@@ -8,7 +8,7 @@ import (
 	"github.com/wanhello/omgind/pkg/logger"
 )
 
-func InitRedisCli() (*redis.Client, func(), error) {
+func InitRedisCli() (redis.Cmdable, func(), error) {
 
 	cli, cleanFunc, err := NewRedisCli()
 	if err != nil {
@@ -18,7 +18,7 @@ func InitRedisCli() (*redis.Client, func(), error) {
 	return cli, cleanFunc, nil
 }
 
-func NewRedisCli() (*redis.Client, func(), error) {
+func NewRedisCli() (redis.Cmdable, func(), error) {
 	cfg := global.CFG
 	if !cfg.Redis.Enable {
 		return nil, func() {}, errors.New("redis数据库未启用")

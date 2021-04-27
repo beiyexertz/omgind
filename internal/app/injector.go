@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/go-redis/redis"
 	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/pkg/auth"
 
@@ -18,4 +19,5 @@ type Injector struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
 	MenuSrv        *service.Menu
+	RedisCli       redis.Cmdable
 }

@@ -13,11 +13,11 @@ import (
 )
 
 var (
-	// C 全局配置(需要先执行MustLoad，否则拿不到配置)
+	// CFG 全局配置(需要先执行MustLoad，否则拿不到配置)
 	CFG  = new(config.Config)
 	once sync.Once
 
-	RdsCli *redis.Client
+	RdsCli redis.Cmdable
 )
 
 // PrintWithJSON 基于JSON格式输出配置
