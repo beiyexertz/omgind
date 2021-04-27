@@ -157,6 +157,16 @@ func randomReal(length int, fill RandType) string {
 	return res
 }
 
+func randomRealDo(length int, source string) string {
+	var res string
+	var i = length
+	for i > 0 {
+		res += getCharactorFromStr(source)
+		i--
+	}
+	return res
+}
+
 func RandCapital(length ...int) string {
 	if len(length) > 0 {
 		return Random(length[0], T_CAPITAL)
@@ -190,4 +200,8 @@ func RandAll(length ...int) string {
 		return Random(length[0], T_ALL)
 	}
 	return Random(RandBetween(6, 32), T_ALL)
+}
+
+func RandCustom(length int, source string) string {
+	return randomRealDo(length, source)
 }
