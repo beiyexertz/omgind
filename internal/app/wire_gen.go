@@ -80,7 +80,7 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	captcha := InitVcode(cmdable)
+	vcode := InitVcode(cmdable)
 	signIn := &service.SignIn{
 		Auth:            auther,
 		UserModel:       user,
@@ -89,7 +89,7 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleMenuModel:   roleMenu,
 		MenuModel:       menu,
 		MenuActionModel: menuAction,
-		Vcode:           captcha,
+		Vcode:           vcode,
 	}
 	apiSignIn := &api.SignIn{
 		SigninSrv: signIn,

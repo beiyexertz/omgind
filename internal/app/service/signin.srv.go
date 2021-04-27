@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/mojocn/base64Captcha"
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/auth"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/hash"
+	"github.com/wanhello/omgind/pkg/vcode"
 
 	"github.com/LyricTian/captcha"
 	"github.com/google/wire"
@@ -28,7 +28,7 @@ type SignIn struct {
 	RoleMenuModel   *repo.RoleMenu
 	MenuModel       *repo.Menu
 	MenuActionModel *repo.MenuAction
-	Vcode           *base64Captcha.Captcha
+	Vcode           *vcode.Vcode
 }
 
 // GetCaptcha 获取图形验证码信息

@@ -9,7 +9,6 @@ import (
 func InitVcode(cli redis.Cmdable) *vcode.Vcode {
 
 	cfg := global.CFG.Captcha
-
 	vc := vcode.New(cli, cfg)
 	return vc
 }
