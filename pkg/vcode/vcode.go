@@ -56,19 +56,19 @@ func (vc *Vcode) NewLen(length int) (id string) {
 	return
 }
 
-func (vc *Vcode) GenerateImage(id string, w io.Writer) (string, error) {
+func (vc *Vcode) GenerateImage(id string, w io.Writer) error {
 
 	val := vc.store.Get(id, false)
 	item, err := vc.driver.DrawCaptcha(val)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	_, err = item.WriteTo(w)
 	if err != nil {
-		return "", err
+		return err
 	}
-	return id, nil
+	return nil
 }
 
 func (vc *Vcode) GenerateBase64(id string) (string, error) {
