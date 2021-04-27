@@ -26,13 +26,13 @@ func init() {
 	// 初始化配置文件
 	global.MustLoad(configFile)
 
-	global.C.System.RunMode = "test"
-	global.C.Log.Level = 2
-	global.C.JWTAuth.Enable = false
-	global.C.Casbin.Enable = false
-	global.C.Casbin.Model = modelFile
-	global.C.Gorm.Debug = false
-	global.C.Gorm.DBType = "sqlite3"
+	global.CFG.System.RunMode = "test"
+	global.CFG.Log.Level = 2
+	global.CFG.JWTAuth.Enable = false
+	global.CFG.Casbin.Enable = false
+	global.CFG.Casbin.Model = modelFile
+	global.CFG.Gorm.Debug = false
+	global.CFG.Gorm.DBType = "sqlite3"
 
 	injector, _, err := app.BuildInjector()
 	if err != nil {

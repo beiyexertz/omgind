@@ -11,7 +11,7 @@ import (
 
 func InitCaptcha(cli redis.Cmdable) *base64Captcha.Captcha {
 
-	cfg := global.C.Captcha
+	cfg := global.CFG.Captcha
 
 	if cfg.Store == "redis" {
 		capt := vcode.New(cli, cfg)

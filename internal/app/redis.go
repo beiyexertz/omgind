@@ -19,7 +19,7 @@ func InitRedisCli() (*redis.Client, func(), error) {
 }
 
 func NewRedisCli() (*redis.Client, func(), error) {
-	cfg := global.C
+	cfg := global.CFG
 	if !cfg.Redis.Enable {
 		return nil, func() {}, errors.New("redis数据库未启用")
 	}

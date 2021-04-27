@@ -62,7 +62,7 @@ func NewDB(c *Config) (*gorm.DB, func(), error) {
 
 // AutoMigrate 自动映射数据表
 func AutoMigrate(db *gorm.DB) error {
-	if dbType := global.C.Gorm.DBType; strings.ToLower(dbType) == "mysql" {
+	if dbType := global.CFG.Gorm.DBType; strings.ToLower(dbType) == "mysql" {
 		db = db.Set("gorm:table_options", "ENGINE=InnoDB")
 	}
 

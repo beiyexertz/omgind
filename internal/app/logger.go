@@ -15,7 +15,7 @@ import (
 
 // InitLogger 初始化日志模块
 func InitLogger() (func(), error) {
-	c := global.C.Log
+	c := global.CFG.Log
 	logger.SetLevel(c.Level)
 	logger.SetFormatter(c.Format)
 
@@ -54,16 +54,16 @@ func InitLogger() (func(), error) {
 
 		switch {
 		case c.Hook.IsGorm():
-			hc := global.C.LogGormHook
+			hc := global.CFG.LogGormHook
 
 			var dsn string
 			switch hc.DBType {
 			case "mysql":
-				dsn = global.C.MySQL.DSN()
+				dsn = global.CFG.MySQL.DSN()
 			case "sqlite3":
-				dsn = global.C.Sqlite3.DSN()
+				dsn = global.CFG.Sqlite3.DSN()
 			case "postgres":
-				dsn = global.C.Postgres.DSN()
+				dsn = global.CFG.Postgres.DSN()
 			default:
 				return nil, errors.New("unknown db")
 			}

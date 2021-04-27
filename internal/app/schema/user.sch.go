@@ -13,7 +13,7 @@ import (
 
 // GetRootUser 获取root用户
 func GetRootUser() *User {
-	user := global.C.Root
+	user := global.CFG.Root
 	return &User{
 		ID:        user.UserName,
 		UserName:  user.UserName,

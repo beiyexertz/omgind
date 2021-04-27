@@ -15,12 +15,12 @@ import (
 
 // RateLimiterMiddleware 请求频率限制中间件
 func RateLimiterMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
-	cfg := global.C.RateLimiter
+	cfg := global.CFG.RateLimiter
 	if !cfg.Enable {
 		return EmptyMiddleware()
 	}
 
-	rc := global.C.Redis
+	rc := global.CFG.Redis
 	ring := redis.NewRing(&redis.RingOptions{
 		Addrs: map[string]string{
 			"server1": rc.Addr,

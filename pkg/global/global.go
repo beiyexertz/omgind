@@ -1,5 +1,6 @@
 package global
 
+import "C"
 import (
 	"encoding/json"
 	"os"
@@ -13,7 +14,7 @@ import (
 
 var (
 	// C 全局配置(需要先执行MustLoad，否则拿不到配置)
-	C    = new(config.Config)
+	CFG  = new(config.Config)
 	once sync.Once
 
 	RdsCli *redis.Client
@@ -21,8 +22,8 @@ var (
 
 // PrintWithJSON 基于JSON格式输出配置
 func PrintWithJSON() {
-	if C.System.PrintConfig {
-		b, err := json.MarshalIndent(C, "", " ")
+	if CFG.System.PrintConfig {
+		b, err := json.MarshalIndent(CFG, "", " ")
 		if err != nil {
 			os.Stdout.WriteString("[CONFIG] JSON marshal error: " + err.Error())
 			return
@@ -55,6 +56,6 @@ func MustLoad(fpaths ...string) {
 			Loader:    multiconfig.MultiLoader(loaders...),
 			Validator: multiconfig.MultiValidator(&multiconfig.RequiredValidator{}),
 		}
-		m.MustLoad(C)
+		m.MustLoad(CFG)
 	})
 }

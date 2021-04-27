@@ -24,7 +24,7 @@ type SignIn struct {
 // GetCaptcha 获取验证码信息
 func (a *SignIn) GetCaptcha(c *gin.Context) {
 	ctx := c.Request.Context()
-	item, err := a.SigninSrv.GetCaptcha(ctx, global.C.Captcha.Length)
+	item, err := a.SigninSrv.GetCaptcha(ctx, global.CFG.Captcha.Length)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
@@ -48,7 +48,7 @@ func (a *SignIn) ResCaptcha(c *gin.Context) {
 		}
 	}
 
-	cfg := global.C.Captcha
+	cfg := global.CFG.Captcha
 	err := a.SigninSrv.ResCaptcha(ctx, c.Writer, captchaID, cfg.Width, cfg.Height)
 	if err != nil {
 		ginx.ResError(c, err)

@@ -15,7 +15,7 @@ import (
 // CopyBodyMiddleware Copy body
 func CopyBodyMiddleware(skippers ...SkipperFunc) gin.HandlerFunc {
 	var maxMemory int64 = 64 << 20 // 64 MB
-	if v := global.C.HTTP.MaxContentLength; v > 0 {
+	if v := global.CFG.HTTP.MaxContentLength; v > 0 {
 		maxMemory = v
 	}
 

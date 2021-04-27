@@ -13,7 +13,7 @@ import (
 
 // InitGinEngine 初始化gin引擎
 func InitGinEngine(r router.IRouter) *gin.Engine {
-	gin.SetMode(global.C.System.RunMode)
+	gin.SetMode(global.CFG.System.RunMode)
 
 	app := gin.New()
 	app.NoMethod(middleware.NoMethodHandler())
@@ -34,15 +34,15 @@ func InitGinEngine(r router.IRouter) *gin.Engine {
 	app.Use(middleware.RecoveryMiddleware())
 
 	// CORS
-	if global.C.CORS.Enable {
+	if global.CFG.CORS.Enable {
 		app.Use(middleware.CORSMiddleware())
 	}
 
 	// GZIP
-	if global.C.GZIP.Enable {
+	if global.CFG.GZIP.Enable {
 		app.Use(gzip.Gzip(gzip.BestCompression,
-			gzip.WithExcludedExtensions(global.C.GZIP.ExcludedExtentions),
-			gzip.WithExcludedPaths(global.C.GZIP.ExcludedPaths),
+			gzip.WithExcludedExtensions(global.CFG.GZIP.ExcludedExtentions),
+			gzip.WithExcludedPaths(global.CFG.GZIP.ExcludedPaths),
 		))
 	}
 
@@ -50,12 +50,12 @@ func InitGinEngine(r router.IRouter) *gin.Engine {
 	r.Register(app)
 
 	// Swagger
-	if global.C.System.Swagger {
+	if global.CFG.System.Swagger {
 		app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
 	// Website
-	if dir := global.C.System.WWW; dir != "" {
+	if dir := global.CFG.System.WWW; dir != "" {
 		app.Use(middleware.WWWMiddleware(dir, middleware.AllowPathPrefixSkipper(prefixes...)))
 	}
 

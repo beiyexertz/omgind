@@ -74,17 +74,17 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 
 	global.MustLoad(o.ConfigFile)
 	if v := o.ModelFile; v != "" {
-		global.C.Casbin.Model = v
+		global.CFG.Casbin.Model = v
 	}
 	if v := o.WWWDir; v != "" {
-		global.C.System.WWW = v
+		global.CFG.System.WWW = v
 	}
 	if v := o.MenuFile; v != "" {
-		global.C.Menu.Data = v
+		global.CFG.Menu.Data = v
 	}
 	global.PrintWithJSON()
 
-	logger.WithContext(ctx).Printf("服务启动，运行模式：%s，版本号：%s，进程号：%d", global.C.System.RunMode, o.Version, os.Getpid())
+	logger.WithContext(ctx).Printf("服务启动，运行模式：%s，版本号：%s，进程号：%d", global.CFG.System.RunMode, o.Version, os.Getpid())
 
 	// 初始化日志模块
 	loggerCleanFunc, err := InitLogger()
@@ -110,8 +110,8 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 	}
 
 	// 初始化菜单数据
-	if global.C.Menu.Enable && global.C.Menu.Data != "" {
-		err = injector.MenuSrv.InitData(ctx, global.C.Menu.Data)
+	if global.CFG.Menu.Enable && global.CFG.Menu.Data != "" {
+		err = injector.MenuSrv.InitData(ctx, global.CFG.Menu.Data)
 		if err != nil {
 			return nil, err
 		}
@@ -131,7 +131,7 @@ func Init(ctx context.Context, opts ...Option) (func(), error) {
 
 // InitMonitor 初始化服务监控
 func InitMonitor(ctx context.Context) func() {
-	if c := global.C.Monitor; c.Enable {
+	if c := global.CFG.Monitor; c.Enable {
 		// ShutdownCleanup set false to prevent automatically closes on os.Interrupt
 		// and close agent manually before service shutting down
 		err := agent.Listen(agent.Options{Addr: c.Addr, ConfigDir: c.ConfigDir, ShutdownCleanup: false})
@@ -147,7 +147,7 @@ func InitMonitor(ctx context.Context) func() {
 
 // InitHTTPServer 初始化http服务
 func InitHTTPServer(ctx context.Context, handler http.Handler) func() {
-	cfg := global.C.HTTP
+	cfg := global.CFG.HTTP
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 	srv := &http.Server{
 		Addr:         addr,

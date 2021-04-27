@@ -13,7 +13,7 @@ import (
 
 // InitGormDB 初始化gorm存储
 func InitGormDB() (*gorm.DB, func(), error) {
-	cfg := global.C.Gorm
+	cfg := global.CFG.Gorm
 	db, cleanFunc, err := NewGormDB()
 	if err != nil {
 		return nil, cleanFunc, err
@@ -31,7 +31,7 @@ func InitGormDB() (*gorm.DB, func(), error) {
 
 // NewGormDB 创建DB实例
 func NewGormDB() (*gorm.DB, func(), error) {
-	cfg := global.C
+	cfg := global.CFG
 	var dsn string
 	switch cfg.Gorm.DBType {
 	case "mysql":
