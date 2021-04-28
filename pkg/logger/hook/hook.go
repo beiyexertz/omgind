@@ -80,6 +80,8 @@ func SetLevels(levels ...logrus.Level) Option {
 // Option a hook parameter options
 type Option func(*options)
 
+///////////////////////////////////////////////////////////////
+
 // New creates a hook to be added to an instance of logger
 func New(exec ExecCloser, opt ...Option) *Hook {
 	opts := defaultOptions
@@ -87,17 +89,16 @@ func New(exec ExecCloser, opt ...Option) *Hook {
 		o(&opts)
 	}
 
-	q := queue.NewQueue(opts.maxQueues, opts.maxWorkers)
-	q.Run()
+	que := queue.NewQueue(opts.maxQueues, opts.maxWorkers)
+	que.Run()
 
 	return &Hook{
 		opts: opts,
-		q:    q,
+		q:    que,
 		e:    exec,
 	}
 }
 
-///////////////////////////////////////////////////////////////
 // Hook to send logs to a mongo database
 type Hook struct {
 	opts options
