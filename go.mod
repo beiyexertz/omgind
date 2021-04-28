@@ -3,7 +3,6 @@ module github.com/wanhello/omgind
 go 1.15
 
 require (
-	github.com/LyricTian/gzip v0.1.1
 	github.com/LyricTian/queue v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.11.3
@@ -12,6 +11,7 @@ require (
 	github.com/fatih/camelcase v1.0.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/gin-contrib/cors v1.3.1
+	github.com/gin-contrib/gzip v0.0.3
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-openapi/spec v0.20.3 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible

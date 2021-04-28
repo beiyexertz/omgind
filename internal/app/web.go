@@ -5,7 +5,7 @@ import (
 	"github.com/wanhello/omgind/internal/app/router"
 	"github.com/wanhello/omgind/pkg/global"
 
-	"github.com/LyricTian/gzip"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/gin-swagger/swaggerFiles"
