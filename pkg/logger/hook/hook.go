@@ -97,6 +97,7 @@ func New(exec ExecCloser, opt ...Option) *Hook {
 	}
 }
 
+///////////////////////////////////////////////////////////////
 // Hook to send logs to a mongo database
 type Hook struct {
 	opts options
