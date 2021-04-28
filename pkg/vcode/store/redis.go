@@ -55,8 +55,8 @@ func (rs *RedisStore) Get(id string, clear bool) string {
 
 func (rs *RedisStore) Verify(id, answer string, clear bool) bool {
 	vv := rs.Get(rs.prefix+":"+id, clear)
-	vv = strings.TrimSpace(vv)
-	return vv == strings.TrimSpace(answer)
+	vv = strings.TrimSpace(strings.ToLower(vv))
+	return vv == strings.TrimSpace(strings.ToLower(answer))
 }
 
 // Logger Define the log output interface
