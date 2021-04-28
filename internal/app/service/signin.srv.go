@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"sort"
 
@@ -34,7 +35,9 @@ type SignIn struct {
 // GetCaptcha 获取图形验证码信息
 func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.SignInCaptcha, error) {
 
-	captchaID := captcha.NewLen(length)
+	//captchaID := captcha.NewLen(length)
+	captchaID := a.Vcode.NewLen(length)
+	fmt.Println(" ------+ ++++++ captchaID: {} ", captchaID)
 	item := &schema.SignInCaptcha{
 		CaptchaID: captchaID,
 	}

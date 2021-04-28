@@ -42,11 +42,11 @@ func NewRedisStore(cli redis.Cmdable, expiration time.Duration,
 }
 
 func (rs *RedisStore) Set(id string, value string) {
-	rs.cli.Set(rs.prefix+id, value, rs.expiration)
+	rs.cli.Set(rs.prefix+":"+id, value, rs.expiration)
 }
 
 func (rs *RedisStore) Get(id string, clear bool) string {
-	str := rs.cli.Get(rs.prefix + id).Val()
+	str := rs.cli.Get(rs.prefix + ":" + id).Val()
 	if clear && str != "" {
 		rs.cli.Del("captcha:" + id)
 	}
@@ -54,7 +54,7 @@ func (rs *RedisStore) Get(id string, clear bool) string {
 }
 
 func (rs *RedisStore) Verify(id, answer string, clear bool) bool {
-	vv := rs.Get(id, clear)
+	vv := rs.Get(rs.prefix+":"+id, clear)
 	vv = strings.TrimSpace(vv)
 	return vv == strings.TrimSpace(answer)
 }
