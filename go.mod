@@ -3,7 +3,6 @@ module github.com/wanhello/omgind
 go 1.15
 
 require (
-	github.com/LyricTian/captcha v1.1.0
 	github.com/LyricTian/gzip v0.1.1
 	github.com/LyricTian/queue v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
@@ -29,6 +28,8 @@ require (
 	github.com/meehow/go-django-hashers v0.0.0-20171231135116-5e5d6afe52db
 	github.com/mojocn/base64Captcha v1.3.4
 	github.com/oklog/ulid/v2 v2.0.2
+	github.com/onsi/ginkgo v1.16.1 // indirect
+	github.com/onsi/gomega v1.11.0 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0

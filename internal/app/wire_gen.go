@@ -93,6 +93,7 @@ func BuildInjector() (*Injector, func(), error) {
 	}
 	apiSignIn := &api.SignIn{
 		SigninSrv: signIn,
+		Vcode:     vcode,
 	}
 	trans := &repo.Trans{
 		DB: db,

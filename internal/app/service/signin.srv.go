@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"sort"
 
@@ -13,7 +12,6 @@ import (
 	"github.com/wanhello/omgind/pkg/helper/hash"
 	"github.com/wanhello/omgind/pkg/vcode"
 
-	"github.com/LyricTian/captcha"
 	"github.com/google/wire"
 )
 
@@ -35,9 +33,7 @@ type SignIn struct {
 // GetCaptcha 获取图形验证码信息
 func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.SignInCaptcha, error) {
 
-	//captchaID := captcha.NewLen(length)
 	captchaID := a.Vcode.NewLen(length)
-	fmt.Println(" ------+ ++++++ captchaID: {} ", captchaID)
 	item := &schema.SignInCaptcha{
 		CaptchaID: captchaID,
 	}
@@ -47,9 +43,9 @@ func (a *SignIn) GetCaptcha(ctx context.Context, length int) (*schema.SignInCapt
 // ResCaptcha 生成并响应图形验证码
 func (a *SignIn) ResCaptcha(ctx context.Context, w http.ResponseWriter, captchaID string, width, height int) error {
 
-	err := captcha.WriteImage(w, captchaID, width, height)
+	err := a.Vcode.GenerateImage(w, captchaID)
 	if err != nil {
-		if err == captcha.ErrNotFound {
+		if err == vcode.ErrNotFound {
 			return errors.ErrNotFound
 		}
 		return errors.WithStack(err)

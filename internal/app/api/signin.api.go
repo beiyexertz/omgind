@@ -7,8 +7,8 @@ import (
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
+	"github.com/wanhello/omgind/pkg/vcode"
 
-	"github.com/LyricTian/captcha"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 )
@@ -19,6 +19,7 @@ var SignInSet = wire.NewSet(wire.Struct(new(SignIn), "*"))
 // SignIn 登录管理
 type SignIn struct {
 	SigninSrv *service.SignIn
+	Vcode     *vcode.Vcode
 }
 
 // GetCaptcha 获取验证码信息
@@ -42,7 +43,7 @@ func (a *SignIn) ResCaptcha(c *gin.Context) {
 	}
 
 	if c.Query("reload") != "" {
-		if !captcha.Reload(captchaID) {
+		if !a.Vcode.Reload(captchaID) {
 			ginx.ResError(c, errors.New400Response("未找到验证码ID"))
 			return
 		}
@@ -66,7 +67,7 @@ func (a *SignIn) SignIn(c *gin.Context) {
 		return
 	}
 
-	if !captcha.VerifyString(item.CaptchaID, item.CaptchaCode) {
+	if !a.Vcode.Verify(item.CaptchaID, item.CaptchaCode, true) {
 		ginx.ResError(c, errors.New400Response("无效的验证码"))
 		return
 	}

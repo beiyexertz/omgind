@@ -46,11 +46,11 @@ func (rs *RedisStore) Set(id string, value string) {
 }
 
 func (rs *RedisStore) Get(id string, clear bool) string {
-	str := rs.cli.Get(rs.prefix + ":" + id).Val()
-	if clear && str != "" {
+	val := rs.cli.Get(rs.prefix + ":" + id).Val()
+	if clear && val != "" {
 		rs.cli.Del("captcha:" + id)
 	}
-	return str
+	return val
 }
 
 func (rs *RedisStore) Verify(id, answer string, clear bool) bool {

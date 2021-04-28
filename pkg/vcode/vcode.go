@@ -1,6 +1,7 @@
 package vcode
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"time"
@@ -11,6 +12,10 @@ import (
 	"github.com/wanhello/omgind/pkg/helper/str"
 	"github.com/wanhello/omgind/pkg/helper/uid/uuid"
 	"github.com/wanhello/omgind/pkg/vcode/store"
+)
+
+var (
+	ErrNotFound = errors.New("captcha: id not found")
 )
 
 type Vcode struct {
@@ -57,9 +62,21 @@ func (vc *Vcode) NewLen(length int) (id string) {
 	return
 }
 
-func (vc *Vcode) GenerateImage(id string, w io.Writer) error {
+func (vc *Vcode) Reload(id string) bool {
+	val := vc.store.Get(id, false)
+	if val == "" {
+		return false
+	}
+	vc.store.Set(id, str.RandCustom(len(val), vc.source))
+	return true
+}
+
+func (vc *Vcode) GenerateImage(w io.Writer, id string) error {
 
 	val := vc.store.Get(id, false)
+	if val == "" {
+		return errors.New("cap")
+	}
 	item, err := vc.driver.DrawCaptcha(val)
 	if err != nil {
 		return err
