@@ -20,6 +20,7 @@ type Config struct {
 	GZIP         GZIPConfig        `mapstructure:"GZIP" json:"GZIP"`
 	Redis        RedisConfig       `mapstructure:"Redis" json:"redis"`
 	Gorm         GormConfig        `mapstructure:"Gorm" json:"gorm"`
+	Ent          EntConfig         `mapstructure:"Ent" json:"ent"`
 	MySQL        MySQLConfig       `mapstructure:"MySQL" json:"mysql"`
 	Postgres     PostgresConfig    `mapstructure:"Postgres" json:"postgres"`
 	Sqlite3      Sqlite3Config     `mapstructure:"Sqlite3" json:"sqlite3"`
