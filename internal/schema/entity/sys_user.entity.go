@@ -5,6 +5,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
+	"github.com/wanhello/omgind/pkg/helper/str"
 )
 
 // SysUser holds the schema definition for the SysUser entity.
@@ -17,31 +18,36 @@ func (su SysUser) Mixin() []ent.Mixin {
 		mixin.IDMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
+		mixin.StatusMixin{},
 	}
 }
 
 // Fields of the SysUser.
 func (SysUser) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("UserName").StorageKey("user_name").
-			MinLen(5).MaxLen(128).NotEmpty().StructTag(`json:"user_name,omitempty"`).Comment("用户名"),
-		field.String("RealName").StorageKey("real_name").MaxLen(64),
-		field.String("FirstName").StorageKey("first_name").
-			MaxLen(31).Nillable().Optional().StructTag(`json:"first_name,omitempty"`).Comment("名"),
-		field.String("LastName").StorageKey("last_name").
-			MaxLen(31).Nillable().Optional().StructTag(`json:"last_name,omitempty"`).Comment("姓"),
+		field.String("user_name").StorageKey("user_name").
+			MinLen(5).MaxLen(128).NotEmpty().Comment("用户名"),
+		field.String("real_name").StorageKey("real_name").
+			MaxLen(64).Nillable().Optional().Comment(""),
+		field.String("first_name").StorageKey("first_name").
+			MaxLen(31).Nillable().Optional().Comment("名"),
+		field.String("last_name").StorageKey("last_name").
+			MaxLen(31).Nillable().Optional().Comment("姓"),
 		field.String("Password").StorageKey("passwd").
 			MaxLen(256).Sensitive().Comment("密码"),
 		field.String("Email").StorageKey("email").
 			MaxLen(256).StructTag(`json:"email,omitempty"`).Comment("电子邮箱"),
 		field.String("Phone").StorageKey("phone").
 			MaxLen(20).StructTag(`json:"phone,omitempty"`).Comment("电话号码"),
+		field.String("salt").DefaultFunc(func() string {
+			return str.RandomBetween(10, 16)
+		}).Comment("盐"),
 	}
 }
 
 func (su SysUser) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("UserName").Unique(),
+		index.Fields("user_name").Unique(),
 	}
 }
 

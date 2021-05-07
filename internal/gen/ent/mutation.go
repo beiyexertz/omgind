@@ -12,6 +12,8 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 
 	"entgo.io/ent"
@@ -2881,7 +2883,22 @@ type SysMenuMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *int
+	id            *string
+	is_del        *bool
+	memo          *string
+	sort          *int32
+	addsort       *int32
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	status        *int32
+	addstatus     *int32
+	name          *string
+	icon          *string
+	router        *string
+	is_show       *bool
+	parent_id     *string
+	parent_path   *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SysMenu, error)
@@ -2908,7 +2925,7 @@ func newSysMenuMutation(c config, op Op, opts ...sysmenuOption) *SysMenuMutation
 }
 
 // withSysMenuID sets the ID field of the mutation.
-func withSysMenuID(id int) sysmenuOption {
+func withSysMenuID(id string) sysmenuOption {
 	return func(m *SysMenuMutation) {
 		var (
 			err   error
@@ -2958,13 +2975,566 @@ func (m SysMenuMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysMenu entities.
+func (m *SysMenuMutation) SetID(id string) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysMenuMutation) ID() (id int, exists bool) {
+func (m *SysMenuMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysMenuMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysMenuMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysMenuMutation) ResetIsDel() {
+	m.is_del = nil
+}
+
+// SetMemo sets the "memo" field.
+func (m *SysMenuMutation) SetMemo(s string) {
+	m.memo = &s
+}
+
+// Memo returns the value of the "memo" field in the mutation.
+func (m *SysMenuMutation) Memo() (r string, exists bool) {
+	v := m.memo
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMemo returns the old "memo" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldMemo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMemo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMemo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMemo: %w", err)
+	}
+	return oldValue.Memo, nil
+}
+
+// ResetMemo resets all changes to the "memo" field.
+func (m *SysMenuMutation) ResetMemo() {
+	m.memo = nil
+}
+
+// SetSort sets the "sort" field.
+func (m *SysMenuMutation) SetSort(i int32) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysMenuMutation) Sort() (r int32, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldSort(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysMenuMutation) AddSort(i int32) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysMenuMutation) AddedSort() (r int32, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysMenuMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysMenuMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysMenuMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysMenuMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysMenuMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysMenuMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysMenuMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *SysMenuMutation) SetDeletedAt(t time.Time) {
+	m.deleted_at = &t
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *SysMenuMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (m *SysMenuMutation) ClearDeletedAt() {
+	m.deleted_at = nil
+	m.clearedFields[sysmenu.FieldDeletedAt] = struct{}{}
+}
+
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
+func (m *SysMenuMutation) DeletedAtCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldDeletedAt]
+	return ok
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *SysMenuMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	delete(m.clearedFields, sysmenu.FieldDeletedAt)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysMenuMutation) SetStatus(i int32) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysMenuMutation) Status() (r int32, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldStatus(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysMenuMutation) AddStatus(i int32) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysMenuMutation) AddedStatus() (r int32, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysMenuMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// SetName sets the "name" field.
+func (m *SysMenuMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *SysMenuMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *SysMenuMutation) ResetName() {
+	m.name = nil
+}
+
+// SetIcon sets the "icon" field.
+func (m *SysMenuMutation) SetIcon(s string) {
+	m.icon = &s
+}
+
+// Icon returns the value of the "icon" field in the mutation.
+func (m *SysMenuMutation) Icon() (r string, exists bool) {
+	v := m.icon
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIcon returns the old "icon" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIcon(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIcon is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIcon requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIcon: %w", err)
+	}
+	return oldValue.Icon, nil
+}
+
+// ResetIcon resets all changes to the "icon" field.
+func (m *SysMenuMutation) ResetIcon() {
+	m.icon = nil
+}
+
+// SetRouter sets the "router" field.
+func (m *SysMenuMutation) SetRouter(s string) {
+	m.router = &s
+}
+
+// Router returns the value of the "router" field in the mutation.
+func (m *SysMenuMutation) Router() (r string, exists bool) {
+	v := m.router
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRouter returns the old "router" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldRouter(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldRouter is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldRouter requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRouter: %w", err)
+	}
+	return oldValue.Router, nil
+}
+
+// ResetRouter resets all changes to the "router" field.
+func (m *SysMenuMutation) ResetRouter() {
+	m.router = nil
+}
+
+// SetIsShow sets the "is_show" field.
+func (m *SysMenuMutation) SetIsShow(b bool) {
+	m.is_show = &b
+}
+
+// IsShow returns the value of the "is_show" field in the mutation.
+func (m *SysMenuMutation) IsShow() (r bool, exists bool) {
+	v := m.is_show
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsShow returns the old "is_show" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIsShow(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsShow is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsShow requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsShow: %w", err)
+	}
+	return oldValue.IsShow, nil
+}
+
+// ResetIsShow resets all changes to the "is_show" field.
+func (m *SysMenuMutation) ResetIsShow() {
+	m.is_show = nil
+}
+
+// SetParentID sets the "parent_id" field.
+func (m *SysMenuMutation) SetParentID(s string) {
+	m.parent_id = &s
+}
+
+// ParentID returns the value of the "parent_id" field in the mutation.
+func (m *SysMenuMutation) ParentID() (r string, exists bool) {
+	v := m.parent_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldParentID returns the old "parent_id" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldParentID(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldParentID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldParentID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldParentID: %w", err)
+	}
+	return oldValue.ParentID, nil
+}
+
+// ClearParentID clears the value of the "parent_id" field.
+func (m *SysMenuMutation) ClearParentID() {
+	m.parent_id = nil
+	m.clearedFields[sysmenu.FieldParentID] = struct{}{}
+}
+
+// ParentIDCleared returns if the "parent_id" field was cleared in this mutation.
+func (m *SysMenuMutation) ParentIDCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldParentID]
+	return ok
+}
+
+// ResetParentID resets all changes to the "parent_id" field.
+func (m *SysMenuMutation) ResetParentID() {
+	m.parent_id = nil
+	delete(m.clearedFields, sysmenu.FieldParentID)
+}
+
+// SetParentPath sets the "parent_path" field.
+func (m *SysMenuMutation) SetParentPath(s string) {
+	m.parent_path = &s
+}
+
+// ParentPath returns the value of the "parent_path" field in the mutation.
+func (m *SysMenuMutation) ParentPath() (r string, exists bool) {
+	v := m.parent_path
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldParentPath returns the old "parent_path" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldParentPath(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldParentPath is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldParentPath requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldParentPath: %w", err)
+	}
+	return oldValue.ParentPath, nil
+}
+
+// ClearParentPath clears the value of the "parent_path" field.
+func (m *SysMenuMutation) ClearParentPath() {
+	m.parent_path = nil
+	m.clearedFields[sysmenu.FieldParentPath] = struct{}{}
+}
+
+// ParentPathCleared returns if the "parent_path" field was cleared in this mutation.
+func (m *SysMenuMutation) ParentPathCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldParentPath]
+	return ok
+}
+
+// ResetParentPath resets all changes to the "parent_path" field.
+func (m *SysMenuMutation) ResetParentPath() {
+	m.parent_path = nil
+	delete(m.clearedFields, sysmenu.FieldParentPath)
 }
 
 // Op returns the operation name.
@@ -2981,7 +3551,46 @@ func (m *SysMenuMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 13)
+	if m.is_del != nil {
+		fields = append(fields, sysmenu.FieldIsDel)
+	}
+	if m.memo != nil {
+		fields = append(fields, sysmenu.FieldMemo)
+	}
+	if m.sort != nil {
+		fields = append(fields, sysmenu.FieldSort)
+	}
+	if m.created_at != nil {
+		fields = append(fields, sysmenu.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysmenu.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, sysmenu.FieldDeletedAt)
+	}
+	if m.status != nil {
+		fields = append(fields, sysmenu.FieldStatus)
+	}
+	if m.name != nil {
+		fields = append(fields, sysmenu.FieldName)
+	}
+	if m.icon != nil {
+		fields = append(fields, sysmenu.FieldIcon)
+	}
+	if m.router != nil {
+		fields = append(fields, sysmenu.FieldRouter)
+	}
+	if m.is_show != nil {
+		fields = append(fields, sysmenu.FieldIsShow)
+	}
+	if m.parent_id != nil {
+		fields = append(fields, sysmenu.FieldParentID)
+	}
+	if m.parent_path != nil {
+		fields = append(fields, sysmenu.FieldParentPath)
+	}
 	return fields
 }
 
@@ -2989,6 +3598,34 @@ func (m *SysMenuMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysmenu.FieldIsDel:
+		return m.IsDel()
+	case sysmenu.FieldMemo:
+		return m.Memo()
+	case sysmenu.FieldSort:
+		return m.Sort()
+	case sysmenu.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysmenu.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysmenu.FieldDeletedAt:
+		return m.DeletedAt()
+	case sysmenu.FieldStatus:
+		return m.Status()
+	case sysmenu.FieldName:
+		return m.Name()
+	case sysmenu.FieldIcon:
+		return m.Icon()
+	case sysmenu.FieldRouter:
+		return m.Router()
+	case sysmenu.FieldIsShow:
+		return m.IsShow()
+	case sysmenu.FieldParentID:
+		return m.ParentID()
+	case sysmenu.FieldParentPath:
+		return m.ParentPath()
+	}
 	return nil, false
 }
 
@@ -2996,6 +3633,34 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysmenu.FieldIsDel:
+		return m.OldIsDel(ctx)
+	case sysmenu.FieldMemo:
+		return m.OldMemo(ctx)
+	case sysmenu.FieldSort:
+		return m.OldSort(ctx)
+	case sysmenu.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysmenu.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysmenu.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case sysmenu.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysmenu.FieldName:
+		return m.OldName(ctx)
+	case sysmenu.FieldIcon:
+		return m.OldIcon(ctx)
+	case sysmenu.FieldRouter:
+		return m.OldRouter(ctx)
+	case sysmenu.FieldIsShow:
+		return m.OldIsShow(ctx)
+	case sysmenu.FieldParentID:
+		return m.OldParentID(ctx)
+	case sysmenu.FieldParentPath:
+		return m.OldParentPath(ctx)
+	}
 	return nil, fmt.Errorf("unknown SysMenu field %s", name)
 }
 
@@ -3004,6 +3669,97 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysmenu.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
+	case sysmenu.FieldMemo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMemo(v)
+		return nil
+	case sysmenu.FieldSort:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
+		return nil
+	case sysmenu.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysmenu.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysmenu.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case sysmenu.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysmenu.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case sysmenu.FieldIcon:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIcon(v)
+		return nil
+	case sysmenu.FieldRouter:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRouter(v)
+		return nil
+	case sysmenu.FieldIsShow:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsShow(v)
+		return nil
+	case sysmenu.FieldParentID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetParentID(v)
+		return nil
+	case sysmenu.FieldParentPath:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetParentPath(v)
+		return nil
 	}
 	return fmt.Errorf("unknown SysMenu field %s", name)
 }
@@ -3011,13 +3767,26 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *SysMenuMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addsort != nil {
+		fields = append(fields, sysmenu.FieldSort)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, sysmenu.FieldStatus)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysmenu.FieldSort:
+		return m.AddedSort()
+	case sysmenu.FieldStatus:
+		return m.AddedStatus()
+	}
 	return nil, false
 }
 
@@ -3025,13 +3794,39 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysmenu.FieldSort:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
+	case sysmenu.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenu numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *SysMenuMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(sysmenu.FieldDeletedAt) {
+		fields = append(fields, sysmenu.FieldDeletedAt)
+	}
+	if m.FieldCleared(sysmenu.FieldParentID) {
+		fields = append(fields, sysmenu.FieldParentID)
+	}
+	if m.FieldCleared(sysmenu.FieldParentPath) {
+		fields = append(fields, sysmenu.FieldParentPath)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -3044,12 +3839,64 @@ func (m *SysMenuMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *SysMenuMutation) ClearField(name string) error {
+	switch name {
+	case sysmenu.FieldDeletedAt:
+		m.ClearDeletedAt()
+		return nil
+	case sysmenu.FieldParentID:
+		m.ClearParentID()
+		return nil
+	case sysmenu.FieldParentPath:
+		m.ClearParentPath()
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenu nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *SysMenuMutation) ResetField(name string) error {
+	switch name {
+	case sysmenu.FieldIsDel:
+		m.ResetIsDel()
+		return nil
+	case sysmenu.FieldMemo:
+		m.ResetMemo()
+		return nil
+	case sysmenu.FieldSort:
+		m.ResetSort()
+		return nil
+	case sysmenu.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysmenu.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysmenu.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case sysmenu.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysmenu.FieldName:
+		m.ResetName()
+		return nil
+	case sysmenu.FieldIcon:
+		m.ResetIcon()
+		return nil
+	case sysmenu.FieldRouter:
+		m.ResetRouter()
+		return nil
+	case sysmenu.FieldIsShow:
+		m.ResetIsShow()
+		return nil
+	case sysmenu.FieldParentID:
+		m.ResetParentID()
+		return nil
+	case sysmenu.FieldParentPath:
+		m.ResetParentPath()
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenu field %s", name)
 }
 
@@ -3106,7 +3953,19 @@ type SysMenuActionMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *int
+	id            *string
+	is_del        *bool
+	sort          *int32
+	addsort       *int32
+	status        *int32
+	addstatus     *int32
+	memo          *string
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	menu_id       *string
+	code          *string
+	name          *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SysMenuAction, error)
@@ -3133,7 +3992,7 @@ func newSysMenuActionMutation(c config, op Op, opts ...sysmenuactionOption) *Sys
 }
 
 // withSysMenuActionID sets the ID field of the mutation.
-func withSysMenuActionID(id int) sysmenuactionOption {
+func withSysMenuActionID(id string) sysmenuactionOption {
 	return func(m *SysMenuActionMutation) {
 		var (
 			err   error
@@ -3183,13 +4042,432 @@ func (m SysMenuActionMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysMenuAction entities.
+func (m *SysMenuActionMutation) SetID(id string) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysMenuActionMutation) ID() (id int, exists bool) {
+func (m *SysMenuActionMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysMenuActionMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysMenuActionMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysMenuActionMutation) ResetIsDel() {
+	m.is_del = nil
+}
+
+// SetSort sets the "sort" field.
+func (m *SysMenuActionMutation) SetSort(i int32) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysMenuActionMutation) Sort() (r int32, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldSort(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysMenuActionMutation) AddSort(i int32) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysMenuActionMutation) AddedSort() (r int32, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysMenuActionMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *SysMenuActionMutation) SetStatus(i int32) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysMenuActionMutation) Status() (r int32, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldStatus(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysMenuActionMutation) AddStatus(i int32) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysMenuActionMutation) AddedStatus() (r int32, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysMenuActionMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// SetMemo sets the "memo" field.
+func (m *SysMenuActionMutation) SetMemo(s string) {
+	m.memo = &s
+}
+
+// Memo returns the value of the "memo" field in the mutation.
+func (m *SysMenuActionMutation) Memo() (r string, exists bool) {
+	v := m.memo
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMemo returns the old "memo" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldMemo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMemo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMemo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMemo: %w", err)
+	}
+	return oldValue.Memo, nil
+}
+
+// ResetMemo resets all changes to the "memo" field.
+func (m *SysMenuActionMutation) ResetMemo() {
+	m.memo = nil
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysMenuActionMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysMenuActionMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysMenuActionMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysMenuActionMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysMenuActionMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysMenuActionMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *SysMenuActionMutation) SetDeletedAt(t time.Time) {
+	m.deleted_at = &t
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *SysMenuActionMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (m *SysMenuActionMutation) ClearDeletedAt() {
+	m.deleted_at = nil
+	m.clearedFields[sysmenuaction.FieldDeletedAt] = struct{}{}
+}
+
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
+func (m *SysMenuActionMutation) DeletedAtCleared() bool {
+	_, ok := m.clearedFields[sysmenuaction.FieldDeletedAt]
+	return ok
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *SysMenuActionMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	delete(m.clearedFields, sysmenuaction.FieldDeletedAt)
+}
+
+// SetMenuID sets the "menu_id" field.
+func (m *SysMenuActionMutation) SetMenuID(s string) {
+	m.menu_id = &s
+}
+
+// MenuID returns the value of the "menu_id" field in the mutation.
+func (m *SysMenuActionMutation) MenuID() (r string, exists bool) {
+	v := m.menu_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMenuID returns the old "menu_id" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldMenuID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMenuID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMenuID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMenuID: %w", err)
+	}
+	return oldValue.MenuID, nil
+}
+
+// ResetMenuID resets all changes to the "menu_id" field.
+func (m *SysMenuActionMutation) ResetMenuID() {
+	m.menu_id = nil
+}
+
+// SetCode sets the "code" field.
+func (m *SysMenuActionMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *SysMenuActionMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *SysMenuActionMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetName sets the "name" field.
+func (m *SysMenuActionMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *SysMenuActionMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *SysMenuActionMutation) ResetName() {
+	m.name = nil
 }
 
 // Op returns the operation name.
@@ -3206,7 +4484,37 @@ func (m *SysMenuActionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuActionMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 10)
+	if m.is_del != nil {
+		fields = append(fields, sysmenuaction.FieldIsDel)
+	}
+	if m.sort != nil {
+		fields = append(fields, sysmenuaction.FieldSort)
+	}
+	if m.status != nil {
+		fields = append(fields, sysmenuaction.FieldStatus)
+	}
+	if m.memo != nil {
+		fields = append(fields, sysmenuaction.FieldMemo)
+	}
+	if m.created_at != nil {
+		fields = append(fields, sysmenuaction.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysmenuaction.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, sysmenuaction.FieldDeletedAt)
+	}
+	if m.menu_id != nil {
+		fields = append(fields, sysmenuaction.FieldMenuID)
+	}
+	if m.code != nil {
+		fields = append(fields, sysmenuaction.FieldCode)
+	}
+	if m.name != nil {
+		fields = append(fields, sysmenuaction.FieldName)
+	}
 	return fields
 }
 
@@ -3214,6 +4522,28 @@ func (m *SysMenuActionMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *SysMenuActionMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysmenuaction.FieldIsDel:
+		return m.IsDel()
+	case sysmenuaction.FieldSort:
+		return m.Sort()
+	case sysmenuaction.FieldStatus:
+		return m.Status()
+	case sysmenuaction.FieldMemo:
+		return m.Memo()
+	case sysmenuaction.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysmenuaction.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysmenuaction.FieldDeletedAt:
+		return m.DeletedAt()
+	case sysmenuaction.FieldMenuID:
+		return m.MenuID()
+	case sysmenuaction.FieldCode:
+		return m.Code()
+	case sysmenuaction.FieldName:
+		return m.Name()
+	}
 	return nil, false
 }
 
@@ -3221,6 +4551,28 @@ func (m *SysMenuActionMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *SysMenuActionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysmenuaction.FieldIsDel:
+		return m.OldIsDel(ctx)
+	case sysmenuaction.FieldSort:
+		return m.OldSort(ctx)
+	case sysmenuaction.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysmenuaction.FieldMemo:
+		return m.OldMemo(ctx)
+	case sysmenuaction.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysmenuaction.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysmenuaction.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case sysmenuaction.FieldMenuID:
+		return m.OldMenuID(ctx)
+	case sysmenuaction.FieldCode:
+		return m.OldCode(ctx)
+	case sysmenuaction.FieldName:
+		return m.OldName(ctx)
+	}
 	return nil, fmt.Errorf("unknown SysMenuAction field %s", name)
 }
 
@@ -3229,6 +4581,76 @@ func (m *SysMenuActionMutation) OldField(ctx context.Context, name string) (ent.
 // type.
 func (m *SysMenuActionMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysmenuaction.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
+	case sysmenuaction.FieldSort:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
+		return nil
+	case sysmenuaction.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysmenuaction.FieldMemo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMemo(v)
+		return nil
+	case sysmenuaction.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysmenuaction.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysmenuaction.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case sysmenuaction.FieldMenuID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMenuID(v)
+		return nil
+	case sysmenuaction.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case sysmenuaction.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
 	}
 	return fmt.Errorf("unknown SysMenuAction field %s", name)
 }
@@ -3236,13 +4658,26 @@ func (m *SysMenuActionMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *SysMenuActionMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addsort != nil {
+		fields = append(fields, sysmenuaction.FieldSort)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, sysmenuaction.FieldStatus)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *SysMenuActionMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysmenuaction.FieldSort:
+		return m.AddedSort()
+	case sysmenuaction.FieldStatus:
+		return m.AddedStatus()
+	}
 	return nil, false
 }
 
@@ -3250,13 +4685,33 @@ func (m *SysMenuActionMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *SysMenuActionMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysmenuaction.FieldSort:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
+	case sysmenuaction.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenuAction numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *SysMenuActionMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(sysmenuaction.FieldDeletedAt) {
+		fields = append(fields, sysmenuaction.FieldDeletedAt)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -3269,12 +4724,49 @@ func (m *SysMenuActionMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *SysMenuActionMutation) ClearField(name string) error {
+	switch name {
+	case sysmenuaction.FieldDeletedAt:
+		m.ClearDeletedAt()
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenuAction nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *SysMenuActionMutation) ResetField(name string) error {
+	switch name {
+	case sysmenuaction.FieldIsDel:
+		m.ResetIsDel()
+		return nil
+	case sysmenuaction.FieldSort:
+		m.ResetSort()
+		return nil
+	case sysmenuaction.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysmenuaction.FieldMemo:
+		m.ResetMemo()
+		return nil
+	case sysmenuaction.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysmenuaction.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysmenuaction.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case sysmenuaction.FieldMenuID:
+		m.ResetMenuID()
+		return nil
+	case sysmenuaction.FieldCode:
+		m.ResetCode()
+		return nil
+	case sysmenuaction.FieldName:
+		m.ResetName()
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenuAction field %s", name)
 }
 
@@ -4013,13 +5505,16 @@ type SysUserMutation struct {
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
-	_UserName     *string
-	_RealName     *string
-	_FirstName    *string
-	_LastName     *string
+	status        *int32
+	addstatus     *int32
+	user_name     *string
+	real_name     *string
+	first_name    *string
+	last_name     *string
 	_Password     *string
 	_Email        *string
 	_Phone        *string
+	salt          *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SysUser, error)
@@ -4324,21 +5819,77 @@ func (m *SysUserMutation) ResetDeletedAt() {
 	delete(m.clearedFields, sysuser.FieldDeletedAt)
 }
 
-// SetUserName sets the "UserName" field.
-func (m *SysUserMutation) SetUserName(s string) {
-	m._UserName = &s
+// SetStatus sets the "status" field.
+func (m *SysUserMutation) SetStatus(i int32) {
+	m.status = &i
+	m.addstatus = nil
 }
 
-// UserName returns the value of the "UserName" field in the mutation.
-func (m *SysUserMutation) UserName() (r string, exists bool) {
-	v := m._UserName
+// Status returns the value of the "status" field in the mutation.
+func (m *SysUserMutation) Status() (r int32, exists bool) {
+	v := m.status
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUserName returns the old "UserName" field's value of the SysUser entity.
+// OldStatus returns the old "status" field's value of the SysUser entity.
+// If the SysUser object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserMutation) OldStatus(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysUserMutation) AddStatus(i int32) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysUserMutation) AddedStatus() (r int32, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysUserMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// SetUserName sets the "user_name" field.
+func (m *SysUserMutation) SetUserName(s string) {
+	m.user_name = &s
+}
+
+// UserName returns the value of the "user_name" field in the mutation.
+func (m *SysUserMutation) UserName() (r string, exists bool) {
+	v := m.user_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserName returns the old "user_name" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SysUserMutation) OldUserName(ctx context.Context) (v string, err error) {
@@ -4355,29 +5906,29 @@ func (m *SysUserMutation) OldUserName(ctx context.Context) (v string, err error)
 	return oldValue.UserName, nil
 }
 
-// ResetUserName resets all changes to the "UserName" field.
+// ResetUserName resets all changes to the "user_name" field.
 func (m *SysUserMutation) ResetUserName() {
-	m._UserName = nil
+	m.user_name = nil
 }
 
-// SetRealName sets the "RealName" field.
+// SetRealName sets the "real_name" field.
 func (m *SysUserMutation) SetRealName(s string) {
-	m._RealName = &s
+	m.real_name = &s
 }
 
-// RealName returns the value of the "RealName" field in the mutation.
+// RealName returns the value of the "real_name" field in the mutation.
 func (m *SysUserMutation) RealName() (r string, exists bool) {
-	v := m._RealName
+	v := m.real_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldRealName returns the old "RealName" field's value of the SysUser entity.
+// OldRealName returns the old "real_name" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldRealName(ctx context.Context) (v string, err error) {
+func (m *SysUserMutation) OldRealName(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldRealName is only allowed on UpdateOne operations")
 	}
@@ -4391,26 +5942,39 @@ func (m *SysUserMutation) OldRealName(ctx context.Context) (v string, err error)
 	return oldValue.RealName, nil
 }
 
-// ResetRealName resets all changes to the "RealName" field.
+// ClearRealName clears the value of the "real_name" field.
+func (m *SysUserMutation) ClearRealName() {
+	m.real_name = nil
+	m.clearedFields[sysuser.FieldRealName] = struct{}{}
+}
+
+// RealNameCleared returns if the "real_name" field was cleared in this mutation.
+func (m *SysUserMutation) RealNameCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldRealName]
+	return ok
+}
+
+// ResetRealName resets all changes to the "real_name" field.
 func (m *SysUserMutation) ResetRealName() {
-	m._RealName = nil
+	m.real_name = nil
+	delete(m.clearedFields, sysuser.FieldRealName)
 }
 
-// SetFirstName sets the "FirstName" field.
+// SetFirstName sets the "first_name" field.
 func (m *SysUserMutation) SetFirstName(s string) {
-	m._FirstName = &s
+	m.first_name = &s
 }
 
-// FirstName returns the value of the "FirstName" field in the mutation.
+// FirstName returns the value of the "first_name" field in the mutation.
 func (m *SysUserMutation) FirstName() (r string, exists bool) {
-	v := m._FirstName
+	v := m.first_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFirstName returns the old "FirstName" field's value of the SysUser entity.
+// OldFirstName returns the old "first_name" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SysUserMutation) OldFirstName(ctx context.Context) (v *string, err error) {
@@ -4427,39 +5991,39 @@ func (m *SysUserMutation) OldFirstName(ctx context.Context) (v *string, err erro
 	return oldValue.FirstName, nil
 }
 
-// ClearFirstName clears the value of the "FirstName" field.
+// ClearFirstName clears the value of the "first_name" field.
 func (m *SysUserMutation) ClearFirstName() {
-	m._FirstName = nil
+	m.first_name = nil
 	m.clearedFields[sysuser.FieldFirstName] = struct{}{}
 }
 
-// FirstNameCleared returns if the "FirstName" field was cleared in this mutation.
+// FirstNameCleared returns if the "first_name" field was cleared in this mutation.
 func (m *SysUserMutation) FirstNameCleared() bool {
 	_, ok := m.clearedFields[sysuser.FieldFirstName]
 	return ok
 }
 
-// ResetFirstName resets all changes to the "FirstName" field.
+// ResetFirstName resets all changes to the "first_name" field.
 func (m *SysUserMutation) ResetFirstName() {
-	m._FirstName = nil
+	m.first_name = nil
 	delete(m.clearedFields, sysuser.FieldFirstName)
 }
 
-// SetLastName sets the "LastName" field.
+// SetLastName sets the "last_name" field.
 func (m *SysUserMutation) SetLastName(s string) {
-	m._LastName = &s
+	m.last_name = &s
 }
 
-// LastName returns the value of the "LastName" field in the mutation.
+// LastName returns the value of the "last_name" field in the mutation.
 func (m *SysUserMutation) LastName() (r string, exists bool) {
-	v := m._LastName
+	v := m.last_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLastName returns the old "LastName" field's value of the SysUser entity.
+// OldLastName returns the old "last_name" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SysUserMutation) OldLastName(ctx context.Context) (v *string, err error) {
@@ -4476,21 +6040,21 @@ func (m *SysUserMutation) OldLastName(ctx context.Context) (v *string, err error
 	return oldValue.LastName, nil
 }
 
-// ClearLastName clears the value of the "LastName" field.
+// ClearLastName clears the value of the "last_name" field.
 func (m *SysUserMutation) ClearLastName() {
-	m._LastName = nil
+	m.last_name = nil
 	m.clearedFields[sysuser.FieldLastName] = struct{}{}
 }
 
-// LastNameCleared returns if the "LastName" field was cleared in this mutation.
+// LastNameCleared returns if the "last_name" field was cleared in this mutation.
 func (m *SysUserMutation) LastNameCleared() bool {
 	_, ok := m.clearedFields[sysuser.FieldLastName]
 	return ok
 }
 
-// ResetLastName resets all changes to the "LastName" field.
+// ResetLastName resets all changes to the "last_name" field.
 func (m *SysUserMutation) ResetLastName() {
-	m._LastName = nil
+	m.last_name = nil
 	delete(m.clearedFields, sysuser.FieldLastName)
 }
 
@@ -4602,6 +6166,42 @@ func (m *SysUserMutation) ResetPhone() {
 	m._Phone = nil
 }
 
+// SetSalt sets the "salt" field.
+func (m *SysUserMutation) SetSalt(s string) {
+	m.salt = &s
+}
+
+// Salt returns the value of the "salt" field in the mutation.
+func (m *SysUserMutation) Salt() (r string, exists bool) {
+	v := m.salt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSalt returns the old "salt" field's value of the SysUser entity.
+// If the SysUser object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserMutation) OldSalt(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldSalt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldSalt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSalt: %w", err)
+	}
+	return oldValue.Salt, nil
+}
+
+// ResetSalt resets all changes to the "salt" field.
+func (m *SysUserMutation) ResetSalt() {
+	m.salt = nil
+}
+
 // Op returns the operation name.
 func (m *SysUserMutation) Op() Op {
 	return m.op
@@ -4616,7 +6216,7 @@ func (m *SysUserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysUserMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 14)
 	if m.is_del != nil {
 		fields = append(fields, sysuser.FieldIsDel)
 	}
@@ -4632,16 +6232,19 @@ func (m *SysUserMutation) Fields() []string {
 	if m.deleted_at != nil {
 		fields = append(fields, sysuser.FieldDeletedAt)
 	}
-	if m._UserName != nil {
+	if m.status != nil {
+		fields = append(fields, sysuser.FieldStatus)
+	}
+	if m.user_name != nil {
 		fields = append(fields, sysuser.FieldUserName)
 	}
-	if m._RealName != nil {
+	if m.real_name != nil {
 		fields = append(fields, sysuser.FieldRealName)
 	}
-	if m._FirstName != nil {
+	if m.first_name != nil {
 		fields = append(fields, sysuser.FieldFirstName)
 	}
-	if m._LastName != nil {
+	if m.last_name != nil {
 		fields = append(fields, sysuser.FieldLastName)
 	}
 	if m._Password != nil {
@@ -4652,6 +6255,9 @@ func (m *SysUserMutation) Fields() []string {
 	}
 	if m._Phone != nil {
 		fields = append(fields, sysuser.FieldPhone)
+	}
+	if m.salt != nil {
+		fields = append(fields, sysuser.FieldSalt)
 	}
 	return fields
 }
@@ -4671,6 +6277,8 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case sysuser.FieldDeletedAt:
 		return m.DeletedAt()
+	case sysuser.FieldStatus:
+		return m.Status()
 	case sysuser.FieldUserName:
 		return m.UserName()
 	case sysuser.FieldRealName:
@@ -4685,6 +6293,8 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.Email()
 	case sysuser.FieldPhone:
 		return m.Phone()
+	case sysuser.FieldSalt:
+		return m.Salt()
 	}
 	return nil, false
 }
@@ -4704,6 +6314,8 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUpdatedAt(ctx)
 	case sysuser.FieldDeletedAt:
 		return m.OldDeletedAt(ctx)
+	case sysuser.FieldStatus:
+		return m.OldStatus(ctx)
 	case sysuser.FieldUserName:
 		return m.OldUserName(ctx)
 	case sysuser.FieldRealName:
@@ -4718,6 +6330,8 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldEmail(ctx)
 	case sysuser.FieldPhone:
 		return m.OldPhone(ctx)
+	case sysuser.FieldSalt:
+		return m.OldSalt(ctx)
 	}
 	return nil, fmt.Errorf("unknown SysUser field %s", name)
 }
@@ -4761,6 +6375,13 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeletedAt(v)
+		return nil
+	case sysuser.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
 		return nil
 	case sysuser.FieldUserName:
 		v, ok := value.(string)
@@ -4811,6 +6432,13 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPhone(v)
 		return nil
+	case sysuser.FieldSalt:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSalt(v)
+		return nil
 	}
 	return fmt.Errorf("unknown SysUser field %s", name)
 }
@@ -4822,6 +6450,9 @@ func (m *SysUserMutation) AddedFields() []string {
 	if m.addsort != nil {
 		fields = append(fields, sysuser.FieldSort)
 	}
+	if m.addstatus != nil {
+		fields = append(fields, sysuser.FieldStatus)
+	}
 	return fields
 }
 
@@ -4832,6 +6463,8 @@ func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case sysuser.FieldSort:
 		return m.AddedSort()
+	case sysuser.FieldStatus:
+		return m.AddedStatus()
 	}
 	return nil, false
 }
@@ -4848,6 +6481,13 @@ func (m *SysUserMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddSort(v)
 		return nil
+	case sysuser.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
 	}
 	return fmt.Errorf("unknown SysUser numeric field %s", name)
 }
@@ -4858,6 +6498,9 @@ func (m *SysUserMutation) ClearedFields() []string {
 	var fields []string
 	if m.FieldCleared(sysuser.FieldDeletedAt) {
 		fields = append(fields, sysuser.FieldDeletedAt)
+	}
+	if m.FieldCleared(sysuser.FieldRealName) {
+		fields = append(fields, sysuser.FieldRealName)
 	}
 	if m.FieldCleared(sysuser.FieldFirstName) {
 		fields = append(fields, sysuser.FieldFirstName)
@@ -4881,6 +6524,9 @@ func (m *SysUserMutation) ClearField(name string) error {
 	switch name {
 	case sysuser.FieldDeletedAt:
 		m.ClearDeletedAt()
+		return nil
+	case sysuser.FieldRealName:
+		m.ClearRealName()
 		return nil
 	case sysuser.FieldFirstName:
 		m.ClearFirstName()
@@ -4911,6 +6557,9 @@ func (m *SysUserMutation) ResetField(name string) error {
 	case sysuser.FieldDeletedAt:
 		m.ResetDeletedAt()
 		return nil
+	case sysuser.FieldStatus:
+		m.ResetStatus()
+		return nil
 	case sysuser.FieldUserName:
 		m.ResetUserName()
 		return nil
@@ -4931,6 +6580,9 @@ func (m *SysUserMutation) ResetField(name string) error {
 		return nil
 	case sysuser.FieldPhone:
 		m.ResetPhone()
+		return nil
+	case sysuser.FieldSalt:
+		m.ResetSalt()
 		return nil
 	}
 	return fmt.Errorf("unknown SysUser field %s", name)

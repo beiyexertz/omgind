@@ -527,7 +527,7 @@ func (c *SysMenuClient) UpdateOne(sm *SysMenu) *SysMenuUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysMenuClient) UpdateOneID(id int) *SysMenuUpdateOne {
+func (c *SysMenuClient) UpdateOneID(id string) *SysMenuUpdateOne {
 	mutation := newSysMenuMutation(c.config, OpUpdateOne, withSysMenuID(id))
 	return &SysMenuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -544,7 +544,7 @@ func (c *SysMenuClient) DeleteOne(sm *SysMenu) *SysMenuDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysMenuClient) DeleteOneID(id int) *SysMenuDeleteOne {
+func (c *SysMenuClient) DeleteOneID(id string) *SysMenuDeleteOne {
 	builder := c.Delete().Where(sysmenu.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -559,12 +559,12 @@ func (c *SysMenuClient) Query() *SysMenuQuery {
 }
 
 // Get returns a SysMenu entity by its id.
-func (c *SysMenuClient) Get(ctx context.Context, id int) (*SysMenu, error) {
+func (c *SysMenuClient) Get(ctx context.Context, id string) (*SysMenu, error) {
 	return c.Query().Where(sysmenu.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysMenuClient) GetX(ctx context.Context, id int) *SysMenu {
+func (c *SysMenuClient) GetX(ctx context.Context, id string) *SysMenu {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -617,7 +617,7 @@ func (c *SysMenuActionClient) UpdateOne(sma *SysMenuAction) *SysMenuActionUpdate
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysMenuActionClient) UpdateOneID(id int) *SysMenuActionUpdateOne {
+func (c *SysMenuActionClient) UpdateOneID(id string) *SysMenuActionUpdateOne {
 	mutation := newSysMenuActionMutation(c.config, OpUpdateOne, withSysMenuActionID(id))
 	return &SysMenuActionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -634,7 +634,7 @@ func (c *SysMenuActionClient) DeleteOne(sma *SysMenuAction) *SysMenuActionDelete
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysMenuActionClient) DeleteOneID(id int) *SysMenuActionDeleteOne {
+func (c *SysMenuActionClient) DeleteOneID(id string) *SysMenuActionDeleteOne {
 	builder := c.Delete().Where(sysmenuaction.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -649,12 +649,12 @@ func (c *SysMenuActionClient) Query() *SysMenuActionQuery {
 }
 
 // Get returns a SysMenuAction entity by its id.
-func (c *SysMenuActionClient) Get(ctx context.Context, id int) (*SysMenuAction, error) {
+func (c *SysMenuActionClient) Get(ctx context.Context, id string) (*SysMenuAction, error) {
 	return c.Query().Where(sysmenuaction.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysMenuActionClient) GetX(ctx context.Context, id int) *SysMenuAction {
+func (c *SysMenuActionClient) GetX(ctx context.Context, id string) *SysMenuAction {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

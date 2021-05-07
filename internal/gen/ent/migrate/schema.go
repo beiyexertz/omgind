@@ -177,7 +177,20 @@ var (
 	}
 	// SysMenusColumns holds the columns for the "sys_menus" table.
 	SysMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "sort", Type: field.TypeInt32, Default: 9999},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "status", Type: field.TypeInt32, Default: 0},
+		{Name: "name", Type: field.TypeString, Size: 64},
+		{Name: "icon", Type: field.TypeString, Size: 256},
+		{Name: "router", Type: field.TypeString, Size: 1024},
+		{Name: "is_show", Type: field.TypeBool, Default: true},
+		{Name: "pid", Type: field.TypeString, Nullable: true, Size: 36},
+		{Name: "ppath", Type: field.TypeString, Nullable: true, Size: 160},
 	}
 	// SysMenusTable holds the schema information for the "sys_menus" table.
 	SysMenusTable = &schema.Table{
@@ -185,10 +198,67 @@ var (
 		Columns:     SysMenusColumns,
 		PrimaryKey:  []*schema.Column{SysMenusColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysmenu_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysMenusColumns[0]},
+			},
+			{
+				Name:    "sysmenu_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[1]},
+			},
+			{
+				Name:    "sysmenu_sort",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[3]},
+			},
+			{
+				Name:    "sysmenu_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[4]},
+			},
+			{
+				Name:    "sysmenu_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[5]},
+			},
+			{
+				Name:    "sysmenu_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[6]},
+			},
+			{
+				Name:    "sysmenu_status",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[7]},
+			},
+			{
+				Name:    "sysmenu_pid",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[12]},
+			},
+			{
+				Name:    "sysmenu_pid_name",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[12], SysMenusColumns[8]},
+			},
+		},
 	}
 	// SysMenuActionsColumns holds the columns for the "sys_menu_actions" table.
 	SysMenuActionsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "sort", Type: field.TypeInt32, Default: 9999},
+		{Name: "status", Type: field.TypeInt32, Default: 0},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "menu_id", Type: field.TypeString, Size: 36},
+		{Name: "code", Type: field.TypeString, Size: 128},
+		{Name: "name", Type: field.TypeString, Size: 128},
 	}
 	// SysMenuActionsTable holds the schema information for the "sys_menu_actions" table.
 	SysMenuActionsTable = &schema.Table{
@@ -196,6 +266,43 @@ var (
 		Columns:     SysMenuActionsColumns,
 		PrimaryKey:  []*schema.Column{SysMenuActionsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysmenuaction_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysMenuActionsColumns[0]},
+			},
+			{
+				Name:    "sysmenuaction_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionsColumns[1]},
+			},
+			{
+				Name:    "sysmenuaction_sort",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionsColumns[2]},
+			},
+			{
+				Name:    "sysmenuaction_status",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionsColumns[3]},
+			},
+			{
+				Name:    "sysmenuaction_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionsColumns[5]},
+			},
+			{
+				Name:    "sysmenuaction_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionsColumns[6]},
+			},
+			{
+				Name:    "sysmenuaction_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionsColumns[7]},
+			},
+		},
 	}
 	// SysMenuActionResourcesColumns holds the columns for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesColumns = []*schema.Column{
@@ -238,13 +345,15 @@ var (
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "user_name", Type: field.TypeString, Size: 128},
-		{Name: "real_name", Type: field.TypeString, Size: 64},
+		{Name: "real_name", Type: field.TypeString, Nullable: true, Size: 64},
 		{Name: "first_name", Type: field.TypeString, Nullable: true, Size: 31},
 		{Name: "last_name", Type: field.TypeString, Nullable: true, Size: 31},
 		{Name: "passwd", Type: field.TypeString, Size: 256},
 		{Name: "email", Type: field.TypeString, Size: 256},
 		{Name: "phone", Type: field.TypeString, Size: 20},
+		{Name: "salt", Type: field.TypeString},
 	}
 	// SysUsersTable holds the schema information for the "sys_users" table.
 	SysUsersTable = &schema.Table{
@@ -284,9 +393,14 @@ var (
 				Columns: []*schema.Column{SysUsersColumns[5]},
 			},
 			{
+				Name:    "sysuser_status",
+				Unique:  false,
+				Columns: []*schema.Column{SysUsersColumns[6]},
+			},
+			{
 				Name:    "sysuser_user_name",
 				Unique:  true,
-				Columns: []*schema.Column{SysUsersColumns[6]},
+				Columns: []*schema.Column{SysUsersColumns[7]},
 			},
 		},
 	}

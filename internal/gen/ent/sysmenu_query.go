@@ -84,8 +84,8 @@ func (smq *SysMenuQuery) FirstX(ctx context.Context) *SysMenu {
 
 // FirstID returns the first SysMenu ID from the query.
 // Returns a *NotFoundError when no SysMenu ID was found.
-func (smq *SysMenuQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (smq *SysMenuQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +97,7 @@ func (smq *SysMenuQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (smq *SysMenuQuery) FirstIDX(ctx context.Context) int {
+func (smq *SysMenuQuery) FirstIDX(ctx context.Context) string {
 	id, err := smq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +135,8 @@ func (smq *SysMenuQuery) OnlyX(ctx context.Context) *SysMenu {
 // OnlyID is like Only, but returns the only SysMenu ID in the query.
 // Returns a *NotSingularError when exactly one SysMenu ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (smq *SysMenuQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (smq *SysMenuQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +152,7 @@ func (smq *SysMenuQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (smq *SysMenuQuery) OnlyIDX(ctx context.Context) int {
+func (smq *SysMenuQuery) OnlyIDX(ctx context.Context) string {
 	id, err := smq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +178,8 @@ func (smq *SysMenuQuery) AllX(ctx context.Context) []*SysMenu {
 }
 
 // IDs executes the query and returns a list of SysMenu IDs.
-func (smq *SysMenuQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (smq *SysMenuQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := smq.Select(sysmenu.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func (smq *SysMenuQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (smq *SysMenuQuery) IDsX(ctx context.Context) []int {
+func (smq *SysMenuQuery) IDsX(ctx context.Context) []string {
 	ids, err := smq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,6 +249,19 @@ func (smq *SysMenuQuery) Clone() *SysMenuQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.SysMenu.Query().
+//		GroupBy(sysmenu.FieldIsDel).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (smq *SysMenuQuery) GroupBy(field string, fields ...string) *SysMenuGroupBy {
 	group := &SysMenuGroupBy{config: smq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +276,17 @@ func (smq *SysMenuQuery) GroupBy(field string, fields ...string) *SysMenuGroupBy
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//	}
+//
+//	client.SysMenu.Query().
+//		Select(sysmenu.FieldIsDel).
+//		Scan(ctx, &v)
+//
 func (smq *SysMenuQuery) Select(field string, fields ...string) *SysMenuSelect {
 	smq.fields = append([]string{field}, fields...)
 	return &SysMenuSelect{SysMenuQuery: smq}
@@ -329,7 +353,7 @@ func (smq *SysMenuQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysmenu.Table,
 			Columns: sysmenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysmenu.FieldID,
 			},
 		},

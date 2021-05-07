@@ -90,25 +90,47 @@ func (suc *SysUserCreate) SetNillableDeletedAt(t *time.Time) *SysUserCreate {
 	return suc
 }
 
-// SetUserName sets the "UserName" field.
+// SetStatus sets the "status" field.
+func (suc *SysUserCreate) SetStatus(i int32) *SysUserCreate {
+	suc.mutation.SetStatus(i)
+	return suc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableStatus(i *int32) *SysUserCreate {
+	if i != nil {
+		suc.SetStatus(*i)
+	}
+	return suc
+}
+
+// SetUserName sets the "user_name" field.
 func (suc *SysUserCreate) SetUserName(s string) *SysUserCreate {
 	suc.mutation.SetUserName(s)
 	return suc
 }
 
-// SetRealName sets the "RealName" field.
+// SetRealName sets the "real_name" field.
 func (suc *SysUserCreate) SetRealName(s string) *SysUserCreate {
 	suc.mutation.SetRealName(s)
 	return suc
 }
 
-// SetFirstName sets the "FirstName" field.
+// SetNillableRealName sets the "real_name" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableRealName(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetRealName(*s)
+	}
+	return suc
+}
+
+// SetFirstName sets the "first_name" field.
 func (suc *SysUserCreate) SetFirstName(s string) *SysUserCreate {
 	suc.mutation.SetFirstName(s)
 	return suc
 }
 
-// SetNillableFirstName sets the "FirstName" field if the given value is not nil.
+// SetNillableFirstName sets the "first_name" field if the given value is not nil.
 func (suc *SysUserCreate) SetNillableFirstName(s *string) *SysUserCreate {
 	if s != nil {
 		suc.SetFirstName(*s)
@@ -116,13 +138,13 @@ func (suc *SysUserCreate) SetNillableFirstName(s *string) *SysUserCreate {
 	return suc
 }
 
-// SetLastName sets the "LastName" field.
+// SetLastName sets the "last_name" field.
 func (suc *SysUserCreate) SetLastName(s string) *SysUserCreate {
 	suc.mutation.SetLastName(s)
 	return suc
 }
 
-// SetNillableLastName sets the "LastName" field if the given value is not nil.
+// SetNillableLastName sets the "last_name" field if the given value is not nil.
 func (suc *SysUserCreate) SetNillableLastName(s *string) *SysUserCreate {
 	if s != nil {
 		suc.SetLastName(*s)
@@ -145,6 +167,20 @@ func (suc *SysUserCreate) SetEmail(s string) *SysUserCreate {
 // SetPhone sets the "Phone" field.
 func (suc *SysUserCreate) SetPhone(s string) *SysUserCreate {
 	suc.mutation.SetPhone(s)
+	return suc
+}
+
+// SetSalt sets the "salt" field.
+func (suc *SysUserCreate) SetSalt(s string) *SysUserCreate {
+	suc.mutation.SetSalt(s)
+	return suc
+}
+
+// SetNillableSalt sets the "salt" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableSalt(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetSalt(*s)
+	}
 	return suc
 }
 
@@ -230,6 +266,14 @@ func (suc *SysUserCreate) defaults() {
 		v := sysuser.DefaultUpdatedAt()
 		suc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := suc.mutation.Status(); !ok {
+		v := sysuser.DefaultStatus
+		suc.mutation.SetStatus(v)
+	}
+	if _, ok := suc.mutation.Salt(); !ok {
+		v := sysuser.DefaultSalt()
+		suc.mutation.SetSalt(v)
+	}
 	if _, ok := suc.mutation.ID(); !ok {
 		v := sysuser.DefaultID
 		suc.mutation.SetID(v)
@@ -250,30 +294,30 @@ func (suc *SysUserCreate) check() error {
 	if _, ok := suc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New("ent: missing required field \"updated_at\"")}
 	}
+	if _, ok := suc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
+	}
 	if _, ok := suc.mutation.UserName(); !ok {
-		return &ValidationError{Name: "UserName", err: errors.New("ent: missing required field \"UserName\"")}
+		return &ValidationError{Name: "user_name", err: errors.New("ent: missing required field \"user_name\"")}
 	}
 	if v, ok := suc.mutation.UserName(); ok {
 		if err := sysuser.UserNameValidator(v); err != nil {
-			return &ValidationError{Name: "UserName", err: fmt.Errorf("ent: validator failed for field \"UserName\": %w", err)}
+			return &ValidationError{Name: "user_name", err: fmt.Errorf("ent: validator failed for field \"user_name\": %w", err)}
 		}
-	}
-	if _, ok := suc.mutation.RealName(); !ok {
-		return &ValidationError{Name: "RealName", err: errors.New("ent: missing required field \"RealName\"")}
 	}
 	if v, ok := suc.mutation.RealName(); ok {
 		if err := sysuser.RealNameValidator(v); err != nil {
-			return &ValidationError{Name: "RealName", err: fmt.Errorf("ent: validator failed for field \"RealName\": %w", err)}
+			return &ValidationError{Name: "real_name", err: fmt.Errorf("ent: validator failed for field \"real_name\": %w", err)}
 		}
 	}
 	if v, ok := suc.mutation.FirstName(); ok {
 		if err := sysuser.FirstNameValidator(v); err != nil {
-			return &ValidationError{Name: "FirstName", err: fmt.Errorf("ent: validator failed for field \"FirstName\": %w", err)}
+			return &ValidationError{Name: "first_name", err: fmt.Errorf("ent: validator failed for field \"first_name\": %w", err)}
 		}
 	}
 	if v, ok := suc.mutation.LastName(); ok {
 		if err := sysuser.LastNameValidator(v); err != nil {
-			return &ValidationError{Name: "LastName", err: fmt.Errorf("ent: validator failed for field \"LastName\": %w", err)}
+			return &ValidationError{Name: "last_name", err: fmt.Errorf("ent: validator failed for field \"last_name\": %w", err)}
 		}
 	}
 	if _, ok := suc.mutation.Password(); !ok {
@@ -299,6 +343,9 @@ func (suc *SysUserCreate) check() error {
 		if err := sysuser.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "Phone", err: fmt.Errorf("ent: validator failed for field \"Phone\": %w", err)}
 		}
+	}
+	if _, ok := suc.mutation.Salt(); !ok {
+		return &ValidationError{Name: "salt", err: errors.New("ent: missing required field \"salt\"")}
 	}
 	if v, ok := suc.mutation.ID(); ok {
 		if err := sysuser.IDValidator(v); err != nil {
@@ -374,6 +421,14 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		})
 		_node.DeletedAt = &value
 	}
+	if value, ok := suc.mutation.Status(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysuser.FieldStatus,
+		})
+		_node.Status = value
+	}
 	if value, ok := suc.mutation.UserName(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -388,7 +443,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 			Value:  value,
 			Column: sysuser.FieldRealName,
 		})
-		_node.RealName = value
+		_node.RealName = &value
 	}
 	if value, ok := suc.mutation.FirstName(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -429,6 +484,14 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 			Column: sysuser.FieldPhone,
 		})
 		_node.Phone = value
+	}
+	if value, ok := suc.mutation.Salt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldSalt,
+		})
+		_node.Salt = value
 	}
 	return _node, _spec
 }

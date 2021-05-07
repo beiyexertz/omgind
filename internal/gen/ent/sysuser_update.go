@@ -88,25 +88,60 @@ func (suu *SysUserUpdate) ClearDeletedAt() *SysUserUpdate {
 	return suu
 }
 
-// SetUserName sets the "UserName" field.
+// SetStatus sets the "status" field.
+func (suu *SysUserUpdate) SetStatus(i int32) *SysUserUpdate {
+	suu.mutation.ResetStatus()
+	suu.mutation.SetStatus(i)
+	return suu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableStatus(i *int32) *SysUserUpdate {
+	if i != nil {
+		suu.SetStatus(*i)
+	}
+	return suu
+}
+
+// AddStatus adds i to the "status" field.
+func (suu *SysUserUpdate) AddStatus(i int32) *SysUserUpdate {
+	suu.mutation.AddStatus(i)
+	return suu
+}
+
+// SetUserName sets the "user_name" field.
 func (suu *SysUserUpdate) SetUserName(s string) *SysUserUpdate {
 	suu.mutation.SetUserName(s)
 	return suu
 }
 
-// SetRealName sets the "RealName" field.
+// SetRealName sets the "real_name" field.
 func (suu *SysUserUpdate) SetRealName(s string) *SysUserUpdate {
 	suu.mutation.SetRealName(s)
 	return suu
 }
 
-// SetFirstName sets the "FirstName" field.
+// SetNillableRealName sets the "real_name" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableRealName(s *string) *SysUserUpdate {
+	if s != nil {
+		suu.SetRealName(*s)
+	}
+	return suu
+}
+
+// ClearRealName clears the value of the "real_name" field.
+func (suu *SysUserUpdate) ClearRealName() *SysUserUpdate {
+	suu.mutation.ClearRealName()
+	return suu
+}
+
+// SetFirstName sets the "first_name" field.
 func (suu *SysUserUpdate) SetFirstName(s string) *SysUserUpdate {
 	suu.mutation.SetFirstName(s)
 	return suu
 }
 
-// SetNillableFirstName sets the "FirstName" field if the given value is not nil.
+// SetNillableFirstName sets the "first_name" field if the given value is not nil.
 func (suu *SysUserUpdate) SetNillableFirstName(s *string) *SysUserUpdate {
 	if s != nil {
 		suu.SetFirstName(*s)
@@ -114,19 +149,19 @@ func (suu *SysUserUpdate) SetNillableFirstName(s *string) *SysUserUpdate {
 	return suu
 }
 
-// ClearFirstName clears the value of the "FirstName" field.
+// ClearFirstName clears the value of the "first_name" field.
 func (suu *SysUserUpdate) ClearFirstName() *SysUserUpdate {
 	suu.mutation.ClearFirstName()
 	return suu
 }
 
-// SetLastName sets the "LastName" field.
+// SetLastName sets the "last_name" field.
 func (suu *SysUserUpdate) SetLastName(s string) *SysUserUpdate {
 	suu.mutation.SetLastName(s)
 	return suu
 }
 
-// SetNillableLastName sets the "LastName" field if the given value is not nil.
+// SetNillableLastName sets the "last_name" field if the given value is not nil.
 func (suu *SysUserUpdate) SetNillableLastName(s *string) *SysUserUpdate {
 	if s != nil {
 		suu.SetLastName(*s)
@@ -134,7 +169,7 @@ func (suu *SysUserUpdate) SetNillableLastName(s *string) *SysUserUpdate {
 	return suu
 }
 
-// ClearLastName clears the value of the "LastName" field.
+// ClearLastName clears the value of the "last_name" field.
 func (suu *SysUserUpdate) ClearLastName() *SysUserUpdate {
 	suu.mutation.ClearLastName()
 	return suu
@@ -155,6 +190,20 @@ func (suu *SysUserUpdate) SetEmail(s string) *SysUserUpdate {
 // SetPhone sets the "Phone" field.
 func (suu *SysUserUpdate) SetPhone(s string) *SysUserUpdate {
 	suu.mutation.SetPhone(s)
+	return suu
+}
+
+// SetSalt sets the "salt" field.
+func (suu *SysUserUpdate) SetSalt(s string) *SysUserUpdate {
+	suu.mutation.SetSalt(s)
+	return suu
+}
+
+// SetNillableSalt sets the "salt" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableSalt(s *string) *SysUserUpdate {
+	if s != nil {
+		suu.SetSalt(*s)
+	}
 	return suu
 }
 
@@ -233,22 +282,22 @@ func (suu *SysUserUpdate) defaults() {
 func (suu *SysUserUpdate) check() error {
 	if v, ok := suu.mutation.UserName(); ok {
 		if err := sysuser.UserNameValidator(v); err != nil {
-			return &ValidationError{Name: "UserName", err: fmt.Errorf("ent: validator failed for field \"UserName\": %w", err)}
+			return &ValidationError{Name: "user_name", err: fmt.Errorf("ent: validator failed for field \"user_name\": %w", err)}
 		}
 	}
 	if v, ok := suu.mutation.RealName(); ok {
 		if err := sysuser.RealNameValidator(v); err != nil {
-			return &ValidationError{Name: "RealName", err: fmt.Errorf("ent: validator failed for field \"RealName\": %w", err)}
+			return &ValidationError{Name: "real_name", err: fmt.Errorf("ent: validator failed for field \"real_name\": %w", err)}
 		}
 	}
 	if v, ok := suu.mutation.FirstName(); ok {
 		if err := sysuser.FirstNameValidator(v); err != nil {
-			return &ValidationError{Name: "FirstName", err: fmt.Errorf("ent: validator failed for field \"FirstName\": %w", err)}
+			return &ValidationError{Name: "first_name", err: fmt.Errorf("ent: validator failed for field \"first_name\": %w", err)}
 		}
 	}
 	if v, ok := suu.mutation.LastName(); ok {
 		if err := sysuser.LastNameValidator(v); err != nil {
-			return &ValidationError{Name: "LastName", err: fmt.Errorf("ent: validator failed for field \"LastName\": %w", err)}
+			return &ValidationError{Name: "last_name", err: fmt.Errorf("ent: validator failed for field \"last_name\": %w", err)}
 		}
 	}
 	if v, ok := suu.mutation.Password(); ok {
@@ -328,6 +377,20 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: sysuser.FieldDeletedAt,
 		})
 	}
+	if value, ok := suu.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysuser.FieldStatus,
+		})
+	}
+	if value, ok := suu.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysuser.FieldStatus,
+		})
+	}
 	if value, ok := suu.mutation.UserName(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -339,6 +402,12 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
+			Column: sysuser.FieldRealName,
+		})
+	}
+	if suu.mutation.RealNameCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
 			Column: sysuser.FieldRealName,
 		})
 	}
@@ -387,6 +456,13 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: sysuser.FieldPhone,
+		})
+	}
+	if value, ok := suu.mutation.Salt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldSalt,
 		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, suu.driver, _spec); err != nil {
@@ -469,25 +545,60 @@ func (suuo *SysUserUpdateOne) ClearDeletedAt() *SysUserUpdateOne {
 	return suuo
 }
 
-// SetUserName sets the "UserName" field.
+// SetStatus sets the "status" field.
+func (suuo *SysUserUpdateOne) SetStatus(i int32) *SysUserUpdateOne {
+	suuo.mutation.ResetStatus()
+	suuo.mutation.SetStatus(i)
+	return suuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableStatus(i *int32) *SysUserUpdateOne {
+	if i != nil {
+		suuo.SetStatus(*i)
+	}
+	return suuo
+}
+
+// AddStatus adds i to the "status" field.
+func (suuo *SysUserUpdateOne) AddStatus(i int32) *SysUserUpdateOne {
+	suuo.mutation.AddStatus(i)
+	return suuo
+}
+
+// SetUserName sets the "user_name" field.
 func (suuo *SysUserUpdateOne) SetUserName(s string) *SysUserUpdateOne {
 	suuo.mutation.SetUserName(s)
 	return suuo
 }
 
-// SetRealName sets the "RealName" field.
+// SetRealName sets the "real_name" field.
 func (suuo *SysUserUpdateOne) SetRealName(s string) *SysUserUpdateOne {
 	suuo.mutation.SetRealName(s)
 	return suuo
 }
 
-// SetFirstName sets the "FirstName" field.
+// SetNillableRealName sets the "real_name" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableRealName(s *string) *SysUserUpdateOne {
+	if s != nil {
+		suuo.SetRealName(*s)
+	}
+	return suuo
+}
+
+// ClearRealName clears the value of the "real_name" field.
+func (suuo *SysUserUpdateOne) ClearRealName() *SysUserUpdateOne {
+	suuo.mutation.ClearRealName()
+	return suuo
+}
+
+// SetFirstName sets the "first_name" field.
 func (suuo *SysUserUpdateOne) SetFirstName(s string) *SysUserUpdateOne {
 	suuo.mutation.SetFirstName(s)
 	return suuo
 }
 
-// SetNillableFirstName sets the "FirstName" field if the given value is not nil.
+// SetNillableFirstName sets the "first_name" field if the given value is not nil.
 func (suuo *SysUserUpdateOne) SetNillableFirstName(s *string) *SysUserUpdateOne {
 	if s != nil {
 		suuo.SetFirstName(*s)
@@ -495,19 +606,19 @@ func (suuo *SysUserUpdateOne) SetNillableFirstName(s *string) *SysUserUpdateOne 
 	return suuo
 }
 
-// ClearFirstName clears the value of the "FirstName" field.
+// ClearFirstName clears the value of the "first_name" field.
 func (suuo *SysUserUpdateOne) ClearFirstName() *SysUserUpdateOne {
 	suuo.mutation.ClearFirstName()
 	return suuo
 }
 
-// SetLastName sets the "LastName" field.
+// SetLastName sets the "last_name" field.
 func (suuo *SysUserUpdateOne) SetLastName(s string) *SysUserUpdateOne {
 	suuo.mutation.SetLastName(s)
 	return suuo
 }
 
-// SetNillableLastName sets the "LastName" field if the given value is not nil.
+// SetNillableLastName sets the "last_name" field if the given value is not nil.
 func (suuo *SysUserUpdateOne) SetNillableLastName(s *string) *SysUserUpdateOne {
 	if s != nil {
 		suuo.SetLastName(*s)
@@ -515,7 +626,7 @@ func (suuo *SysUserUpdateOne) SetNillableLastName(s *string) *SysUserUpdateOne {
 	return suuo
 }
 
-// ClearLastName clears the value of the "LastName" field.
+// ClearLastName clears the value of the "last_name" field.
 func (suuo *SysUserUpdateOne) ClearLastName() *SysUserUpdateOne {
 	suuo.mutation.ClearLastName()
 	return suuo
@@ -536,6 +647,20 @@ func (suuo *SysUserUpdateOne) SetEmail(s string) *SysUserUpdateOne {
 // SetPhone sets the "Phone" field.
 func (suuo *SysUserUpdateOne) SetPhone(s string) *SysUserUpdateOne {
 	suuo.mutation.SetPhone(s)
+	return suuo
+}
+
+// SetSalt sets the "salt" field.
+func (suuo *SysUserUpdateOne) SetSalt(s string) *SysUserUpdateOne {
+	suuo.mutation.SetSalt(s)
+	return suuo
+}
+
+// SetNillableSalt sets the "salt" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableSalt(s *string) *SysUserUpdateOne {
+	if s != nil {
+		suuo.SetSalt(*s)
+	}
 	return suuo
 }
 
@@ -621,22 +746,22 @@ func (suuo *SysUserUpdateOne) defaults() {
 func (suuo *SysUserUpdateOne) check() error {
 	if v, ok := suuo.mutation.UserName(); ok {
 		if err := sysuser.UserNameValidator(v); err != nil {
-			return &ValidationError{Name: "UserName", err: fmt.Errorf("ent: validator failed for field \"UserName\": %w", err)}
+			return &ValidationError{Name: "user_name", err: fmt.Errorf("ent: validator failed for field \"user_name\": %w", err)}
 		}
 	}
 	if v, ok := suuo.mutation.RealName(); ok {
 		if err := sysuser.RealNameValidator(v); err != nil {
-			return &ValidationError{Name: "RealName", err: fmt.Errorf("ent: validator failed for field \"RealName\": %w", err)}
+			return &ValidationError{Name: "real_name", err: fmt.Errorf("ent: validator failed for field \"real_name\": %w", err)}
 		}
 	}
 	if v, ok := suuo.mutation.FirstName(); ok {
 		if err := sysuser.FirstNameValidator(v); err != nil {
-			return &ValidationError{Name: "FirstName", err: fmt.Errorf("ent: validator failed for field \"FirstName\": %w", err)}
+			return &ValidationError{Name: "first_name", err: fmt.Errorf("ent: validator failed for field \"first_name\": %w", err)}
 		}
 	}
 	if v, ok := suuo.mutation.LastName(); ok {
 		if err := sysuser.LastNameValidator(v); err != nil {
-			return &ValidationError{Name: "LastName", err: fmt.Errorf("ent: validator failed for field \"LastName\": %w", err)}
+			return &ValidationError{Name: "last_name", err: fmt.Errorf("ent: validator failed for field \"last_name\": %w", err)}
 		}
 	}
 	if v, ok := suuo.mutation.Password(); ok {
@@ -733,6 +858,20 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 			Column: sysuser.FieldDeletedAt,
 		})
 	}
+	if value, ok := suuo.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysuser.FieldStatus,
+		})
+	}
+	if value, ok := suuo.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysuser.FieldStatus,
+		})
+	}
 	if value, ok := suuo.mutation.UserName(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -744,6 +883,12 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
+			Column: sysuser.FieldRealName,
+		})
+	}
+	if suuo.mutation.RealNameCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
 			Column: sysuser.FieldRealName,
 		})
 	}
@@ -792,6 +937,13 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: sysuser.FieldPhone,
+		})
+	}
+	if value, ok := suuo.mutation.Salt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldSalt,
 		})
 	}
 	_node = &SysUser{config: suuo.config}

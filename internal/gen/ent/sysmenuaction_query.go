@@ -84,8 +84,8 @@ func (smaq *SysMenuActionQuery) FirstX(ctx context.Context) *SysMenuAction {
 
 // FirstID returns the first SysMenuAction ID from the query.
 // Returns a *NotFoundError when no SysMenuAction ID was found.
-func (smaq *SysMenuActionQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (smaq *SysMenuActionQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smaq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +97,7 @@ func (smaq *SysMenuActionQuery) FirstID(ctx context.Context) (id int, err error)
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (smaq *SysMenuActionQuery) FirstIDX(ctx context.Context) int {
+func (smaq *SysMenuActionQuery) FirstIDX(ctx context.Context) string {
 	id, err := smaq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +135,8 @@ func (smaq *SysMenuActionQuery) OnlyX(ctx context.Context) *SysMenuAction {
 // OnlyID is like Only, but returns the only SysMenuAction ID in the query.
 // Returns a *NotSingularError when exactly one SysMenuAction ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (smaq *SysMenuActionQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (smaq *SysMenuActionQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smaq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +152,7 @@ func (smaq *SysMenuActionQuery) OnlyID(ctx context.Context) (id int, err error) 
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (smaq *SysMenuActionQuery) OnlyIDX(ctx context.Context) int {
+func (smaq *SysMenuActionQuery) OnlyIDX(ctx context.Context) string {
 	id, err := smaq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +178,8 @@ func (smaq *SysMenuActionQuery) AllX(ctx context.Context) []*SysMenuAction {
 }
 
 // IDs executes the query and returns a list of SysMenuAction IDs.
-func (smaq *SysMenuActionQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (smaq *SysMenuActionQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := smaq.Select(sysmenuaction.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func (smaq *SysMenuActionQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (smaq *SysMenuActionQuery) IDsX(ctx context.Context) []int {
+func (smaq *SysMenuActionQuery) IDsX(ctx context.Context) []string {
 	ids, err := smaq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,6 +249,19 @@ func (smaq *SysMenuActionQuery) Clone() *SysMenuActionQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.SysMenuAction.Query().
+//		GroupBy(sysmenuaction.FieldIsDel).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (smaq *SysMenuActionQuery) GroupBy(field string, fields ...string) *SysMenuActionGroupBy {
 	group := &SysMenuActionGroupBy{config: smaq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +276,17 @@ func (smaq *SysMenuActionQuery) GroupBy(field string, fields ...string) *SysMenu
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//	}
+//
+//	client.SysMenuAction.Query().
+//		Select(sysmenuaction.FieldIsDel).
+//		Scan(ctx, &v)
+//
 func (smaq *SysMenuActionQuery) Select(field string, fields ...string) *SysMenuActionSelect {
 	smaq.fields = append([]string{field}, fields...)
 	return &SysMenuActionSelect{SysMenuActionQuery: smaq}
@@ -329,7 +353,7 @@ func (smaq *SysMenuActionQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysmenuaction.Table,
 			Columns: sysmenuaction.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysmenuaction.FieldID,
 			},
 		},

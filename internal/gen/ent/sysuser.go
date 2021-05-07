@@ -32,15 +32,18 @@ type SysUser struct {
 	// DeletedAt holds the value of the "deleted_at" field.
 	// 删除时间,
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
-	// UserName holds the value of the "UserName" field.
+	// Status holds the value of the "status" field.
+	// 状态,
+	Status int32 `json:"sort,omitempty"`
+	// UserName holds the value of the "user_name" field.
 	// 用户名
 	UserName string `json:"user_name,omitempty"`
-	// RealName holds the value of the "RealName" field.
-	RealName string `json:"RealName,omitempty"`
-	// FirstName holds the value of the "FirstName" field.
+	// RealName holds the value of the "real_name" field.
+	RealName *string `json:"real_name,omitempty"`
+	// FirstName holds the value of the "first_name" field.
 	// 名
 	FirstName *string `json:"first_name,omitempty"`
-	// LastName holds the value of the "LastName" field.
+	// LastName holds the value of the "last_name" field.
 	// 姓
 	LastName *string `json:"last_name,omitempty"`
 	// Password holds the value of the "Password" field.
@@ -52,6 +55,9 @@ type SysUser struct {
 	// Phone holds the value of the "Phone" field.
 	// 电话号码
 	Phone string `json:"phone,omitempty"`
+	// Salt holds the value of the "salt" field.
+	// 盐
+	Salt string `json:"salt,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -61,9 +67,9 @@ func (*SysUser) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case sysuser.FieldIsDel:
 			values[i] = new(sql.NullBool)
-		case sysuser.FieldSort:
+		case sysuser.FieldSort, sysuser.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case sysuser.FieldID, sysuser.FieldUserName, sysuser.FieldRealName, sysuser.FieldFirstName, sysuser.FieldLastName, sysuser.FieldPassword, sysuser.FieldEmail, sysuser.FieldPhone:
+		case sysuser.FieldID, sysuser.FieldUserName, sysuser.FieldRealName, sysuser.FieldFirstName, sysuser.FieldLastName, sysuser.FieldPassword, sysuser.FieldEmail, sysuser.FieldPhone, sysuser.FieldSalt:
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -119,28 +125,35 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 				su.DeletedAt = new(time.Time)
 				*su.DeletedAt = value.Time
 			}
+		case sysuser.FieldStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				su.Status = int32(value.Int64)
+			}
 		case sysuser.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field UserName", values[i])
+				return fmt.Errorf("unexpected type %T for field user_name", values[i])
 			} else if value.Valid {
 				su.UserName = value.String
 			}
 		case sysuser.FieldRealName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field RealName", values[i])
+				return fmt.Errorf("unexpected type %T for field real_name", values[i])
 			} else if value.Valid {
-				su.RealName = value.String
+				su.RealName = new(string)
+				*su.RealName = value.String
 			}
 		case sysuser.FieldFirstName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field FirstName", values[i])
+				return fmt.Errorf("unexpected type %T for field first_name", values[i])
 			} else if value.Valid {
 				su.FirstName = new(string)
 				*su.FirstName = value.String
 			}
 		case sysuser.FieldLastName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field LastName", values[i])
+				return fmt.Errorf("unexpected type %T for field last_name", values[i])
 			} else if value.Valid {
 				su.LastName = new(string)
 				*su.LastName = value.String
@@ -162,6 +175,12 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field Phone", values[i])
 			} else if value.Valid {
 				su.Phone = value.String
+			}
+		case sysuser.FieldSalt:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field salt", values[i])
+			} else if value.Valid {
+				su.Salt = value.String
 			}
 		}
 	}
@@ -203,16 +222,20 @@ func (su *SysUser) String() string {
 		builder.WriteString(", deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
-	builder.WriteString(", UserName=")
+	builder.WriteString(", status=")
+	builder.WriteString(fmt.Sprintf("%v", su.Status))
+	builder.WriteString(", user_name=")
 	builder.WriteString(su.UserName)
-	builder.WriteString(", RealName=")
-	builder.WriteString(su.RealName)
+	if v := su.RealName; v != nil {
+		builder.WriteString(", real_name=")
+		builder.WriteString(*v)
+	}
 	if v := su.FirstName; v != nil {
-		builder.WriteString(", FirstName=")
+		builder.WriteString(", first_name=")
 		builder.WriteString(*v)
 	}
 	if v := su.LastName; v != nil {
-		builder.WriteString(", LastName=")
+		builder.WriteString(", last_name=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", Password=<sensitive>")
@@ -220,6 +243,8 @@ func (su *SysUser) String() string {
 	builder.WriteString(su.Email)
 	builder.WriteString(", Phone=")
 	builder.WriteString(su.Phone)
+	builder.WriteString(", salt=")
+	builder.WriteString(su.Salt)
 	builder.WriteByte(')')
 	return builder.String()
 }
