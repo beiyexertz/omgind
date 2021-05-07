@@ -4,7 +4,7 @@ package sysrole
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/wanhello/omgind/internal/app/model/entcd/predicate"
+	"github.com/wanhello/omgind/internal/app/generated/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.

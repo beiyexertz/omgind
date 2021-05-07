@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"github.com/wanhello/omgind/internal/app/model/entcd"
+	"github.com/wanhello/omgind/internal/app/generated/ent"
 	// required by schema hooks.
-	_ "github.com/wanhello/omgind/internal/app/model/entcd/runtime"
+	_ "github.com/wanhello/omgind/internal/app/generated/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )
@@ -24,13 +24,13 @@ type (
 	Option func(*options)
 
 	options struct {
-		opts        []entcd.Option
+		opts        []ent.Option
 		migrateOpts []schema.MigrateOption
 	}
 )
 
 // WithOptions forwards options to client creation.
-func WithOptions(opts ...entcd.Option) Option {
+func WithOptions(opts ...ent.Option) Option {
 	return func(o *options) {
 		o.opts = append(o.opts, opts...)
 	}
@@ -51,10 +51,10 @@ func newOptions(opts []Option) *options {
 	return o
 }
 
-// Open calls entcd.Open and auto-run migration.
-func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *entcd.Client {
+// Open calls ent.Open and auto-run migration.
+func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *ent.Client {
 	o := newOptions(opts)
-	c, err := entcd.Open(driverName, dataSourceName, o.opts...)
+	c, err := ent.Open(driverName, dataSourceName, o.opts...)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -66,10 +66,10 @@ func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *entcd.
 	return c
 }
 
-// NewClient calls entcd.NewClient and auto-run migration.
-func NewClient(t TestingT, opts ...Option) *entcd.Client {
+// NewClient calls ent.NewClient and auto-run migration.
+func NewClient(t TestingT, opts ...Option) *ent.Client {
 	o := newOptions(opts)
-	c := entcd.NewClient(o.opts...)
+	c := ent.NewClient(o.opts...)
 	if err := c.Schema.Create(context.Background(), o.migrateOpts...); err != nil {
 		t.Error(err)
 		t.FailNow()
