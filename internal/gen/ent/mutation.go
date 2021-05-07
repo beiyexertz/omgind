@@ -20,9 +20,689 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeSysRole = "SysRole"
-	TypeSysUser = "SysUser"
+	TypeSysMenu               = "SysMenu"
+	TypeSysMenuAction         = "SysMenuAction"
+	TypeSysMenuActionResource = "SysMenuActionResource"
+	TypeSysRole               = "SysRole"
+	TypeSysRoleMenu           = "SysRoleMenu"
+	TypeSysUser               = "SysUser"
+	TypeSysUserRole           = "SysUserRole"
 )
+
+// SysMenuMutation represents an operation that mutates the SysMenu nodes in the graph.
+type SysMenuMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysMenu, error)
+	predicates    []predicate.SysMenu
+}
+
+var _ ent.Mutation = (*SysMenuMutation)(nil)
+
+// sysmenuOption allows management of the mutation configuration using functional options.
+type sysmenuOption func(*SysMenuMutation)
+
+// newSysMenuMutation creates new mutation for the SysMenu entity.
+func newSysMenuMutation(c config, op Op, opts ...sysmenuOption) *SysMenuMutation {
+	m := &SysMenuMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysMenu,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysMenuID sets the ID field of the mutation.
+func withSysMenuID(id int) sysmenuOption {
+	return func(m *SysMenuMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysMenu
+		)
+		m.oldValue = func(ctx context.Context) (*SysMenu, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysMenu.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysMenu sets the old SysMenu of the mutation.
+func withSysMenu(node *SysMenu) sysmenuOption {
+	return func(m *SysMenuMutation) {
+		m.oldValue = func(context.Context) (*SysMenu, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysMenuMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysMenuMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *SysMenuMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// Op returns the operation name.
+func (m *SysMenuMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (SysMenu).
+func (m *SysMenuMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysMenuMutation) Fields() []string {
+	fields := make([]string, 0, 0)
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	return nil, fmt.Errorf("unknown SysMenu field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysMenu field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysMenuMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
+	return fmt.Errorf("unknown SysMenu numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysMenuMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysMenuMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysMenuMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown SysMenu nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysMenuMutation) ResetField(name string) error {
+	return fmt.Errorf("unknown SysMenu field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysMenuMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysMenuMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysMenuMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysMenuMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysMenuMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysMenuMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysMenuMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysMenu unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysMenuMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysMenu edge %s", name)
+}
+
+// SysMenuActionMutation represents an operation that mutates the SysMenuAction nodes in the graph.
+type SysMenuActionMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysMenuAction, error)
+	predicates    []predicate.SysMenuAction
+}
+
+var _ ent.Mutation = (*SysMenuActionMutation)(nil)
+
+// sysmenuactionOption allows management of the mutation configuration using functional options.
+type sysmenuactionOption func(*SysMenuActionMutation)
+
+// newSysMenuActionMutation creates new mutation for the SysMenuAction entity.
+func newSysMenuActionMutation(c config, op Op, opts ...sysmenuactionOption) *SysMenuActionMutation {
+	m := &SysMenuActionMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysMenuAction,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysMenuActionID sets the ID field of the mutation.
+func withSysMenuActionID(id int) sysmenuactionOption {
+	return func(m *SysMenuActionMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysMenuAction
+		)
+		m.oldValue = func(ctx context.Context) (*SysMenuAction, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysMenuAction.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysMenuAction sets the old SysMenuAction of the mutation.
+func withSysMenuAction(node *SysMenuAction) sysmenuactionOption {
+	return func(m *SysMenuActionMutation) {
+		m.oldValue = func(context.Context) (*SysMenuAction, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysMenuActionMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysMenuActionMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *SysMenuActionMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// Op returns the operation name.
+func (m *SysMenuActionMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (SysMenuAction).
+func (m *SysMenuActionMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysMenuActionMutation) Fields() []string {
+	fields := make([]string, 0, 0)
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysMenuActionMutation) Field(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysMenuActionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	return nil, fmt.Errorf("unknown SysMenuAction field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysMenuActionMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysMenuAction field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysMenuActionMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysMenuActionMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysMenuActionMutation) AddField(name string, value ent.Value) error {
+	return fmt.Errorf("unknown SysMenuAction numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysMenuActionMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysMenuActionMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysMenuActionMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown SysMenuAction nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysMenuActionMutation) ResetField(name string) error {
+	return fmt.Errorf("unknown SysMenuAction field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysMenuActionMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysMenuActionMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysMenuActionMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysMenuActionMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysMenuActionMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysMenuActionMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysMenuActionMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysMenuAction unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysMenuActionMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysMenuAction edge %s", name)
+}
+
+// SysMenuActionResourceMutation represents an operation that mutates the SysMenuActionResource nodes in the graph.
+type SysMenuActionResourceMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysMenuActionResource, error)
+	predicates    []predicate.SysMenuActionResource
+}
+
+var _ ent.Mutation = (*SysMenuActionResourceMutation)(nil)
+
+// sysmenuactionresourceOption allows management of the mutation configuration using functional options.
+type sysmenuactionresourceOption func(*SysMenuActionResourceMutation)
+
+// newSysMenuActionResourceMutation creates new mutation for the SysMenuActionResource entity.
+func newSysMenuActionResourceMutation(c config, op Op, opts ...sysmenuactionresourceOption) *SysMenuActionResourceMutation {
+	m := &SysMenuActionResourceMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysMenuActionResource,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysMenuActionResourceID sets the ID field of the mutation.
+func withSysMenuActionResourceID(id int) sysmenuactionresourceOption {
+	return func(m *SysMenuActionResourceMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysMenuActionResource
+		)
+		m.oldValue = func(ctx context.Context) (*SysMenuActionResource, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysMenuActionResource.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysMenuActionResource sets the old SysMenuActionResource of the mutation.
+func withSysMenuActionResource(node *SysMenuActionResource) sysmenuactionresourceOption {
+	return func(m *SysMenuActionResourceMutation) {
+		m.oldValue = func(context.Context) (*SysMenuActionResource, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysMenuActionResourceMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysMenuActionResourceMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *SysMenuActionResourceMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// Op returns the operation name.
+func (m *SysMenuActionResourceMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (SysMenuActionResource).
+func (m *SysMenuActionResourceMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysMenuActionResourceMutation) Fields() []string {
+	fields := make([]string, 0, 0)
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysMenuActionResourceMutation) Field(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysMenuActionResourceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	return nil, fmt.Errorf("unknown SysMenuActionResource field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysMenuActionResourceMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysMenuActionResource field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysMenuActionResourceMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysMenuActionResourceMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysMenuActionResourceMutation) AddField(name string, value ent.Value) error {
+	return fmt.Errorf("unknown SysMenuActionResource numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysMenuActionResourceMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysMenuActionResourceMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysMenuActionResourceMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown SysMenuActionResource nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysMenuActionResourceMutation) ResetField(name string) error {
+	return fmt.Errorf("unknown SysMenuActionResource field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysMenuActionResourceMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysMenuActionResourceMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysMenuActionResourceMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysMenuActionResourceMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysMenuActionResourceMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysMenuActionResourceMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysMenuActionResourceMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysMenuActionResource unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysMenuActionResourceMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysMenuActionResource edge %s", name)
+}
 
 // SysRoleMutation represents an operation that mutates the SysRole nodes in the graph.
 type SysRoleMutation struct {
@@ -249,6 +929,231 @@ func (m *SysRoleMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown SysRole edge %s", name)
 }
 
+// SysRoleMenuMutation represents an operation that mutates the SysRoleMenu nodes in the graph.
+type SysRoleMenuMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysRoleMenu, error)
+	predicates    []predicate.SysRoleMenu
+}
+
+var _ ent.Mutation = (*SysRoleMenuMutation)(nil)
+
+// sysrolemenuOption allows management of the mutation configuration using functional options.
+type sysrolemenuOption func(*SysRoleMenuMutation)
+
+// newSysRoleMenuMutation creates new mutation for the SysRoleMenu entity.
+func newSysRoleMenuMutation(c config, op Op, opts ...sysrolemenuOption) *SysRoleMenuMutation {
+	m := &SysRoleMenuMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysRoleMenu,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysRoleMenuID sets the ID field of the mutation.
+func withSysRoleMenuID(id int) sysrolemenuOption {
+	return func(m *SysRoleMenuMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysRoleMenu
+		)
+		m.oldValue = func(ctx context.Context) (*SysRoleMenu, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysRoleMenu.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysRoleMenu sets the old SysRoleMenu of the mutation.
+func withSysRoleMenu(node *SysRoleMenu) sysrolemenuOption {
+	return func(m *SysRoleMenuMutation) {
+		m.oldValue = func(context.Context) (*SysRoleMenu, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysRoleMenuMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysRoleMenuMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *SysRoleMenuMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// Op returns the operation name.
+func (m *SysRoleMenuMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (SysRoleMenu).
+func (m *SysRoleMenuMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysRoleMenuMutation) Fields() []string {
+	fields := make([]string, 0, 0)
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysRoleMenuMutation) Field(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysRoleMenuMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	return nil, fmt.Errorf("unknown SysRoleMenu field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysRoleMenuMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysRoleMenu field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysRoleMenuMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysRoleMenuMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysRoleMenuMutation) AddField(name string, value ent.Value) error {
+	return fmt.Errorf("unknown SysRoleMenu numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysRoleMenuMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysRoleMenuMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysRoleMenuMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown SysRoleMenu nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysRoleMenuMutation) ResetField(name string) error {
+	return fmt.Errorf("unknown SysRoleMenu field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysRoleMenuMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysRoleMenuMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysRoleMenuMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysRoleMenuMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysRoleMenuMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysRoleMenuMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysRoleMenuMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysRoleMenu unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysRoleMenuMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysRoleMenu edge %s", name)
+}
+
 // SysUserMutation represents an operation that mutates the SysUser nodes in the graph.
 type SysUserMutation struct {
 	config
@@ -472,4 +1377,229 @@ func (m *SysUserMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *SysUserMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown SysUser edge %s", name)
+}
+
+// SysUserRoleMutation represents an operation that mutates the SysUserRole nodes in the graph.
+type SysUserRoleMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysUserRole, error)
+	predicates    []predicate.SysUserRole
+}
+
+var _ ent.Mutation = (*SysUserRoleMutation)(nil)
+
+// sysuserroleOption allows management of the mutation configuration using functional options.
+type sysuserroleOption func(*SysUserRoleMutation)
+
+// newSysUserRoleMutation creates new mutation for the SysUserRole entity.
+func newSysUserRoleMutation(c config, op Op, opts ...sysuserroleOption) *SysUserRoleMutation {
+	m := &SysUserRoleMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysUserRole,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysUserRoleID sets the ID field of the mutation.
+func withSysUserRoleID(id int) sysuserroleOption {
+	return func(m *SysUserRoleMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysUserRole
+		)
+		m.oldValue = func(ctx context.Context) (*SysUserRole, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysUserRole.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysUserRole sets the old SysUserRole of the mutation.
+func withSysUserRole(node *SysUserRole) sysuserroleOption {
+	return func(m *SysUserRoleMutation) {
+		m.oldValue = func(context.Context) (*SysUserRole, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysUserRoleMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysUserRoleMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *SysUserRoleMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// Op returns the operation name.
+func (m *SysUserRoleMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (SysUserRole).
+func (m *SysUserRoleMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysUserRoleMutation) Fields() []string {
+	fields := make([]string, 0, 0)
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysUserRoleMutation) Field(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysUserRoleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	return nil, fmt.Errorf("unknown SysUserRole field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysUserRoleMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysUserRole field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysUserRoleMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysUserRoleMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysUserRoleMutation) AddField(name string, value ent.Value) error {
+	return fmt.Errorf("unknown SysUserRole numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysUserRoleMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysUserRoleMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysUserRoleMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown SysUserRole nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysUserRoleMutation) ResetField(name string) error {
+	return fmt.Errorf("unknown SysUserRole field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysUserRoleMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysUserRoleMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysUserRoleMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysUserRoleMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysUserRoleMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysUserRoleMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysUserRoleMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysUserRole unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysUserRoleMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysUserRole edge %s", name)
 }

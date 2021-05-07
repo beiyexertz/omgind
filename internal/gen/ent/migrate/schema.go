@@ -8,6 +8,39 @@ import (
 )
 
 var (
+	// SysMenusColumns holds the columns for the "sys_menus" table.
+	SysMenusColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// SysMenusTable holds the schema information for the "sys_menus" table.
+	SysMenusTable = &schema.Table{
+		Name:        "sys_menus",
+		Columns:     SysMenusColumns,
+		PrimaryKey:  []*schema.Column{SysMenusColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// SysMenuActionsColumns holds the columns for the "sys_menu_actions" table.
+	SysMenuActionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// SysMenuActionsTable holds the schema information for the "sys_menu_actions" table.
+	SysMenuActionsTable = &schema.Table{
+		Name:        "sys_menu_actions",
+		Columns:     SysMenuActionsColumns,
+		PrimaryKey:  []*schema.Column{SysMenuActionsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// SysMenuActionResourcesColumns holds the columns for the "sys_menu_action_resources" table.
+	SysMenuActionResourcesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// SysMenuActionResourcesTable holds the schema information for the "sys_menu_action_resources" table.
+	SysMenuActionResourcesTable = &schema.Table{
+		Name:        "sys_menu_action_resources",
+		Columns:     SysMenuActionResourcesColumns,
+		PrimaryKey:  []*schema.Column{SysMenuActionResourcesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// SysRolesColumns holds the columns for the "sys_roles" table.
 	SysRolesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -17,6 +50,17 @@ var (
 		Name:        "sys_roles",
 		Columns:     SysRolesColumns,
 		PrimaryKey:  []*schema.Column{SysRolesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// SysRoleMenusColumns holds the columns for the "sys_role_menus" table.
+	SysRoleMenusColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// SysRoleMenusTable holds the schema information for the "sys_role_menus" table.
+	SysRoleMenusTable = &schema.Table{
+		Name:        "sys_role_menus",
+		Columns:     SysRoleMenusColumns,
+		PrimaryKey:  []*schema.Column{SysRoleMenusColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// SysUsersColumns holds the columns for the "sys_users" table.
@@ -30,10 +74,26 @@ var (
 		PrimaryKey:  []*schema.Column{SysUsersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// SysUserRolesColumns holds the columns for the "sys_user_roles" table.
+	SysUserRolesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// SysUserRolesTable holds the schema information for the "sys_user_roles" table.
+	SysUserRolesTable = &schema.Table{
+		Name:        "sys_user_roles",
+		Columns:     SysUserRolesColumns,
+		PrimaryKey:  []*schema.Column{SysUserRolesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		SysMenusTable,
+		SysMenuActionsTable,
+		SysMenuActionResourcesTable,
 		SysRolesTable,
+		SysRoleMenusTable,
 		SysUsersTable,
+		SysUserRolesTable,
 	}
 )
 

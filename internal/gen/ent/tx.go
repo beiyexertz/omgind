@@ -12,10 +12,20 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// SysMenu is the client for interacting with the SysMenu builders.
+	SysMenu *SysMenuClient
+	// SysMenuAction is the client for interacting with the SysMenuAction builders.
+	SysMenuAction *SysMenuActionClient
+	// SysMenuActionResource is the client for interacting with the SysMenuActionResource builders.
+	SysMenuActionResource *SysMenuActionResourceClient
 	// SysRole is the client for interacting with the SysRole builders.
 	SysRole *SysRoleClient
+	// SysRoleMenu is the client for interacting with the SysRoleMenu builders.
+	SysRoleMenu *SysRoleMenuClient
 	// SysUser is the client for interacting with the SysUser builders.
 	SysUser *SysUserClient
+	// SysUserRole is the client for interacting with the SysUserRole builders.
+	SysUserRole *SysUserRoleClient
 
 	// lazily loaded.
 	client     *Client
@@ -151,8 +161,13 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.SysMenu = NewSysMenuClient(tx.config)
+	tx.SysMenuAction = NewSysMenuActionClient(tx.config)
+	tx.SysMenuActionResource = NewSysMenuActionResourceClient(tx.config)
 	tx.SysRole = NewSysRoleClient(tx.config)
+	tx.SysRoleMenu = NewSysRoleMenuClient(tx.config)
 	tx.SysUser = NewSysUserClient(tx.config)
+	tx.SysUserRole = NewSysUserRoleClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.
@@ -162,7 +177,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: SysRole.QueryXXX(), the query will be executed
+// applies a query, for example: SysMenu.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

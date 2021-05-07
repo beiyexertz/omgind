@@ -9,6 +9,45 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent"
 )
 
+// The SysMenuFunc type is an adapter to allow the use of ordinary
+// function as SysMenu mutator.
+type SysMenuFunc func(context.Context, *ent.SysMenuMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysMenuFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysMenuMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysMenuMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SysMenuActionFunc type is an adapter to allow the use of ordinary
+// function as SysMenuAction mutator.
+type SysMenuActionFunc func(context.Context, *ent.SysMenuActionMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysMenuActionFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysMenuActionMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysMenuActionMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SysMenuActionResourceFunc type is an adapter to allow the use of ordinary
+// function as SysMenuActionResource mutator.
+type SysMenuActionResourceFunc func(context.Context, *ent.SysMenuActionResourceMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysMenuActionResourceFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysMenuActionResourceMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysMenuActionResourceMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The SysRoleFunc type is an adapter to allow the use of ordinary
 // function as SysRole mutator.
 type SysRoleFunc func(context.Context, *ent.SysRoleMutation) (ent.Value, error)
@@ -22,6 +61,19 @@ func (f SysRoleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return f(ctx, mv)
 }
 
+// The SysRoleMenuFunc type is an adapter to allow the use of ordinary
+// function as SysRoleMenu mutator.
+type SysRoleMenuFunc func(context.Context, *ent.SysRoleMenuMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysRoleMenuFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysRoleMenuMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysRoleMenuMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The SysUserFunc type is an adapter to allow the use of ordinary
 // function as SysUser mutator.
 type SysUserFunc func(context.Context, *ent.SysUserMutation) (ent.Value, error)
@@ -31,6 +83,19 @@ func (f SysUserFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	mv, ok := m.(*ent.SysUserMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysUserMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SysUserRoleFunc type is an adapter to allow the use of ordinary
+// function as SysUserRole mutator.
+type SysUserRoleFunc func(context.Context, *ent.SysUserRoleMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysUserRoleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysUserRoleMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysUserRoleMutation", m)
 	}
 	return f(ctx, mv)
 }

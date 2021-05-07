@@ -24,8 +24,13 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
-	SysRole []ent.Hook
-	SysUser []ent.Hook
+	SysMenu               []ent.Hook
+	SysMenuAction         []ent.Hook
+	SysMenuActionResource []ent.Hook
+	SysRole               []ent.Hook
+	SysRoleMenu           []ent.Hook
+	SysUser               []ent.Hook
+	SysUserRole           []ent.Hook
 }
 
 // Options applies the options on the config object.

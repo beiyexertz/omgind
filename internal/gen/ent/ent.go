@@ -10,8 +10,13 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -32,8 +37,13 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		sysrole.Table: sysrole.ValidColumn,
-		sysuser.Table: sysuser.ValidColumn,
+		sysmenu.Table:               sysmenu.ValidColumn,
+		sysmenuaction.Table:         sysmenuaction.ValidColumn,
+		sysmenuactionresource.Table: sysmenuactionresource.ValidColumn,
+		sysrole.Table:               sysrole.ValidColumn,
+		sysrolemenu.Table:           sysrolemenu.ValidColumn,
+		sysuser.Table:               sysuser.ValidColumn,
+		sysuserrole.Table:           sysuserrole.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {
