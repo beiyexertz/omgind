@@ -12,6 +12,12 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// SysCasbinRule is the client for interacting with the SysCasbinRule builders.
+	SysCasbinRule *SysCasbinRuleClient
+	// SysDict is the client for interacting with the SysDict builders.
+	SysDict *SysDictClient
+	// SysDictItem is the client for interacting with the SysDictItem builders.
+	SysDictItem *SysDictItemClient
 	// SysMenu is the client for interacting with the SysMenu builders.
 	SysMenu *SysMenuClient
 	// SysMenuAction is the client for interacting with the SysMenuAction builders.
@@ -161,6 +167,9 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.SysCasbinRule = NewSysCasbinRuleClient(tx.config)
+	tx.SysDict = NewSysDictClient(tx.config)
+	tx.SysDictItem = NewSysDictItemClient(tx.config)
 	tx.SysMenu = NewSysMenuClient(tx.config)
 	tx.SysMenuAction = NewSysMenuActionClient(tx.config)
 	tx.SysMenuActionResource = NewSysMenuActionResourceClient(tx.config)
@@ -177,7 +186,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: SysMenu.QueryXXX(), the query will be executed
+// applies a query, for example: SysCasbinRule.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

@@ -9,6 +9,9 @@ import (
 
 	"github.com/wanhello/omgind/internal/gen/ent/migrate"
 
+	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
+	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
+	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
@@ -19,6 +22,7 @@ import (
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // Client is the client that holds all ent builders.
@@ -26,6 +30,12 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// SysCasbinRule is the client for interacting with the SysCasbinRule builders.
+	SysCasbinRule *SysCasbinRuleClient
+	// SysDict is the client for interacting with the SysDict builders.
+	SysDict *SysDictClient
+	// SysDictItem is the client for interacting with the SysDictItem builders.
+	SysDictItem *SysDictItemClient
 	// SysMenu is the client for interacting with the SysMenu builders.
 	SysMenu *SysMenuClient
 	// SysMenuAction is the client for interacting with the SysMenuAction builders.
@@ -53,6 +63,9 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.SysCasbinRule = NewSysCasbinRuleClient(c.config)
+	c.SysDict = NewSysDictClient(c.config)
+	c.SysDictItem = NewSysDictItemClient(c.config)
 	c.SysMenu = NewSysMenuClient(c.config)
 	c.SysMenuAction = NewSysMenuActionClient(c.config)
 	c.SysMenuActionResource = NewSysMenuActionResourceClient(c.config)
@@ -93,6 +106,9 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:                   ctx,
 		config:                cfg,
+		SysCasbinRule:         NewSysCasbinRuleClient(cfg),
+		SysDict:               NewSysDictClient(cfg),
+		SysDictItem:           NewSysDictItemClient(cfg),
 		SysMenu:               NewSysMenuClient(cfg),
 		SysMenuAction:         NewSysMenuActionClient(cfg),
 		SysMenuActionResource: NewSysMenuActionResourceClient(cfg),
@@ -118,6 +134,9 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
 		config:                cfg,
+		SysCasbinRule:         NewSysCasbinRuleClient(cfg),
+		SysDict:               NewSysDictClient(cfg),
+		SysDictItem:           NewSysDictItemClient(cfg),
 		SysMenu:               NewSysMenuClient(cfg),
 		SysMenuAction:         NewSysMenuActionClient(cfg),
 		SysMenuActionResource: NewSysMenuActionResourceClient(cfg),
@@ -131,7 +150,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		SysMenu.
+//		SysCasbinRule.
 //		Query().
 //		Count(ctx)
 //
@@ -154,6 +173,9 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.SysCasbinRule.Use(hooks...)
+	c.SysDict.Use(hooks...)
+	c.SysDictItem.Use(hooks...)
 	c.SysMenu.Use(hooks...)
 	c.SysMenuAction.Use(hooks...)
 	c.SysMenuActionResource.Use(hooks...)
@@ -161,6 +183,308 @@ func (c *Client) Use(hooks ...Hook) {
 	c.SysRoleMenu.Use(hooks...)
 	c.SysUser.Use(hooks...)
 	c.SysUserRole.Use(hooks...)
+}
+
+// SysCasbinRuleClient is a client for the SysCasbinRule schema.
+type SysCasbinRuleClient struct {
+	config
+}
+
+// NewSysCasbinRuleClient returns a client for the SysCasbinRule from the given config.
+func NewSysCasbinRuleClient(c config) *SysCasbinRuleClient {
+	return &SysCasbinRuleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `syscasbinrule.Hooks(f(g(h())))`.
+func (c *SysCasbinRuleClient) Use(hooks ...Hook) {
+	c.hooks.SysCasbinRule = append(c.hooks.SysCasbinRule, hooks...)
+}
+
+// Create returns a create builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Create() *SysCasbinRuleCreate {
+	mutation := newSysCasbinRuleMutation(c.config, OpCreate)
+	return &SysCasbinRuleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysCasbinRule entities.
+func (c *SysCasbinRuleClient) CreateBulk(builders ...*SysCasbinRuleCreate) *SysCasbinRuleCreateBulk {
+	return &SysCasbinRuleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Update() *SysCasbinRuleUpdate {
+	mutation := newSysCasbinRuleMutation(c.config, OpUpdate)
+	return &SysCasbinRuleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysCasbinRuleClient) UpdateOne(scr *SysCasbinRule) *SysCasbinRuleUpdateOne {
+	mutation := newSysCasbinRuleMutation(c.config, OpUpdateOne, withSysCasbinRule(scr))
+	return &SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysCasbinRuleClient) UpdateOneID(id string) *SysCasbinRuleUpdateOne {
+	mutation := newSysCasbinRuleMutation(c.config, OpUpdateOne, withSysCasbinRuleID(id))
+	return &SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Delete() *SysCasbinRuleDelete {
+	mutation := newSysCasbinRuleMutation(c.config, OpDelete)
+	return &SysCasbinRuleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *SysCasbinRuleClient) DeleteOne(scr *SysCasbinRule) *SysCasbinRuleDeleteOne {
+	return c.DeleteOneID(scr.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *SysCasbinRuleClient) DeleteOneID(id string) *SysCasbinRuleDeleteOne {
+	builder := c.Delete().Where(syscasbinrule.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysCasbinRuleDeleteOne{builder}
+}
+
+// Query returns a query builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Query() *SysCasbinRuleQuery {
+	return &SysCasbinRuleQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a SysCasbinRule entity by its id.
+func (c *SysCasbinRuleClient) Get(ctx context.Context, id string) (*SysCasbinRule, error) {
+	return c.Query().Where(syscasbinrule.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysCasbinRuleClient) GetX(ctx context.Context, id string) *SysCasbinRule {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysCasbinRuleClient) Hooks() []Hook {
+	return c.hooks.SysCasbinRule
+}
+
+// SysDictClient is a client for the SysDict schema.
+type SysDictClient struct {
+	config
+}
+
+// NewSysDictClient returns a client for the SysDict from the given config.
+func NewSysDictClient(c config) *SysDictClient {
+	return &SysDictClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysdict.Hooks(f(g(h())))`.
+func (c *SysDictClient) Use(hooks ...Hook) {
+	c.hooks.SysDict = append(c.hooks.SysDict, hooks...)
+}
+
+// Create returns a create builder for SysDict.
+func (c *SysDictClient) Create() *SysDictCreate {
+	mutation := newSysDictMutation(c.config, OpCreate)
+	return &SysDictCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysDict entities.
+func (c *SysDictClient) CreateBulk(builders ...*SysDictCreate) *SysDictCreateBulk {
+	return &SysDictCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysDict.
+func (c *SysDictClient) Update() *SysDictUpdate {
+	mutation := newSysDictMutation(c.config, OpUpdate)
+	return &SysDictUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysDictClient) UpdateOne(sd *SysDict) *SysDictUpdateOne {
+	mutation := newSysDictMutation(c.config, OpUpdateOne, withSysDict(sd))
+	return &SysDictUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysDictClient) UpdateOneID(id string) *SysDictUpdateOne {
+	mutation := newSysDictMutation(c.config, OpUpdateOne, withSysDictID(id))
+	return &SysDictUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysDict.
+func (c *SysDictClient) Delete() *SysDictDelete {
+	mutation := newSysDictMutation(c.config, OpDelete)
+	return &SysDictDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *SysDictClient) DeleteOne(sd *SysDict) *SysDictDeleteOne {
+	return c.DeleteOneID(sd.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *SysDictClient) DeleteOneID(id string) *SysDictDeleteOne {
+	builder := c.Delete().Where(sysdict.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysDictDeleteOne{builder}
+}
+
+// Query returns a query builder for SysDict.
+func (c *SysDictClient) Query() *SysDictQuery {
+	return &SysDictQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a SysDict entity by its id.
+func (c *SysDictClient) Get(ctx context.Context, id string) (*SysDict, error) {
+	return c.Query().Where(sysdict.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysDictClient) GetX(ctx context.Context, id string) *SysDict {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QuerySysDictItems queries the SysDictItems edge of a SysDict.
+func (c *SysDictClient) QuerySysDictItems(sd *SysDict) *SysDictItemQuery {
+	query := &SysDictItemQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysdict.Table, sysdict.FieldID, id),
+			sqlgraph.To(sysdictitem.Table, sysdictitem.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysdict.SysDictItemsTable, sysdict.SysDictItemsColumn),
+		)
+		fromV = sqlgraph.Neighbors(sd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SysDictClient) Hooks() []Hook {
+	return c.hooks.SysDict
+}
+
+// SysDictItemClient is a client for the SysDictItem schema.
+type SysDictItemClient struct {
+	config
+}
+
+// NewSysDictItemClient returns a client for the SysDictItem from the given config.
+func NewSysDictItemClient(c config) *SysDictItemClient {
+	return &SysDictItemClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysdictitem.Hooks(f(g(h())))`.
+func (c *SysDictItemClient) Use(hooks ...Hook) {
+	c.hooks.SysDictItem = append(c.hooks.SysDictItem, hooks...)
+}
+
+// Create returns a create builder for SysDictItem.
+func (c *SysDictItemClient) Create() *SysDictItemCreate {
+	mutation := newSysDictItemMutation(c.config, OpCreate)
+	return &SysDictItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysDictItem entities.
+func (c *SysDictItemClient) CreateBulk(builders ...*SysDictItemCreate) *SysDictItemCreateBulk {
+	return &SysDictItemCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysDictItem.
+func (c *SysDictItemClient) Update() *SysDictItemUpdate {
+	mutation := newSysDictItemMutation(c.config, OpUpdate)
+	return &SysDictItemUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysDictItemClient) UpdateOne(sdi *SysDictItem) *SysDictItemUpdateOne {
+	mutation := newSysDictItemMutation(c.config, OpUpdateOne, withSysDictItem(sdi))
+	return &SysDictItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysDictItemClient) UpdateOneID(id string) *SysDictItemUpdateOne {
+	mutation := newSysDictItemMutation(c.config, OpUpdateOne, withSysDictItemID(id))
+	return &SysDictItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysDictItem.
+func (c *SysDictItemClient) Delete() *SysDictItemDelete {
+	mutation := newSysDictItemMutation(c.config, OpDelete)
+	return &SysDictItemDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *SysDictItemClient) DeleteOne(sdi *SysDictItem) *SysDictItemDeleteOne {
+	return c.DeleteOneID(sdi.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *SysDictItemClient) DeleteOneID(id string) *SysDictItemDeleteOne {
+	builder := c.Delete().Where(sysdictitem.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysDictItemDeleteOne{builder}
+}
+
+// Query returns a query builder for SysDictItem.
+func (c *SysDictItemClient) Query() *SysDictItemQuery {
+	return &SysDictItemQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a SysDictItem entity by its id.
+func (c *SysDictItemClient) Get(ctx context.Context, id string) (*SysDictItem, error) {
+	return c.Query().Where(sysdictitem.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysDictItemClient) GetX(ctx context.Context, id string) *SysDictItem {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QuerySysDict queries the SysDict edge of a SysDictItem.
+func (c *SysDictItemClient) QuerySysDict(sdi *SysDictItem) *SysDictQuery {
+	query := &SysDictQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sdi.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysdictitem.Table, sysdictitem.FieldID, id),
+			sqlgraph.To(sysdict.Table, sysdict.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysdictitem.SysDictTable, sysdictitem.SysDictColumn),
+		)
+		fromV = sqlgraph.Neighbors(sdi.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SysDictItemClient) Hooks() []Hook {
+	return c.hooks.SysDictItem
 }
 
 // SysMenuClient is a client for the SysMenu schema.
@@ -653,7 +977,7 @@ func (c *SysUserClient) UpdateOne(su *SysUser) *SysUserUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysUserClient) UpdateOneID(id int) *SysUserUpdateOne {
+func (c *SysUserClient) UpdateOneID(id string) *SysUserUpdateOne {
 	mutation := newSysUserMutation(c.config, OpUpdateOne, withSysUserID(id))
 	return &SysUserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -670,7 +994,7 @@ func (c *SysUserClient) DeleteOne(su *SysUser) *SysUserDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysUserClient) DeleteOneID(id int) *SysUserDeleteOne {
+func (c *SysUserClient) DeleteOneID(id string) *SysUserDeleteOne {
 	builder := c.Delete().Where(sysuser.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -685,12 +1009,12 @@ func (c *SysUserClient) Query() *SysUserQuery {
 }
 
 // Get returns a SysUser entity by its id.
-func (c *SysUserClient) Get(ctx context.Context, id int) (*SysUser, error) {
+func (c *SysUserClient) Get(ctx context.Context, id string) (*SysUser, error) {
 	return c.Query().Where(sysuser.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysUserClient) GetX(ctx context.Context, id int) *SysUser {
+func (c *SysUserClient) GetX(ctx context.Context, id string) *SysUser {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

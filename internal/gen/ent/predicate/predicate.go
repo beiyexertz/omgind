@@ -6,6 +6,15 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// SysCasbinRule is the predicate function for syscasbinrule builders.
+type SysCasbinRule func(*sql.Selector)
+
+// SysDict is the predicate function for sysdict builders.
+type SysDict func(*sql.Selector)
+
+// SysDictItem is the predicate function for sysdictitem builders.
+type SysDictItem func(*sql.Selector)
+
 // SysMenu is the predicate function for sysmenu builders.
 type SysMenu func(*sql.Selector)
 

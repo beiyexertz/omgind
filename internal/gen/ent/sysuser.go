@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
@@ -12,9 +13,45 @@ import (
 
 // SysUser is the model entity for the SysUser schema.
 type SysUser struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	// 主键
+	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
+	// Sort holds the value of the "sort" field.
+	// 排序, 在数据库里的排序
+	Sort int32 `json:"sort,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	// 创建时间,由程序自动生成
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	// 更新时间,由程序自动生成
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	// 删除时间,
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// UserName holds the value of the "UserName" field.
+	// 用户名
+	UserName string `json:"user_name,omitempty"`
+	// RealName holds the value of the "RealName" field.
+	RealName string `json:"RealName,omitempty"`
+	// FirstName holds the value of the "FirstName" field.
+	// 名
+	FirstName *string `json:"first_name,omitempty"`
+	// LastName holds the value of the "LastName" field.
+	// 姓
+	LastName *string `json:"last_name,omitempty"`
+	// Password holds the value of the "Password" field.
+	// 密码
+	Password string `json:"-"`
+	// Email holds the value of the "Email" field.
+	// 电子邮箱
+	Email string `json:"email,omitempty"`
+	// Phone holds the value of the "Phone" field.
+	// 电话号码
+	Phone string `json:"phone,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -22,8 +59,14 @@ func (*SysUser) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuser.FieldID:
+		case sysuser.FieldIsDel:
+			values[i] = new(sql.NullBool)
+		case sysuser.FieldSort:
 			values[i] = new(sql.NullInt64)
+		case sysuser.FieldID, sysuser.FieldUserName, sysuser.FieldRealName, sysuser.FieldFirstName, sysuser.FieldLastName, sysuser.FieldPassword, sysuser.FieldEmail, sysuser.FieldPhone:
+			values[i] = new(sql.NullString)
+		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeletedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type SysUser", columns[i])
 		}
@@ -40,11 +83,86 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case sysuser.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				su.ID = value.String
 			}
-			su.ID = int(value.Int64)
+		case sysuser.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				su.IsDel = value.Bool
+			}
+		case sysuser.FieldSort:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field sort", values[i])
+			} else if value.Valid {
+				su.Sort = int32(value.Int64)
+			}
+		case sysuser.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+			} else if value.Valid {
+				su.CreatedAt = value.Time
+			}
+		case sysuser.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+			} else if value.Valid {
+				su.UpdatedAt = value.Time
+			}
+		case sysuser.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				su.DeletedAt = new(time.Time)
+				*su.DeletedAt = value.Time
+			}
+		case sysuser.FieldUserName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field UserName", values[i])
+			} else if value.Valid {
+				su.UserName = value.String
+			}
+		case sysuser.FieldRealName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field RealName", values[i])
+			} else if value.Valid {
+				su.RealName = value.String
+			}
+		case sysuser.FieldFirstName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field FirstName", values[i])
+			} else if value.Valid {
+				su.FirstName = new(string)
+				*su.FirstName = value.String
+			}
+		case sysuser.FieldLastName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field LastName", values[i])
+			} else if value.Valid {
+				su.LastName = new(string)
+				*su.LastName = value.String
+			}
+		case sysuser.FieldPassword:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field Password", values[i])
+			} else if value.Valid {
+				su.Password = value.String
+			}
+		case sysuser.FieldEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field Email", values[i])
+			} else if value.Valid {
+				su.Email = value.String
+			}
+		case sysuser.FieldPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field Phone", values[i])
+			} else if value.Valid {
+				su.Phone = value.String
+			}
 		}
 	}
 	return nil
@@ -73,6 +191,35 @@ func (su *SysUser) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysUser(")
 	builder.WriteString(fmt.Sprintf("id=%v", su.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", su.IsDel))
+	builder.WriteString(", sort=")
+	builder.WriteString(fmt.Sprintf("%v", su.Sort))
+	builder.WriteString(", created_at=")
+	builder.WriteString(su.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", updated_at=")
+	builder.WriteString(su.UpdatedAt.Format(time.ANSIC))
+	if v := su.DeletedAt; v != nil {
+		builder.WriteString(", deleted_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", UserName=")
+	builder.WriteString(su.UserName)
+	builder.WriteString(", RealName=")
+	builder.WriteString(su.RealName)
+	if v := su.FirstName; v != nil {
+		builder.WriteString(", FirstName=")
+		builder.WriteString(*v)
+	}
+	if v := su.LastName; v != nil {
+		builder.WriteString(", LastName=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", Password=<sensitive>")
+	builder.WriteString(", Email=")
+	builder.WriteString(su.Email)
+	builder.WriteString(", Phone=")
+	builder.WriteString(su.Phone)
 	builder.WriteByte(')')
 	return builder.String()
 }

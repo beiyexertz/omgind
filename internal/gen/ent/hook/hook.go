@@ -9,6 +9,45 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent"
 )
 
+// The SysCasbinRuleFunc type is an adapter to allow the use of ordinary
+// function as SysCasbinRule mutator.
+type SysCasbinRuleFunc func(context.Context, *ent.SysCasbinRuleMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysCasbinRuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysCasbinRuleMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysCasbinRuleMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SysDictFunc type is an adapter to allow the use of ordinary
+// function as SysDict mutator.
+type SysDictFunc func(context.Context, *ent.SysDictMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysDictFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysDictMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysDictMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The SysDictItemFunc type is an adapter to allow the use of ordinary
+// function as SysDictItem mutator.
+type SysDictItemFunc func(context.Context, *ent.SysDictItemMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysDictItemFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.SysDictItemMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysDictItemMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The SysMenuFunc type is an adapter to allow the use of ordinary
 // function as SysMenu mutator.
 type SysMenuFunc func(context.Context, *ent.SysMenuMutation) (ent.Value, error)

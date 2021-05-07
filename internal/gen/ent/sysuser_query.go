@@ -84,8 +84,8 @@ func (suq *SysUserQuery) FirstX(ctx context.Context) *SysUser {
 
 // FirstID returns the first SysUser ID from the query.
 // Returns a *NotFoundError when no SysUser ID was found.
-func (suq *SysUserQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (suq *SysUserQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = suq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +97,7 @@ func (suq *SysUserQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (suq *SysUserQuery) FirstIDX(ctx context.Context) int {
+func (suq *SysUserQuery) FirstIDX(ctx context.Context) string {
 	id, err := suq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +135,8 @@ func (suq *SysUserQuery) OnlyX(ctx context.Context) *SysUser {
 // OnlyID is like Only, but returns the only SysUser ID in the query.
 // Returns a *NotSingularError when exactly one SysUser ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (suq *SysUserQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (suq *SysUserQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = suq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +152,7 @@ func (suq *SysUserQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (suq *SysUserQuery) OnlyIDX(ctx context.Context) int {
+func (suq *SysUserQuery) OnlyIDX(ctx context.Context) string {
 	id, err := suq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +178,8 @@ func (suq *SysUserQuery) AllX(ctx context.Context) []*SysUser {
 }
 
 // IDs executes the query and returns a list of SysUser IDs.
-func (suq *SysUserQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (suq *SysUserQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := suq.Select(sysuser.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func (suq *SysUserQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (suq *SysUserQuery) IDsX(ctx context.Context) []int {
+func (suq *SysUserQuery) IDsX(ctx context.Context) []string {
 	ids, err := suq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,6 +249,19 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.SysUser.Query().
+//		GroupBy(sysuser.FieldIsDel).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (suq *SysUserQuery) GroupBy(field string, fields ...string) *SysUserGroupBy {
 	group := &SysUserGroupBy{config: suq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +276,17 @@ func (suq *SysUserQuery) GroupBy(field string, fields ...string) *SysUserGroupBy
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//	}
+//
+//	client.SysUser.Query().
+//		Select(sysuser.FieldIsDel).
+//		Scan(ctx, &v)
+//
 func (suq *SysUserQuery) Select(field string, fields ...string) *SysUserSelect {
 	suq.fields = append([]string{field}, fields...)
 	return &SysUserSelect{SysUserQuery: suq}
@@ -329,7 +353,7 @@ func (suq *SysUserQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysuser.Table,
 			Columns: sysuser.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysuser.FieldID,
 			},
 		},

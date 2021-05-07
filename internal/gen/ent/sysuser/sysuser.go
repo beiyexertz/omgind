@@ -2,11 +2,39 @@
 
 package sysuser
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the sysuser type in the database.
 	Label = "sys_user"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
+	// FieldSort holds the string denoting the sort field in the database.
+	FieldSort = "sort"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "crtd_at"
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "uptd_at"
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
+	FieldDeletedAt = "dltd_at"
+	// FieldUserName holds the string denoting the username field in the database.
+	FieldUserName = "user_name"
+	// FieldRealName holds the string denoting the realname field in the database.
+	FieldRealName = "real_name"
+	// FieldFirstName holds the string denoting the firstname field in the database.
+	FieldFirstName = "first_name"
+	// FieldLastName holds the string denoting the lastname field in the database.
+	FieldLastName = "last_name"
+	// FieldPassword holds the string denoting the password field in the database.
+	FieldPassword = "passwd"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_users"
 )
@@ -14,6 +42,18 @@ const (
 // Columns holds all SQL columns for sysuser fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
+	FieldSort,
+	FieldCreatedAt,
+	FieldUpdatedAt,
+	FieldDeletedAt,
+	FieldUserName,
+	FieldRealName,
+	FieldFirstName,
+	FieldLastName,
+	FieldPassword,
+	FieldEmail,
+	FieldPhone,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -25,3 +65,34 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
+	// DefaultSort holds the default value on creation for the "sort" field.
+	DefaultSort int32
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
+	UpdateDefaultUpdatedAt func() time.Time
+	// UserNameValidator is a validator for the "UserName" field. It is called by the builders before save.
+	UserNameValidator func(string) error
+	// RealNameValidator is a validator for the "RealName" field. It is called by the builders before save.
+	RealNameValidator func(string) error
+	// FirstNameValidator is a validator for the "FirstName" field. It is called by the builders before save.
+	FirstNameValidator func(string) error
+	// LastNameValidator is a validator for the "LastName" field. It is called by the builders before save.
+	LastNameValidator func(string) error
+	// PasswordValidator is a validator for the "Password" field. It is called by the builders before save.
+	PasswordValidator func(string) error
+	// EmailValidator is a validator for the "Email" field. It is called by the builders before save.
+	EmailValidator func(string) error
+	// PhoneValidator is a validator for the "Phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
+	// DefaultID holds the default value on creation for the "id" field.
+	DefaultID string
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
+)

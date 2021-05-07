@@ -4,7 +4,9 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -18,6 +20,148 @@ type SysUserCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (suc *SysUserCreate) SetIsDel(b bool) *SysUserCreate {
+	suc.mutation.SetIsDel(b)
+	return suc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableIsDel(b *bool) *SysUserCreate {
+	if b != nil {
+		suc.SetIsDel(*b)
+	}
+	return suc
+}
+
+// SetSort sets the "sort" field.
+func (suc *SysUserCreate) SetSort(i int32) *SysUserCreate {
+	suc.mutation.SetSort(i)
+	return suc
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableSort(i *int32) *SysUserCreate {
+	if i != nil {
+		suc.SetSort(*i)
+	}
+	return suc
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (suc *SysUserCreate) SetCreatedAt(t time.Time) *SysUserCreate {
+	suc.mutation.SetCreatedAt(t)
+	return suc
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableCreatedAt(t *time.Time) *SysUserCreate {
+	if t != nil {
+		suc.SetCreatedAt(*t)
+	}
+	return suc
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (suc *SysUserCreate) SetUpdatedAt(t time.Time) *SysUserCreate {
+	suc.mutation.SetUpdatedAt(t)
+	return suc
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableUpdatedAt(t *time.Time) *SysUserCreate {
+	if t != nil {
+		suc.SetUpdatedAt(*t)
+	}
+	return suc
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (suc *SysUserCreate) SetDeletedAt(t time.Time) *SysUserCreate {
+	suc.mutation.SetDeletedAt(t)
+	return suc
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableDeletedAt(t *time.Time) *SysUserCreate {
+	if t != nil {
+		suc.SetDeletedAt(*t)
+	}
+	return suc
+}
+
+// SetUserName sets the "UserName" field.
+func (suc *SysUserCreate) SetUserName(s string) *SysUserCreate {
+	suc.mutation.SetUserName(s)
+	return suc
+}
+
+// SetRealName sets the "RealName" field.
+func (suc *SysUserCreate) SetRealName(s string) *SysUserCreate {
+	suc.mutation.SetRealName(s)
+	return suc
+}
+
+// SetFirstName sets the "FirstName" field.
+func (suc *SysUserCreate) SetFirstName(s string) *SysUserCreate {
+	suc.mutation.SetFirstName(s)
+	return suc
+}
+
+// SetNillableFirstName sets the "FirstName" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableFirstName(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetFirstName(*s)
+	}
+	return suc
+}
+
+// SetLastName sets the "LastName" field.
+func (suc *SysUserCreate) SetLastName(s string) *SysUserCreate {
+	suc.mutation.SetLastName(s)
+	return suc
+}
+
+// SetNillableLastName sets the "LastName" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableLastName(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetLastName(*s)
+	}
+	return suc
+}
+
+// SetPassword sets the "Password" field.
+func (suc *SysUserCreate) SetPassword(s string) *SysUserCreate {
+	suc.mutation.SetPassword(s)
+	return suc
+}
+
+// SetEmail sets the "Email" field.
+func (suc *SysUserCreate) SetEmail(s string) *SysUserCreate {
+	suc.mutation.SetEmail(s)
+	return suc
+}
+
+// SetPhone sets the "Phone" field.
+func (suc *SysUserCreate) SetPhone(s string) *SysUserCreate {
+	suc.mutation.SetPhone(s)
+	return suc
+}
+
+// SetID sets the "id" field.
+func (suc *SysUserCreate) SetID(s string) *SysUserCreate {
+	suc.mutation.SetID(s)
+	return suc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableID(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetID(*s)
+	}
+	return suc
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suc *SysUserCreate) Mutation() *SysUserMutation {
 	return suc.mutation
@@ -29,6 +173,7 @@ func (suc *SysUserCreate) Save(ctx context.Context) (*SysUser, error) {
 		err  error
 		node *SysUser
 	)
+	suc.defaults()
 	if len(suc.hooks) == 0 {
 		if err = suc.check(); err != nil {
 			return nil, err
@@ -67,8 +212,99 @@ func (suc *SysUserCreate) SaveX(ctx context.Context) *SysUser {
 	return v
 }
 
+// defaults sets the default values of the builder before save.
+func (suc *SysUserCreate) defaults() {
+	if _, ok := suc.mutation.IsDel(); !ok {
+		v := sysuser.DefaultIsDel
+		suc.mutation.SetIsDel(v)
+	}
+	if _, ok := suc.mutation.Sort(); !ok {
+		v := sysuser.DefaultSort
+		suc.mutation.SetSort(v)
+	}
+	if _, ok := suc.mutation.CreatedAt(); !ok {
+		v := sysuser.DefaultCreatedAt()
+		suc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := suc.mutation.UpdatedAt(); !ok {
+		v := sysuser.DefaultUpdatedAt()
+		suc.mutation.SetUpdatedAt(v)
+	}
+	if _, ok := suc.mutation.ID(); !ok {
+		v := sysuser.DefaultID
+		suc.mutation.SetID(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (suc *SysUserCreate) check() error {
+	if _, ok := suc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
+	if _, ok := suc.mutation.Sort(); !ok {
+		return &ValidationError{Name: "sort", err: errors.New("ent: missing required field \"sort\"")}
+	}
+	if _, ok := suc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New("ent: missing required field \"created_at\"")}
+	}
+	if _, ok := suc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New("ent: missing required field \"updated_at\"")}
+	}
+	if _, ok := suc.mutation.UserName(); !ok {
+		return &ValidationError{Name: "UserName", err: errors.New("ent: missing required field \"UserName\"")}
+	}
+	if v, ok := suc.mutation.UserName(); ok {
+		if err := sysuser.UserNameValidator(v); err != nil {
+			return &ValidationError{Name: "UserName", err: fmt.Errorf("ent: validator failed for field \"UserName\": %w", err)}
+		}
+	}
+	if _, ok := suc.mutation.RealName(); !ok {
+		return &ValidationError{Name: "RealName", err: errors.New("ent: missing required field \"RealName\"")}
+	}
+	if v, ok := suc.mutation.RealName(); ok {
+		if err := sysuser.RealNameValidator(v); err != nil {
+			return &ValidationError{Name: "RealName", err: fmt.Errorf("ent: validator failed for field \"RealName\": %w", err)}
+		}
+	}
+	if v, ok := suc.mutation.FirstName(); ok {
+		if err := sysuser.FirstNameValidator(v); err != nil {
+			return &ValidationError{Name: "FirstName", err: fmt.Errorf("ent: validator failed for field \"FirstName\": %w", err)}
+		}
+	}
+	if v, ok := suc.mutation.LastName(); ok {
+		if err := sysuser.LastNameValidator(v); err != nil {
+			return &ValidationError{Name: "LastName", err: fmt.Errorf("ent: validator failed for field \"LastName\": %w", err)}
+		}
+	}
+	if _, ok := suc.mutation.Password(); !ok {
+		return &ValidationError{Name: "Password", err: errors.New("ent: missing required field \"Password\"")}
+	}
+	if v, ok := suc.mutation.Password(); ok {
+		if err := sysuser.PasswordValidator(v); err != nil {
+			return &ValidationError{Name: "Password", err: fmt.Errorf("ent: validator failed for field \"Password\": %w", err)}
+		}
+	}
+	if _, ok := suc.mutation.Email(); !ok {
+		return &ValidationError{Name: "Email", err: errors.New("ent: missing required field \"Email\"")}
+	}
+	if v, ok := suc.mutation.Email(); ok {
+		if err := sysuser.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "Email", err: fmt.Errorf("ent: validator failed for field \"Email\": %w", err)}
+		}
+	}
+	if _, ok := suc.mutation.Phone(); !ok {
+		return &ValidationError{Name: "Phone", err: errors.New("ent: missing required field \"Phone\"")}
+	}
+	if v, ok := suc.mutation.Phone(); ok {
+		if err := sysuser.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "Phone", err: fmt.Errorf("ent: validator failed for field \"Phone\": %w", err)}
+		}
+	}
+	if v, ok := suc.mutation.ID(); ok {
+		if err := sysuser.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -80,8 +316,6 @@ func (suc *SysUserCreate) sqlSave(ctx context.Context) (*SysUser, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
 	return _node, nil
 }
 
@@ -91,11 +325,111 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysuser.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysuser.FieldID,
 			},
 		}
 	)
+	if id, ok := suc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := suc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuser.FieldIsDel,
+		})
+		_node.IsDel = value
+	}
+	if value, ok := suc.mutation.Sort(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysuser.FieldSort,
+		})
+		_node.Sort = value
+	}
+	if value, ok := suc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuser.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := suc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuser.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
+	if value, ok := suc.mutation.DeletedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuser.FieldDeletedAt,
+		})
+		_node.DeletedAt = &value
+	}
+	if value, ok := suc.mutation.UserName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldUserName,
+		})
+		_node.UserName = value
+	}
+	if value, ok := suc.mutation.RealName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldRealName,
+		})
+		_node.RealName = value
+	}
+	if value, ok := suc.mutation.FirstName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldFirstName,
+		})
+		_node.FirstName = &value
+	}
+	if value, ok := suc.mutation.LastName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldLastName,
+		})
+		_node.LastName = &value
+	}
+	if value, ok := suc.mutation.Password(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldPassword,
+		})
+		_node.Password = value
+	}
+	if value, ok := suc.mutation.Email(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldEmail,
+		})
+		_node.Email = value
+	}
+	if value, ok := suc.mutation.Phone(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuser.FieldPhone,
+		})
+		_node.Phone = value
+	}
 	return _node, _spec
 }
 
@@ -113,6 +447,7 @@ func (sucb *SysUserCreateBulk) Save(ctx context.Context) ([]*SysUser, error) {
 	for i := range sucb.builders {
 		func(i int, root context.Context) {
 			builder := sucb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*SysUserMutation)
 				if !ok {
@@ -138,8 +473,6 @@ func (sucb *SysUserCreateBulk) Save(ctx context.Context) ([]*SysUser, error) {
 				if err != nil {
 					return nil, err
 				}
-				id := specs[i].ID.Value.(int64)
-				nodes[i].ID = int(id)
 				return nodes[i], nil
 			})
 			for i := len(builder.hooks) - 1; i >= 0; i-- {

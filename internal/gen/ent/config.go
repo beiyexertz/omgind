@@ -24,6 +24,9 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
+	SysCasbinRule         []ent.Hook
+	SysDict               []ent.Hook
+	SysDictItem           []ent.Hook
 	SysMenu               []ent.Hook
 	SysMenuAction         []ent.Hook
 	SysMenuActionResource []ent.Hook

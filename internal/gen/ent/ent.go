@@ -10,6 +10,9 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
+	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
+	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
@@ -37,6 +40,9 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
+		syscasbinrule.Table:         syscasbinrule.ValidColumn,
+		sysdict.Table:               sysdict.ValidColumn,
+		sysdictitem.Table:           sysdictitem.ValidColumn,
 		sysmenu.Table:               sysmenu.ValidColumn,
 		sysmenuaction.Table:         sysmenuaction.ValidColumn,
 		sysmenuactionresource.Table: sysmenuactionresource.ValidColumn,

@@ -31,7 +31,7 @@ type User struct {
 	RealName  string     `gorm:"column:real_name;size:64;index;default:'';not null;"`  // 真实姓名
 	FirstName string     `gorm:"column:first_name;size:32;index;default:'';not null;"` // 真实名
 	LastName  string     `gorm:"column:last_name;size:32;index;default:'';not null;"`  // 真实姓
-	Password  string     `gorm:"column:password;size:128;default:'';not null;"`        // 密码(sha1(md5(明文))加密)
+	Password  string     `gorm:"column:password;size:256;default:'';not null;"`        // 密码(sha1(md5(明文))加密)
 	Email     *string    `gorm:"column:email;size:255;index;"`                         // 邮箱
 	Phone     *string    `gorm:"column:phone;size:20;index;"`                          // 手机号
 	Status    int        `gorm:"column:status;index;default:0;not null;"`              // 状态(1:启用 2:停用)
