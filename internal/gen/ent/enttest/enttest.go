@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"github.com/wanhello/omgind/internal/app/generated/ent"
+	"github.com/wanhello/omgind/internal/gen/ent"
 	// required by schema hooks.
-	_ "github.com/wanhello/omgind/internal/app/generated/ent/runtime"
+	_ "github.com/wanhello/omgind/internal/gen/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

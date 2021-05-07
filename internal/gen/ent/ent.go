@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysrole"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 )
 
 // ent aliases to avoid import conflicts in user's code.

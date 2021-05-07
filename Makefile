@@ -27,8 +27,7 @@ wire:
 	@wire gen ./internal/app
 
 entc:
-	@#entc generate ./internal/schema/entity --target ./internal/app/model/entcd
-	@entc generate ./internal/schema/entity --target ./internal/app/generated/ent
+	@entc generate ./internal/schema/entity --target ./internal/gen/ent
 
 test:
 	cd ./internal/app/test && go test -v

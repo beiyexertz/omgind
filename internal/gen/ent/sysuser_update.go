@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/wanhello/omgind/internal/app/generated/ent/predicate"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/predicate"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 )
 
 // SysUserUpdate is the builder for updating SysUser entities.

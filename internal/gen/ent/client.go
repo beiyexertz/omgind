@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/wanhello/omgind/internal/app/generated/ent/migrate"
+	"github.com/wanhello/omgind/internal/gen/ent/migrate"
 
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysrole"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

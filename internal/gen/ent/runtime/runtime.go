@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/wanhello/omgind/internal/app/generated/ent/runtime.go
+// The schema-stitching logic is generated in github.com/wanhello/omgind/internal/gen/ent/runtime.go
 
 const (
 	Version = "v0.8.0"                                          // Version of ent codegen.

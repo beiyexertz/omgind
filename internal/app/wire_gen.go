@@ -137,14 +137,24 @@ func BuildInjector() (*Injector, func(), error) {
 		UserAPI:        apiUser,
 	}
 	engine := InitGinEngine(routerRouter)
+	client, cleanup5, err := InitEntClient()
+	if err != nil {
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
 	injector := &Injector{
 		Engine:         engine,
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
 		MenuSrv:        serviceMenu,
 		RedisCli:       cmdable,
+		EntCli:         client,
 	}
 	return injector, func() {
+		cleanup5()
 		cleanup4()
 		cleanup3()
 		cleanup2()

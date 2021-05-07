@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/wanhello/omgind/internal/app/generated/ent"
+	"github.com/wanhello/omgind/internal/gen/ent"
 )
 
 // The SysRoleFunc type is an adapter to allow the use of ordinary

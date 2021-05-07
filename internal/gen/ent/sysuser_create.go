@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 )
 
 // SysUserCreate is the builder for creating a SysUser entity.

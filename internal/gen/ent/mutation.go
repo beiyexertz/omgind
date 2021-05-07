@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"entgo.io/ent"
-	"github.com/wanhello/omgind/internal/app/generated/ent/predicate"
+	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 )
 
 const (

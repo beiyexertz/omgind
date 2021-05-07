@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
 )
 
 // SysRoleCreate is the builder for creating a SysRole entity.

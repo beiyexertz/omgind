@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 )
 
 // SysUser is the model entity for the SysUser schema.

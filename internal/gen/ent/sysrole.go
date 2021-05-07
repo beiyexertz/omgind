@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/wanhello/omgind/internal/app/generated/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
 )
 
 // SysRole is the model entity for the SysRole schema.
