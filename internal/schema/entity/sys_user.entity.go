@@ -2,6 +2,7 @@ package entity
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
@@ -53,5 +54,7 @@ func (su SysUser) Indexes() []ent.Index {
 
 // Edges of the SysUser.
 func (SysUser) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("userRoles", SysUserRole.Type).Comment("userroles: "),
+	}
 }
