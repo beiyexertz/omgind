@@ -2,6 +2,7 @@ package entity
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
@@ -32,5 +33,7 @@ func (SysMenuAction) Fields() []ent.Field {
 
 // Edges of the SysMenuAction.
 func (SysMenuAction) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("resources", SysMenuActionResource.Type),
+	}
 }
