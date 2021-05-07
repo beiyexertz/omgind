@@ -6,7 +6,7 @@ import "time"
 type Role struct {
 	ID        string    `json:"id"`                                    // 唯一标识
 	Name      string    `json:"name" binding:"required"`               // 角色名称
-	Sequence  int       `json:"sequence"`                              // 排序值
+	Sort      int       `json:"sort"`                                  // 排序值
 	Memo      string    `json:"memo"`                                  // 备注
 	Status    int       `json:"status" binding:"required,max=2,min=1"` // 状态(1:启用 2:禁用)
 	Creator   string    `json:"creator"`                               // 创建者

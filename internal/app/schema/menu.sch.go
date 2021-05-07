@@ -11,7 +11,7 @@ import (
 type Menu struct {
 	ID         string      `json:"id"`                                         // 唯一标识
 	Name       string      `json:"name" binding:"required"`                    // 菜单名称
-	Sequence   int         `json:"sequence"`                                   // 排序值
+	Sort       int         `json:"Sort"`                                       // 排序值
 	Icon       string      `json:"icon"`                                       // 菜单图标
 	Router     string      `json:"router"`                                     // 访问路由
 	ParentID   string      `json:"parent_id"`                                  // 父级ID
@@ -60,7 +60,7 @@ func (a Menus) Len() int {
 }
 
 func (a Menus) Less(i, j int) bool {
-	return a[i].Sequence > a[j].Sequence
+	return a[i].Sort > a[j].Sort
 }
 
 func (a Menus) Swap(i, j int) {
@@ -109,7 +109,7 @@ func (a Menus) ToTree() MenuTrees {
 			Router:     item.Router,
 			ParentID:   item.ParentID,
 			ParentPath: item.ParentPath,
-			Sequence:   item.Sequence,
+			Sort:       item.Sort,
 			ShowStatus: item.ShowStatus,
 			Status:     item.Status,
 			Actions:    item.Actions,
@@ -138,7 +138,7 @@ type MenuTree struct {
 	Router     string      `yaml:"router,omitempty" json:"router"`               // 访问路由
 	ParentID   string      `yaml:"-" json:"parent_id"`                           // 父级ID
 	ParentPath string      `yaml:"-" json:"parent_path"`                         // 父级路径
-	Sequence   int         `yaml:"sequence" json:"sequence"`                     // 排序值
+	Sort       int         `yaml:"sort" json:"sort"`                             // 排序值
 	ShowStatus int         `yaml:"-" json:"show_status"`                         // 显示状态(1:显示 2:隐藏)
 	Status     int         `yaml:"-" json:"status"`                              // 状态(1:启用 2:禁用)
 	Actions    MenuActions `yaml:"actions,omitempty" json:"actions"`             // 动作列表
