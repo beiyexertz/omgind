@@ -10,7 +10,11 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 	"github.com/wanhello/omgind/internal/schema/entity"
 )
 
@@ -199,6 +203,24 @@ func init() {
 	sysdictitemDescLabel := sysdictitemFields[0].Descriptor()
 	// sysdictitem.LabelValidator is a validator for the "label" field. It is called by the builders before save.
 	sysdictitem.LabelValidator = sysdictitemDescLabel.Validators[0].(func(string) error)
+	// sysdictitemDescDictID is the schema descriptor for dict_id field.
+	sysdictitemDescDictID := sysdictitemFields[3].Descriptor()
+	// sysdictitem.DictIDValidator is a validator for the "dict_id" field. It is called by the builders before save.
+	sysdictitem.DictIDValidator = func() func(string) error {
+		validators := sysdictitemDescDictID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_SysDict string) error {
+			for _, fn := range fns {
+				if err := fn(_SysDict); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// sysdictitemDescID is the schema descriptor for id field.
 	sysdictitemDescID := sysdictitemMixinFields0[0].Descriptor()
 	// sysdictitem.DefaultID holds the default value on creation for the id field.
@@ -447,6 +469,282 @@ func init() {
 			return nil
 		}
 	}()
+	sysmenuactionresourceMixin := entity.SysMenuActionResource{}.Mixin()
+	sysmenuactionresourceMixinFields0 := sysmenuactionresourceMixin[0].Fields()
+	_ = sysmenuactionresourceMixinFields0
+	sysmenuactionresourceMixinFields1 := sysmenuactionresourceMixin[1].Fields()
+	_ = sysmenuactionresourceMixinFields1
+	sysmenuactionresourceMixinFields2 := sysmenuactionresourceMixin[2].Fields()
+	_ = sysmenuactionresourceMixinFields2
+	sysmenuactionresourceMixinFields3 := sysmenuactionresourceMixin[3].Fields()
+	_ = sysmenuactionresourceMixinFields3
+	sysmenuactionresourceMixinFields4 := sysmenuactionresourceMixin[4].Fields()
+	_ = sysmenuactionresourceMixinFields4
+	sysmenuactionresourceFields := entity.SysMenuActionResource{}.Fields()
+	_ = sysmenuactionresourceFields
+	// sysmenuactionresourceDescIsDel is the schema descriptor for is_del field.
+	sysmenuactionresourceDescIsDel := sysmenuactionresourceMixinFields0[1].Descriptor()
+	// sysmenuactionresource.DefaultIsDel holds the default value on creation for the is_del field.
+	sysmenuactionresource.DefaultIsDel = sysmenuactionresourceDescIsDel.Default.(bool)
+	// sysmenuactionresourceDescSort is the schema descriptor for sort field.
+	sysmenuactionresourceDescSort := sysmenuactionresourceMixinFields1[0].Descriptor()
+	// sysmenuactionresource.DefaultSort holds the default value on creation for the sort field.
+	sysmenuactionresource.DefaultSort = sysmenuactionresourceDescSort.Default.(int32)
+	// sysmenuactionresourceDescMemo is the schema descriptor for memo field.
+	sysmenuactionresourceDescMemo := sysmenuactionresourceMixinFields2[0].Descriptor()
+	// sysmenuactionresource.DefaultMemo holds the default value on creation for the memo field.
+	sysmenuactionresource.DefaultMemo = sysmenuactionresourceDescMemo.Default.(string)
+	// sysmenuactionresource.MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	sysmenuactionresource.MemoValidator = sysmenuactionresourceDescMemo.Validators[0].(func(string) error)
+	// sysmenuactionresourceDescCreatedAt is the schema descriptor for created_at field.
+	sysmenuactionresourceDescCreatedAt := sysmenuactionresourceMixinFields3[0].Descriptor()
+	// sysmenuactionresource.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sysmenuactionresource.DefaultCreatedAt = sysmenuactionresourceDescCreatedAt.Default.(func() time.Time)
+	// sysmenuactionresourceDescUpdatedAt is the schema descriptor for updated_at field.
+	sysmenuactionresourceDescUpdatedAt := sysmenuactionresourceMixinFields3[1].Descriptor()
+	// sysmenuactionresource.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sysmenuactionresource.DefaultUpdatedAt = sysmenuactionresourceDescUpdatedAt.Default.(func() time.Time)
+	// sysmenuactionresource.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sysmenuactionresource.UpdateDefaultUpdatedAt = sysmenuactionresourceDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// sysmenuactionresourceDescStatus is the schema descriptor for status field.
+	sysmenuactionresourceDescStatus := sysmenuactionresourceMixinFields4[0].Descriptor()
+	// sysmenuactionresource.DefaultStatus holds the default value on creation for the status field.
+	sysmenuactionresource.DefaultStatus = sysmenuactionresourceDescStatus.Default.(int32)
+	// sysmenuactionresourceDescMethod is the schema descriptor for method field.
+	sysmenuactionresourceDescMethod := sysmenuactionresourceFields[0].Descriptor()
+	// sysmenuactionresource.MethodValidator is a validator for the "method" field. It is called by the builders before save.
+	sysmenuactionresource.MethodValidator = func() func(string) error {
+		validators := sysmenuactionresourceDescMethod.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(method string) error {
+			for _, fn := range fns {
+				if err := fn(method); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysmenuactionresourceDescPath is the schema descriptor for path field.
+	sysmenuactionresourceDescPath := sysmenuactionresourceFields[1].Descriptor()
+	// sysmenuactionresource.PathValidator is a validator for the "path" field. It is called by the builders before save.
+	sysmenuactionresource.PathValidator = func() func(string) error {
+		validators := sysmenuactionresourceDescPath.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_path string) error {
+			for _, fn := range fns {
+				if err := fn(_path); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysmenuactionresourceDescActionID is the schema descriptor for action_id field.
+	sysmenuactionresourceDescActionID := sysmenuactionresourceFields[2].Descriptor()
+	// sysmenuactionresource.ActionIDValidator is a validator for the "action_id" field. It is called by the builders before save.
+	sysmenuactionresource.ActionIDValidator = func() func(string) error {
+		validators := sysmenuactionresourceDescActionID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(action string) error {
+			for _, fn := range fns {
+				if err := fn(action); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysmenuactionresourceDescID is the schema descriptor for id field.
+	sysmenuactionresourceDescID := sysmenuactionresourceMixinFields0[0].Descriptor()
+	// sysmenuactionresource.DefaultID holds the default value on creation for the id field.
+	sysmenuactionresource.DefaultID = sysmenuactionresourceDescID.Default.(string)
+	// sysmenuactionresource.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysmenuactionresource.IDValidator = func() func(string) error {
+		validators := sysmenuactionresourceDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	sysroleMixin := entity.SysRole{}.Mixin()
+	sysroleMixinFields0 := sysroleMixin[0].Fields()
+	_ = sysroleMixinFields0
+	sysroleMixinFields1 := sysroleMixin[1].Fields()
+	_ = sysroleMixinFields1
+	sysroleMixinFields2 := sysroleMixin[2].Fields()
+	_ = sysroleMixinFields2
+	sysroleMixinFields3 := sysroleMixin[3].Fields()
+	_ = sysroleMixinFields3
+	sysroleMixinFields4 := sysroleMixin[4].Fields()
+	_ = sysroleMixinFields4
+	sysroleFields := entity.SysRole{}.Fields()
+	_ = sysroleFields
+	// sysroleDescIsDel is the schema descriptor for is_del field.
+	sysroleDescIsDel := sysroleMixinFields0[1].Descriptor()
+	// sysrole.DefaultIsDel holds the default value on creation for the is_del field.
+	sysrole.DefaultIsDel = sysroleDescIsDel.Default.(bool)
+	// sysroleDescStatus is the schema descriptor for status field.
+	sysroleDescStatus := sysroleMixinFields1[0].Descriptor()
+	// sysrole.DefaultStatus holds the default value on creation for the status field.
+	sysrole.DefaultStatus = sysroleDescStatus.Default.(int32)
+	// sysroleDescSort is the schema descriptor for sort field.
+	sysroleDescSort := sysroleMixinFields2[0].Descriptor()
+	// sysrole.DefaultSort holds the default value on creation for the sort field.
+	sysrole.DefaultSort = sysroleDescSort.Default.(int32)
+	// sysroleDescMemo is the schema descriptor for memo field.
+	sysroleDescMemo := sysroleMixinFields3[0].Descriptor()
+	// sysrole.DefaultMemo holds the default value on creation for the memo field.
+	sysrole.DefaultMemo = sysroleDescMemo.Default.(string)
+	// sysrole.MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	sysrole.MemoValidator = sysroleDescMemo.Validators[0].(func(string) error)
+	// sysroleDescCreatedAt is the schema descriptor for created_at field.
+	sysroleDescCreatedAt := sysroleMixinFields4[0].Descriptor()
+	// sysrole.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sysrole.DefaultCreatedAt = sysroleDescCreatedAt.Default.(func() time.Time)
+	// sysroleDescUpdatedAt is the schema descriptor for updated_at field.
+	sysroleDescUpdatedAt := sysroleMixinFields4[1].Descriptor()
+	// sysrole.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sysrole.DefaultUpdatedAt = sysroleDescUpdatedAt.Default.(func() time.Time)
+	// sysrole.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sysrole.UpdateDefaultUpdatedAt = sysroleDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// sysroleDescName is the schema descriptor for name field.
+	sysroleDescName := sysroleFields[0].Descriptor()
+	// sysrole.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	sysrole.NameValidator = func() func(string) error {
+		validators := sysroleDescName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+		}
+		return func(name string) error {
+			for _, fn := range fns {
+				if err := fn(name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysroleDescID is the schema descriptor for id field.
+	sysroleDescID := sysroleMixinFields0[0].Descriptor()
+	// sysrole.DefaultID holds the default value on creation for the id field.
+	sysrole.DefaultID = sysroleDescID.Default.(string)
+	// sysrole.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysrole.IDValidator = func() func(string) error {
+		validators := sysroleDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	sysrolemenuMixin := entity.SysRoleMenu{}.Mixin()
+	sysrolemenuMixinFields0 := sysrolemenuMixin[0].Fields()
+	_ = sysrolemenuMixinFields0
+	sysrolemenuMixinFields1 := sysrolemenuMixin[1].Fields()
+	_ = sysrolemenuMixinFields1
+	sysrolemenuFields := entity.SysRoleMenu{}.Fields()
+	_ = sysrolemenuFields
+	// sysrolemenuDescIsDel is the schema descriptor for is_del field.
+	sysrolemenuDescIsDel := sysrolemenuMixinFields0[1].Descriptor()
+	// sysrolemenu.DefaultIsDel holds the default value on creation for the is_del field.
+	sysrolemenu.DefaultIsDel = sysrolemenuDescIsDel.Default.(bool)
+	// sysrolemenuDescCreatedAt is the schema descriptor for created_at field.
+	sysrolemenuDescCreatedAt := sysrolemenuMixinFields1[0].Descriptor()
+	// sysrolemenu.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sysrolemenu.DefaultCreatedAt = sysrolemenuDescCreatedAt.Default.(func() time.Time)
+	// sysrolemenuDescUpdatedAt is the schema descriptor for updated_at field.
+	sysrolemenuDescUpdatedAt := sysrolemenuMixinFields1[1].Descriptor()
+	// sysrolemenu.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sysrolemenu.DefaultUpdatedAt = sysrolemenuDescUpdatedAt.Default.(func() time.Time)
+	// sysrolemenu.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sysrolemenu.UpdateDefaultUpdatedAt = sysrolemenuDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// sysrolemenuDescRoleID is the schema descriptor for role_id field.
+	sysrolemenuDescRoleID := sysrolemenuFields[0].Descriptor()
+	// sysrolemenu.RoleIDValidator is a validator for the "role_id" field. It is called by the builders before save.
+	sysrolemenu.RoleIDValidator = func() func(string) error {
+		validators := sysrolemenuDescRoleID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(role_id string) error {
+			for _, fn := range fns {
+				if err := fn(role_id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysrolemenuDescMenuID is the schema descriptor for menu_id field.
+	sysrolemenuDescMenuID := sysrolemenuFields[1].Descriptor()
+	// sysrolemenu.MenuIDValidator is a validator for the "menu_id" field. It is called by the builders before save.
+	sysrolemenu.MenuIDValidator = func() func(string) error {
+		validators := sysrolemenuDescMenuID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(menu_id string) error {
+			for _, fn := range fns {
+				if err := fn(menu_id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysrolemenuDescActionID is the schema descriptor for action_id field.
+	sysrolemenuDescActionID := sysrolemenuFields[2].Descriptor()
+	// sysrolemenu.ActionIDValidator is a validator for the "action_id" field. It is called by the builders before save.
+	sysrolemenu.ActionIDValidator = sysrolemenuDescActionID.Validators[0].(func(string) error)
+	// sysrolemenuDescID is the schema descriptor for id field.
+	sysrolemenuDescID := sysrolemenuMixinFields0[0].Descriptor()
+	// sysrolemenu.DefaultID holds the default value on creation for the id field.
+	sysrolemenu.DefaultID = sysrolemenuDescID.Default.(string)
+	// sysrolemenu.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysrolemenu.IDValidator = func() func(string) error {
+		validators := sysrolemenuDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysuserMixin := entity.SysUser{}.Mixin()
 	sysuserMixinFields0 := sysuserMixin[0].Fields()
 	_ = sysuserMixinFields0
@@ -534,6 +832,83 @@ func init() {
 	// sysuser.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysuser.IDValidator = func() func(string) error {
 		validators := sysuserDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	sysuserroleMixin := entity.SysUserRole{}.Mixin()
+	sysuserroleMixinFields0 := sysuserroleMixin[0].Fields()
+	_ = sysuserroleMixinFields0
+	sysuserroleMixinFields1 := sysuserroleMixin[1].Fields()
+	_ = sysuserroleMixinFields1
+	sysuserroleFields := entity.SysUserRole{}.Fields()
+	_ = sysuserroleFields
+	// sysuserroleDescIsDel is the schema descriptor for is_del field.
+	sysuserroleDescIsDel := sysuserroleMixinFields0[1].Descriptor()
+	// sysuserrole.DefaultIsDel holds the default value on creation for the is_del field.
+	sysuserrole.DefaultIsDel = sysuserroleDescIsDel.Default.(bool)
+	// sysuserroleDescCreatedAt is the schema descriptor for created_at field.
+	sysuserroleDescCreatedAt := sysuserroleMixinFields1[0].Descriptor()
+	// sysuserrole.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sysuserrole.DefaultCreatedAt = sysuserroleDescCreatedAt.Default.(func() time.Time)
+	// sysuserroleDescUpdatedAt is the schema descriptor for updated_at field.
+	sysuserroleDescUpdatedAt := sysuserroleMixinFields1[1].Descriptor()
+	// sysuserrole.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sysuserrole.DefaultUpdatedAt = sysuserroleDescUpdatedAt.Default.(func() time.Time)
+	// sysuserrole.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sysuserrole.UpdateDefaultUpdatedAt = sysuserroleDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// sysuserroleDescUserID is the schema descriptor for user_id field.
+	sysuserroleDescUserID := sysuserroleFields[0].Descriptor()
+	// sysuserrole.UserIDValidator is a validator for the "user_id" field. It is called by the builders before save.
+	sysuserrole.UserIDValidator = func() func(string) error {
+		validators := sysuserroleDescUserID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(user string) error {
+			for _, fn := range fns {
+				if err := fn(user); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysuserroleDescRoleID is the schema descriptor for role_id field.
+	sysuserroleDescRoleID := sysuserroleFields[1].Descriptor()
+	// sysuserrole.RoleIDValidator is a validator for the "role_id" field. It is called by the builders before save.
+	sysuserrole.RoleIDValidator = func() func(string) error {
+		validators := sysuserroleDescRoleID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(role string) error {
+			for _, fn := range fns {
+				if err := fn(role); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// sysuserroleDescID is the schema descriptor for id field.
+	sysuserroleDescID := sysuserroleMixinFields0[0].Descriptor()
+	// sysuserrole.DefaultID holds the default value on creation for the id field.
+	sysuserrole.DefaultID = sysuserroleDescID.Default.(string)
+	// sysuserrole.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysuserrole.IDValidator = func() func(string) error {
+		validators := sysuserroleDescID.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),

@@ -5,16 +5,75 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
 // SysMenuActionResource is the model entity for the SysMenuActionResource schema.
 type SysMenuActionResource struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	// 主键
+	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
+	// Sort holds the value of the "sort" field.
+	// 排序, 在数据库里的排序
+	Sort int32 `json:"sort,omitempty"`
+	// Memo holds the value of the "memo" field.
+	// 备注
+	Memo string `json:"memo,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	// 创建时间,由程序自动生成
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	// 更新时间,由程序自动生成
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	// 删除时间,
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// Status holds the value of the "status" field.
+	// 状态,
+	Status int32 `json:"sort,omitempty"`
+	// Method holds the value of the "method" field.
+	// 资源HTTP请求方式(支持正则, get, delete, delete, put, patch )
+	Method string `json:"method,omitempty"`
+	// Path holds the value of the "path" field.
+	// 资源HTTP请求路径（支持/:id匹配）
+	Path string `json:"path,omitempty"`
+	// ActionID holds the value of the "action_id" field.
+	// sys_menu_action.id
+	ActionID string `json:"action_id,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SysMenuActionResourceQuery when eager-loading is set.
+	Edges SysMenuActionResourceEdges `json:"edges"`
+}
+
+// SysMenuActionResourceEdges holds the relations/edges for other nodes in the graph.
+type SysMenuActionResourceEdges struct {
+	// Action holds the value of the action edge.
+	Action *SysMenuAction `json:"action,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// ActionOrErr returns the Action value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SysMenuActionResourceEdges) ActionOrErr() (*SysMenuAction, error) {
+	if e.loadedTypes[0] {
+		if e.Action == nil {
+			// The edge action was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: sysmenuaction.Label}
+		}
+		return e.Action, nil
+	}
+	return nil, &NotLoadedError{edge: "action"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -22,8 +81,14 @@ func (*SysMenuActionResource) scanValues(columns []string) ([]interface{}, error
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenuactionresource.FieldID:
+		case sysmenuactionresource.FieldIsDel:
+			values[i] = new(sql.NullBool)
+		case sysmenuactionresource.FieldSort, sysmenuactionresource.FieldStatus:
 			values[i] = new(sql.NullInt64)
+		case sysmenuactionresource.FieldID, sysmenuactionresource.FieldMemo, sysmenuactionresource.FieldMethod, sysmenuactionresource.FieldPath, sysmenuactionresource.FieldActionID:
+			values[i] = new(sql.NullString)
+		case sysmenuactionresource.FieldCreatedAt, sysmenuactionresource.FieldUpdatedAt, sysmenuactionresource.FieldDeletedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type SysMenuActionResource", columns[i])
 		}
@@ -40,14 +105,80 @@ func (smar *SysMenuActionResource) assignValues(columns []string, values []inter
 	for i := range columns {
 		switch columns[i] {
 		case sysmenuactionresource.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				smar.ID = value.String
 			}
-			smar.ID = int(value.Int64)
+		case sysmenuactionresource.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				smar.IsDel = value.Bool
+			}
+		case sysmenuactionresource.FieldSort:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field sort", values[i])
+			} else if value.Valid {
+				smar.Sort = int32(value.Int64)
+			}
+		case sysmenuactionresource.FieldMemo:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field memo", values[i])
+			} else if value.Valid {
+				smar.Memo = value.String
+			}
+		case sysmenuactionresource.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+			} else if value.Valid {
+				smar.CreatedAt = value.Time
+			}
+		case sysmenuactionresource.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+			} else if value.Valid {
+				smar.UpdatedAt = value.Time
+			}
+		case sysmenuactionresource.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				smar.DeletedAt = new(time.Time)
+				*smar.DeletedAt = value.Time
+			}
+		case sysmenuactionresource.FieldStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				smar.Status = int32(value.Int64)
+			}
+		case sysmenuactionresource.FieldMethod:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field method", values[i])
+			} else if value.Valid {
+				smar.Method = value.String
+			}
+		case sysmenuactionresource.FieldPath:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field path", values[i])
+			} else if value.Valid {
+				smar.Path = value.String
+			}
+		case sysmenuactionresource.FieldActionID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field action_id", values[i])
+			} else if value.Valid {
+				smar.ActionID = value.String
+			}
 		}
 	}
 	return nil
+}
+
+// QueryAction queries the "action" edge of the SysMenuActionResource entity.
+func (smar *SysMenuActionResource) QueryAction() *SysMenuActionQuery {
+	return (&SysMenuActionResourceClient{config: smar.config}).QueryAction(smar)
 }
 
 // Update returns a builder for updating this SysMenuActionResource.
@@ -73,6 +204,28 @@ func (smar *SysMenuActionResource) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysMenuActionResource(")
 	builder.WriteString(fmt.Sprintf("id=%v", smar.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", smar.IsDel))
+	builder.WriteString(", sort=")
+	builder.WriteString(fmt.Sprintf("%v", smar.Sort))
+	builder.WriteString(", memo=")
+	builder.WriteString(smar.Memo)
+	builder.WriteString(", created_at=")
+	builder.WriteString(smar.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", updated_at=")
+	builder.WriteString(smar.UpdatedAt.Format(time.ANSIC))
+	if v := smar.DeletedAt; v != nil {
+		builder.WriteString(", deleted_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", status=")
+	builder.WriteString(fmt.Sprintf("%v", smar.Status))
+	builder.WriteString(", method=")
+	builder.WriteString(smar.Method)
+	builder.WriteString(", path=")
+	builder.WriteString(smar.Path)
+	builder.WriteString(", action_id=")
+	builder.WriteString(smar.ActionID)
 	builder.WriteByte(')')
 	return builder.String()
 }

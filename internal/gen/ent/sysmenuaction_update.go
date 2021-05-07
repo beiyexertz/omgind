@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
 // SysMenuActionUpdate is the builder for updating SysMenuAction entities.
@@ -141,9 +142,45 @@ func (smau *SysMenuActionUpdate) SetName(s string) *SysMenuActionUpdate {
 	return smau
 }
 
+// AddResourceIDs adds the "resources" edge to the SysMenuActionResource entity by IDs.
+func (smau *SysMenuActionUpdate) AddResourceIDs(ids ...string) *SysMenuActionUpdate {
+	smau.mutation.AddResourceIDs(ids...)
+	return smau
+}
+
+// AddResources adds the "resources" edges to the SysMenuActionResource entity.
+func (smau *SysMenuActionUpdate) AddResources(s ...*SysMenuActionResource) *SysMenuActionUpdate {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smau.AddResourceIDs(ids...)
+}
+
 // Mutation returns the SysMenuActionMutation object of the builder.
 func (smau *SysMenuActionUpdate) Mutation() *SysMenuActionMutation {
 	return smau.mutation
+}
+
+// ClearResources clears all "resources" edges to the SysMenuActionResource entity.
+func (smau *SysMenuActionUpdate) ClearResources() *SysMenuActionUpdate {
+	smau.mutation.ClearResources()
+	return smau
+}
+
+// RemoveResourceIDs removes the "resources" edge to SysMenuActionResource entities by IDs.
+func (smau *SysMenuActionUpdate) RemoveResourceIDs(ids ...string) *SysMenuActionUpdate {
+	smau.mutation.RemoveResourceIDs(ids...)
+	return smau
+}
+
+// RemoveResources removes "resources" edges to SysMenuActionResource entities.
+func (smau *SysMenuActionUpdate) RemoveResources(s ...*SysMenuActionResource) *SysMenuActionUpdate {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smau.RemoveResourceIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -338,6 +375,60 @@ func (smau *SysMenuActionUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Column: sysmenuaction.FieldName,
 		})
 	}
+	if smau.mutation.ResourcesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smau.mutation.RemovedResourcesIDs(); len(nodes) > 0 && !smau.mutation.ResourcesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smau.mutation.ResourcesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, smau.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{sysmenuaction.Label}
@@ -471,9 +562,45 @@ func (smauo *SysMenuActionUpdateOne) SetName(s string) *SysMenuActionUpdateOne {
 	return smauo
 }
 
+// AddResourceIDs adds the "resources" edge to the SysMenuActionResource entity by IDs.
+func (smauo *SysMenuActionUpdateOne) AddResourceIDs(ids ...string) *SysMenuActionUpdateOne {
+	smauo.mutation.AddResourceIDs(ids...)
+	return smauo
+}
+
+// AddResources adds the "resources" edges to the SysMenuActionResource entity.
+func (smauo *SysMenuActionUpdateOne) AddResources(s ...*SysMenuActionResource) *SysMenuActionUpdateOne {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smauo.AddResourceIDs(ids...)
+}
+
 // Mutation returns the SysMenuActionMutation object of the builder.
 func (smauo *SysMenuActionUpdateOne) Mutation() *SysMenuActionMutation {
 	return smauo.mutation
+}
+
+// ClearResources clears all "resources" edges to the SysMenuActionResource entity.
+func (smauo *SysMenuActionUpdateOne) ClearResources() *SysMenuActionUpdateOne {
+	smauo.mutation.ClearResources()
+	return smauo
+}
+
+// RemoveResourceIDs removes the "resources" edge to SysMenuActionResource entities by IDs.
+func (smauo *SysMenuActionUpdateOne) RemoveResourceIDs(ids ...string) *SysMenuActionUpdateOne {
+	smauo.mutation.RemoveResourceIDs(ids...)
+	return smauo
+}
+
+// RemoveResources removes "resources" edges to SysMenuActionResource entities.
+func (smauo *SysMenuActionUpdateOne) RemoveResources(s ...*SysMenuActionResource) *SysMenuActionUpdateOne {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smauo.RemoveResourceIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -691,6 +818,60 @@ func (smauo *SysMenuActionUpdateOne) sqlSave(ctx context.Context) (_node *SysMen
 			Value:  value,
 			Column: sysmenuaction.FieldName,
 		})
+	}
+	if smauo.mutation.ResourcesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smauo.mutation.RemovedResourcesIDs(); len(nodes) > 0 && !smauo.mutation.ResourcesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smauo.mutation.ResourcesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysMenuAction{config: smauo.config}
 	_spec.Assign = _node.assignValues

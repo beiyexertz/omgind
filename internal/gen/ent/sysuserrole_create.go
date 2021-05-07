@@ -4,10 +4,14 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
@@ -16,6 +20,98 @@ type SysUserRoleCreate struct {
 	config
 	mutation *SysUserRoleMutation
 	hooks    []Hook
+}
+
+// SetIsDel sets the "is_del" field.
+func (surc *SysUserRoleCreate) SetIsDel(b bool) *SysUserRoleCreate {
+	surc.mutation.SetIsDel(b)
+	return surc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (surc *SysUserRoleCreate) SetNillableIsDel(b *bool) *SysUserRoleCreate {
+	if b != nil {
+		surc.SetIsDel(*b)
+	}
+	return surc
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (surc *SysUserRoleCreate) SetCreatedAt(t time.Time) *SysUserRoleCreate {
+	surc.mutation.SetCreatedAt(t)
+	return surc
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (surc *SysUserRoleCreate) SetNillableCreatedAt(t *time.Time) *SysUserRoleCreate {
+	if t != nil {
+		surc.SetCreatedAt(*t)
+	}
+	return surc
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (surc *SysUserRoleCreate) SetUpdatedAt(t time.Time) *SysUserRoleCreate {
+	surc.mutation.SetUpdatedAt(t)
+	return surc
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (surc *SysUserRoleCreate) SetNillableUpdatedAt(t *time.Time) *SysUserRoleCreate {
+	if t != nil {
+		surc.SetUpdatedAt(*t)
+	}
+	return surc
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (surc *SysUserRoleCreate) SetDeletedAt(t time.Time) *SysUserRoleCreate {
+	surc.mutation.SetDeletedAt(t)
+	return surc
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (surc *SysUserRoleCreate) SetNillableDeletedAt(t *time.Time) *SysUserRoleCreate {
+	if t != nil {
+		surc.SetDeletedAt(*t)
+	}
+	return surc
+}
+
+// SetUserID sets the "user_id" field.
+func (surc *SysUserRoleCreate) SetUserID(s string) *SysUserRoleCreate {
+	surc.mutation.SetUserID(s)
+	return surc
+}
+
+// SetRoleID sets the "role_id" field.
+func (surc *SysUserRoleCreate) SetRoleID(s string) *SysUserRoleCreate {
+	surc.mutation.SetRoleID(s)
+	return surc
+}
+
+// SetID sets the "id" field.
+func (surc *SysUserRoleCreate) SetID(s string) *SysUserRoleCreate {
+	surc.mutation.SetID(s)
+	return surc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (surc *SysUserRoleCreate) SetNillableID(s *string) *SysUserRoleCreate {
+	if s != nil {
+		surc.SetID(*s)
+	}
+	return surc
+}
+
+// SetUser sets the "user" edge to the SysUser entity.
+func (surc *SysUserRoleCreate) SetUser(s *SysUser) *SysUserRoleCreate {
+	return surc.SetUserID(s.ID)
+}
+
+// SetRole sets the "role" edge to the SysRole entity.
+func (surc *SysUserRoleCreate) SetRole(s *SysRole) *SysUserRoleCreate {
+	return surc.SetRoleID(s.ID)
 }
 
 // Mutation returns the SysUserRoleMutation object of the builder.
@@ -29,6 +125,7 @@ func (surc *SysUserRoleCreate) Save(ctx context.Context) (*SysUserRole, error) {
 		err  error
 		node *SysUserRole
 	)
+	surc.defaults()
 	if len(surc.hooks) == 0 {
 		if err = surc.check(); err != nil {
 			return nil, err
@@ -67,8 +164,64 @@ func (surc *SysUserRoleCreate) SaveX(ctx context.Context) *SysUserRole {
 	return v
 }
 
+// defaults sets the default values of the builder before save.
+func (surc *SysUserRoleCreate) defaults() {
+	if _, ok := surc.mutation.IsDel(); !ok {
+		v := sysuserrole.DefaultIsDel
+		surc.mutation.SetIsDel(v)
+	}
+	if _, ok := surc.mutation.CreatedAt(); !ok {
+		v := sysuserrole.DefaultCreatedAt()
+		surc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := surc.mutation.UpdatedAt(); !ok {
+		v := sysuserrole.DefaultUpdatedAt()
+		surc.mutation.SetUpdatedAt(v)
+	}
+	if _, ok := surc.mutation.ID(); !ok {
+		v := sysuserrole.DefaultID
+		surc.mutation.SetID(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (surc *SysUserRoleCreate) check() error {
+	if _, ok := surc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
+	if _, ok := surc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New("ent: missing required field \"created_at\"")}
+	}
+	if _, ok := surc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New("ent: missing required field \"updated_at\"")}
+	}
+	if _, ok := surc.mutation.UserID(); !ok {
+		return &ValidationError{Name: "user_id", err: errors.New("ent: missing required field \"user_id\"")}
+	}
+	if v, ok := surc.mutation.UserID(); ok {
+		if err := sysuserrole.UserIDValidator(v); err != nil {
+			return &ValidationError{Name: "user_id", err: fmt.Errorf("ent: validator failed for field \"user_id\": %w", err)}
+		}
+	}
+	if _, ok := surc.mutation.RoleID(); !ok {
+		return &ValidationError{Name: "role_id", err: errors.New("ent: missing required field \"role_id\"")}
+	}
+	if v, ok := surc.mutation.RoleID(); ok {
+		if err := sysuserrole.RoleIDValidator(v); err != nil {
+			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
+		}
+	}
+	if v, ok := surc.mutation.ID(); ok {
+		if err := sysuserrole.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
+	if _, ok := surc.mutation.UserID(); !ok {
+		return &ValidationError{Name: "user", err: errors.New("ent: missing required edge \"user\"")}
+	}
+	if _, ok := surc.mutation.RoleID(); !ok {
+		return &ValidationError{Name: "role", err: errors.New("ent: missing required edge \"role\"")}
+	}
 	return nil
 }
 
@@ -80,8 +233,6 @@ func (surc *SysUserRoleCreate) sqlSave(ctx context.Context) (*SysUserRole, error
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
 	return _node, nil
 }
 
@@ -91,11 +242,87 @@ func (surc *SysUserRoleCreate) createSpec() (*SysUserRole, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysuserrole.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysuserrole.FieldID,
 			},
 		}
 	)
+	if id, ok := surc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := surc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuserrole.FieldIsDel,
+		})
+		_node.IsDel = value
+	}
+	if value, ok := surc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := surc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
+	if value, ok := surc.mutation.DeletedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldDeletedAt,
+		})
+		_node.DeletedAt = &value
+	}
+	if nodes := surc.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.UserTable,
+			Columns: []string{sysuserrole.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.UserID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := surc.mutation.RoleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.RoleTable,
+			Columns: []string{sysuserrole.RoleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.RoleID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -113,6 +340,7 @@ func (surcb *SysUserRoleCreateBulk) Save(ctx context.Context) ([]*SysUserRole, e
 	for i := range surcb.builders {
 		func(i int, root context.Context) {
 			builder := surcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*SysUserRoleMutation)
 				if !ok {
@@ -138,8 +366,6 @@ func (surcb *SysUserRoleCreateBulk) Save(ctx context.Context) ([]*SysUserRole, e
 				if err != nil {
 					return nil, err
 				}
-				id := specs[i].ID.Value.(int64)
-				nodes[i].ID = int(id)
 				return nodes[i], nil
 			})
 			for i := len(builder.hooks) - 1; i >= 0; i-- {

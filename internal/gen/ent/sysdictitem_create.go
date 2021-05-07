@@ -123,6 +123,12 @@ func (sdic *SysDictItemCreate) SetStatus(b bool) *SysDictItemCreate {
 	return sdic
 }
 
+// SetDictID sets the "dict_id" field.
+func (sdic *SysDictItemCreate) SetDictID(s string) *SysDictItemCreate {
+	sdic.mutation.SetDictID(s)
+	return sdic
+}
+
 // SetID sets the "id" field.
 func (sdic *SysDictItemCreate) SetID(s string) *SysDictItemCreate {
 	sdic.mutation.SetID(s)
@@ -140,14 +146,6 @@ func (sdic *SysDictItemCreate) SetNillableID(s *string) *SysDictItemCreate {
 // SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
 func (sdic *SysDictItemCreate) SetSysDictID(id string) *SysDictItemCreate {
 	sdic.mutation.SetSysDictID(id)
-	return sdic
-}
-
-// SetNillableSysDictID sets the "SysDict" edge to the SysDict entity by ID if the given value is not nil.
-func (sdic *SysDictItemCreate) SetNillableSysDictID(id *string) *SysDictItemCreate {
-	if id != nil {
-		sdic = sdic.SetSysDictID(*id)
-	}
 	return sdic
 }
 
@@ -270,10 +268,21 @@ func (sdic *SysDictItemCreate) check() error {
 	if _, ok := sdic.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
 	}
+	if _, ok := sdic.mutation.DictID(); !ok {
+		return &ValidationError{Name: "dict_id", err: errors.New("ent: missing required field \"dict_id\"")}
+	}
+	if v, ok := sdic.mutation.DictID(); ok {
+		if err := sysdictitem.DictIDValidator(v); err != nil {
+			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
+		}
+	}
 	if v, ok := sdic.mutation.ID(); ok {
 		if err := sysdictitem.IDValidator(v); err != nil {
 			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
 		}
+	}
+	if _, ok := sdic.mutation.SysDictID(); !ok {
+		return &ValidationError{Name: "SysDict", err: errors.New("ent: missing required edge \"SysDict\"")}
 	}
 	return nil
 }
@@ -393,7 +402,7 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.sys_dict_sys_dict_items = &nodes[0]
+		_node.DictID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

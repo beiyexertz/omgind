@@ -2,18 +2,58 @@
 
 package sysuserrole
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the sysuserrole type in the database.
 	Label = "sys_user_role"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "crtd_at"
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "uptd_at"
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
+	FieldDeletedAt = "dltd_at"
+	// FieldUserID holds the string denoting the user_id field in the database.
+	FieldUserID = "user_id"
+	// FieldRoleID holds the string denoting the role_id field in the database.
+	FieldRoleID = "role_id"
+	// EdgeUser holds the string denoting the user edge name in mutations.
+	EdgeUser = "user"
+	// EdgeRole holds the string denoting the role edge name in mutations.
+	EdgeRole = "role"
 	// Table holds the table name of the sysuserrole in the database.
 	Table = "sys_user_roles"
+	// UserTable is the table the holds the user relation/edge.
+	UserTable = "sys_user_roles"
+	// UserInverseTable is the table name for the SysUser entity.
+	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
+	UserInverseTable = "sys_users"
+	// UserColumn is the table column denoting the user relation/edge.
+	UserColumn = "user_id"
+	// RoleTable is the table the holds the role relation/edge.
+	RoleTable = "sys_user_roles"
+	// RoleInverseTable is the table name for the SysRole entity.
+	// It exists in this package in order to avoid circular dependency with the "sysrole" package.
+	RoleInverseTable = "sys_roles"
+	// RoleColumn is the table column denoting the role relation/edge.
+	RoleColumn = "role_id"
 )
 
 // Columns holds all SQL columns for sysuserrole fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
+	FieldCreatedAt,
+	FieldUpdatedAt,
+	FieldDeletedAt,
+	FieldUserID,
+	FieldRoleID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -25,3 +65,22 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
+	UpdateDefaultUpdatedAt func() time.Time
+	// UserIDValidator is a validator for the "user_id" field. It is called by the builders before save.
+	UserIDValidator func(string) error
+	// RoleIDValidator is a validator for the "role_id" field. It is called by the builders before save.
+	RoleIDValidator func(string) error
+	// DefaultID holds the default value on creation for the "id" field.
+	DefaultID string
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
+)

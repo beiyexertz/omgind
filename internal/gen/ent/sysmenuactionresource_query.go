@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
@@ -24,6 +25,8 @@ type SysMenuActionResourceQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.SysMenuActionResource
+	// eager-loading edges.
+	withAction *SysMenuActionQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -60,6 +63,28 @@ func (smarq *SysMenuActionResourceQuery) Order(o ...OrderFunc) *SysMenuActionRes
 	return smarq
 }
 
+// QueryAction chains the current query on the "action" edge.
+func (smarq *SysMenuActionResourceQuery) QueryAction() *SysMenuActionQuery {
+	query := &SysMenuActionQuery{config: smarq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := smarq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := smarq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenuactionresource.Table, sysmenuactionresource.FieldID, selector),
+			sqlgraph.To(sysmenuaction.Table, sysmenuaction.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuactionresource.ActionTable, sysmenuactionresource.ActionColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(smarq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first SysMenuActionResource entity from the query.
 // Returns a *NotFoundError when no SysMenuActionResource was found.
 func (smarq *SysMenuActionResourceQuery) First(ctx context.Context) (*SysMenuActionResource, error) {
@@ -84,8 +109,8 @@ func (smarq *SysMenuActionResourceQuery) FirstX(ctx context.Context) *SysMenuAct
 
 // FirstID returns the first SysMenuActionResource ID from the query.
 // Returns a *NotFoundError when no SysMenuActionResource ID was found.
-func (smarq *SysMenuActionResourceQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (smarq *SysMenuActionResourceQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smarq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +122,7 @@ func (smarq *SysMenuActionResourceQuery) FirstID(ctx context.Context) (id int, e
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (smarq *SysMenuActionResourceQuery) FirstIDX(ctx context.Context) int {
+func (smarq *SysMenuActionResourceQuery) FirstIDX(ctx context.Context) string {
 	id, err := smarq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +160,8 @@ func (smarq *SysMenuActionResourceQuery) OnlyX(ctx context.Context) *SysMenuActi
 // OnlyID is like Only, but returns the only SysMenuActionResource ID in the query.
 // Returns a *NotSingularError when exactly one SysMenuActionResource ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (smarq *SysMenuActionResourceQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (smarq *SysMenuActionResourceQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smarq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +177,7 @@ func (smarq *SysMenuActionResourceQuery) OnlyID(ctx context.Context) (id int, er
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (smarq *SysMenuActionResourceQuery) OnlyIDX(ctx context.Context) int {
+func (smarq *SysMenuActionResourceQuery) OnlyIDX(ctx context.Context) string {
 	id, err := smarq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +203,8 @@ func (smarq *SysMenuActionResourceQuery) AllX(ctx context.Context) []*SysMenuAct
 }
 
 // IDs executes the query and returns a list of SysMenuActionResource IDs.
-func (smarq *SysMenuActionResourceQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (smarq *SysMenuActionResourceQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := smarq.Select(sysmenuactionresource.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +212,7 @@ func (smarq *SysMenuActionResourceQuery) IDs(ctx context.Context) ([]int, error)
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (smarq *SysMenuActionResourceQuery) IDsX(ctx context.Context) []int {
+func (smarq *SysMenuActionResourceQuery) IDsX(ctx context.Context) []string {
 	ids, err := smarq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -241,14 +266,39 @@ func (smarq *SysMenuActionResourceQuery) Clone() *SysMenuActionResourceQuery {
 		offset:     smarq.offset,
 		order:      append([]OrderFunc{}, smarq.order...),
 		predicates: append([]predicate.SysMenuActionResource{}, smarq.predicates...),
+		withAction: smarq.withAction.Clone(),
 		// clone intermediate query.
 		sql:  smarq.sql.Clone(),
 		path: smarq.path,
 	}
 }
 
+// WithAction tells the query-builder to eager-load the nodes that are connected to
+// the "action" edge. The optional arguments are used to configure the query builder of the edge.
+func (smarq *SysMenuActionResourceQuery) WithAction(opts ...func(*SysMenuActionQuery)) *SysMenuActionResourceQuery {
+	query := &SysMenuActionQuery{config: smarq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	smarq.withAction = query
+	return smarq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.SysMenuActionResource.Query().
+//		GroupBy(sysmenuactionresource.FieldIsDel).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (smarq *SysMenuActionResourceQuery) GroupBy(field string, fields ...string) *SysMenuActionResourceGroupBy {
 	group := &SysMenuActionResourceGroupBy{config: smarq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +313,17 @@ func (smarq *SysMenuActionResourceQuery) GroupBy(field string, fields ...string)
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//	}
+//
+//	client.SysMenuActionResource.Query().
+//		Select(sysmenuactionresource.FieldIsDel).
+//		Scan(ctx, &v)
+//
 func (smarq *SysMenuActionResourceQuery) Select(field string, fields ...string) *SysMenuActionResourceSelect {
 	smarq.fields = append([]string{field}, fields...)
 	return &SysMenuActionResourceSelect{SysMenuActionResourceQuery: smarq}
@@ -286,8 +347,11 @@ func (smarq *SysMenuActionResourceQuery) prepareQuery(ctx context.Context) error
 
 func (smarq *SysMenuActionResourceQuery) sqlAll(ctx context.Context) ([]*SysMenuActionResource, error) {
 	var (
-		nodes = []*SysMenuActionResource{}
-		_spec = smarq.querySpec()
+		nodes       = []*SysMenuActionResource{}
+		_spec       = smarq.querySpec()
+		loadedTypes = [1]bool{
+			smarq.withAction != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &SysMenuActionResource{config: smarq.config}
@@ -299,6 +363,7 @@ func (smarq *SysMenuActionResourceQuery) sqlAll(ctx context.Context) ([]*SysMenu
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, smarq.driver, _spec); err != nil {
@@ -307,6 +372,33 @@ func (smarq *SysMenuActionResourceQuery) sqlAll(ctx context.Context) ([]*SysMenu
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+
+	if query := smarq.withAction; query != nil {
+		ids := make([]string, 0, len(nodes))
+		nodeids := make(map[string][]*SysMenuActionResource)
+		for i := range nodes {
+			fk := nodes[i].ActionID
+			if _, ok := nodeids[fk]; !ok {
+				ids = append(ids, fk)
+			}
+			nodeids[fk] = append(nodeids[fk], nodes[i])
+		}
+		query.Where(sysmenuaction.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "action_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Action = n
+			}
+		}
+	}
+
 	return nodes, nil
 }
 
@@ -329,7 +421,7 @@ func (smarq *SysMenuActionResourceQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysmenuactionresource.Table,
 			Columns: sysmenuactionresource.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysmenuactionresource.FieldID,
 			},
 		},

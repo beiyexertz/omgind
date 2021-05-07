@@ -382,7 +382,6 @@ func (sdq *SysDictQuery) sqlAll(ctx context.Context) ([]*SysDict, error) {
 			nodeids[nodes[i].ID] = nodes[i]
 			nodes[i].Edges.SysDictItems = []*SysDictItem{}
 		}
-		query.withFKs = true
 		query.Where(predicate.SysDictItem(func(s *sql.Selector) {
 			s.Where(sql.InValues(sysdict.SysDictItemsColumn, fks...))
 		}))
@@ -391,13 +390,10 @@ func (sdq *SysDictQuery) sqlAll(ctx context.Context) ([]*SysDict, error) {
 			return nil, err
 		}
 		for _, n := range neighbors {
-			fk := n.sys_dict_sys_dict_items
-			if fk == nil {
-				return nil, fmt.Errorf(`foreign-key "sys_dict_sys_dict_items" is nil for node %v`, n.ID)
-			}
-			node, ok := nodeids[*fk]
+			fk := n.DictID
+			node, ok := nodeids[fk]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "sys_dict_sys_dict_items" returned %v for node %v`, *fk, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "dict_id" returned %v for node %v`, fk, n.ID)
 			}
 			node.Edges.SysDictItems = append(node.Edges.SysDictItems, n)
 		}

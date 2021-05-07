@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
@@ -13,6 +14,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
 // SysUserQuery is the builder for querying SysUser entities.
@@ -24,6 +26,8 @@ type SysUserQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.SysUser
+	// eager-loading edges.
+	withUserRoles *SysUserRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -58,6 +62,28 @@ func (suq *SysUserQuery) Unique(unique bool) *SysUserQuery {
 func (suq *SysUserQuery) Order(o ...OrderFunc) *SysUserQuery {
 	suq.order = append(suq.order, o...)
 	return suq
+}
+
+// QueryUserRoles chains the current query on the "userRoles" edge.
+func (suq *SysUserQuery) QueryUserRoles() *SysUserRoleQuery {
+	query := &SysUserRoleQuery{config: suq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := suq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := suq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuser.Table, sysuser.FieldID, selector),
+			sqlgraph.To(sysuserrole.Table, sysuserrole.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysuser.UserRolesTable, sysuser.UserRolesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(suq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first SysUser entity from the query.
@@ -236,15 +262,27 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 		return nil
 	}
 	return &SysUserQuery{
-		config:     suq.config,
-		limit:      suq.limit,
-		offset:     suq.offset,
-		order:      append([]OrderFunc{}, suq.order...),
-		predicates: append([]predicate.SysUser{}, suq.predicates...),
+		config:        suq.config,
+		limit:         suq.limit,
+		offset:        suq.offset,
+		order:         append([]OrderFunc{}, suq.order...),
+		predicates:    append([]predicate.SysUser{}, suq.predicates...),
+		withUserRoles: suq.withUserRoles.Clone(),
 		// clone intermediate query.
 		sql:  suq.sql.Clone(),
 		path: suq.path,
 	}
+}
+
+// WithUserRoles tells the query-builder to eager-load the nodes that are connected to
+// the "userRoles" edge. The optional arguments are used to configure the query builder of the edge.
+func (suq *SysUserQuery) WithUserRoles(opts ...func(*SysUserRoleQuery)) *SysUserQuery {
+	query := &SysUserRoleQuery{config: suq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	suq.withUserRoles = query
+	return suq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -310,8 +348,11 @@ func (suq *SysUserQuery) prepareQuery(ctx context.Context) error {
 
 func (suq *SysUserQuery) sqlAll(ctx context.Context) ([]*SysUser, error) {
 	var (
-		nodes = []*SysUser{}
-		_spec = suq.querySpec()
+		nodes       = []*SysUser{}
+		_spec       = suq.querySpec()
+		loadedTypes = [1]bool{
+			suq.withUserRoles != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &SysUser{config: suq.config}
@@ -323,6 +364,7 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context) ([]*SysUser, error) {
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, suq.driver, _spec); err != nil {
@@ -331,6 +373,32 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context) ([]*SysUser, error) {
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+
+	if query := suq.withUserRoles; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[string]*SysUser)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.UserRoles = []*SysUserRole{}
+		}
+		query.Where(predicate.SysUserRole(func(s *sql.Selector) {
+			s.Where(sql.InValues(sysuser.UserRolesColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.UserID
+			node, ok := nodeids[fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "user_id" returned %v for node %v`, fk, n.ID)
+			}
+			node.Edges.UserRoles = append(node.Edges.UserRoles, n)
+		}
+	}
+
 	return nodes, nil
 }
 

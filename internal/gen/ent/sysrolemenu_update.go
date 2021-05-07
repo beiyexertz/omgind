@@ -5,6 +5,7 @@ package ent
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -26,6 +27,78 @@ func (srmu *SysRoleMenuUpdate) Where(ps ...predicate.SysRoleMenu) *SysRoleMenuUp
 	return srmu
 }
 
+// SetIsDel sets the "is_del" field.
+func (srmu *SysRoleMenuUpdate) SetIsDel(b bool) *SysRoleMenuUpdate {
+	srmu.mutation.SetIsDel(b)
+	return srmu
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (srmu *SysRoleMenuUpdate) SetNillableIsDel(b *bool) *SysRoleMenuUpdate {
+	if b != nil {
+		srmu.SetIsDel(*b)
+	}
+	return srmu
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (srmu *SysRoleMenuUpdate) SetUpdatedAt(t time.Time) *SysRoleMenuUpdate {
+	srmu.mutation.SetUpdatedAt(t)
+	return srmu
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (srmu *SysRoleMenuUpdate) SetDeletedAt(t time.Time) *SysRoleMenuUpdate {
+	srmu.mutation.SetDeletedAt(t)
+	return srmu
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (srmu *SysRoleMenuUpdate) SetNillableDeletedAt(t *time.Time) *SysRoleMenuUpdate {
+	if t != nil {
+		srmu.SetDeletedAt(*t)
+	}
+	return srmu
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (srmu *SysRoleMenuUpdate) ClearDeletedAt() *SysRoleMenuUpdate {
+	srmu.mutation.ClearDeletedAt()
+	return srmu
+}
+
+// SetRoleID sets the "role_id" field.
+func (srmu *SysRoleMenuUpdate) SetRoleID(s string) *SysRoleMenuUpdate {
+	srmu.mutation.SetRoleID(s)
+	return srmu
+}
+
+// SetMenuID sets the "menu_id" field.
+func (srmu *SysRoleMenuUpdate) SetMenuID(s string) *SysRoleMenuUpdate {
+	srmu.mutation.SetMenuID(s)
+	return srmu
+}
+
+// SetActionID sets the "action_id" field.
+func (srmu *SysRoleMenuUpdate) SetActionID(s string) *SysRoleMenuUpdate {
+	srmu.mutation.SetActionID(s)
+	return srmu
+}
+
+// SetNillableActionID sets the "action_id" field if the given value is not nil.
+func (srmu *SysRoleMenuUpdate) SetNillableActionID(s *string) *SysRoleMenuUpdate {
+	if s != nil {
+		srmu.SetActionID(*s)
+	}
+	return srmu
+}
+
+// ClearActionID clears the value of the "action_id" field.
+func (srmu *SysRoleMenuUpdate) ClearActionID() *SysRoleMenuUpdate {
+	srmu.mutation.ClearActionID()
+	return srmu
+}
+
 // Mutation returns the SysRoleMenuMutation object of the builder.
 func (srmu *SysRoleMenuUpdate) Mutation() *SysRoleMenuMutation {
 	return srmu.mutation
@@ -37,13 +110,20 @@ func (srmu *SysRoleMenuUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	srmu.defaults()
 	if len(srmu.hooks) == 0 {
+		if err = srmu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = srmu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SysRoleMenuMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = srmu.check(); err != nil {
+				return 0, err
 			}
 			srmu.mutation = mutation
 			affected, err = srmu.sqlSave(ctx)
@@ -82,13 +162,41 @@ func (srmu *SysRoleMenuUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (srmu *SysRoleMenuUpdate) defaults() {
+	if _, ok := srmu.mutation.UpdatedAt(); !ok {
+		v := sysrolemenu.UpdateDefaultUpdatedAt()
+		srmu.mutation.SetUpdatedAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (srmu *SysRoleMenuUpdate) check() error {
+	if v, ok := srmu.mutation.RoleID(); ok {
+		if err := sysrolemenu.RoleIDValidator(v); err != nil {
+			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
+		}
+	}
+	if v, ok := srmu.mutation.MenuID(); ok {
+		if err := sysrolemenu.MenuIDValidator(v); err != nil {
+			return &ValidationError{Name: "menu_id", err: fmt.Errorf("ent: validator failed for field \"menu_id\": %w", err)}
+		}
+	}
+	if v, ok := srmu.mutation.ActionID(); ok {
+		if err := sysrolemenu.ActionIDValidator(v); err != nil {
+			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (srmu *SysRoleMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		},
@@ -99,6 +207,60 @@ func (srmu *SysRoleMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := srmu.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrolemenu.FieldIsDel,
+		})
+	}
+	if value, ok := srmu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrolemenu.FieldUpdatedAt,
+		})
+	}
+	if value, ok := srmu.mutation.DeletedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrolemenu.FieldDeletedAt,
+		})
+	}
+	if srmu.mutation.DeletedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: sysrolemenu.FieldDeletedAt,
+		})
+	}
+	if value, ok := srmu.mutation.RoleID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrolemenu.FieldRoleID,
+		})
+	}
+	if value, ok := srmu.mutation.MenuID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrolemenu.FieldMenuID,
+		})
+	}
+	if value, ok := srmu.mutation.ActionID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrolemenu.FieldActionID,
+		})
+	}
+	if srmu.mutation.ActionIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: sysrolemenu.FieldActionID,
+		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, srmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -119,6 +281,78 @@ type SysRoleMenuUpdateOne struct {
 	mutation *SysRoleMenuMutation
 }
 
+// SetIsDel sets the "is_del" field.
+func (srmuo *SysRoleMenuUpdateOne) SetIsDel(b bool) *SysRoleMenuUpdateOne {
+	srmuo.mutation.SetIsDel(b)
+	return srmuo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (srmuo *SysRoleMenuUpdateOne) SetNillableIsDel(b *bool) *SysRoleMenuUpdateOne {
+	if b != nil {
+		srmuo.SetIsDel(*b)
+	}
+	return srmuo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (srmuo *SysRoleMenuUpdateOne) SetUpdatedAt(t time.Time) *SysRoleMenuUpdateOne {
+	srmuo.mutation.SetUpdatedAt(t)
+	return srmuo
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (srmuo *SysRoleMenuUpdateOne) SetDeletedAt(t time.Time) *SysRoleMenuUpdateOne {
+	srmuo.mutation.SetDeletedAt(t)
+	return srmuo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (srmuo *SysRoleMenuUpdateOne) SetNillableDeletedAt(t *time.Time) *SysRoleMenuUpdateOne {
+	if t != nil {
+		srmuo.SetDeletedAt(*t)
+	}
+	return srmuo
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (srmuo *SysRoleMenuUpdateOne) ClearDeletedAt() *SysRoleMenuUpdateOne {
+	srmuo.mutation.ClearDeletedAt()
+	return srmuo
+}
+
+// SetRoleID sets the "role_id" field.
+func (srmuo *SysRoleMenuUpdateOne) SetRoleID(s string) *SysRoleMenuUpdateOne {
+	srmuo.mutation.SetRoleID(s)
+	return srmuo
+}
+
+// SetMenuID sets the "menu_id" field.
+func (srmuo *SysRoleMenuUpdateOne) SetMenuID(s string) *SysRoleMenuUpdateOne {
+	srmuo.mutation.SetMenuID(s)
+	return srmuo
+}
+
+// SetActionID sets the "action_id" field.
+func (srmuo *SysRoleMenuUpdateOne) SetActionID(s string) *SysRoleMenuUpdateOne {
+	srmuo.mutation.SetActionID(s)
+	return srmuo
+}
+
+// SetNillableActionID sets the "action_id" field if the given value is not nil.
+func (srmuo *SysRoleMenuUpdateOne) SetNillableActionID(s *string) *SysRoleMenuUpdateOne {
+	if s != nil {
+		srmuo.SetActionID(*s)
+	}
+	return srmuo
+}
+
+// ClearActionID clears the value of the "action_id" field.
+func (srmuo *SysRoleMenuUpdateOne) ClearActionID() *SysRoleMenuUpdateOne {
+	srmuo.mutation.ClearActionID()
+	return srmuo
+}
+
 // Mutation returns the SysRoleMenuMutation object of the builder.
 func (srmuo *SysRoleMenuUpdateOne) Mutation() *SysRoleMenuMutation {
 	return srmuo.mutation
@@ -137,13 +371,20 @@ func (srmuo *SysRoleMenuUpdateOne) Save(ctx context.Context) (*SysRoleMenu, erro
 		err  error
 		node *SysRoleMenu
 	)
+	srmuo.defaults()
 	if len(srmuo.hooks) == 0 {
+		if err = srmuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = srmuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SysRoleMenuMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = srmuo.check(); err != nil {
+				return nil, err
 			}
 			srmuo.mutation = mutation
 			node, err = srmuo.sqlSave(ctx)
@@ -182,13 +423,41 @@ func (srmuo *SysRoleMenuUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (srmuo *SysRoleMenuUpdateOne) defaults() {
+	if _, ok := srmuo.mutation.UpdatedAt(); !ok {
+		v := sysrolemenu.UpdateDefaultUpdatedAt()
+		srmuo.mutation.SetUpdatedAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (srmuo *SysRoleMenuUpdateOne) check() error {
+	if v, ok := srmuo.mutation.RoleID(); ok {
+		if err := sysrolemenu.RoleIDValidator(v); err != nil {
+			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
+		}
+	}
+	if v, ok := srmuo.mutation.MenuID(); ok {
+		if err := sysrolemenu.MenuIDValidator(v); err != nil {
+			return &ValidationError{Name: "menu_id", err: fmt.Errorf("ent: validator failed for field \"menu_id\": %w", err)}
+		}
+	}
+	if v, ok := srmuo.mutation.ActionID(); ok {
+		if err := sysrolemenu.ActionIDValidator(v); err != nil {
+			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (srmuo *SysRoleMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysRoleMenu, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		},
@@ -216,6 +485,60 @@ func (srmuo *SysRoleMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysRoleM
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := srmuo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrolemenu.FieldIsDel,
+		})
+	}
+	if value, ok := srmuo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrolemenu.FieldUpdatedAt,
+		})
+	}
+	if value, ok := srmuo.mutation.DeletedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrolemenu.FieldDeletedAt,
+		})
+	}
+	if srmuo.mutation.DeletedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: sysrolemenu.FieldDeletedAt,
+		})
+	}
+	if value, ok := srmuo.mutation.RoleID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrolemenu.FieldRoleID,
+		})
+	}
+	if value, ok := srmuo.mutation.MenuID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrolemenu.FieldMenuID,
+		})
+	}
+	if value, ok := srmuo.mutation.ActionID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrolemenu.FieldActionID,
+		})
+	}
+	if srmuo.mutation.ActionIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: sysrolemenu.FieldActionID,
+		})
 	}
 	_node = &SysRoleMenu{config: srmuo.config}
 	_spec.Assign = _node.assignValues

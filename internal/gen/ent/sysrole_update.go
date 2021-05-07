@@ -5,12 +5,14 @@ package ent
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
 // SysRoleUpdate is the builder for updating SysRole entities.
@@ -26,9 +28,147 @@ func (sru *SysRoleUpdate) Where(ps ...predicate.SysRole) *SysRoleUpdate {
 	return sru
 }
 
+// SetIsDel sets the "is_del" field.
+func (sru *SysRoleUpdate) SetIsDel(b bool) *SysRoleUpdate {
+	sru.mutation.SetIsDel(b)
+	return sru
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableIsDel(b *bool) *SysRoleUpdate {
+	if b != nil {
+		sru.SetIsDel(*b)
+	}
+	return sru
+}
+
+// SetStatus sets the "status" field.
+func (sru *SysRoleUpdate) SetStatus(i int32) *SysRoleUpdate {
+	sru.mutation.ResetStatus()
+	sru.mutation.SetStatus(i)
+	return sru
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableStatus(i *int32) *SysRoleUpdate {
+	if i != nil {
+		sru.SetStatus(*i)
+	}
+	return sru
+}
+
+// AddStatus adds i to the "status" field.
+func (sru *SysRoleUpdate) AddStatus(i int32) *SysRoleUpdate {
+	sru.mutation.AddStatus(i)
+	return sru
+}
+
+// SetSort sets the "sort" field.
+func (sru *SysRoleUpdate) SetSort(i int32) *SysRoleUpdate {
+	sru.mutation.ResetSort()
+	sru.mutation.SetSort(i)
+	return sru
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableSort(i *int32) *SysRoleUpdate {
+	if i != nil {
+		sru.SetSort(*i)
+	}
+	return sru
+}
+
+// AddSort adds i to the "sort" field.
+func (sru *SysRoleUpdate) AddSort(i int32) *SysRoleUpdate {
+	sru.mutation.AddSort(i)
+	return sru
+}
+
+// SetMemo sets the "memo" field.
+func (sru *SysRoleUpdate) SetMemo(s string) *SysRoleUpdate {
+	sru.mutation.SetMemo(s)
+	return sru
+}
+
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableMemo(s *string) *SysRoleUpdate {
+	if s != nil {
+		sru.SetMemo(*s)
+	}
+	return sru
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (sru *SysRoleUpdate) SetUpdatedAt(t time.Time) *SysRoleUpdate {
+	sru.mutation.SetUpdatedAt(t)
+	return sru
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (sru *SysRoleUpdate) SetDeletedAt(t time.Time) *SysRoleUpdate {
+	sru.mutation.SetDeletedAt(t)
+	return sru
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableDeletedAt(t *time.Time) *SysRoleUpdate {
+	if t != nil {
+		sru.SetDeletedAt(*t)
+	}
+	return sru
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (sru *SysRoleUpdate) ClearDeletedAt() *SysRoleUpdate {
+	sru.mutation.ClearDeletedAt()
+	return sru
+}
+
+// SetName sets the "name" field.
+func (sru *SysRoleUpdate) SetName(s string) *SysRoleUpdate {
+	sru.mutation.SetName(s)
+	return sru
+}
+
+// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by IDs.
+func (sru *SysRoleUpdate) AddUserRoleIDs(ids ...string) *SysRoleUpdate {
+	sru.mutation.AddUserRoleIDs(ids...)
+	return sru
+}
+
+// AddUserRoles adds the "userRoles" edges to the SysUserRole entity.
+func (sru *SysRoleUpdate) AddUserRoles(s ...*SysUserRole) *SysRoleUpdate {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.AddUserRoleIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (sru *SysRoleUpdate) Mutation() *SysRoleMutation {
 	return sru.mutation
+}
+
+// ClearUserRoles clears all "userRoles" edges to the SysUserRole entity.
+func (sru *SysRoleUpdate) ClearUserRoles() *SysRoleUpdate {
+	sru.mutation.ClearUserRoles()
+	return sru
+}
+
+// RemoveUserRoleIDs removes the "userRoles" edge to SysUserRole entities by IDs.
+func (sru *SysRoleUpdate) RemoveUserRoleIDs(ids ...string) *SysRoleUpdate {
+	sru.mutation.RemoveUserRoleIDs(ids...)
+	return sru
+}
+
+// RemoveUserRoles removes "userRoles" edges to SysUserRole entities.
+func (sru *SysRoleUpdate) RemoveUserRoles(s ...*SysUserRole) *SysRoleUpdate {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.RemoveUserRoleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -37,13 +177,20 @@ func (sru *SysRoleUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	sru.defaults()
 	if len(sru.hooks) == 0 {
+		if err = sru.check(); err != nil {
+			return 0, err
+		}
 		affected, err = sru.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SysRoleMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = sru.check(); err != nil {
+				return 0, err
 			}
 			sru.mutation = mutation
 			affected, err = sru.sqlSave(ctx)
@@ -82,13 +229,36 @@ func (sru *SysRoleUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (sru *SysRoleUpdate) defaults() {
+	if _, ok := sru.mutation.UpdatedAt(); !ok {
+		v := sysrole.UpdateDefaultUpdatedAt()
+		sru.mutation.SetUpdatedAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (sru *SysRoleUpdate) check() error {
+	if v, ok := sru.mutation.Memo(); ok {
+		if err := sysrole.MemoValidator(v); err != nil {
+			return &ValidationError{Name: "memo", err: fmt.Errorf("ent: validator failed for field \"memo\": %w", err)}
+		}
+	}
+	if v, ok := sru.mutation.Name(); ok {
+		if err := sysrole.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   sysrole.Table,
 			Columns: sysrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysrole.FieldID,
 			},
 		},
@@ -99,6 +269,129 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sru.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrole.FieldIsDel,
+		})
+	}
+	if value, ok := sru.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldStatus,
+		})
+	}
+	if value, ok := sru.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldStatus,
+		})
+	}
+	if value, ok := sru.mutation.Sort(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldSort,
+		})
+	}
+	if value, ok := sru.mutation.AddedSort(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldSort,
+		})
+	}
+	if value, ok := sru.mutation.Memo(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrole.FieldMemo,
+		})
+	}
+	if value, ok := sru.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrole.FieldUpdatedAt,
+		})
+	}
+	if value, ok := sru.mutation.DeletedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrole.FieldDeletedAt,
+		})
+	}
+	if sru.mutation.DeletedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: sysrole.FieldDeletedAt,
+		})
+	}
+	if value, ok := sru.mutation.Name(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrole.FieldName,
+		})
+	}
+	if sru.mutation.UserRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysrole.UserRolesTable,
+			Columns: []string{sysrole.UserRolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuserrole.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.RemovedUserRolesIDs(); len(nodes) > 0 && !sru.mutation.UserRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysrole.UserRolesTable,
+			Columns: []string{sysrole.UserRolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuserrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.UserRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysrole.UserRolesTable,
+			Columns: []string{sysrole.UserRolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuserrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -119,9 +412,147 @@ type SysRoleUpdateOne struct {
 	mutation *SysRoleMutation
 }
 
+// SetIsDel sets the "is_del" field.
+func (sruo *SysRoleUpdateOne) SetIsDel(b bool) *SysRoleUpdateOne {
+	sruo.mutation.SetIsDel(b)
+	return sruo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableIsDel(b *bool) *SysRoleUpdateOne {
+	if b != nil {
+		sruo.SetIsDel(*b)
+	}
+	return sruo
+}
+
+// SetStatus sets the "status" field.
+func (sruo *SysRoleUpdateOne) SetStatus(i int32) *SysRoleUpdateOne {
+	sruo.mutation.ResetStatus()
+	sruo.mutation.SetStatus(i)
+	return sruo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableStatus(i *int32) *SysRoleUpdateOne {
+	if i != nil {
+		sruo.SetStatus(*i)
+	}
+	return sruo
+}
+
+// AddStatus adds i to the "status" field.
+func (sruo *SysRoleUpdateOne) AddStatus(i int32) *SysRoleUpdateOne {
+	sruo.mutation.AddStatus(i)
+	return sruo
+}
+
+// SetSort sets the "sort" field.
+func (sruo *SysRoleUpdateOne) SetSort(i int32) *SysRoleUpdateOne {
+	sruo.mutation.ResetSort()
+	sruo.mutation.SetSort(i)
+	return sruo
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableSort(i *int32) *SysRoleUpdateOne {
+	if i != nil {
+		sruo.SetSort(*i)
+	}
+	return sruo
+}
+
+// AddSort adds i to the "sort" field.
+func (sruo *SysRoleUpdateOne) AddSort(i int32) *SysRoleUpdateOne {
+	sruo.mutation.AddSort(i)
+	return sruo
+}
+
+// SetMemo sets the "memo" field.
+func (sruo *SysRoleUpdateOne) SetMemo(s string) *SysRoleUpdateOne {
+	sruo.mutation.SetMemo(s)
+	return sruo
+}
+
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableMemo(s *string) *SysRoleUpdateOne {
+	if s != nil {
+		sruo.SetMemo(*s)
+	}
+	return sruo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (sruo *SysRoleUpdateOne) SetUpdatedAt(t time.Time) *SysRoleUpdateOne {
+	sruo.mutation.SetUpdatedAt(t)
+	return sruo
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (sruo *SysRoleUpdateOne) SetDeletedAt(t time.Time) *SysRoleUpdateOne {
+	sruo.mutation.SetDeletedAt(t)
+	return sruo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableDeletedAt(t *time.Time) *SysRoleUpdateOne {
+	if t != nil {
+		sruo.SetDeletedAt(*t)
+	}
+	return sruo
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (sruo *SysRoleUpdateOne) ClearDeletedAt() *SysRoleUpdateOne {
+	sruo.mutation.ClearDeletedAt()
+	return sruo
+}
+
+// SetName sets the "name" field.
+func (sruo *SysRoleUpdateOne) SetName(s string) *SysRoleUpdateOne {
+	sruo.mutation.SetName(s)
+	return sruo
+}
+
+// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by IDs.
+func (sruo *SysRoleUpdateOne) AddUserRoleIDs(ids ...string) *SysRoleUpdateOne {
+	sruo.mutation.AddUserRoleIDs(ids...)
+	return sruo
+}
+
+// AddUserRoles adds the "userRoles" edges to the SysUserRole entity.
+func (sruo *SysRoleUpdateOne) AddUserRoles(s ...*SysUserRole) *SysRoleUpdateOne {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.AddUserRoleIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (sruo *SysRoleUpdateOne) Mutation() *SysRoleMutation {
 	return sruo.mutation
+}
+
+// ClearUserRoles clears all "userRoles" edges to the SysUserRole entity.
+func (sruo *SysRoleUpdateOne) ClearUserRoles() *SysRoleUpdateOne {
+	sruo.mutation.ClearUserRoles()
+	return sruo
+}
+
+// RemoveUserRoleIDs removes the "userRoles" edge to SysUserRole entities by IDs.
+func (sruo *SysRoleUpdateOne) RemoveUserRoleIDs(ids ...string) *SysRoleUpdateOne {
+	sruo.mutation.RemoveUserRoleIDs(ids...)
+	return sruo
+}
+
+// RemoveUserRoles removes "userRoles" edges to SysUserRole entities.
+func (sruo *SysRoleUpdateOne) RemoveUserRoles(s ...*SysUserRole) *SysRoleUpdateOne {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.RemoveUserRoleIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -137,13 +568,20 @@ func (sruo *SysRoleUpdateOne) Save(ctx context.Context) (*SysRole, error) {
 		err  error
 		node *SysRole
 	)
+	sruo.defaults()
 	if len(sruo.hooks) == 0 {
+		if err = sruo.check(); err != nil {
+			return nil, err
+		}
 		node, err = sruo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SysRoleMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = sruo.check(); err != nil {
+				return nil, err
 			}
 			sruo.mutation = mutation
 			node, err = sruo.sqlSave(ctx)
@@ -182,13 +620,36 @@ func (sruo *SysRoleUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (sruo *SysRoleUpdateOne) defaults() {
+	if _, ok := sruo.mutation.UpdatedAt(); !ok {
+		v := sysrole.UpdateDefaultUpdatedAt()
+		sruo.mutation.SetUpdatedAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (sruo *SysRoleUpdateOne) check() error {
+	if v, ok := sruo.mutation.Memo(); ok {
+		if err := sysrole.MemoValidator(v); err != nil {
+			return &ValidationError{Name: "memo", err: fmt.Errorf("ent: validator failed for field \"memo\": %w", err)}
+		}
+	}
+	if v, ok := sruo.mutation.Name(); ok {
+		if err := sysrole.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   sysrole.Table,
 			Columns: sysrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysrole.FieldID,
 			},
 		},
@@ -216,6 +677,129 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sruo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrole.FieldIsDel,
+		})
+	}
+	if value, ok := sruo.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldStatus,
+		})
+	}
+	if value, ok := sruo.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldStatus,
+		})
+	}
+	if value, ok := sruo.mutation.Sort(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldSort,
+		})
+	}
+	if value, ok := sruo.mutation.AddedSort(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt32,
+			Value:  value,
+			Column: sysrole.FieldSort,
+		})
+	}
+	if value, ok := sruo.mutation.Memo(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrole.FieldMemo,
+		})
+	}
+	if value, ok := sruo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrole.FieldUpdatedAt,
+		})
+	}
+	if value, ok := sruo.mutation.DeletedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysrole.FieldDeletedAt,
+		})
+	}
+	if sruo.mutation.DeletedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: sysrole.FieldDeletedAt,
+		})
+	}
+	if value, ok := sruo.mutation.Name(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysrole.FieldName,
+		})
+	}
+	if sruo.mutation.UserRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysrole.UserRolesTable,
+			Columns: []string{sysrole.UserRolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuserrole.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.RemovedUserRolesIDs(); len(nodes) > 0 && !sruo.mutation.UserRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysrole.UserRolesTable,
+			Columns: []string{sysrole.UserRolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuserrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.UserRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysrole.UserRolesTable,
+			Columns: []string{sysrole.UserRolesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuserrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysRole{config: sruo.config}
 	_spec.Assign = _node.assignValues

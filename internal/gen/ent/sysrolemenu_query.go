@@ -84,8 +84,8 @@ func (srmq *SysRoleMenuQuery) FirstX(ctx context.Context) *SysRoleMenu {
 
 // FirstID returns the first SysRoleMenu ID from the query.
 // Returns a *NotFoundError when no SysRoleMenu ID was found.
-func (srmq *SysRoleMenuQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (srmq *SysRoleMenuQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = srmq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +97,7 @@ func (srmq *SysRoleMenuQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (srmq *SysRoleMenuQuery) FirstIDX(ctx context.Context) int {
+func (srmq *SysRoleMenuQuery) FirstIDX(ctx context.Context) string {
 	id, err := srmq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +135,8 @@ func (srmq *SysRoleMenuQuery) OnlyX(ctx context.Context) *SysRoleMenu {
 // OnlyID is like Only, but returns the only SysRoleMenu ID in the query.
 // Returns a *NotSingularError when exactly one SysRoleMenu ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (srmq *SysRoleMenuQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (srmq *SysRoleMenuQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = srmq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +152,7 @@ func (srmq *SysRoleMenuQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (srmq *SysRoleMenuQuery) OnlyIDX(ctx context.Context) int {
+func (srmq *SysRoleMenuQuery) OnlyIDX(ctx context.Context) string {
 	id, err := srmq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +178,8 @@ func (srmq *SysRoleMenuQuery) AllX(ctx context.Context) []*SysRoleMenu {
 }
 
 // IDs executes the query and returns a list of SysRoleMenu IDs.
-func (srmq *SysRoleMenuQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (srmq *SysRoleMenuQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := srmq.Select(sysrolemenu.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func (srmq *SysRoleMenuQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (srmq *SysRoleMenuQuery) IDsX(ctx context.Context) []int {
+func (srmq *SysRoleMenuQuery) IDsX(ctx context.Context) []string {
 	ids, err := srmq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,6 +249,19 @@ func (srmq *SysRoleMenuQuery) Clone() *SysRoleMenuQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.SysRoleMenu.Query().
+//		GroupBy(sysrolemenu.FieldIsDel).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (srmq *SysRoleMenuQuery) GroupBy(field string, fields ...string) *SysRoleMenuGroupBy {
 	group := &SysRoleMenuGroupBy{config: srmq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +276,17 @@ func (srmq *SysRoleMenuQuery) GroupBy(field string, fields ...string) *SysRoleMe
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		IsDel bool `json:"is_del,omitempty"`
+//	}
+//
+//	client.SysRoleMenu.Query().
+//		Select(sysrolemenu.FieldIsDel).
+//		Scan(ctx, &v)
+//
 func (srmq *SysRoleMenuQuery) Select(field string, fields ...string) *SysRoleMenuSelect {
 	srmq.fields = append([]string{field}, fields...)
 	return &SysRoleMenuSelect{SysRoleMenuQuery: srmq}
@@ -329,7 +353,7 @@ func (srmq *SysRoleMenuQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		},

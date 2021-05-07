@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
 // SysMenuActionCreate is the builder for creating a SysMenuAction entity.
@@ -148,6 +149,21 @@ func (smac *SysMenuActionCreate) SetNillableID(s *string) *SysMenuActionCreate {
 		smac.SetID(*s)
 	}
 	return smac
+}
+
+// AddResourceIDs adds the "resources" edge to the SysMenuActionResource entity by IDs.
+func (smac *SysMenuActionCreate) AddResourceIDs(ids ...string) *SysMenuActionCreate {
+	smac.mutation.AddResourceIDs(ids...)
+	return smac
+}
+
+// AddResources adds the "resources" edges to the SysMenuActionResource entity.
+func (smac *SysMenuActionCreate) AddResources(s ...*SysMenuActionResource) *SysMenuActionCreate {
+	ids := make([]string, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smac.AddResourceIDs(ids...)
 }
 
 // Mutation returns the SysMenuActionMutation object of the builder.
@@ -394,6 +410,25 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 			Column: sysmenuaction.FieldName,
 		})
 		_node.Name = value
+	}
+	if nodes := smac.mutation.ResourcesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenuaction.ResourcesTable,
+			Columns: []string{sysmenuaction.ResourcesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

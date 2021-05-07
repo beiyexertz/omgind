@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
@@ -12,9 +13,31 @@ import (
 
 // SysRoleMenu is the model entity for the SysRoleMenu schema.
 type SysRoleMenu struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	// 主键
+	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	// 创建时间,由程序自动生成
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	// 更新时间,由程序自动生成
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	// 删除时间,
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// RoleID holds the value of the "role_id" field.
+	// 角色ID, sys_role.id
+	RoleID string `json:"role_id,omitempty"`
+	// MenuID holds the value of the "menu_id" field.
+	// 菜单ID, sys_menu.id
+	MenuID string `json:"menu_id,omitempty"`
+	// ActionID holds the value of the "action_id" field.
+	// 菜单ID, sys_menu_action.id
+	ActionID *string `json:"action_id,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -22,8 +45,12 @@ func (*SysRoleMenu) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysrolemenu.FieldID:
-			values[i] = new(sql.NullInt64)
+		case sysrolemenu.FieldIsDel:
+			values[i] = new(sql.NullBool)
+		case sysrolemenu.FieldID, sysrolemenu.FieldRoleID, sysrolemenu.FieldMenuID, sysrolemenu.FieldActionID:
+			values[i] = new(sql.NullString)
+		case sysrolemenu.FieldCreatedAt, sysrolemenu.FieldUpdatedAt, sysrolemenu.FieldDeletedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type SysRoleMenu", columns[i])
 		}
@@ -40,11 +67,55 @@ func (srm *SysRoleMenu) assignValues(columns []string, values []interface{}) err
 	for i := range columns {
 		switch columns[i] {
 		case sysrolemenu.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				srm.ID = value.String
 			}
-			srm.ID = int(value.Int64)
+		case sysrolemenu.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				srm.IsDel = value.Bool
+			}
+		case sysrolemenu.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+			} else if value.Valid {
+				srm.CreatedAt = value.Time
+			}
+		case sysrolemenu.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+			} else if value.Valid {
+				srm.UpdatedAt = value.Time
+			}
+		case sysrolemenu.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				srm.DeletedAt = new(time.Time)
+				*srm.DeletedAt = value.Time
+			}
+		case sysrolemenu.FieldRoleID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field role_id", values[i])
+			} else if value.Valid {
+				srm.RoleID = value.String
+			}
+		case sysrolemenu.FieldMenuID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field menu_id", values[i])
+			} else if value.Valid {
+				srm.MenuID = value.String
+			}
+		case sysrolemenu.FieldActionID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field action_id", values[i])
+			} else if value.Valid {
+				srm.ActionID = new(string)
+				*srm.ActionID = value.String
+			}
 		}
 	}
 	return nil
@@ -73,6 +144,24 @@ func (srm *SysRoleMenu) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysRoleMenu(")
 	builder.WriteString(fmt.Sprintf("id=%v", srm.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", srm.IsDel))
+	builder.WriteString(", created_at=")
+	builder.WriteString(srm.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", updated_at=")
+	builder.WriteString(srm.UpdatedAt.Format(time.ANSIC))
+	if v := srm.DeletedAt; v != nil {
+		builder.WriteString(", deleted_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", role_id=")
+	builder.WriteString(srm.RoleID)
+	builder.WriteString(", menu_id=")
+	builder.WriteString(srm.MenuID)
+	if v := srm.ActionID; v != nil {
+		builder.WriteString(", action_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

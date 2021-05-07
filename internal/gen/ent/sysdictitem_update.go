@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -128,17 +129,15 @@ func (sdiu *SysDictItemUpdate) SetStatus(b bool) *SysDictItemUpdate {
 	return sdiu
 }
 
-// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
-func (sdiu *SysDictItemUpdate) SetSysDictID(id string) *SysDictItemUpdate {
-	sdiu.mutation.SetSysDictID(id)
+// SetDictID sets the "dict_id" field.
+func (sdiu *SysDictItemUpdate) SetDictID(s string) *SysDictItemUpdate {
+	sdiu.mutation.SetDictID(s)
 	return sdiu
 }
 
-// SetNillableSysDictID sets the "SysDict" edge to the SysDict entity by ID if the given value is not nil.
-func (sdiu *SysDictItemUpdate) SetNillableSysDictID(id *string) *SysDictItemUpdate {
-	if id != nil {
-		sdiu = sdiu.SetSysDictID(*id)
-	}
+// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
+func (sdiu *SysDictItemUpdate) SetSysDictID(id string) *SysDictItemUpdate {
+	sdiu.mutation.SetSysDictID(id)
 	return sdiu
 }
 
@@ -235,6 +234,14 @@ func (sdiu *SysDictItemUpdate) check() error {
 		if err := sysdictitem.LabelValidator(v); err != nil {
 			return &ValidationError{Name: "label", err: fmt.Errorf("ent: validator failed for field \"label\": %w", err)}
 		}
+	}
+	if v, ok := sdiu.mutation.DictID(); ok {
+		if err := sysdictitem.DictIDValidator(v); err != nil {
+			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
+		}
+	}
+	if _, ok := sdiu.mutation.SysDictID(); sdiu.mutation.SysDictCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"SysDict\"")
 	}
 	return nil
 }
@@ -487,17 +494,15 @@ func (sdiuo *SysDictItemUpdateOne) SetStatus(b bool) *SysDictItemUpdateOne {
 	return sdiuo
 }
 
-// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
-func (sdiuo *SysDictItemUpdateOne) SetSysDictID(id string) *SysDictItemUpdateOne {
-	sdiuo.mutation.SetSysDictID(id)
+// SetDictID sets the "dict_id" field.
+func (sdiuo *SysDictItemUpdateOne) SetDictID(s string) *SysDictItemUpdateOne {
+	sdiuo.mutation.SetDictID(s)
 	return sdiuo
 }
 
-// SetNillableSysDictID sets the "SysDict" edge to the SysDict entity by ID if the given value is not nil.
-func (sdiuo *SysDictItemUpdateOne) SetNillableSysDictID(id *string) *SysDictItemUpdateOne {
-	if id != nil {
-		sdiuo = sdiuo.SetSysDictID(*id)
-	}
+// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
+func (sdiuo *SysDictItemUpdateOne) SetSysDictID(id string) *SysDictItemUpdateOne {
+	sdiuo.mutation.SetSysDictID(id)
 	return sdiuo
 }
 
@@ -601,6 +606,14 @@ func (sdiuo *SysDictItemUpdateOne) check() error {
 		if err := sysdictitem.LabelValidator(v); err != nil {
 			return &ValidationError{Name: "label", err: fmt.Errorf("ent: validator failed for field \"label\": %w", err)}
 		}
+	}
+	if v, ok := sdiuo.mutation.DictID(); ok {
+		if err := sysdictitem.DictIDValidator(v); err != nil {
+			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
+		}
+	}
+	if _, ok := sdiuo.mutation.SysDictID(); sdiuo.mutation.SysDictCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"SysDict\"")
 	}
 	return nil
 }

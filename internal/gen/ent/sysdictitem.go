@@ -45,10 +45,12 @@ type SysDictItem struct {
 	// Status holds the value of the "status" field.
 	// 启用状态
 	Status bool `json:"status,omitempty"`
+	// DictID holds the value of the "dict_id" field.
+	// sys_dict.id
+	DictID string `json:"dict_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDictItemQuery when eager-loading is set.
-	Edges                   SysDictItemEdges `json:"edges"`
-	sys_dict_sys_dict_items *string
+	Edges SysDictItemEdges `json:"edges"`
 }
 
 // SysDictItemEdges holds the relations/edges for other nodes in the graph.
@@ -83,12 +85,10 @@ func (*SysDictItem) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case sysdictitem.FieldSort, sysdictitem.FieldValue:
 			values[i] = new(sql.NullInt64)
-		case sysdictitem.FieldID, sysdictitem.FieldMemo, sysdictitem.FieldLabel:
+		case sysdictitem.FieldID, sysdictitem.FieldMemo, sysdictitem.FieldLabel, sysdictitem.FieldDictID:
 			values[i] = new(sql.NullString)
 		case sysdictitem.FieldCreatedAt, sysdictitem.FieldUpdatedAt, sysdictitem.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
-		case sysdictitem.ForeignKeys[0]: // sys_dict_sys_dict_items
-			values[i] = new(sql.NullString)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type SysDictItem", columns[i])
 		}
@@ -165,12 +165,11 @@ func (sdi *SysDictItem) assignValues(columns []string, values []interface{}) err
 			} else if value.Valid {
 				sdi.Status = value.Bool
 			}
-		case sysdictitem.ForeignKeys[0]:
+		case sysdictitem.FieldDictID:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field sys_dict_sys_dict_items", values[i])
+				return fmt.Errorf("unexpected type %T for field dict_id", values[i])
 			} else if value.Valid {
-				sdi.sys_dict_sys_dict_items = new(string)
-				*sdi.sys_dict_sys_dict_items = value.String
+				sdi.DictID = value.String
 			}
 		}
 	}
@@ -225,6 +224,8 @@ func (sdi *SysDictItem) String() string {
 	builder.WriteString(fmt.Sprintf("%v", sdi.Value))
 	builder.WriteString(", status=")
 	builder.WriteString(fmt.Sprintf("%v", sdi.Status))
+	builder.WriteString(", dict_id=")
+	builder.WriteString(sdi.DictID)
 	builder.WriteByte(')')
 	return builder.String()
 }

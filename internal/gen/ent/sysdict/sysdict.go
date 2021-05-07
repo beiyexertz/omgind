@@ -39,7 +39,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "sysdictitem" package.
 	SysDictItemsInverseTable = "sys_dict_items"
 	// SysDictItemsColumn is the table column denoting the SysDictItems relation/edge.
-	SysDictItemsColumn = "sys_dict_sys_dict_items"
+	SysDictItemsColumn = "dict_id"
 )
 
 // Columns holds all SQL columns for sysdict fields.

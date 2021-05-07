@@ -4,12 +4,16 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
@@ -26,9 +30,83 @@ func (suru *SysUserRoleUpdate) Where(ps ...predicate.SysUserRole) *SysUserRoleUp
 	return suru
 }
 
+// SetIsDel sets the "is_del" field.
+func (suru *SysUserRoleUpdate) SetIsDel(b bool) *SysUserRoleUpdate {
+	suru.mutation.SetIsDel(b)
+	return suru
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (suru *SysUserRoleUpdate) SetNillableIsDel(b *bool) *SysUserRoleUpdate {
+	if b != nil {
+		suru.SetIsDel(*b)
+	}
+	return suru
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (suru *SysUserRoleUpdate) SetUpdatedAt(t time.Time) *SysUserRoleUpdate {
+	suru.mutation.SetUpdatedAt(t)
+	return suru
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (suru *SysUserRoleUpdate) SetDeletedAt(t time.Time) *SysUserRoleUpdate {
+	suru.mutation.SetDeletedAt(t)
+	return suru
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (suru *SysUserRoleUpdate) SetNillableDeletedAt(t *time.Time) *SysUserRoleUpdate {
+	if t != nil {
+		suru.SetDeletedAt(*t)
+	}
+	return suru
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (suru *SysUserRoleUpdate) ClearDeletedAt() *SysUserRoleUpdate {
+	suru.mutation.ClearDeletedAt()
+	return suru
+}
+
+// SetUserID sets the "user_id" field.
+func (suru *SysUserRoleUpdate) SetUserID(s string) *SysUserRoleUpdate {
+	suru.mutation.SetUserID(s)
+	return suru
+}
+
+// SetRoleID sets the "role_id" field.
+func (suru *SysUserRoleUpdate) SetRoleID(s string) *SysUserRoleUpdate {
+	suru.mutation.SetRoleID(s)
+	return suru
+}
+
+// SetUser sets the "user" edge to the SysUser entity.
+func (suru *SysUserRoleUpdate) SetUser(s *SysUser) *SysUserRoleUpdate {
+	return suru.SetUserID(s.ID)
+}
+
+// SetRole sets the "role" edge to the SysRole entity.
+func (suru *SysUserRoleUpdate) SetRole(s *SysRole) *SysUserRoleUpdate {
+	return suru.SetRoleID(s.ID)
+}
+
 // Mutation returns the SysUserRoleMutation object of the builder.
 func (suru *SysUserRoleUpdate) Mutation() *SysUserRoleMutation {
 	return suru.mutation
+}
+
+// ClearUser clears the "user" edge to the SysUser entity.
+func (suru *SysUserRoleUpdate) ClearUser() *SysUserRoleUpdate {
+	suru.mutation.ClearUser()
+	return suru
+}
+
+// ClearRole clears the "role" edge to the SysRole entity.
+func (suru *SysUserRoleUpdate) ClearRole() *SysUserRoleUpdate {
+	suru.mutation.ClearRole()
+	return suru
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -37,13 +115,20 @@ func (suru *SysUserRoleUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	suru.defaults()
 	if len(suru.hooks) == 0 {
+		if err = suru.check(); err != nil {
+			return 0, err
+		}
 		affected, err = suru.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SysUserRoleMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = suru.check(); err != nil {
+				return 0, err
 			}
 			suru.mutation = mutation
 			affected, err = suru.sqlSave(ctx)
@@ -82,13 +167,42 @@ func (suru *SysUserRoleUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (suru *SysUserRoleUpdate) defaults() {
+	if _, ok := suru.mutation.UpdatedAt(); !ok {
+		v := sysuserrole.UpdateDefaultUpdatedAt()
+		suru.mutation.SetUpdatedAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (suru *SysUserRoleUpdate) check() error {
+	if v, ok := suru.mutation.UserID(); ok {
+		if err := sysuserrole.UserIDValidator(v); err != nil {
+			return &ValidationError{Name: "user_id", err: fmt.Errorf("ent: validator failed for field \"user_id\": %w", err)}
+		}
+	}
+	if v, ok := suru.mutation.RoleID(); ok {
+		if err := sysuserrole.RoleIDValidator(v); err != nil {
+			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
+		}
+	}
+	if _, ok := suru.mutation.UserID(); suru.mutation.UserCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"user\"")
+	}
+	if _, ok := suru.mutation.RoleID(); suru.mutation.RoleCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"role\"")
+	}
+	return nil
+}
+
 func (suru *SysUserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysuserrole.FieldID,
 			},
 		},
@@ -99,6 +213,103 @@ func (suru *SysUserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := suru.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuserrole.FieldIsDel,
+		})
+	}
+	if value, ok := suru.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldUpdatedAt,
+		})
+	}
+	if value, ok := suru.mutation.DeletedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldDeletedAt,
+		})
+	}
+	if suru.mutation.DeletedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: sysuserrole.FieldDeletedAt,
+		})
+	}
+	if suru.mutation.UserCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.UserTable,
+			Columns: []string{sysuserrole.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuser.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suru.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.UserTable,
+			Columns: []string{sysuserrole.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suru.mutation.RoleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.RoleTable,
+			Columns: []string{sysuserrole.RoleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysrole.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suru.mutation.RoleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.RoleTable,
+			Columns: []string{sysuserrole.RoleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, suru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -119,9 +330,83 @@ type SysUserRoleUpdateOne struct {
 	mutation *SysUserRoleMutation
 }
 
+// SetIsDel sets the "is_del" field.
+func (suruo *SysUserRoleUpdateOne) SetIsDel(b bool) *SysUserRoleUpdateOne {
+	suruo.mutation.SetIsDel(b)
+	return suruo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (suruo *SysUserRoleUpdateOne) SetNillableIsDel(b *bool) *SysUserRoleUpdateOne {
+	if b != nil {
+		suruo.SetIsDel(*b)
+	}
+	return suruo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (suruo *SysUserRoleUpdateOne) SetUpdatedAt(t time.Time) *SysUserRoleUpdateOne {
+	suruo.mutation.SetUpdatedAt(t)
+	return suruo
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (suruo *SysUserRoleUpdateOne) SetDeletedAt(t time.Time) *SysUserRoleUpdateOne {
+	suruo.mutation.SetDeletedAt(t)
+	return suruo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (suruo *SysUserRoleUpdateOne) SetNillableDeletedAt(t *time.Time) *SysUserRoleUpdateOne {
+	if t != nil {
+		suruo.SetDeletedAt(*t)
+	}
+	return suruo
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (suruo *SysUserRoleUpdateOne) ClearDeletedAt() *SysUserRoleUpdateOne {
+	suruo.mutation.ClearDeletedAt()
+	return suruo
+}
+
+// SetUserID sets the "user_id" field.
+func (suruo *SysUserRoleUpdateOne) SetUserID(s string) *SysUserRoleUpdateOne {
+	suruo.mutation.SetUserID(s)
+	return suruo
+}
+
+// SetRoleID sets the "role_id" field.
+func (suruo *SysUserRoleUpdateOne) SetRoleID(s string) *SysUserRoleUpdateOne {
+	suruo.mutation.SetRoleID(s)
+	return suruo
+}
+
+// SetUser sets the "user" edge to the SysUser entity.
+func (suruo *SysUserRoleUpdateOne) SetUser(s *SysUser) *SysUserRoleUpdateOne {
+	return suruo.SetUserID(s.ID)
+}
+
+// SetRole sets the "role" edge to the SysRole entity.
+func (suruo *SysUserRoleUpdateOne) SetRole(s *SysRole) *SysUserRoleUpdateOne {
+	return suruo.SetRoleID(s.ID)
+}
+
 // Mutation returns the SysUserRoleMutation object of the builder.
 func (suruo *SysUserRoleUpdateOne) Mutation() *SysUserRoleMutation {
 	return suruo.mutation
+}
+
+// ClearUser clears the "user" edge to the SysUser entity.
+func (suruo *SysUserRoleUpdateOne) ClearUser() *SysUserRoleUpdateOne {
+	suruo.mutation.ClearUser()
+	return suruo
+}
+
+// ClearRole clears the "role" edge to the SysRole entity.
+func (suruo *SysUserRoleUpdateOne) ClearRole() *SysUserRoleUpdateOne {
+	suruo.mutation.ClearRole()
+	return suruo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -137,13 +422,20 @@ func (suruo *SysUserRoleUpdateOne) Save(ctx context.Context) (*SysUserRole, erro
 		err  error
 		node *SysUserRole
 	)
+	suruo.defaults()
 	if len(suruo.hooks) == 0 {
+		if err = suruo.check(); err != nil {
+			return nil, err
+		}
 		node, err = suruo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*SysUserRoleMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = suruo.check(); err != nil {
+				return nil, err
 			}
 			suruo.mutation = mutation
 			node, err = suruo.sqlSave(ctx)
@@ -182,13 +474,42 @@ func (suruo *SysUserRoleUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (suruo *SysUserRoleUpdateOne) defaults() {
+	if _, ok := suruo.mutation.UpdatedAt(); !ok {
+		v := sysuserrole.UpdateDefaultUpdatedAt()
+		suruo.mutation.SetUpdatedAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (suruo *SysUserRoleUpdateOne) check() error {
+	if v, ok := suruo.mutation.UserID(); ok {
+		if err := sysuserrole.UserIDValidator(v); err != nil {
+			return &ValidationError{Name: "user_id", err: fmt.Errorf("ent: validator failed for field \"user_id\": %w", err)}
+		}
+	}
+	if v, ok := suruo.mutation.RoleID(); ok {
+		if err := sysuserrole.RoleIDValidator(v); err != nil {
+			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
+		}
+	}
+	if _, ok := suruo.mutation.UserID(); suruo.mutation.UserCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"user\"")
+	}
+	if _, ok := suruo.mutation.RoleID(); suruo.mutation.RoleCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"role\"")
+	}
+	return nil
+}
+
 func (suruo *SysUserRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysUserRole, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeString,
 				Column: sysuserrole.FieldID,
 			},
 		},
@@ -216,6 +537,103 @@ func (suruo *SysUserRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysUserR
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := suruo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuserrole.FieldIsDel,
+		})
+	}
+	if value, ok := suruo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldUpdatedAt,
+		})
+	}
+	if value, ok := suruo.mutation.DeletedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: sysuserrole.FieldDeletedAt,
+		})
+	}
+	if suruo.mutation.DeletedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: sysuserrole.FieldDeletedAt,
+		})
+	}
+	if suruo.mutation.UserCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.UserTable,
+			Columns: []string{sysuserrole.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuser.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suruo.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.UserTable,
+			Columns: []string{sysuserrole.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suruo.mutation.RoleCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.RoleTable,
+			Columns: []string{sysuserrole.RoleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysrole.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suruo.mutation.RoleIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuserrole.RoleTable,
+			Columns: []string{sysuserrole.RoleColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysrole.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysUserRole{config: suruo.config}
 	_spec.Assign = _node.assignValues

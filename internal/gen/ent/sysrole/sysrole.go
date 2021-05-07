@@ -2,18 +2,55 @@
 
 package sysrole
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the sysrole type in the database.
 	Label = "sys_role"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
+	// FieldSort holds the string denoting the sort field in the database.
+	FieldSort = "sort"
+	// FieldMemo holds the string denoting the memo field in the database.
+	FieldMemo = "memo"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "crtd_at"
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "uptd_at"
+	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
+	FieldDeletedAt = "dltd_at"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
+	// EdgeUserRoles holds the string denoting the userroles edge name in mutations.
+	EdgeUserRoles = "userRoles"
 	// Table holds the table name of the sysrole in the database.
 	Table = "sys_roles"
+	// UserRolesTable is the table the holds the userRoles relation/edge.
+	UserRolesTable = "sys_user_roles"
+	// UserRolesInverseTable is the table name for the SysUserRole entity.
+	// It exists in this package in order to avoid circular dependency with the "sysuserrole" package.
+	UserRolesInverseTable = "sys_user_roles"
+	// UserRolesColumn is the table column denoting the userRoles relation/edge.
+	UserRolesColumn = "role_id"
 )
 
 // Columns holds all SQL columns for sysrole fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
+	FieldStatus,
+	FieldSort,
+	FieldMemo,
+	FieldCreatedAt,
+	FieldUpdatedAt,
+	FieldDeletedAt,
+	FieldName,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -25,3 +62,28 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
+	// DefaultStatus holds the default value on creation for the "status" field.
+	DefaultStatus int32
+	// DefaultSort holds the default value on creation for the "sort" field.
+	DefaultSort int32
+	// DefaultMemo holds the default value on creation for the "memo" field.
+	DefaultMemo string
+	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	MemoValidator func(string) error
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
+	UpdateDefaultUpdatedAt func() time.Time
+	// NameValidator is a validator for the "name" field. It is called by the builders before save.
+	NameValidator func(string) error
+	// DefaultID holds the default value on creation for the "id" field.
+	DefaultID string
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
+)

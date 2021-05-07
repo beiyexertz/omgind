@@ -29,6 +29,8 @@ const (
 	FieldValue = "val"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldDictID holds the string denoting the dict_id field in the database.
+	FieldDictID = "dict_id"
 	// EdgeSysDict holds the string denoting the sysdict edge name in mutations.
 	EdgeSysDict = "SysDict"
 	// Table holds the table name of the sysdictitem in the database.
@@ -39,7 +41,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "sysdict" package.
 	SysDictInverseTable = "sys_dicts"
 	// SysDictColumn is the table column denoting the SysDict relation/edge.
-	SysDictColumn = "sys_dict_sys_dict_items"
+	SysDictColumn = "dict_id"
 )
 
 // Columns holds all SQL columns for sysdictitem fields.
@@ -54,23 +56,13 @@ var Columns = []string{
 	FieldLabel,
 	FieldValue,
 	FieldStatus,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "sys_dict_items"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"sys_dict_sys_dict_items",
+	FieldDictID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -94,6 +86,8 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// LabelValidator is a validator for the "label" field. It is called by the builders before save.
 	LabelValidator func(string) error
+	// DictIDValidator is a validator for the "dict_id" field. It is called by the builders before save.
+	DictIDValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID string
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.

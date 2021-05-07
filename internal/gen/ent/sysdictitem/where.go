@@ -149,6 +149,13 @@ func Status(v bool) predicate.SysDictItem {
 	})
 }
 
+// DictID applies equality check predicate on the "dict_id" field. It's identical to DictIDEQ.
+func DictID(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDictID), v))
+	})
+}
+
 // IsDelEQ applies the EQ predicate on the "is_del" field.
 func IsDelEQ(v bool) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
@@ -790,6 +797,117 @@ func StatusEQ(v bool) predicate.SysDictItem {
 func StatusNEQ(v bool) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))
+	})
+}
+
+// DictIDEQ applies the EQ predicate on the "dict_id" field.
+func DictIDEQ(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDNEQ applies the NEQ predicate on the "dict_id" field.
+func DictIDNEQ(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDIn applies the In predicate on the "dict_id" field.
+func DictIDIn(vs ...string) predicate.SysDictItem {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDictID), v...))
+	})
+}
+
+// DictIDNotIn applies the NotIn predicate on the "dict_id" field.
+func DictIDNotIn(vs ...string) predicate.SysDictItem {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDictID), v...))
+	})
+}
+
+// DictIDGT applies the GT predicate on the "dict_id" field.
+func DictIDGT(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDGTE applies the GTE predicate on the "dict_id" field.
+func DictIDGTE(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDLT applies the LT predicate on the "dict_id" field.
+func DictIDLT(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDLTE applies the LTE predicate on the "dict_id" field.
+func DictIDLTE(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDContains applies the Contains predicate on the "dict_id" field.
+func DictIDContains(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDHasPrefix applies the HasPrefix predicate on the "dict_id" field.
+func DictIDHasPrefix(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDHasSuffix applies the HasSuffix predicate on the "dict_id" field.
+func DictIDHasSuffix(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDEqualFold applies the EqualFold predicate on the "dict_id" field.
+func DictIDEqualFold(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDictID), v))
+	})
+}
+
+// DictIDContainsFold applies the ContainsFold predicate on the "dict_id" field.
+func DictIDContainsFold(v string) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDictID), v))
 	})
 }
 

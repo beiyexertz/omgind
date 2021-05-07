@@ -662,6 +662,22 @@ func (c *SysMenuActionClient) GetX(ctx context.Context, id string) *SysMenuActio
 	return obj
 }
 
+// QueryResources queries the resources edge of a SysMenuAction.
+func (c *SysMenuActionClient) QueryResources(sma *SysMenuAction) *SysMenuActionResourceQuery {
+	query := &SysMenuActionResourceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sma.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, id),
+			sqlgraph.To(sysmenuactionresource.Table, sysmenuactionresource.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysmenuaction.ResourcesTable, sysmenuaction.ResourcesColumn),
+		)
+		fromV = sqlgraph.Neighbors(sma.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *SysMenuActionClient) Hooks() []Hook {
 	return c.hooks.SysMenuAction
@@ -707,7 +723,7 @@ func (c *SysMenuActionResourceClient) UpdateOne(smar *SysMenuActionResource) *Sy
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysMenuActionResourceClient) UpdateOneID(id int) *SysMenuActionResourceUpdateOne {
+func (c *SysMenuActionResourceClient) UpdateOneID(id string) *SysMenuActionResourceUpdateOne {
 	mutation := newSysMenuActionResourceMutation(c.config, OpUpdateOne, withSysMenuActionResourceID(id))
 	return &SysMenuActionResourceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -724,7 +740,7 @@ func (c *SysMenuActionResourceClient) DeleteOne(smar *SysMenuActionResource) *Sy
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysMenuActionResourceClient) DeleteOneID(id int) *SysMenuActionResourceDeleteOne {
+func (c *SysMenuActionResourceClient) DeleteOneID(id string) *SysMenuActionResourceDeleteOne {
 	builder := c.Delete().Where(sysmenuactionresource.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -739,17 +755,33 @@ func (c *SysMenuActionResourceClient) Query() *SysMenuActionResourceQuery {
 }
 
 // Get returns a SysMenuActionResource entity by its id.
-func (c *SysMenuActionResourceClient) Get(ctx context.Context, id int) (*SysMenuActionResource, error) {
+func (c *SysMenuActionResourceClient) Get(ctx context.Context, id string) (*SysMenuActionResource, error) {
 	return c.Query().Where(sysmenuactionresource.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysMenuActionResourceClient) GetX(ctx context.Context, id int) *SysMenuActionResource {
+func (c *SysMenuActionResourceClient) GetX(ctx context.Context, id string) *SysMenuActionResource {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryAction queries the action edge of a SysMenuActionResource.
+func (c *SysMenuActionResourceClient) QueryAction(smar *SysMenuActionResource) *SysMenuActionQuery {
+	query := &SysMenuActionQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := smar.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenuactionresource.Table, sysmenuactionresource.FieldID, id),
+			sqlgraph.To(sysmenuaction.Table, sysmenuaction.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuactionresource.ActionTable, sysmenuactionresource.ActionColumn),
+		)
+		fromV = sqlgraph.Neighbors(smar.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -797,7 +829,7 @@ func (c *SysRoleClient) UpdateOne(sr *SysRole) *SysRoleUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysRoleClient) UpdateOneID(id int) *SysRoleUpdateOne {
+func (c *SysRoleClient) UpdateOneID(id string) *SysRoleUpdateOne {
 	mutation := newSysRoleMutation(c.config, OpUpdateOne, withSysRoleID(id))
 	return &SysRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -814,7 +846,7 @@ func (c *SysRoleClient) DeleteOne(sr *SysRole) *SysRoleDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysRoleClient) DeleteOneID(id int) *SysRoleDeleteOne {
+func (c *SysRoleClient) DeleteOneID(id string) *SysRoleDeleteOne {
 	builder := c.Delete().Where(sysrole.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -829,17 +861,33 @@ func (c *SysRoleClient) Query() *SysRoleQuery {
 }
 
 // Get returns a SysRole entity by its id.
-func (c *SysRoleClient) Get(ctx context.Context, id int) (*SysRole, error) {
+func (c *SysRoleClient) Get(ctx context.Context, id string) (*SysRole, error) {
 	return c.Query().Where(sysrole.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysRoleClient) GetX(ctx context.Context, id int) *SysRole {
+func (c *SysRoleClient) GetX(ctx context.Context, id string) *SysRole {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryUserRoles queries the userRoles edge of a SysRole.
+func (c *SysRoleClient) QueryUserRoles(sr *SysRole) *SysUserRoleQuery {
+	query := &SysUserRoleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysrole.Table, sysrole.FieldID, id),
+			sqlgraph.To(sysuserrole.Table, sysuserrole.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysrole.UserRolesTable, sysrole.UserRolesColumn),
+		)
+		fromV = sqlgraph.Neighbors(sr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -887,7 +935,7 @@ func (c *SysRoleMenuClient) UpdateOne(srm *SysRoleMenu) *SysRoleMenuUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysRoleMenuClient) UpdateOneID(id int) *SysRoleMenuUpdateOne {
+func (c *SysRoleMenuClient) UpdateOneID(id string) *SysRoleMenuUpdateOne {
 	mutation := newSysRoleMenuMutation(c.config, OpUpdateOne, withSysRoleMenuID(id))
 	return &SysRoleMenuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -904,7 +952,7 @@ func (c *SysRoleMenuClient) DeleteOne(srm *SysRoleMenu) *SysRoleMenuDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysRoleMenuClient) DeleteOneID(id int) *SysRoleMenuDeleteOne {
+func (c *SysRoleMenuClient) DeleteOneID(id string) *SysRoleMenuDeleteOne {
 	builder := c.Delete().Where(sysrolemenu.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -919,12 +967,12 @@ func (c *SysRoleMenuClient) Query() *SysRoleMenuQuery {
 }
 
 // Get returns a SysRoleMenu entity by its id.
-func (c *SysRoleMenuClient) Get(ctx context.Context, id int) (*SysRoleMenu, error) {
+func (c *SysRoleMenuClient) Get(ctx context.Context, id string) (*SysRoleMenu, error) {
 	return c.Query().Where(sysrolemenu.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysRoleMenuClient) GetX(ctx context.Context, id int) *SysRoleMenu {
+func (c *SysRoleMenuClient) GetX(ctx context.Context, id string) *SysRoleMenu {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -1022,6 +1070,22 @@ func (c *SysUserClient) GetX(ctx context.Context, id string) *SysUser {
 	return obj
 }
 
+// QueryUserRoles queries the userRoles edge of a SysUser.
+func (c *SysUserClient) QueryUserRoles(su *SysUser) *SysUserRoleQuery {
+	query := &SysUserRoleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := su.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
+			sqlgraph.To(sysuserrole.Table, sysuserrole.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysuser.UserRolesTable, sysuser.UserRolesColumn),
+		)
+		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *SysUserClient) Hooks() []Hook {
 	return c.hooks.SysUser
@@ -1067,7 +1131,7 @@ func (c *SysUserRoleClient) UpdateOne(sur *SysUserRole) *SysUserRoleUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysUserRoleClient) UpdateOneID(id int) *SysUserRoleUpdateOne {
+func (c *SysUserRoleClient) UpdateOneID(id string) *SysUserRoleUpdateOne {
 	mutation := newSysUserRoleMutation(c.config, OpUpdateOne, withSysUserRoleID(id))
 	return &SysUserRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -1084,7 +1148,7 @@ func (c *SysUserRoleClient) DeleteOne(sur *SysUserRole) *SysUserRoleDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysUserRoleClient) DeleteOneID(id int) *SysUserRoleDeleteOne {
+func (c *SysUserRoleClient) DeleteOneID(id string) *SysUserRoleDeleteOne {
 	builder := c.Delete().Where(sysuserrole.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -1099,17 +1163,49 @@ func (c *SysUserRoleClient) Query() *SysUserRoleQuery {
 }
 
 // Get returns a SysUserRole entity by its id.
-func (c *SysUserRoleClient) Get(ctx context.Context, id int) (*SysUserRole, error) {
+func (c *SysUserRoleClient) Get(ctx context.Context, id string) (*SysUserRole, error) {
 	return c.Query().Where(sysuserrole.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysUserRoleClient) GetX(ctx context.Context, id int) *SysUserRole {
+func (c *SysUserRoleClient) GetX(ctx context.Context, id string) *SysUserRole {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryUser queries the user edge of a SysUserRole.
+func (c *SysUserRoleClient) QueryUser(sur *SysUserRole) *SysUserQuery {
+	query := &SysUserQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sur.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuserrole.Table, sysuserrole.FieldID, id),
+			sqlgraph.To(sysuser.Table, sysuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuserrole.UserTable, sysuserrole.UserColumn),
+		)
+		fromV = sqlgraph.Neighbors(sur.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryRole queries the role edge of a SysUserRole.
+func (c *SysUserRoleClient) QueryRole(sur *SysUserRole) *SysRoleQuery {
+	query := &SysRoleQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sur.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuserrole.Table, sysuserrole.FieldID, id),
+			sqlgraph.To(sysrole.Table, sysrole.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuserrole.RoleTable, sysuserrole.RoleColumn),
+		)
+		fromV = sqlgraph.Neighbors(sur.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.

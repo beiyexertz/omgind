@@ -127,7 +127,7 @@ var (
 		{Name: "label", Type: field.TypeString, Size: 128},
 		{Name: "val", Type: field.TypeInt},
 		{Name: "status", Type: field.TypeBool},
-		{Name: "sys_dict_sys_dict_items", Type: field.TypeString, Nullable: true, Size: 36},
+		{Name: "dict_id", Type: field.TypeString, Nullable: true, Size: 36},
 	}
 	// SysDictItemsTable holds the schema information for the "sys_dict_items" table.
 	SysDictItemsTable = &schema.Table{
@@ -306,18 +306,80 @@ var (
 	}
 	// SysMenuActionResourcesColumns holds the columns for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "sort", Type: field.TypeInt32, Default: 9999},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "status", Type: field.TypeInt32, Default: 0},
+		{Name: "method", Type: field.TypeString, Size: 128},
+		{Name: "path", Type: field.TypeString, Size: 256},
+		{Name: "action_id", Type: field.TypeString, Nullable: true, Size: 36},
 	}
 	// SysMenuActionResourcesTable holds the schema information for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesTable = &schema.Table{
-		Name:        "sys_menu_action_resources",
-		Columns:     SysMenuActionResourcesColumns,
-		PrimaryKey:  []*schema.Column{SysMenuActionResourcesColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "sys_menu_action_resources",
+		Columns:    SysMenuActionResourcesColumns,
+		PrimaryKey: []*schema.Column{SysMenuActionResourcesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "sys_menu_action_resources_sys_menu_actions_resources",
+				Columns:    []*schema.Column{SysMenuActionResourcesColumns[10]},
+				RefColumns: []*schema.Column{SysMenuActionsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysmenuactionresource_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[0]},
+			},
+			{
+				Name:    "sysmenuactionresource_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[1]},
+			},
+			{
+				Name:    "sysmenuactionresource_sort",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[2]},
+			},
+			{
+				Name:    "sysmenuactionresource_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[4]},
+			},
+			{
+				Name:    "sysmenuactionresource_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[5]},
+			},
+			{
+				Name:    "sysmenuactionresource_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[6]},
+			},
+			{
+				Name:    "sysmenuactionresource_status",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[7]},
+			},
+		},
 	}
 	// SysRolesColumns holds the columns for the "sys_roles" table.
 	SysRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "status", Type: field.TypeInt32, Default: 0},
+		{Name: "sort", Type: field.TypeInt32, Default: 9999},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "name", Type: field.TypeString, Size: 64},
 	}
 	// SysRolesTable holds the schema information for the "sys_roles" table.
 	SysRolesTable = &schema.Table{
@@ -325,10 +387,54 @@ var (
 		Columns:     SysRolesColumns,
 		PrimaryKey:  []*schema.Column{SysRolesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysrole_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysRolesColumns[0]},
+			},
+			{
+				Name:    "sysrole_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysRolesColumns[1]},
+			},
+			{
+				Name:    "sysrole_status",
+				Unique:  false,
+				Columns: []*schema.Column{SysRolesColumns[2]},
+			},
+			{
+				Name:    "sysrole_sort",
+				Unique:  false,
+				Columns: []*schema.Column{SysRolesColumns[3]},
+			},
+			{
+				Name:    "sysrole_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysRolesColumns[5]},
+			},
+			{
+				Name:    "sysrole_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysRolesColumns[6]},
+			},
+			{
+				Name:    "sysrole_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysRolesColumns[7]},
+			},
+		},
 	}
 	// SysRoleMenusColumns holds the columns for the "sys_role_menus" table.
 	SysRoleMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "role_id", Type: field.TypeString, Size: 36},
+		{Name: "menu_id", Type: field.TypeString, Size: 36},
+		{Name: "action_id", Type: field.TypeString, Nullable: true, Size: 36},
 	}
 	// SysRoleMenusTable holds the schema information for the "sys_role_menus" table.
 	SysRoleMenusTable = &schema.Table{
@@ -336,6 +442,33 @@ var (
 		Columns:     SysRoleMenusColumns,
 		PrimaryKey:  []*schema.Column{SysRoleMenusColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysrolemenu_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysRoleMenusColumns[0]},
+			},
+			{
+				Name:    "sysrolemenu_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysRoleMenusColumns[1]},
+			},
+			{
+				Name:    "sysrolemenu_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysRoleMenusColumns[2]},
+			},
+			{
+				Name:    "sysrolemenu_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysRoleMenusColumns[3]},
+			},
+			{
+				Name:    "sysrolemenu_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysRoleMenusColumns[4]},
+			},
+		},
 	}
 	// SysUsersColumns holds the columns for the "sys_users" table.
 	SysUsersColumns = []*schema.Column{
@@ -406,14 +539,60 @@ var (
 	}
 	// SysUserRolesColumns holds the columns for the "sys_user_roles" table.
 	SysUserRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "role_id", Type: field.TypeString, Nullable: true, Size: 36},
+		{Name: "user_id", Type: field.TypeString, Nullable: true, Size: 36},
 	}
 	// SysUserRolesTable holds the schema information for the "sys_user_roles" table.
 	SysUserRolesTable = &schema.Table{
-		Name:        "sys_user_roles",
-		Columns:     SysUserRolesColumns,
-		PrimaryKey:  []*schema.Column{SysUserRolesColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "sys_user_roles",
+		Columns:    SysUserRolesColumns,
+		PrimaryKey: []*schema.Column{SysUserRolesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "sys_user_roles_sys_roles_userRoles",
+				Columns:    []*schema.Column{SysUserRolesColumns[5]},
+				RefColumns: []*schema.Column{SysRolesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "sys_user_roles_sys_users_userRoles",
+				Columns:    []*schema.Column{SysUserRolesColumns[6]},
+				RefColumns: []*schema.Column{SysUsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysuserrole_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysUserRolesColumns[0]},
+			},
+			{
+				Name:    "sysuserrole_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysUserRolesColumns[1]},
+			},
+			{
+				Name:    "sysuserrole_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysUserRolesColumns[2]},
+			},
+			{
+				Name:    "sysuserrole_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysUserRolesColumns[3]},
+			},
+			{
+				Name:    "sysuserrole_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysUserRolesColumns[4]},
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
@@ -432,4 +611,7 @@ var (
 
 func init() {
 	SysDictItemsTable.ForeignKeys[0].RefTable = SysDictsTable
+	SysMenuActionResourcesTable.ForeignKeys[0].RefTable = SysMenuActionsTable
+	SysUserRolesTable.ForeignKeys[0].RefTable = SysRolesTable
+	SysUserRolesTable.ForeignKeys[1].RefTable = SysUsersTable
 }

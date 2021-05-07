@@ -27,7 +27,6 @@ type SysDictItemQuery struct {
 	predicates []predicate.SysDictItem
 	// eager-loading edges.
 	withSysDict *SysDictQuery
-	withFKs     bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -349,18 +348,11 @@ func (sdiq *SysDictItemQuery) prepareQuery(ctx context.Context) error {
 func (sdiq *SysDictItemQuery) sqlAll(ctx context.Context) ([]*SysDictItem, error) {
 	var (
 		nodes       = []*SysDictItem{}
-		withFKs     = sdiq.withFKs
 		_spec       = sdiq.querySpec()
 		loadedTypes = [1]bool{
 			sdiq.withSysDict != nil,
 		}
 	)
-	if sdiq.withSysDict != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, sysdictitem.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &SysDictItem{config: sdiq.config}
 		nodes = append(nodes, node)
@@ -385,10 +377,7 @@ func (sdiq *SysDictItemQuery) sqlAll(ctx context.Context) ([]*SysDictItem, error
 		ids := make([]string, 0, len(nodes))
 		nodeids := make(map[string][]*SysDictItem)
 		for i := range nodes {
-			if nodes[i].sys_dict_sys_dict_items == nil {
-				continue
-			}
-			fk := *nodes[i].sys_dict_sys_dict_items
+			fk := nodes[i].DictID
 			if _, ok := nodeids[fk]; !ok {
 				ids = append(ids, fk)
 			}
@@ -402,7 +391,7 @@ func (sdiq *SysDictItemQuery) sqlAll(ctx context.Context) ([]*SysDictItem, error
 		for _, n := range neighbors {
 			nodes, ok := nodeids[n.ID]
 			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "sys_dict_sys_dict_items" returned %v`, n.ID)
+				return nil, fmt.Errorf(`unexpected foreign-key "dict_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
 				nodes[i].Edges.SysDict = n

@@ -5,16 +5,80 @@ package ent
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
 // SysUserRole is the model entity for the SysUserRole schema.
 type SysUserRole struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	// 主键
+	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
+	// CreatedAt holds the value of the "created_at" field.
+	// 创建时间,由程序自动生成
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// UpdatedAt holds the value of the "updated_at" field.
+	// 更新时间,由程序自动生成
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// DeletedAt holds the value of the "deleted_at" field.
+	// 删除时间,
+	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// UserID holds the value of the "user_id" field.
+	// 用户ID, sys_user.id
+	UserID string `json:"user_id,omitempty"`
+	// RoleID holds the value of the "role_id" field.
+	// 角色ID, sys_role.id
+	RoleID string `json:"role_id,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SysUserRoleQuery when eager-loading is set.
+	Edges SysUserRoleEdges `json:"edges"`
+}
+
+// SysUserRoleEdges holds the relations/edges for other nodes in the graph.
+type SysUserRoleEdges struct {
+	// User holds the value of the user edge.
+	User *SysUser `json:"user,omitempty"`
+	// Role holds the value of the role edge.
+	Role *SysRole `json:"role,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// UserOrErr returns the User value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SysUserRoleEdges) UserOrErr() (*SysUser, error) {
+	if e.loadedTypes[0] {
+		if e.User == nil {
+			// The edge user was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: sysuser.Label}
+		}
+		return e.User, nil
+	}
+	return nil, &NotLoadedError{edge: "user"}
+}
+
+// RoleOrErr returns the Role value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SysUserRoleEdges) RoleOrErr() (*SysRole, error) {
+	if e.loadedTypes[1] {
+		if e.Role == nil {
+			// The edge role was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: sysrole.Label}
+		}
+		return e.Role, nil
+	}
+	return nil, &NotLoadedError{edge: "role"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -22,8 +86,12 @@ func (*SysUserRole) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuserrole.FieldID:
-			values[i] = new(sql.NullInt64)
+		case sysuserrole.FieldIsDel:
+			values[i] = new(sql.NullBool)
+		case sysuserrole.FieldID, sysuserrole.FieldUserID, sysuserrole.FieldRoleID:
+			values[i] = new(sql.NullString)
+		case sysuserrole.FieldCreatedAt, sysuserrole.FieldUpdatedAt, sysuserrole.FieldDeletedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type SysUserRole", columns[i])
 		}
@@ -40,14 +108,61 @@ func (sur *SysUserRole) assignValues(columns []string, values []interface{}) err
 	for i := range columns {
 		switch columns[i] {
 		case sysuserrole.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				sur.ID = value.String
 			}
-			sur.ID = int(value.Int64)
+		case sysuserrole.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				sur.IsDel = value.Bool
+			}
+		case sysuserrole.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+			} else if value.Valid {
+				sur.CreatedAt = value.Time
+			}
+		case sysuserrole.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+			} else if value.Valid {
+				sur.UpdatedAt = value.Time
+			}
+		case sysuserrole.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				sur.DeletedAt = new(time.Time)
+				*sur.DeletedAt = value.Time
+			}
+		case sysuserrole.FieldUserID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field user_id", values[i])
+			} else if value.Valid {
+				sur.UserID = value.String
+			}
+		case sysuserrole.FieldRoleID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field role_id", values[i])
+			} else if value.Valid {
+				sur.RoleID = value.String
+			}
 		}
 	}
 	return nil
+}
+
+// QueryUser queries the "user" edge of the SysUserRole entity.
+func (sur *SysUserRole) QueryUser() *SysUserQuery {
+	return (&SysUserRoleClient{config: sur.config}).QueryUser(sur)
+}
+
+// QueryRole queries the "role" edge of the SysUserRole entity.
+func (sur *SysUserRole) QueryRole() *SysRoleQuery {
+	return (&SysUserRoleClient{config: sur.config}).QueryRole(sur)
 }
 
 // Update returns a builder for updating this SysUserRole.
@@ -73,6 +188,20 @@ func (sur *SysUserRole) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysUserRole(")
 	builder.WriteString(fmt.Sprintf("id=%v", sur.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", sur.IsDel))
+	builder.WriteString(", created_at=")
+	builder.WriteString(sur.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", updated_at=")
+	builder.WriteString(sur.UpdatedAt.Format(time.ANSIC))
+	if v := sur.DeletedAt; v != nil {
+		builder.WriteString(", deleted_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", user_id=")
+	builder.WriteString(sur.UserID)
+	builder.WriteString(", role_id=")
+	builder.WriteString(sur.RoleID)
 	builder.WriteByte(')')
 	return builder.String()
 }
