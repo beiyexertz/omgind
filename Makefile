@@ -26,6 +26,9 @@ swagger:
 wire:
 	@wire gen ./internal/app
 
+entc:
+	@entc generate ./internal/schema/entity --target ./internal/app/model/entcd
+
 test:
 	cd ./internal/app/test && go test -v
 
