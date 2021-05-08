@@ -9,4 +9,6 @@ var ServiceSet = wire.NewSet(
 	MenuSet,
 	RoleSet,
 	UserSet,
+	DictSet,
+	DictItemSet,
 )

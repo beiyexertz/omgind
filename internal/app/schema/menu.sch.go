@@ -11,7 +11,7 @@ import (
 type Menu struct {
 	ID         string      `json:"id"`                                         // 唯一标识
 	Name       string      `json:"name" binding:"required"`                    // 菜单名称
-	Sort       int         `json:"Sort"`                                       // 排序值
+	Sort       int         `json:"sort"`                                       // 排序值
 	Icon       string      `json:"icon"`                                       // 菜单图标
 	Router     string      `json:"router"`                                     // 访问路由
 	ParentID   string      `json:"parent_id"`                                  // 父级ID

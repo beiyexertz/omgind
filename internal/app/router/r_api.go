@@ -86,5 +86,24 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gUser.PATCH(":id/enable", a.UserAPI.Enable)
 			gUser.PATCH(":id/disable", a.UserAPI.Disable)
 		}
+
+		gDict := v1.Group("dicts")
+		{
+			gDict.GET("", a.DictAPI.Query)
+			gDict.GET(":id", a.DictAPI.Get)
+			gDict.POST("", a.DictAPI.Create)
+			gDict.PUT(":id", a.DictAPI.Update)
+			gDict.DELETE(":id", a.DictAPI.Delete)
+		}
+
+		gDictItem := v1.Group("dict-items")
+		{
+			gDictItem.GET("", a.DictItemAPI.Query)
+			gDictItem.GET(":id", a.DictItemAPI.Get)
+			gDictItem.POST("", a.DictItemAPI.Create)
+			gDictItem.PUT(":id", a.DictItemAPI.Update)
+			gDictItem.DELETE(":id", a.DictItemAPI.Delete)
+		}
+
 	}
 }

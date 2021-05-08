@@ -28,7 +28,7 @@ func (a SchemaMenu) ToMenu() *Menu {
 type Menu struct {
 	ID         string     `gorm:"column:id;primary_key;size:36;"`
 	Name       string     `gorm:"column:name;size:50;index;default:'';not null;"` // 菜单名称
-	Sort   int        `gorm:"column:sort;index;default:0;not null;"`      // 排序值
+	Sort       int        `gorm:"column:sort;index;default:0;not null;"`          // 排序值
 	Icon       *string    `gorm:"column:icon;size:255;"`                          // 菜单图标
 	Router     *string    `gorm:"column:router;size:255;"`                        // 访问路由
 	ParentID   *string    `gorm:"column:parent_id;size:36;index;"`                // 父级内码
