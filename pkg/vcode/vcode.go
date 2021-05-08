@@ -101,5 +101,5 @@ func (vc *Vcode) GenerateBase64(id string) (string, error) {
 }
 
 func (vc *Vcode) Verify(id, answer string, clear bool) bool {
-	return vc.cpch.Verify(id, answer, clear)
+	return vc.store.Verify(id, answer, clear)
 }
