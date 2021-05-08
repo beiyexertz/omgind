@@ -12,6 +12,7 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
@@ -35,6 +36,7 @@ const (
 	TypeSysCasbinRule         = "SysCasbinRule"
 	TypeSysDict               = "SysDict"
 	TypeSysDictItem           = "SysDictItem"
+	TypeSysJwtBlock           = "SysJwtBlock"
 	TypeSysMenu               = "SysMenu"
 	TypeSysMenuAction         = "SysMenuAction"
 	TypeSysMenuActionResource = "SysMenuActionResource"
@@ -2773,6 +2775,681 @@ func (m *SysDictItemMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *SysDictItemMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown SysDictItem edge %s", name)
+}
+
+// SysJwtBlockMutation represents an operation that mutates the SysJwtBlock nodes in the graph.
+type SysJwtBlockMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	memo          *string
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	status        *int32
+	addstatus     *int32
+	jwt           *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysJwtBlock, error)
+	predicates    []predicate.SysJwtBlock
+}
+
+var _ ent.Mutation = (*SysJwtBlockMutation)(nil)
+
+// sysjwtblockOption allows management of the mutation configuration using functional options.
+type sysjwtblockOption func(*SysJwtBlockMutation)
+
+// newSysJwtBlockMutation creates new mutation for the SysJwtBlock entity.
+func newSysJwtBlockMutation(c config, op Op, opts ...sysjwtblockOption) *SysJwtBlockMutation {
+	m := &SysJwtBlockMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysJwtBlock,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysJwtBlockID sets the ID field of the mutation.
+func withSysJwtBlockID(id string) sysjwtblockOption {
+	return func(m *SysJwtBlockMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysJwtBlock
+		)
+		m.oldValue = func(ctx context.Context) (*SysJwtBlock, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysJwtBlock.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysJwtBlock sets the old SysJwtBlock of the mutation.
+func withSysJwtBlock(node *SysJwtBlock) sysjwtblockOption {
+	return func(m *SysJwtBlockMutation) {
+		m.oldValue = func(context.Context) (*SysJwtBlock, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysJwtBlockMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysJwtBlockMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysJwtBlock entities.
+func (m *SysJwtBlockMutation) SetID(id string) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID
+// is only available if it was provided to the builder.
+func (m *SysJwtBlockMutation) ID() (id string, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysJwtBlockMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysJwtBlockMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysJwtBlockMutation) ResetIsDel() {
+	m.is_del = nil
+}
+
+// SetMemo sets the "memo" field.
+func (m *SysJwtBlockMutation) SetMemo(s string) {
+	m.memo = &s
+}
+
+// Memo returns the value of the "memo" field in the mutation.
+func (m *SysJwtBlockMutation) Memo() (r string, exists bool) {
+	v := m.memo
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMemo returns the old "memo" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldMemo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMemo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMemo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMemo: %w", err)
+	}
+	return oldValue.Memo, nil
+}
+
+// ResetMemo resets all changes to the "memo" field.
+func (m *SysJwtBlockMutation) ResetMemo() {
+	m.memo = nil
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysJwtBlockMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysJwtBlockMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysJwtBlockMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysJwtBlockMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysJwtBlockMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysJwtBlockMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *SysJwtBlockMutation) SetDeletedAt(t time.Time) {
+	m.deleted_at = &t
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *SysJwtBlockMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldDeletedAt(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (m *SysJwtBlockMutation) ClearDeletedAt() {
+	m.deleted_at = nil
+	m.clearedFields[sysjwtblock.FieldDeletedAt] = struct{}{}
+}
+
+// DeletedAtCleared returns if the "deleted_at" field was cleared in this mutation.
+func (m *SysJwtBlockMutation) DeletedAtCleared() bool {
+	_, ok := m.clearedFields[sysjwtblock.FieldDeletedAt]
+	return ok
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *SysJwtBlockMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	delete(m.clearedFields, sysjwtblock.FieldDeletedAt)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysJwtBlockMutation) SetStatus(i int32) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysJwtBlockMutation) Status() (r int32, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldStatus(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysJwtBlockMutation) AddStatus(i int32) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysJwtBlockMutation) AddedStatus() (r int32, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysJwtBlockMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// SetJwt sets the "jwt" field.
+func (m *SysJwtBlockMutation) SetJwt(s string) {
+	m.jwt = &s
+}
+
+// Jwt returns the value of the "jwt" field in the mutation.
+func (m *SysJwtBlockMutation) Jwt() (r string, exists bool) {
+	v := m.jwt
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldJwt returns the old "jwt" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldJwt(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldJwt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldJwt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldJwt: %w", err)
+	}
+	return oldValue.Jwt, nil
+}
+
+// ResetJwt resets all changes to the "jwt" field.
+func (m *SysJwtBlockMutation) ResetJwt() {
+	m.jwt = nil
+}
+
+// Op returns the operation name.
+func (m *SysJwtBlockMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (SysJwtBlock).
+func (m *SysJwtBlockMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysJwtBlockMutation) Fields() []string {
+	fields := make([]string, 0, 7)
+	if m.is_del != nil {
+		fields = append(fields, sysjwtblock.FieldIsDel)
+	}
+	if m.memo != nil {
+		fields = append(fields, sysjwtblock.FieldMemo)
+	}
+	if m.created_at != nil {
+		fields = append(fields, sysjwtblock.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysjwtblock.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, sysjwtblock.FieldDeletedAt)
+	}
+	if m.status != nil {
+		fields = append(fields, sysjwtblock.FieldStatus)
+	}
+	if m.jwt != nil {
+		fields = append(fields, sysjwtblock.FieldJwt)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysJwtBlockMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysjwtblock.FieldIsDel:
+		return m.IsDel()
+	case sysjwtblock.FieldMemo:
+		return m.Memo()
+	case sysjwtblock.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysjwtblock.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysjwtblock.FieldDeletedAt:
+		return m.DeletedAt()
+	case sysjwtblock.FieldStatus:
+		return m.Status()
+	case sysjwtblock.FieldJwt:
+		return m.Jwt()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysJwtBlockMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysjwtblock.FieldIsDel:
+		return m.OldIsDel(ctx)
+	case sysjwtblock.FieldMemo:
+		return m.OldMemo(ctx)
+	case sysjwtblock.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysjwtblock.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysjwtblock.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case sysjwtblock.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysjwtblock.FieldJwt:
+		return m.OldJwt(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysJwtBlock field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysJwtBlockMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysjwtblock.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
+	case sysjwtblock.FieldMemo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMemo(v)
+		return nil
+	case sysjwtblock.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysjwtblock.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysjwtblock.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case sysjwtblock.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysjwtblock.FieldJwt:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetJwt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysJwtBlock field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysJwtBlockMutation) AddedFields() []string {
+	var fields []string
+	if m.addstatus != nil {
+		fields = append(fields, sysjwtblock.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysJwtBlockMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysjwtblock.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysJwtBlockMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysjwtblock.FieldStatus:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysJwtBlock numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysJwtBlockMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysjwtblock.FieldDeletedAt) {
+		fields = append(fields, sysjwtblock.FieldDeletedAt)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysJwtBlockMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysJwtBlockMutation) ClearField(name string) error {
+	switch name {
+	case sysjwtblock.FieldDeletedAt:
+		m.ClearDeletedAt()
+		return nil
+	}
+	return fmt.Errorf("unknown SysJwtBlock nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysJwtBlockMutation) ResetField(name string) error {
+	switch name {
+	case sysjwtblock.FieldIsDel:
+		m.ResetIsDel()
+		return nil
+	case sysjwtblock.FieldMemo:
+		m.ResetMemo()
+		return nil
+	case sysjwtblock.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysjwtblock.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysjwtblock.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case sysjwtblock.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysjwtblock.FieldJwt:
+		m.ResetJwt()
+		return nil
+	}
+	return fmt.Errorf("unknown SysJwtBlock field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysJwtBlockMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysJwtBlockMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysJwtBlockMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysJwtBlockMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysJwtBlockMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysJwtBlockMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysJwtBlockMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysJwtBlock unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysJwtBlockMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysJwtBlock edge %s", name)
 }
 
 // SysMenuMutation represents an operation that mutates the SysMenu nodes in the graph.

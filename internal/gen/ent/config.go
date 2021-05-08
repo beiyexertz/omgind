@@ -27,6 +27,7 @@ type hooks struct {
 	SysCasbinRule         []ent.Hook
 	SysDict               []ent.Hook
 	SysDictItem           []ent.Hook
+	SysJwtBlock           []ent.Hook
 	SysMenu               []ent.Hook
 	SysMenuAction         []ent.Hook
 	SysMenuActionResource []ent.Hook

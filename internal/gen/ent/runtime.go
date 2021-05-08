@@ -8,6 +8,7 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
@@ -228,6 +229,65 @@ func init() {
 	// sysdictitem.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysdictitem.IDValidator = func() func(string) error {
 		validators := sysdictitemDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	sysjwtblockMixin := entity.SysJwtBlock{}.Mixin()
+	sysjwtblockMixinFields0 := sysjwtblockMixin[0].Fields()
+	_ = sysjwtblockMixinFields0
+	sysjwtblockMixinFields1 := sysjwtblockMixin[1].Fields()
+	_ = sysjwtblockMixinFields1
+	sysjwtblockMixinFields2 := sysjwtblockMixin[2].Fields()
+	_ = sysjwtblockMixinFields2
+	sysjwtblockMixinFields3 := sysjwtblockMixin[3].Fields()
+	_ = sysjwtblockMixinFields3
+	sysjwtblockFields := entity.SysJwtBlock{}.Fields()
+	_ = sysjwtblockFields
+	// sysjwtblockDescIsDel is the schema descriptor for is_del field.
+	sysjwtblockDescIsDel := sysjwtblockMixinFields0[1].Descriptor()
+	// sysjwtblock.DefaultIsDel holds the default value on creation for the is_del field.
+	sysjwtblock.DefaultIsDel = sysjwtblockDescIsDel.Default.(bool)
+	// sysjwtblockDescMemo is the schema descriptor for memo field.
+	sysjwtblockDescMemo := sysjwtblockMixinFields1[0].Descriptor()
+	// sysjwtblock.DefaultMemo holds the default value on creation for the memo field.
+	sysjwtblock.DefaultMemo = sysjwtblockDescMemo.Default.(string)
+	// sysjwtblock.MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	sysjwtblock.MemoValidator = sysjwtblockDescMemo.Validators[0].(func(string) error)
+	// sysjwtblockDescCreatedAt is the schema descriptor for created_at field.
+	sysjwtblockDescCreatedAt := sysjwtblockMixinFields2[0].Descriptor()
+	// sysjwtblock.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sysjwtblock.DefaultCreatedAt = sysjwtblockDescCreatedAt.Default.(func() time.Time)
+	// sysjwtblockDescUpdatedAt is the schema descriptor for updated_at field.
+	sysjwtblockDescUpdatedAt := sysjwtblockMixinFields2[1].Descriptor()
+	// sysjwtblock.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sysjwtblock.DefaultUpdatedAt = sysjwtblockDescUpdatedAt.Default.(func() time.Time)
+	// sysjwtblock.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sysjwtblock.UpdateDefaultUpdatedAt = sysjwtblockDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// sysjwtblockDescStatus is the schema descriptor for status field.
+	sysjwtblockDescStatus := sysjwtblockMixinFields3[0].Descriptor()
+	// sysjwtblock.DefaultStatus holds the default value on creation for the status field.
+	sysjwtblock.DefaultStatus = sysjwtblockDescStatus.Default.(int32)
+	// sysjwtblockDescJwt is the schema descriptor for jwt field.
+	sysjwtblockDescJwt := sysjwtblockFields[0].Descriptor()
+	// sysjwtblock.JwtValidator is a validator for the "jwt" field. It is called by the builders before save.
+	sysjwtblock.JwtValidator = sysjwtblockDescJwt.Validators[0].(func(string) error)
+	// sysjwtblockDescID is the schema descriptor for id field.
+	sysjwtblockDescID := sysjwtblockMixinFields0[0].Descriptor()
+	// sysjwtblock.DefaultID holds the default value on creation for the id field.
+	sysjwtblock.DefaultID = sysjwtblockDescID.Default.(string)
+	// sysjwtblock.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysjwtblock.IDValidator = func() func(string) error {
+		validators := sysjwtblockDescID.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),

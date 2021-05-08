@@ -12,6 +12,7 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
@@ -35,6 +36,8 @@ type Client struct {
 	SysDict *SysDictClient
 	// SysDictItem is the client for interacting with the SysDictItem builders.
 	SysDictItem *SysDictItemClient
+	// SysJwtBlock is the client for interacting with the SysJwtBlock builders.
+	SysJwtBlock *SysJwtBlockClient
 	// SysMenu is the client for interacting with the SysMenu builders.
 	SysMenu *SysMenuClient
 	// SysMenuAction is the client for interacting with the SysMenuAction builders.
@@ -65,6 +68,7 @@ func (c *Client) init() {
 	c.SysCasbinRule = NewSysCasbinRuleClient(c.config)
 	c.SysDict = NewSysDictClient(c.config)
 	c.SysDictItem = NewSysDictItemClient(c.config)
+	c.SysJwtBlock = NewSysJwtBlockClient(c.config)
 	c.SysMenu = NewSysMenuClient(c.config)
 	c.SysMenuAction = NewSysMenuActionClient(c.config)
 	c.SysMenuActionResource = NewSysMenuActionResourceClient(c.config)
@@ -108,6 +112,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		SysCasbinRule:         NewSysCasbinRuleClient(cfg),
 		SysDict:               NewSysDictClient(cfg),
 		SysDictItem:           NewSysDictItemClient(cfg),
+		SysJwtBlock:           NewSysJwtBlockClient(cfg),
 		SysMenu:               NewSysMenuClient(cfg),
 		SysMenuAction:         NewSysMenuActionClient(cfg),
 		SysMenuActionResource: NewSysMenuActionResourceClient(cfg),
@@ -136,6 +141,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		SysCasbinRule:         NewSysCasbinRuleClient(cfg),
 		SysDict:               NewSysDictClient(cfg),
 		SysDictItem:           NewSysDictItemClient(cfg),
+		SysJwtBlock:           NewSysJwtBlockClient(cfg),
 		SysMenu:               NewSysMenuClient(cfg),
 		SysMenuAction:         NewSysMenuActionClient(cfg),
 		SysMenuActionResource: NewSysMenuActionResourceClient(cfg),
@@ -175,6 +181,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.SysCasbinRule.Use(hooks...)
 	c.SysDict.Use(hooks...)
 	c.SysDictItem.Use(hooks...)
+	c.SysJwtBlock.Use(hooks...)
 	c.SysMenu.Use(hooks...)
 	c.SysMenuAction.Use(hooks...)
 	c.SysMenuActionResource.Use(hooks...)
@@ -452,6 +459,96 @@ func (c *SysDictItemClient) GetX(ctx context.Context, id string) *SysDictItem {
 // Hooks returns the client hooks.
 func (c *SysDictItemClient) Hooks() []Hook {
 	return c.hooks.SysDictItem
+}
+
+// SysJwtBlockClient is a client for the SysJwtBlock schema.
+type SysJwtBlockClient struct {
+	config
+}
+
+// NewSysJwtBlockClient returns a client for the SysJwtBlock from the given config.
+func NewSysJwtBlockClient(c config) *SysJwtBlockClient {
+	return &SysJwtBlockClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysjwtblock.Hooks(f(g(h())))`.
+func (c *SysJwtBlockClient) Use(hooks ...Hook) {
+	c.hooks.SysJwtBlock = append(c.hooks.SysJwtBlock, hooks...)
+}
+
+// Create returns a create builder for SysJwtBlock.
+func (c *SysJwtBlockClient) Create() *SysJwtBlockCreate {
+	mutation := newSysJwtBlockMutation(c.config, OpCreate)
+	return &SysJwtBlockCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysJwtBlock entities.
+func (c *SysJwtBlockClient) CreateBulk(builders ...*SysJwtBlockCreate) *SysJwtBlockCreateBulk {
+	return &SysJwtBlockCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysJwtBlock.
+func (c *SysJwtBlockClient) Update() *SysJwtBlockUpdate {
+	mutation := newSysJwtBlockMutation(c.config, OpUpdate)
+	return &SysJwtBlockUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysJwtBlockClient) UpdateOne(sjb *SysJwtBlock) *SysJwtBlockUpdateOne {
+	mutation := newSysJwtBlockMutation(c.config, OpUpdateOne, withSysJwtBlock(sjb))
+	return &SysJwtBlockUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysJwtBlockClient) UpdateOneID(id string) *SysJwtBlockUpdateOne {
+	mutation := newSysJwtBlockMutation(c.config, OpUpdateOne, withSysJwtBlockID(id))
+	return &SysJwtBlockUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysJwtBlock.
+func (c *SysJwtBlockClient) Delete() *SysJwtBlockDelete {
+	mutation := newSysJwtBlockMutation(c.config, OpDelete)
+	return &SysJwtBlockDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *SysJwtBlockClient) DeleteOne(sjb *SysJwtBlock) *SysJwtBlockDeleteOne {
+	return c.DeleteOneID(sjb.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *SysJwtBlockClient) DeleteOneID(id string) *SysJwtBlockDeleteOne {
+	builder := c.Delete().Where(sysjwtblock.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysJwtBlockDeleteOne{builder}
+}
+
+// Query returns a query builder for SysJwtBlock.
+func (c *SysJwtBlockClient) Query() *SysJwtBlockQuery {
+	return &SysJwtBlockQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a SysJwtBlock entity by its id.
+func (c *SysJwtBlockClient) Get(ctx context.Context, id string) (*SysJwtBlock, error) {
+	return c.Query().Where(sysjwtblock.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysJwtBlockClient) GetX(ctx context.Context, id string) *SysJwtBlock {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysJwtBlockClient) Hooks() []Hook {
+	return c.hooks.SysJwtBlock
 }
 
 // SysMenuClient is a client for the SysMenu schema.

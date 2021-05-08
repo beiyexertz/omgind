@@ -168,6 +168,56 @@ var (
 			},
 		},
 	}
+	// SysJwtBlocksColumns holds the columns for the "sys_jwt_blocks" table.
+	SysJwtBlocksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "status", Type: field.TypeInt32, Default: 0},
+		{Name: "jwt", Type: field.TypeString, Size: 2147483647},
+	}
+	// SysJwtBlocksTable holds the schema information for the "sys_jwt_blocks" table.
+	SysJwtBlocksTable = &schema.Table{
+		Name:        "sys_jwt_blocks",
+		Columns:     SysJwtBlocksColumns,
+		PrimaryKey:  []*schema.Column{SysJwtBlocksColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "sysjwtblock_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysJwtBlocksColumns[0]},
+			},
+			{
+				Name:    "sysjwtblock_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysJwtBlocksColumns[1]},
+			},
+			{
+				Name:    "sysjwtblock_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysJwtBlocksColumns[3]},
+			},
+			{
+				Name:    "sysjwtblock_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysJwtBlocksColumns[4]},
+			},
+			{
+				Name:    "sysjwtblock_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysJwtBlocksColumns[5]},
+			},
+			{
+				Name:    "sysjwtblock_status",
+				Unique:  false,
+				Columns: []*schema.Column{SysJwtBlocksColumns[6]},
+			},
+		},
+	}
 	// SysMenusColumns holds the columns for the "sys_menus" table.
 	SysMenusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Size: 36},
@@ -572,6 +622,7 @@ var (
 		SysCasbinRulesTable,
 		SysDictsTable,
 		SysDictItemsTable,
+		SysJwtBlocksTable,
 		SysMenusTable,
 		SysMenuActionsTable,
 		SysMenuActionResourcesTable,
