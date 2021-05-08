@@ -75,5 +75,7 @@ func AutoMigrate(db *gorm.DB) error {
 		new(entity.Role),
 		new(entity.UserRole),
 		new(entity.User),
+		new(entity.Dict),
+		new(entity.DictItem),
 	).Error
 }

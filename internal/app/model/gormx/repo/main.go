@@ -13,4 +13,6 @@ var RepoSet = wire.NewSet(
 	TransSet,
 	UserRoleSet,
 	UserSet,
+	DictSet,
+	DictItemSet,
 )
