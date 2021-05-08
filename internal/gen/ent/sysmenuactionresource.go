@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
@@ -48,32 +47,6 @@ type SysMenuActionResource struct {
 	// ActionID holds the value of the "action_id" field.
 	// sys_menu_action.id
 	ActionID string `json:"action_id,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the SysMenuActionResourceQuery when eager-loading is set.
-	Edges SysMenuActionResourceEdges `json:"edges"`
-}
-
-// SysMenuActionResourceEdges holds the relations/edges for other nodes in the graph.
-type SysMenuActionResourceEdges struct {
-	// Action holds the value of the action edge.
-	Action *SysMenuAction `json:"action,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// ActionOrErr returns the Action value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e SysMenuActionResourceEdges) ActionOrErr() (*SysMenuAction, error) {
-	if e.loadedTypes[0] {
-		if e.Action == nil {
-			// The edge action was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: sysmenuaction.Label}
-		}
-		return e.Action, nil
-	}
-	return nil, &NotLoadedError{edge: "action"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -174,11 +147,6 @@ func (smar *SysMenuActionResource) assignValues(columns []string, values []inter
 		}
 	}
 	return nil
-}
-
-// QueryAction queries the "action" edge of the SysMenuActionResource entity.
-func (smar *SysMenuActionResource) QueryAction() *SysMenuActionQuery {
-	return (&SysMenuActionResourceClient{config: smar.config}).QueryAction(smar)
 }
 
 // Update returns a builder for updating this SysMenuActionResource.

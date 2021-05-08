@@ -31,26 +31,8 @@ const (
 	FieldCode = "code"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// EdgeResources holds the string denoting the resources edge name in mutations.
-	EdgeResources = "resources"
-	// EdgeMenu holds the string denoting the menu edge name in mutations.
-	EdgeMenu = "menu"
 	// Table holds the table name of the sysmenuaction in the database.
 	Table = "sys_menu_actions"
-	// ResourcesTable is the table the holds the resources relation/edge.
-	ResourcesTable = "sys_menu_action_resources"
-	// ResourcesInverseTable is the table name for the SysMenuActionResource entity.
-	// It exists in this package in order to avoid circular dependency with the "sysmenuactionresource" package.
-	ResourcesInverseTable = "sys_menu_action_resources"
-	// ResourcesColumn is the table column denoting the resources relation/edge.
-	ResourcesColumn = "action_id"
-	// MenuTable is the table the holds the menu relation/edge.
-	MenuTable = "sys_menu_actions"
-	// MenuInverseTable is the table name for the SysMenu entity.
-	// It exists in this package in order to avoid circular dependency with the "sysmenu" package.
-	MenuInverseTable = "sys_menus"
-	// MenuColumn is the table column denoting the menu relation/edge.
-	MenuColumn = "menu_id"
 )
 
 // Columns holds all SQL columns for sysmenuaction fields.

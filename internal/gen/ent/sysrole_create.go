@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
 // SysRoleCreate is the builder for creating a SysRole entity.
@@ -137,21 +136,6 @@ func (src *SysRoleCreate) SetNillableID(s *string) *SysRoleCreate {
 		src.SetID(*s)
 	}
 	return src
-}
-
-// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by IDs.
-func (src *SysRoleCreate) AddUserRoleIDs(ids ...string) *SysRoleCreate {
-	src.mutation.AddUserRoleIDs(ids...)
-	return src
-}
-
-// AddUserRoles adds the "userRoles" edges to the SysUserRole entity.
-func (src *SysRoleCreate) AddUserRoles(s ...*SysUserRole) *SysRoleCreate {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return src.AddUserRoleIDs(ids...)
 }
 
 // Mutation returns the SysRoleMutation object of the builder.
@@ -366,25 +350,6 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 			Column: sysrole.FieldName,
 		})
 		_node.Name = value
-	}
-	if nodes := src.mutation.UserRolesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

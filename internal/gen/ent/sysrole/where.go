@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 )
 
@@ -776,34 +775,6 @@ func NameEqualFold(v string) predicate.SysRole {
 func NameContainsFold(v string) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
-	})
-}
-
-// HasUserRoles applies the HasEdge predicate on the "userRoles" edge.
-func HasUserRoles() predicate.SysRole {
-	return predicate.SysRole(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(UserRolesTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, UserRolesTable, UserRolesColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasUserRolesWith applies the HasEdge predicate on the "userRoles" edge with a given conditions (other predicates).
-func HasUserRolesWith(preds ...predicate.SysUserRole) predicate.SysRole {
-	return predicate.SysRole(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(UserRolesInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, UserRolesTable, UserRolesColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
 	})
 }
 

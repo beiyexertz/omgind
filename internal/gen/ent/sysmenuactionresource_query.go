@@ -12,7 +12,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
@@ -25,8 +24,6 @@ type SysMenuActionResourceQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.SysMenuActionResource
-	// eager-loading edges.
-	withAction *SysMenuActionQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -61,28 +58,6 @@ func (smarq *SysMenuActionResourceQuery) Unique(unique bool) *SysMenuActionResou
 func (smarq *SysMenuActionResourceQuery) Order(o ...OrderFunc) *SysMenuActionResourceQuery {
 	smarq.order = append(smarq.order, o...)
 	return smarq
-}
-
-// QueryAction chains the current query on the "action" edge.
-func (smarq *SysMenuActionResourceQuery) QueryAction() *SysMenuActionQuery {
-	query := &SysMenuActionQuery{config: smarq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := smarq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := smarq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenuactionresource.Table, sysmenuactionresource.FieldID, selector),
-			sqlgraph.To(sysmenuaction.Table, sysmenuaction.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuactionresource.ActionTable, sysmenuactionresource.ActionColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(smarq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // First returns the first SysMenuActionResource entity from the query.
@@ -266,22 +241,10 @@ func (smarq *SysMenuActionResourceQuery) Clone() *SysMenuActionResourceQuery {
 		offset:     smarq.offset,
 		order:      append([]OrderFunc{}, smarq.order...),
 		predicates: append([]predicate.SysMenuActionResource{}, smarq.predicates...),
-		withAction: smarq.withAction.Clone(),
 		// clone intermediate query.
 		sql:  smarq.sql.Clone(),
 		path: smarq.path,
 	}
-}
-
-// WithAction tells the query-builder to eager-load the nodes that are connected to
-// the "action" edge. The optional arguments are used to configure the query builder of the edge.
-func (smarq *SysMenuActionResourceQuery) WithAction(opts ...func(*SysMenuActionQuery)) *SysMenuActionResourceQuery {
-	query := &SysMenuActionQuery{config: smarq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	smarq.withAction = query
-	return smarq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -347,11 +310,8 @@ func (smarq *SysMenuActionResourceQuery) prepareQuery(ctx context.Context) error
 
 func (smarq *SysMenuActionResourceQuery) sqlAll(ctx context.Context) ([]*SysMenuActionResource, error) {
 	var (
-		nodes       = []*SysMenuActionResource{}
-		_spec       = smarq.querySpec()
-		loadedTypes = [1]bool{
-			smarq.withAction != nil,
-		}
+		nodes = []*SysMenuActionResource{}
+		_spec = smarq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &SysMenuActionResource{config: smarq.config}
@@ -363,7 +323,6 @@ func (smarq *SysMenuActionResourceQuery) sqlAll(ctx context.Context) ([]*SysMenu
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
-		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, smarq.driver, _spec); err != nil {
@@ -372,33 +331,6 @@ func (smarq *SysMenuActionResourceQuery) sqlAll(ctx context.Context) ([]*SysMenu
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-
-	if query := smarq.withAction; query != nil {
-		ids := make([]string, 0, len(nodes))
-		nodeids := make(map[string][]*SysMenuActionResource)
-		for i := range nodes {
-			fk := nodes[i].ActionID
-			if _, ok := nodeids[fk]; !ok {
-				ids = append(ids, fk)
-			}
-			nodeids[fk] = append(nodeids[fk], nodes[i])
-		}
-		query.Where(sysmenuaction.IDIn(ids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "action_id" returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.Action = n
-			}
-		}
-	}
-
 	return nodes, nil
 }
 

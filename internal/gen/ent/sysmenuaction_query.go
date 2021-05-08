@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
@@ -13,9 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
 // SysMenuActionQuery is the builder for querying SysMenuAction entities.
@@ -27,9 +24,6 @@ type SysMenuActionQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.SysMenuAction
-	// eager-loading edges.
-	withResources *SysMenuActionResourceQuery
-	withMenu      *SysMenuQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -64,50 +58,6 @@ func (smaq *SysMenuActionQuery) Unique(unique bool) *SysMenuActionQuery {
 func (smaq *SysMenuActionQuery) Order(o ...OrderFunc) *SysMenuActionQuery {
 	smaq.order = append(smaq.order, o...)
 	return smaq
-}
-
-// QueryResources chains the current query on the "resources" edge.
-func (smaq *SysMenuActionQuery) QueryResources() *SysMenuActionResourceQuery {
-	query := &SysMenuActionResourceQuery{config: smaq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := smaq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := smaq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, selector),
-			sqlgraph.To(sysmenuactionresource.Table, sysmenuactionresource.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysmenuaction.ResourcesTable, sysmenuaction.ResourcesColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(smaq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryMenu chains the current query on the "menu" edge.
-func (smaq *SysMenuActionQuery) QueryMenu() *SysMenuQuery {
-	query := &SysMenuQuery{config: smaq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := smaq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := smaq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, selector),
-			sqlgraph.To(sysmenu.Table, sysmenu.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuaction.MenuTable, sysmenuaction.MenuColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(smaq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // First returns the first SysMenuAction entity from the query.
@@ -286,39 +236,15 @@ func (smaq *SysMenuActionQuery) Clone() *SysMenuActionQuery {
 		return nil
 	}
 	return &SysMenuActionQuery{
-		config:        smaq.config,
-		limit:         smaq.limit,
-		offset:        smaq.offset,
-		order:         append([]OrderFunc{}, smaq.order...),
-		predicates:    append([]predicate.SysMenuAction{}, smaq.predicates...),
-		withResources: smaq.withResources.Clone(),
-		withMenu:      smaq.withMenu.Clone(),
+		config:     smaq.config,
+		limit:      smaq.limit,
+		offset:     smaq.offset,
+		order:      append([]OrderFunc{}, smaq.order...),
+		predicates: append([]predicate.SysMenuAction{}, smaq.predicates...),
 		// clone intermediate query.
 		sql:  smaq.sql.Clone(),
 		path: smaq.path,
 	}
-}
-
-// WithResources tells the query-builder to eager-load the nodes that are connected to
-// the "resources" edge. The optional arguments are used to configure the query builder of the edge.
-func (smaq *SysMenuActionQuery) WithResources(opts ...func(*SysMenuActionResourceQuery)) *SysMenuActionQuery {
-	query := &SysMenuActionResourceQuery{config: smaq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	smaq.withResources = query
-	return smaq
-}
-
-// WithMenu tells the query-builder to eager-load the nodes that are connected to
-// the "menu" edge. The optional arguments are used to configure the query builder of the edge.
-func (smaq *SysMenuActionQuery) WithMenu(opts ...func(*SysMenuQuery)) *SysMenuActionQuery {
-	query := &SysMenuQuery{config: smaq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	smaq.withMenu = query
-	return smaq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -384,12 +310,8 @@ func (smaq *SysMenuActionQuery) prepareQuery(ctx context.Context) error {
 
 func (smaq *SysMenuActionQuery) sqlAll(ctx context.Context) ([]*SysMenuAction, error) {
 	var (
-		nodes       = []*SysMenuAction{}
-		_spec       = smaq.querySpec()
-		loadedTypes = [2]bool{
-			smaq.withResources != nil,
-			smaq.withMenu != nil,
-		}
+		nodes = []*SysMenuAction{}
+		_spec = smaq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &SysMenuAction{config: smaq.config}
@@ -401,7 +323,6 @@ func (smaq *SysMenuActionQuery) sqlAll(ctx context.Context) ([]*SysMenuAction, e
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
-		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, smaq.driver, _spec); err != nil {
@@ -410,58 +331,6 @@ func (smaq *SysMenuActionQuery) sqlAll(ctx context.Context) ([]*SysMenuAction, e
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-
-	if query := smaq.withResources; query != nil {
-		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[string]*SysMenuAction)
-		for i := range nodes {
-			fks = append(fks, nodes[i].ID)
-			nodeids[nodes[i].ID] = nodes[i]
-			nodes[i].Edges.Resources = []*SysMenuActionResource{}
-		}
-		query.Where(predicate.SysMenuActionResource(func(s *sql.Selector) {
-			s.Where(sql.InValues(sysmenuaction.ResourcesColumn, fks...))
-		}))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			fk := n.ActionID
-			node, ok := nodeids[fk]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "action_id" returned %v for node %v`, fk, n.ID)
-			}
-			node.Edges.Resources = append(node.Edges.Resources, n)
-		}
-	}
-
-	if query := smaq.withMenu; query != nil {
-		ids := make([]string, 0, len(nodes))
-		nodeids := make(map[string][]*SysMenuAction)
-		for i := range nodes {
-			fk := nodes[i].MenuID
-			if _, ok := nodeids[fk]; !ok {
-				ids = append(ids, fk)
-			}
-			nodeids[fk] = append(nodeids[fk], nodes[i])
-		}
-		query.Where(sysmenu.IDIn(ids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "menu_id" returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.Menu = n
-			}
-		}
-	}
-
 	return nodes, nil
 }
 

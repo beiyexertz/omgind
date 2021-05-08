@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 )
 
@@ -610,62 +609,6 @@ func RoleIDEqualFold(v string) predicate.SysUserRole {
 func RoleIDContainsFold(v string) predicate.SysUserRole {
 	return predicate.SysUserRole(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldRoleID), v))
-	})
-}
-
-// HasUser applies the HasEdge predicate on the "user" edge.
-func HasUser() predicate.SysUserRole {
-	return predicate.SysUserRole(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(UserTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasUserWith applies the HasEdge predicate on the "user" edge with a given conditions (other predicates).
-func HasUserWith(preds ...predicate.SysUser) predicate.SysUserRole {
-	return predicate.SysUserRole(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(UserInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, UserTable, UserColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasRole applies the HasEdge predicate on the "role" edge.
-func HasRole() predicate.SysUserRole {
-	return predicate.SysUserRole(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(RoleTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, RoleTable, RoleColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasRoleWith applies the HasEdge predicate on the "role" edge with a given conditions (other predicates).
-func HasRoleWith(preds ...predicate.SysRole) predicate.SysUserRole {
-	return predicate.SysUserRole(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(RoleInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, RoleTable, RoleColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
 	})
 }
 

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 )
 
@@ -832,34 +831,6 @@ func StatusEQ(v bool) predicate.SysDict {
 func StatusNEQ(v bool) predicate.SysDict {
 	return predicate.SysDict(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))
-	})
-}
-
-// HasSysDictItems applies the HasEdge predicate on the "SysDictItems" edge.
-func HasSysDictItems() predicate.SysDict {
-	return predicate.SysDict(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(SysDictItemsTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, SysDictItemsTable, SysDictItemsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasSysDictItemsWith applies the HasEdge predicate on the "SysDictItems" edge with a given conditions (other predicates).
-func HasSysDictItemsWith(preds ...predicate.SysDictItem) predicate.SysDict {
-	return predicate.SysDict(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(SysDictItemsInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, SysDictItemsTable, SysDictItemsColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
 	})
 }
 

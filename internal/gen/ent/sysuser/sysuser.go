@@ -39,17 +39,8 @@ const (
 	FieldPhone = "phone"
 	// FieldSalt holds the string denoting the salt field in the database.
 	FieldSalt = "salt"
-	// EdgeUserRoles holds the string denoting the userroles edge name in mutations.
-	EdgeUserRoles = "userRoles"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_users"
-	// UserRolesTable is the table the holds the userRoles relation/edge.
-	UserRolesTable = "sys_user_roles"
-	// UserRolesInverseTable is the table name for the SysUserRole entity.
-	// It exists in this package in order to avoid circular dependency with the "sysuserrole" package.
-	UserRolesInverseTable = "sys_user_roles"
-	// UserRolesColumn is the table column denoting the userRoles relation/edge.
-	UserRolesColumn = "user_id"
 )
 
 // Columns holds all SQL columns for sysuser fields.

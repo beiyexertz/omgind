@@ -12,7 +12,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
 // SysRoleUpdate is the builder for updating SysRole entities.
@@ -130,45 +129,9 @@ func (sru *SysRoleUpdate) SetName(s string) *SysRoleUpdate {
 	return sru
 }
 
-// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by IDs.
-func (sru *SysRoleUpdate) AddUserRoleIDs(ids ...string) *SysRoleUpdate {
-	sru.mutation.AddUserRoleIDs(ids...)
-	return sru
-}
-
-// AddUserRoles adds the "userRoles" edges to the SysUserRole entity.
-func (sru *SysRoleUpdate) AddUserRoles(s ...*SysUserRole) *SysRoleUpdate {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sru.AddUserRoleIDs(ids...)
-}
-
 // Mutation returns the SysRoleMutation object of the builder.
 func (sru *SysRoleUpdate) Mutation() *SysRoleMutation {
 	return sru.mutation
-}
-
-// ClearUserRoles clears all "userRoles" edges to the SysUserRole entity.
-func (sru *SysRoleUpdate) ClearUserRoles() *SysRoleUpdate {
-	sru.mutation.ClearUserRoles()
-	return sru
-}
-
-// RemoveUserRoleIDs removes the "userRoles" edge to SysUserRole entities by IDs.
-func (sru *SysRoleUpdate) RemoveUserRoleIDs(ids ...string) *SysRoleUpdate {
-	sru.mutation.RemoveUserRoleIDs(ids...)
-	return sru
-}
-
-// RemoveUserRoles removes "userRoles" edges to SysUserRole entities.
-func (sru *SysRoleUpdate) RemoveUserRoles(s ...*SysUserRole) *SysRoleUpdate {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sru.RemoveUserRoleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -339,60 +302,6 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: sysrole.FieldName,
 		})
 	}
-	if sru.mutation.UserRolesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sru.mutation.RemovedUserRolesIDs(); len(nodes) > 0 && !sru.mutation.UserRolesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sru.mutation.UserRolesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{sysrole.Label}
@@ -514,45 +423,9 @@ func (sruo *SysRoleUpdateOne) SetName(s string) *SysRoleUpdateOne {
 	return sruo
 }
 
-// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by IDs.
-func (sruo *SysRoleUpdateOne) AddUserRoleIDs(ids ...string) *SysRoleUpdateOne {
-	sruo.mutation.AddUserRoleIDs(ids...)
-	return sruo
-}
-
-// AddUserRoles adds the "userRoles" edges to the SysUserRole entity.
-func (sruo *SysRoleUpdateOne) AddUserRoles(s ...*SysUserRole) *SysRoleUpdateOne {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sruo.AddUserRoleIDs(ids...)
-}
-
 // Mutation returns the SysRoleMutation object of the builder.
 func (sruo *SysRoleUpdateOne) Mutation() *SysRoleMutation {
 	return sruo.mutation
-}
-
-// ClearUserRoles clears all "userRoles" edges to the SysUserRole entity.
-func (sruo *SysRoleUpdateOne) ClearUserRoles() *SysRoleUpdateOne {
-	sruo.mutation.ClearUserRoles()
-	return sruo
-}
-
-// RemoveUserRoleIDs removes the "userRoles" edge to SysUserRole entities by IDs.
-func (sruo *SysRoleUpdateOne) RemoveUserRoleIDs(ids ...string) *SysRoleUpdateOne {
-	sruo.mutation.RemoveUserRoleIDs(ids...)
-	return sruo
-}
-
-// RemoveUserRoles removes "userRoles" edges to SysUserRole entities.
-func (sruo *SysRoleUpdateOne) RemoveUserRoles(s ...*SysUserRole) *SysRoleUpdateOne {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sruo.RemoveUserRoleIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -746,60 +619,6 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 			Value:  value,
 			Column: sysrole.FieldName,
 		})
-	}
-	if sruo.mutation.UserRolesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sruo.mutation.RemovedUserRolesIDs(); len(nodes) > 0 && !sruo.mutation.UserRolesCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sruo.mutation.UserRolesIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysrole.UserRolesTable,
-			Columns: []string{sysrole.UserRolesColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuserrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysRole{config: sruo.config}
 	_spec.Assign = _node.assignValues

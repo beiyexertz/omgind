@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
@@ -12,8 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
-	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
@@ -82,31 +79,9 @@ func (suru *SysUserRoleUpdate) SetRoleID(s string) *SysUserRoleUpdate {
 	return suru
 }
 
-// SetUser sets the "user" edge to the SysUser entity.
-func (suru *SysUserRoleUpdate) SetUser(s *SysUser) *SysUserRoleUpdate {
-	return suru.SetUserID(s.ID)
-}
-
-// SetRole sets the "role" edge to the SysRole entity.
-func (suru *SysUserRoleUpdate) SetRole(s *SysRole) *SysUserRoleUpdate {
-	return suru.SetRoleID(s.ID)
-}
-
 // Mutation returns the SysUserRoleMutation object of the builder.
 func (suru *SysUserRoleUpdate) Mutation() *SysUserRoleMutation {
 	return suru.mutation
-}
-
-// ClearUser clears the "user" edge to the SysUser entity.
-func (suru *SysUserRoleUpdate) ClearUser() *SysUserRoleUpdate {
-	suru.mutation.ClearUser()
-	return suru
-}
-
-// ClearRole clears the "role" edge to the SysRole entity.
-func (suru *SysUserRoleUpdate) ClearRole() *SysUserRoleUpdate {
-	suru.mutation.ClearRole()
-	return suru
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -187,12 +162,6 @@ func (suru *SysUserRoleUpdate) check() error {
 			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
 		}
 	}
-	if _, ok := suru.mutation.UserID(); suru.mutation.UserCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"user\"")
-	}
-	if _, ok := suru.mutation.RoleID(); suru.mutation.RoleCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"role\"")
-	}
 	return nil
 }
 
@@ -241,75 +210,19 @@ func (suru *SysUserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: sysuserrole.FieldDeletedAt,
 		})
 	}
-	if suru.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.UserTable,
-			Columns: []string{sysuserrole.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuser.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	if value, ok := suru.mutation.UserID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuserrole.FieldUserID,
+		})
 	}
-	if nodes := suru.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.UserTable,
-			Columns: []string{sysuserrole.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuser.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if suru.mutation.RoleCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.RoleTable,
-			Columns: []string{sysuserrole.RoleColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysrole.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := suru.mutation.RoleIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.RoleTable,
-			Columns: []string{sysuserrole.RoleColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := suru.mutation.RoleID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuserrole.FieldRoleID,
+		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, suru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -382,31 +295,9 @@ func (suruo *SysUserRoleUpdateOne) SetRoleID(s string) *SysUserRoleUpdateOne {
 	return suruo
 }
 
-// SetUser sets the "user" edge to the SysUser entity.
-func (suruo *SysUserRoleUpdateOne) SetUser(s *SysUser) *SysUserRoleUpdateOne {
-	return suruo.SetUserID(s.ID)
-}
-
-// SetRole sets the "role" edge to the SysRole entity.
-func (suruo *SysUserRoleUpdateOne) SetRole(s *SysRole) *SysUserRoleUpdateOne {
-	return suruo.SetRoleID(s.ID)
-}
-
 // Mutation returns the SysUserRoleMutation object of the builder.
 func (suruo *SysUserRoleUpdateOne) Mutation() *SysUserRoleMutation {
 	return suruo.mutation
-}
-
-// ClearUser clears the "user" edge to the SysUser entity.
-func (suruo *SysUserRoleUpdateOne) ClearUser() *SysUserRoleUpdateOne {
-	suruo.mutation.ClearUser()
-	return suruo
-}
-
-// ClearRole clears the "role" edge to the SysRole entity.
-func (suruo *SysUserRoleUpdateOne) ClearRole() *SysUserRoleUpdateOne {
-	suruo.mutation.ClearRole()
-	return suruo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -494,12 +385,6 @@ func (suruo *SysUserRoleUpdateOne) check() error {
 			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
 		}
 	}
-	if _, ok := suruo.mutation.UserID(); suruo.mutation.UserCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"user\"")
-	}
-	if _, ok := suruo.mutation.RoleID(); suruo.mutation.RoleCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"role\"")
-	}
 	return nil
 }
 
@@ -565,75 +450,19 @@ func (suruo *SysUserRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysUserR
 			Column: sysuserrole.FieldDeletedAt,
 		})
 	}
-	if suruo.mutation.UserCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.UserTable,
-			Columns: []string{sysuserrole.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuser.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	if value, ok := suruo.mutation.UserID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuserrole.FieldUserID,
+		})
 	}
-	if nodes := suruo.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.UserTable,
-			Columns: []string{sysuserrole.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuser.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if suruo.mutation.RoleCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.RoleTable,
-			Columns: []string{sysuserrole.RoleColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysrole.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := suruo.mutation.RoleIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.RoleTable,
-			Columns: []string{sysuserrole.RoleColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := suruo.mutation.RoleID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuserrole.FieldRoleID,
+		})
 	}
 	_node = &SysUserRole{config: suruo.config}
 	_spec.Assign = _node.assignValues

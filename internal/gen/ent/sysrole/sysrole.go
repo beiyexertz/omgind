@@ -27,17 +27,8 @@ const (
 	FieldDeletedAt = "dltd_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// EdgeUserRoles holds the string denoting the userroles edge name in mutations.
-	EdgeUserRoles = "userRoles"
 	// Table holds the table name of the sysrole in the database.
 	Table = "sys_roles"
-	// UserRolesTable is the table the holds the userRoles relation/edge.
-	UserRolesTable = "sys_user_roles"
-	// UserRolesInverseTable is the table name for the SysUserRole entity.
-	// It exists in this package in order to avoid circular dependency with the "sysuserrole" package.
-	UserRolesInverseTable = "sys_user_roles"
-	// UserRolesColumn is the table column denoting the userRoles relation/edge.
-	UserRolesColumn = "role_id"
 )
 
 // Columns holds all SQL columns for sysrole fields.

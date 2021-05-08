@@ -37,17 +37,8 @@ const (
 	FieldParentID = "pid"
 	// FieldParentPath holds the string denoting the parent_path field in the database.
 	FieldParentPath = "ppath"
-	// EdgeActions holds the string denoting the actions edge name in mutations.
-	EdgeActions = "actions"
 	// Table holds the table name of the sysmenu in the database.
 	Table = "sys_menus"
-	// ActionsTable is the table the holds the actions relation/edge.
-	ActionsTable = "sys_menu_actions"
-	// ActionsInverseTable is the table name for the SysMenuAction entity.
-	// It exists in this package in order to avoid circular dependency with the "sysmenuaction" package.
-	ActionsInverseTable = "sys_menu_actions"
-	// ActionsColumn is the table column denoting the actions relation/edge.
-	ActionsColumn = "menu_id"
 )
 
 // Columns holds all SQL columns for sysmenu fields.

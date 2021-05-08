@@ -41,27 +41,6 @@ type SysRole struct {
 	// Name holds the value of the "name" field.
 	// 角色名称
 	Name string `json:"name,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the SysRoleQuery when eager-loading is set.
-	Edges SysRoleEdges `json:"edges"`
-}
-
-// SysRoleEdges holds the relations/edges for other nodes in the graph.
-type SysRoleEdges struct {
-	// UserRoles holds the value of the userRoles edge.
-	UserRoles []*SysUserRole `json:"userRoles,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// UserRolesOrErr returns the UserRoles value or an error if the edge
-// was not loaded in eager-loading.
-func (e SysRoleEdges) UserRolesOrErr() ([]*SysUserRole, error) {
-	if e.loadedTypes[0] {
-		return e.UserRoles, nil
-	}
-	return nil, &NotLoadedError{edge: "userRoles"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -150,11 +129,6 @@ func (sr *SysRole) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
-}
-
-// QueryUserRoles queries the "userRoles" edge of the SysRole entity.
-func (sr *SysRole) QueryUserRoles() *SysUserRoleQuery {
-	return (&SysRoleClient{config: sr.config}).QueryUserRoles(sr)
 }
 
 // Update returns a builder for updating this SysRole.

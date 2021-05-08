@@ -23,26 +23,8 @@ const (
 	FieldUserID = "user_id"
 	// FieldRoleID holds the string denoting the role_id field in the database.
 	FieldRoleID = "role_id"
-	// EdgeUser holds the string denoting the user edge name in mutations.
-	EdgeUser = "user"
-	// EdgeRole holds the string denoting the role edge name in mutations.
-	EdgeRole = "role"
 	// Table holds the table name of the sysuserrole in the database.
 	Table = "sys_user_roles"
-	// UserTable is the table the holds the user relation/edge.
-	UserTable = "sys_user_roles"
-	// UserInverseTable is the table name for the SysUser entity.
-	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
-	UserInverseTable = "sys_users"
-	// UserColumn is the table column denoting the user relation/edge.
-	UserColumn = "user_id"
-	// RoleTable is the table the holds the role relation/edge.
-	RoleTable = "sys_user_roles"
-	// RoleInverseTable is the table name for the SysRole entity.
-	// It exists in this package in order to avoid circular dependency with the "sysrole" package.
-	RoleInverseTable = "sys_roles"
-	// RoleColumn is the table column denoting the role relation/edge.
-	RoleColumn = "role_id"
 )
 
 // Columns holds all SQL columns for sysuserrole fields.

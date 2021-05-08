@@ -22,7 +22,6 @@ import (
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // Client is the client that holds all ent builders.
@@ -360,22 +359,6 @@ func (c *SysDictClient) GetX(ctx context.Context, id string) *SysDict {
 	return obj
 }
 
-// QuerySysDictItems queries the SysDictItems edge of a SysDict.
-func (c *SysDictClient) QuerySysDictItems(sd *SysDict) *SysDictItemQuery {
-	query := &SysDictItemQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sd.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysdict.Table, sysdict.FieldID, id),
-			sqlgraph.To(sysdictitem.Table, sysdictitem.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysdict.SysDictItemsTable, sysdict.SysDictItemsColumn),
-		)
-		fromV = sqlgraph.Neighbors(sd.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *SysDictClient) Hooks() []Hook {
 	return c.hooks.SysDict
@@ -464,22 +447,6 @@ func (c *SysDictItemClient) GetX(ctx context.Context, id string) *SysDictItem {
 		panic(err)
 	}
 	return obj
-}
-
-// QuerySysDict queries the SysDict edge of a SysDictItem.
-func (c *SysDictItemClient) QuerySysDict(sdi *SysDictItem) *SysDictQuery {
-	query := &SysDictQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sdi.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysdictitem.Table, sysdictitem.FieldID, id),
-			sqlgraph.To(sysdict.Table, sysdict.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysdictitem.SysDictTable, sysdictitem.SysDictColumn),
-		)
-		fromV = sqlgraph.Neighbors(sdi.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.
@@ -572,22 +539,6 @@ func (c *SysMenuClient) GetX(ctx context.Context, id string) *SysMenu {
 	return obj
 }
 
-// QueryActions queries the actions edge of a SysMenu.
-func (c *SysMenuClient) QueryActions(sm *SysMenu) *SysMenuActionQuery {
-	query := &SysMenuActionQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sm.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenu.Table, sysmenu.FieldID, id),
-			sqlgraph.To(sysmenuaction.Table, sysmenuaction.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysmenu.ActionsTable, sysmenu.ActionsColumn),
-		)
-		fromV = sqlgraph.Neighbors(sm.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *SysMenuClient) Hooks() []Hook {
 	return c.hooks.SysMenu
@@ -676,38 +627,6 @@ func (c *SysMenuActionClient) GetX(ctx context.Context, id string) *SysMenuActio
 		panic(err)
 	}
 	return obj
-}
-
-// QueryResources queries the resources edge of a SysMenuAction.
-func (c *SysMenuActionClient) QueryResources(sma *SysMenuAction) *SysMenuActionResourceQuery {
-	query := &SysMenuActionResourceQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sma.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, id),
-			sqlgraph.To(sysmenuactionresource.Table, sysmenuactionresource.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysmenuaction.ResourcesTable, sysmenuaction.ResourcesColumn),
-		)
-		fromV = sqlgraph.Neighbors(sma.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryMenu queries the menu edge of a SysMenuAction.
-func (c *SysMenuActionClient) QueryMenu(sma *SysMenuAction) *SysMenuQuery {
-	query := &SysMenuQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sma.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, id),
-			sqlgraph.To(sysmenu.Table, sysmenu.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuaction.MenuTable, sysmenuaction.MenuColumn),
-		)
-		fromV = sqlgraph.Neighbors(sma.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.
@@ -800,22 +719,6 @@ func (c *SysMenuActionResourceClient) GetX(ctx context.Context, id string) *SysM
 	return obj
 }
 
-// QueryAction queries the action edge of a SysMenuActionResource.
-func (c *SysMenuActionResourceClient) QueryAction(smar *SysMenuActionResource) *SysMenuActionQuery {
-	query := &SysMenuActionQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := smar.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysmenuactionresource.Table, sysmenuactionresource.FieldID, id),
-			sqlgraph.To(sysmenuaction.Table, sysmenuaction.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuactionresource.ActionTable, sysmenuactionresource.ActionColumn),
-		)
-		fromV = sqlgraph.Neighbors(smar.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *SysMenuActionResourceClient) Hooks() []Hook {
 	return c.hooks.SysMenuActionResource
@@ -904,22 +807,6 @@ func (c *SysRoleClient) GetX(ctx context.Context, id string) *SysRole {
 		panic(err)
 	}
 	return obj
-}
-
-// QueryUserRoles queries the userRoles edge of a SysRole.
-func (c *SysRoleClient) QueryUserRoles(sr *SysRole) *SysUserRoleQuery {
-	query := &SysUserRoleQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sr.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysrole.Table, sysrole.FieldID, id),
-			sqlgraph.To(sysuserrole.Table, sysuserrole.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysrole.UserRolesTable, sysrole.UserRolesColumn),
-		)
-		fromV = sqlgraph.Neighbors(sr.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.
@@ -1102,22 +989,6 @@ func (c *SysUserClient) GetX(ctx context.Context, id string) *SysUser {
 	return obj
 }
 
-// QueryUserRoles queries the userRoles edge of a SysUser.
-func (c *SysUserClient) QueryUserRoles(su *SysUser) *SysUserRoleQuery {
-	query := &SysUserRoleQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := su.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
-			sqlgraph.To(sysuserrole.Table, sysuserrole.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysuser.UserRolesTable, sysuser.UserRolesColumn),
-		)
-		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *SysUserClient) Hooks() []Hook {
 	return c.hooks.SysUser
@@ -1206,38 +1077,6 @@ func (c *SysUserRoleClient) GetX(ctx context.Context, id string) *SysUserRole {
 		panic(err)
 	}
 	return obj
-}
-
-// QueryUser queries the user edge of a SysUserRole.
-func (c *SysUserRoleClient) QueryUser(sur *SysUserRole) *SysUserQuery {
-	query := &SysUserQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sur.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysuserrole.Table, sysuserrole.FieldID, id),
-			sqlgraph.To(sysuser.Table, sysuser.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuserrole.UserTable, sysuserrole.UserColumn),
-		)
-		fromV = sqlgraph.Neighbors(sur.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryRole queries the role edge of a SysUserRole.
-func (c *SysUserRoleClient) QueryRole(sur *SysUserRole) *SysRoleQuery {
-	query := &SysRoleQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := sur.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysuserrole.Table, sysuserrole.FieldID, id),
-			sqlgraph.To(sysrole.Table, sysrole.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuserrole.RoleTable, sysuserrole.RoleColumn),
-		)
-		fromV = sqlgraph.Neighbors(sur.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.

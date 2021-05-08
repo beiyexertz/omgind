@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 )
 
@@ -1012,62 +1011,6 @@ func NameEqualFold(v string) predicate.SysMenuAction {
 func NameContainsFold(v string) predicate.SysMenuAction {
 	return predicate.SysMenuAction(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
-	})
-}
-
-// HasResources applies the HasEdge predicate on the "resources" edge.
-func HasResources() predicate.SysMenuAction {
-	return predicate.SysMenuAction(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ResourcesTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ResourcesTable, ResourcesColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasResourcesWith applies the HasEdge predicate on the "resources" edge with a given conditions (other predicates).
-func HasResourcesWith(preds ...predicate.SysMenuActionResource) predicate.SysMenuAction {
-	return predicate.SysMenuAction(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ResourcesInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, ResourcesTable, ResourcesColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasMenu applies the HasEdge predicate on the "menu" edge.
-func HasMenu() predicate.SysMenuAction {
-	return predicate.SysMenuAction(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MenuTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, MenuTable, MenuColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasMenuWith applies the HasEdge predicate on the "menu" edge with a given conditions (other predicates).
-func HasMenuWith(preds ...predicate.SysMenu) predicate.SysMenuAction {
-	return predicate.SysMenuAction(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MenuInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, MenuTable, MenuColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
 	})
 }
 

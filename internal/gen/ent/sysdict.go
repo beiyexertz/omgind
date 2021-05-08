@@ -44,27 +44,6 @@ type SysDict struct {
 	// Status holds the value of the "status" field.
 	// 状态
 	Status bool `json:"status,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the SysDictQuery when eager-loading is set.
-	Edges SysDictEdges `json:"edges"`
-}
-
-// SysDictEdges holds the relations/edges for other nodes in the graph.
-type SysDictEdges struct {
-	// SysDictItems holds the value of the SysDictItems edge.
-	SysDictItems []*SysDictItem `json:"SysDictItems,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// SysDictItemsOrErr returns the SysDictItems value or an error if the edge
-// was not loaded in eager-loading.
-func (e SysDictEdges) SysDictItemsOrErr() ([]*SysDictItem, error) {
-	if e.loadedTypes[0] {
-		return e.SysDictItems, nil
-	}
-	return nil, &NotLoadedError{edge: "SysDictItems"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -159,11 +138,6 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
-}
-
-// QuerySysDictItems queries the "SysDictItems" edge of the SysDict entity.
-func (sd *SysDict) QuerySysDictItems() *SysDictItemQuery {
-	return (&SysDictClient{config: sd.config}).QuerySysDictItems(sd)
 }
 
 // Update returns a builder for updating this SysDict.

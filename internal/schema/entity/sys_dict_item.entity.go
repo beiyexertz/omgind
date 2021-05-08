@@ -2,7 +2,6 @@ package entity
 
 import (
 	"entgo.io/ent"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
@@ -33,7 +32,6 @@ func (sdd SysDictItem) Fields() []ent.Field {
 
 func (sdd SysDictItem) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("SysDict", SysDict.Type).Field("dict_id").
-			Ref("SysDictItems").Unique().Required(),
+		//edge.From("SysDict", SysDict.Type).Field("dict_id").Ref("SysDictItems").Unique().Required(),
 	}
 }

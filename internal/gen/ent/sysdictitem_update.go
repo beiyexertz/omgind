@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
@@ -12,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
-	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 )
 
@@ -135,26 +133,9 @@ func (sdiu *SysDictItemUpdate) SetDictID(s string) *SysDictItemUpdate {
 	return sdiu
 }
 
-// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
-func (sdiu *SysDictItemUpdate) SetSysDictID(id string) *SysDictItemUpdate {
-	sdiu.mutation.SetSysDictID(id)
-	return sdiu
-}
-
-// SetSysDict sets the "SysDict" edge to the SysDict entity.
-func (sdiu *SysDictItemUpdate) SetSysDict(s *SysDict) *SysDictItemUpdate {
-	return sdiu.SetSysDictID(s.ID)
-}
-
 // Mutation returns the SysDictItemMutation object of the builder.
 func (sdiu *SysDictItemUpdate) Mutation() *SysDictItemMutation {
 	return sdiu.mutation
-}
-
-// ClearSysDict clears the "SysDict" edge to the SysDict entity.
-func (sdiu *SysDictItemUpdate) ClearSysDict() *SysDictItemUpdate {
-	sdiu.mutation.ClearSysDict()
-	return sdiu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -239,9 +220,6 @@ func (sdiu *SysDictItemUpdate) check() error {
 		if err := sysdictitem.DictIDValidator(v); err != nil {
 			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
 		}
-	}
-	if _, ok := sdiu.mutation.SysDictID(); sdiu.mutation.SysDictCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"SysDict\"")
 	}
 	return nil
 }
@@ -340,40 +318,12 @@ func (sdiu *SysDictItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: sysdictitem.FieldStatus,
 		})
 	}
-	if sdiu.mutation.SysDictCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysdictitem.SysDictTable,
-			Columns: []string{sysdictitem.SysDictColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdict.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sdiu.mutation.SysDictIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysdictitem.SysDictTable,
-			Columns: []string{sysdictitem.SysDictColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdict.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := sdiu.mutation.DictID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysdictitem.FieldDictID,
+		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, sdiu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -500,26 +450,9 @@ func (sdiuo *SysDictItemUpdateOne) SetDictID(s string) *SysDictItemUpdateOne {
 	return sdiuo
 }
 
-// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
-func (sdiuo *SysDictItemUpdateOne) SetSysDictID(id string) *SysDictItemUpdateOne {
-	sdiuo.mutation.SetSysDictID(id)
-	return sdiuo
-}
-
-// SetSysDict sets the "SysDict" edge to the SysDict entity.
-func (sdiuo *SysDictItemUpdateOne) SetSysDict(s *SysDict) *SysDictItemUpdateOne {
-	return sdiuo.SetSysDictID(s.ID)
-}
-
 // Mutation returns the SysDictItemMutation object of the builder.
 func (sdiuo *SysDictItemUpdateOne) Mutation() *SysDictItemMutation {
 	return sdiuo.mutation
-}
-
-// ClearSysDict clears the "SysDict" edge to the SysDict entity.
-func (sdiuo *SysDictItemUpdateOne) ClearSysDict() *SysDictItemUpdateOne {
-	sdiuo.mutation.ClearSysDict()
-	return sdiuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -611,9 +544,6 @@ func (sdiuo *SysDictItemUpdateOne) check() error {
 		if err := sysdictitem.DictIDValidator(v); err != nil {
 			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
 		}
-	}
-	if _, ok := sdiuo.mutation.SysDictID(); sdiuo.mutation.SysDictCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"SysDict\"")
 	}
 	return nil
 }
@@ -729,40 +659,12 @@ func (sdiuo *SysDictItemUpdateOne) sqlSave(ctx context.Context) (_node *SysDictI
 			Column: sysdictitem.FieldStatus,
 		})
 	}
-	if sdiuo.mutation.SysDictCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysdictitem.SysDictTable,
-			Columns: []string{sysdictitem.SysDictColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdict.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sdiuo.mutation.SysDictIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysdictitem.SysDictTable,
-			Columns: []string{sysdictitem.SysDictColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdict.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := sdiuo.mutation.DictID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysdictitem.FieldDictID,
+		})
 	}
 	_node = &SysDictItem{config: sdiuo.config}
 	_spec.Assign = _node.assignValues

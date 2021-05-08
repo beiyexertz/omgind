@@ -1125,26 +1125,23 @@ func (m *SysCasbinRuleMutation) ResetEdge(name string) error {
 // SysDictMutation represents an operation that mutates the SysDict nodes in the graph.
 type SysDictMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *string
-	is_del               *bool
-	memo                 *string
-	sort                 *int32
-	addsort              *int32
-	created_at           *time.Time
-	updated_at           *time.Time
-	deleted_at           *time.Time
-	name_cn              *string
-	name_en              *string
-	status               *bool
-	clearedFields        map[string]struct{}
-	_SysDictItems        map[string]struct{}
-	removed_SysDictItems map[string]struct{}
-	cleared_SysDictItems bool
-	done                 bool
-	oldValue             func(context.Context) (*SysDict, error)
-	predicates           []predicate.SysDict
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	memo          *string
+	sort          *int32
+	addsort       *int32
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	name_cn       *string
+	name_en       *string
+	status        *bool
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysDict, error)
+	predicates    []predicate.SysDict
 }
 
 var _ ent.Mutation = (*SysDictMutation)(nil)
@@ -1589,59 +1586,6 @@ func (m *SysDictMutation) ResetStatus() {
 	m.status = nil
 }
 
-// AddSysDictItemIDs adds the "SysDictItems" edge to the SysDictItem entity by ids.
-func (m *SysDictMutation) AddSysDictItemIDs(ids ...string) {
-	if m._SysDictItems == nil {
-		m._SysDictItems = make(map[string]struct{})
-	}
-	for i := range ids {
-		m._SysDictItems[ids[i]] = struct{}{}
-	}
-}
-
-// ClearSysDictItems clears the "SysDictItems" edge to the SysDictItem entity.
-func (m *SysDictMutation) ClearSysDictItems() {
-	m.cleared_SysDictItems = true
-}
-
-// SysDictItemsCleared reports if the "SysDictItems" edge to the SysDictItem entity was cleared.
-func (m *SysDictMutation) SysDictItemsCleared() bool {
-	return m.cleared_SysDictItems
-}
-
-// RemoveSysDictItemIDs removes the "SysDictItems" edge to the SysDictItem entity by IDs.
-func (m *SysDictMutation) RemoveSysDictItemIDs(ids ...string) {
-	if m.removed_SysDictItems == nil {
-		m.removed_SysDictItems = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.removed_SysDictItems[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedSysDictItems returns the removed IDs of the "SysDictItems" edge to the SysDictItem entity.
-func (m *SysDictMutation) RemovedSysDictItemsIDs() (ids []string) {
-	for id := range m.removed_SysDictItems {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// SysDictItemsIDs returns the "SysDictItems" edge IDs in the mutation.
-func (m *SysDictMutation) SysDictItemsIDs() (ids []string) {
-	for id := range m._SysDictItems {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetSysDictItems resets all changes to the "SysDictItems" edge.
-func (m *SysDictMutation) ResetSysDictItems() {
-	m._SysDictItems = nil
-	m.cleared_SysDictItems = false
-	m.removed_SysDictItems = nil
-}
-
 // Op returns the operation name.
 func (m *SysDictMutation) Op() Op {
 	return m.op
@@ -1915,111 +1859,74 @@ func (m *SysDictMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysDictMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m._SysDictItems != nil {
-		edges = append(edges, sysdict.EdgeSysDictItems)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysDictMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysdict.EdgeSysDictItems:
-		ids := make([]ent.Value, 0, len(m._SysDictItems))
-		for id := range m._SysDictItems {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysDictMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.removed_SysDictItems != nil {
-		edges = append(edges, sysdict.EdgeSysDictItems)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysDictMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case sysdict.EdgeSysDictItems:
-		ids := make([]ent.Value, 0, len(m.removed_SysDictItems))
-		for id := range m.removed_SysDictItems {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysDictMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.cleared_SysDictItems {
-		edges = append(edges, sysdict.EdgeSysDictItems)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysDictMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysdict.EdgeSysDictItems:
-		return m.cleared_SysDictItems
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysDictMutation) ClearEdge(name string) error {
-	switch name {
-	}
 	return fmt.Errorf("unknown SysDict unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysDictMutation) ResetEdge(name string) error {
-	switch name {
-	case sysdict.EdgeSysDictItems:
-		m.ResetSysDictItems()
-		return nil
-	}
 	return fmt.Errorf("unknown SysDict edge %s", name)
 }
 
 // SysDictItemMutation represents an operation that mutates the SysDictItem nodes in the graph.
 type SysDictItemMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *string
-	is_del          *bool
-	memo            *string
-	sort            *int32
-	addsort         *int32
-	created_at      *time.Time
-	updated_at      *time.Time
-	deleted_at      *time.Time
-	label           *string
-	value           *int
-	addvalue        *int
-	status          *bool
-	clearedFields   map[string]struct{}
-	_SysDict        *string
-	cleared_SysDict bool
-	done            bool
-	oldValue        func(context.Context) (*SysDictItem, error)
-	predicates      []predicate.SysDictItem
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	memo          *string
+	sort          *int32
+	addsort       *int32
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	label         *string
+	value         *int
+	addvalue      *int
+	status        *bool
+	dict_id       *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysDictItem, error)
+	predicates    []predicate.SysDictItem
 }
 
 var _ ent.Mutation = (*SysDictItemMutation)(nil)
@@ -2486,12 +2393,12 @@ func (m *SysDictItemMutation) ResetStatus() {
 
 // SetDictID sets the "dict_id" field.
 func (m *SysDictItemMutation) SetDictID(s string) {
-	m._SysDict = &s
+	m.dict_id = &s
 }
 
 // DictID returns the value of the "dict_id" field in the mutation.
 func (m *SysDictItemMutation) DictID() (r string, exists bool) {
-	v := m._SysDict
+	v := m.dict_id
 	if v == nil {
 		return
 	}
@@ -2517,46 +2424,7 @@ func (m *SysDictItemMutation) OldDictID(ctx context.Context) (v string, err erro
 
 // ResetDictID resets all changes to the "dict_id" field.
 func (m *SysDictItemMutation) ResetDictID() {
-	m._SysDict = nil
-}
-
-// SetSysDictID sets the "SysDict" edge to the SysDict entity by id.
-func (m *SysDictItemMutation) SetSysDictID(id string) {
-	m._SysDict = &id
-}
-
-// ClearSysDict clears the "SysDict" edge to the SysDict entity.
-func (m *SysDictItemMutation) ClearSysDict() {
-	m.cleared_SysDict = true
-}
-
-// SysDictCleared reports if the "SysDict" edge to the SysDict entity was cleared.
-func (m *SysDictItemMutation) SysDictCleared() bool {
-	return m.cleared_SysDict
-}
-
-// SysDictID returns the "SysDict" edge ID in the mutation.
-func (m *SysDictItemMutation) SysDictID() (id string, exists bool) {
-	if m._SysDict != nil {
-		return *m._SysDict, true
-	}
-	return
-}
-
-// SysDictIDs returns the "SysDict" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// SysDictID instead. It exists only for internal usage by the builders.
-func (m *SysDictItemMutation) SysDictIDs() (ids []string) {
-	if id := m._SysDict; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetSysDict resets all changes to the "SysDict" edge.
-func (m *SysDictItemMutation) ResetSysDict() {
-	m._SysDict = nil
-	m.cleared_SysDict = false
+	m.dict_id = nil
 }
 
 // Op returns the operation name.
@@ -2601,7 +2469,7 @@ func (m *SysDictItemMutation) Fields() []string {
 	if m.status != nil {
 		fields = append(fields, sysdictitem.FieldStatus)
 	}
-	if m._SysDict != nil {
+	if m.dict_id != nil {
 		fields = append(fields, sysdictitem.FieldDictID)
 	}
 	return fields
@@ -2861,108 +2729,77 @@ func (m *SysDictItemMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysDictItemMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m._SysDict != nil {
-		edges = append(edges, sysdictitem.EdgeSysDict)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysDictItemMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysdictitem.EdgeSysDict:
-		if id := m._SysDict; id != nil {
-			return []ent.Value{*id}
-		}
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysDictItemMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysDictItemMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysDictItemMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.cleared_SysDict {
-		edges = append(edges, sysdictitem.EdgeSysDict)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysDictItemMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysdictitem.EdgeSysDict:
-		return m.cleared_SysDict
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysDictItemMutation) ClearEdge(name string) error {
-	switch name {
-	case sysdictitem.EdgeSysDict:
-		m.ClearSysDict()
-		return nil
-	}
 	return fmt.Errorf("unknown SysDictItem unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysDictItemMutation) ResetEdge(name string) error {
-	switch name {
-	case sysdictitem.EdgeSysDict:
-		m.ResetSysDict()
-		return nil
-	}
 	return fmt.Errorf("unknown SysDictItem edge %s", name)
 }
 
 // SysMenuMutation represents an operation that mutates the SysMenu nodes in the graph.
 type SysMenuMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *string
-	is_del         *bool
-	memo           *string
-	sort           *int32
-	addsort        *int32
-	created_at     *time.Time
-	updated_at     *time.Time
-	deleted_at     *time.Time
-	status         *int32
-	addstatus      *int32
-	name           *string
-	icon           *string
-	router         *string
-	is_show        *bool
-	parent_id      *string
-	parent_path    *string
-	clearedFields  map[string]struct{}
-	actions        map[string]struct{}
-	removedactions map[string]struct{}
-	clearedactions bool
-	done           bool
-	oldValue       func(context.Context) (*SysMenu, error)
-	predicates     []predicate.SysMenu
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	memo          *string
+	sort          *int32
+	addsort       *int32
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	status        *int32
+	addstatus     *int32
+	name          *string
+	icon          *string
+	router        *string
+	is_show       *bool
+	parent_id     *string
+	parent_path   *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysMenu, error)
+	predicates    []predicate.SysMenu
 }
 
 var _ ent.Mutation = (*SysMenuMutation)(nil)
@@ -3597,59 +3434,6 @@ func (m *SysMenuMutation) ResetParentPath() {
 	delete(m.clearedFields, sysmenu.FieldParentPath)
 }
 
-// AddActionIDs adds the "actions" edge to the SysMenuAction entity by ids.
-func (m *SysMenuMutation) AddActionIDs(ids ...string) {
-	if m.actions == nil {
-		m.actions = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.actions[ids[i]] = struct{}{}
-	}
-}
-
-// ClearActions clears the "actions" edge to the SysMenuAction entity.
-func (m *SysMenuMutation) ClearActions() {
-	m.clearedactions = true
-}
-
-// ActionsCleared reports if the "actions" edge to the SysMenuAction entity was cleared.
-func (m *SysMenuMutation) ActionsCleared() bool {
-	return m.clearedactions
-}
-
-// RemoveActionIDs removes the "actions" edge to the SysMenuAction entity by IDs.
-func (m *SysMenuMutation) RemoveActionIDs(ids ...string) {
-	if m.removedactions == nil {
-		m.removedactions = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.removedactions[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedActions returns the removed IDs of the "actions" edge to the SysMenuAction entity.
-func (m *SysMenuMutation) RemovedActionsIDs() (ids []string) {
-	for id := range m.removedactions {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ActionsIDs returns the "actions" edge IDs in the mutation.
-func (m *SysMenuMutation) ActionsIDs() (ids []string) {
-	for id := range m.actions {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetActions resets all changes to the "actions" edge.
-func (m *SysMenuMutation) ResetActions() {
-	m.actions = nil
-	m.clearedactions = false
-	m.removedactions = nil
-}
-
 // Op returns the operation name.
 func (m *SysMenuMutation) Op() Op {
 	return m.op
@@ -4015,114 +3799,74 @@ func (m *SysMenuMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysMenuMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.actions != nil {
-		edges = append(edges, sysmenu.EdgeActions)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysMenuMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysmenu.EdgeActions:
-		ids := make([]ent.Value, 0, len(m.actions))
-		for id := range m.actions {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysMenuMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.removedactions != nil {
-		edges = append(edges, sysmenu.EdgeActions)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysMenuMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case sysmenu.EdgeActions:
-		ids := make([]ent.Value, 0, len(m.removedactions))
-		for id := range m.removedactions {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysMenuMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedactions {
-		edges = append(edges, sysmenu.EdgeActions)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysMenuMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysmenu.EdgeActions:
-		return m.clearedactions
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysMenuMutation) ClearEdge(name string) error {
-	switch name {
-	}
 	return fmt.Errorf("unknown SysMenu unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysMenuMutation) ResetEdge(name string) error {
-	switch name {
-	case sysmenu.EdgeActions:
-		m.ResetActions()
-		return nil
-	}
 	return fmt.Errorf("unknown SysMenu edge %s", name)
 }
 
 // SysMenuActionMutation represents an operation that mutates the SysMenuAction nodes in the graph.
 type SysMenuActionMutation struct {
 	config
-	op               Op
-	typ              string
-	id               *string
-	is_del           *bool
-	sort             *int32
-	addsort          *int32
-	status           *int32
-	addstatus        *int32
-	memo             *string
-	created_at       *time.Time
-	updated_at       *time.Time
-	deleted_at       *time.Time
-	code             *string
-	name             *string
-	clearedFields    map[string]struct{}
-	resources        map[string]struct{}
-	removedresources map[string]struct{}
-	clearedresources bool
-	menu             *string
-	clearedmenu      bool
-	done             bool
-	oldValue         func(context.Context) (*SysMenuAction, error)
-	predicates       []predicate.SysMenuAction
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	sort          *int32
+	addsort       *int32
+	status        *int32
+	addstatus     *int32
+	memo          *string
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	menu_id       *string
+	code          *string
+	name          *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysMenuAction, error)
+	predicates    []predicate.SysMenuAction
 }
 
 var _ ent.Mutation = (*SysMenuActionMutation)(nil)
@@ -4517,12 +4261,12 @@ func (m *SysMenuActionMutation) ResetDeletedAt() {
 
 // SetMenuID sets the "menu_id" field.
 func (m *SysMenuActionMutation) SetMenuID(s string) {
-	m.menu = &s
+	m.menu_id = &s
 }
 
 // MenuID returns the value of the "menu_id" field in the mutation.
 func (m *SysMenuActionMutation) MenuID() (r string, exists bool) {
-	v := m.menu
+	v := m.menu_id
 	if v == nil {
 		return
 	}
@@ -4548,7 +4292,7 @@ func (m *SysMenuActionMutation) OldMenuID(ctx context.Context) (v string, err er
 
 // ResetMenuID resets all changes to the "menu_id" field.
 func (m *SysMenuActionMutation) ResetMenuID() {
-	m.menu = nil
+	m.menu_id = nil
 }
 
 // SetCode sets the "code" field.
@@ -4623,85 +4367,6 @@ func (m *SysMenuActionMutation) ResetName() {
 	m.name = nil
 }
 
-// AddResourceIDs adds the "resources" edge to the SysMenuActionResource entity by ids.
-func (m *SysMenuActionMutation) AddResourceIDs(ids ...string) {
-	if m.resources == nil {
-		m.resources = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.resources[ids[i]] = struct{}{}
-	}
-}
-
-// ClearResources clears the "resources" edge to the SysMenuActionResource entity.
-func (m *SysMenuActionMutation) ClearResources() {
-	m.clearedresources = true
-}
-
-// ResourcesCleared reports if the "resources" edge to the SysMenuActionResource entity was cleared.
-func (m *SysMenuActionMutation) ResourcesCleared() bool {
-	return m.clearedresources
-}
-
-// RemoveResourceIDs removes the "resources" edge to the SysMenuActionResource entity by IDs.
-func (m *SysMenuActionMutation) RemoveResourceIDs(ids ...string) {
-	if m.removedresources == nil {
-		m.removedresources = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.removedresources[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedResources returns the removed IDs of the "resources" edge to the SysMenuActionResource entity.
-func (m *SysMenuActionMutation) RemovedResourcesIDs() (ids []string) {
-	for id := range m.removedresources {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResourcesIDs returns the "resources" edge IDs in the mutation.
-func (m *SysMenuActionMutation) ResourcesIDs() (ids []string) {
-	for id := range m.resources {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetResources resets all changes to the "resources" edge.
-func (m *SysMenuActionMutation) ResetResources() {
-	m.resources = nil
-	m.clearedresources = false
-	m.removedresources = nil
-}
-
-// ClearMenu clears the "menu" edge to the SysMenu entity.
-func (m *SysMenuActionMutation) ClearMenu() {
-	m.clearedmenu = true
-}
-
-// MenuCleared reports if the "menu" edge to the SysMenu entity was cleared.
-func (m *SysMenuActionMutation) MenuCleared() bool {
-	return m.clearedmenu
-}
-
-// MenuIDs returns the "menu" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// MenuID instead. It exists only for internal usage by the builders.
-func (m *SysMenuActionMutation) MenuIDs() (ids []string) {
-	if id := m.menu; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetMenu resets all changes to the "menu" edge.
-func (m *SysMenuActionMutation) ResetMenu() {
-	m.menu = nil
-	m.clearedmenu = false
-}
-
 // Op returns the operation name.
 func (m *SysMenuActionMutation) Op() Op {
 	return m.op
@@ -4738,7 +4403,7 @@ func (m *SysMenuActionMutation) Fields() []string {
 	if m.deleted_at != nil {
 		fields = append(fields, sysmenuaction.FieldDeletedAt)
 	}
-	if m.menu != nil {
+	if m.menu_id != nil {
 		fields = append(fields, sysmenuaction.FieldMenuID)
 	}
 	if m.code != nil {
@@ -5004,103 +4669,49 @@ func (m *SysMenuActionMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysMenuActionMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.resources != nil {
-		edges = append(edges, sysmenuaction.EdgeResources)
-	}
-	if m.menu != nil {
-		edges = append(edges, sysmenuaction.EdgeMenu)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysMenuActionMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysmenuaction.EdgeResources:
-		ids := make([]ent.Value, 0, len(m.resources))
-		for id := range m.resources {
-			ids = append(ids, id)
-		}
-		return ids
-	case sysmenuaction.EdgeMenu:
-		if id := m.menu; id != nil {
-			return []ent.Value{*id}
-		}
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysMenuActionMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.removedresources != nil {
-		edges = append(edges, sysmenuaction.EdgeResources)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysMenuActionMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case sysmenuaction.EdgeResources:
-		ids := make([]ent.Value, 0, len(m.removedresources))
-		for id := range m.removedresources {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysMenuActionMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.clearedresources {
-		edges = append(edges, sysmenuaction.EdgeResources)
-	}
-	if m.clearedmenu {
-		edges = append(edges, sysmenuaction.EdgeMenu)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysMenuActionMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysmenuaction.EdgeResources:
-		return m.clearedresources
-	case sysmenuaction.EdgeMenu:
-		return m.clearedmenu
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysMenuActionMutation) ClearEdge(name string) error {
-	switch name {
-	case sysmenuaction.EdgeMenu:
-		m.ClearMenu()
-		return nil
-	}
 	return fmt.Errorf("unknown SysMenuAction unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysMenuActionMutation) ResetEdge(name string) error {
-	switch name {
-	case sysmenuaction.EdgeResources:
-		m.ResetResources()
-		return nil
-	case sysmenuaction.EdgeMenu:
-		m.ResetMenu()
-		return nil
-	}
 	return fmt.Errorf("unknown SysMenuAction edge %s", name)
 }
 
@@ -5121,9 +4732,8 @@ type SysMenuActionResourceMutation struct {
 	addstatus     *int32
 	method        *string
 	_path         *string
+	action_id     *string
 	clearedFields map[string]struct{}
-	action        *string
-	clearedaction bool
 	done          bool
 	oldValue      func(context.Context) (*SysMenuActionResource, error)
 	predicates    []predicate.SysMenuActionResource
@@ -5593,12 +5203,12 @@ func (m *SysMenuActionResourceMutation) ResetPath() {
 
 // SetActionID sets the "action_id" field.
 func (m *SysMenuActionResourceMutation) SetActionID(s string) {
-	m.action = &s
+	m.action_id = &s
 }
 
 // ActionID returns the value of the "action_id" field in the mutation.
 func (m *SysMenuActionResourceMutation) ActionID() (r string, exists bool) {
-	v := m.action
+	v := m.action_id
 	if v == nil {
 		return
 	}
@@ -5624,33 +5234,7 @@ func (m *SysMenuActionResourceMutation) OldActionID(ctx context.Context) (v stri
 
 // ResetActionID resets all changes to the "action_id" field.
 func (m *SysMenuActionResourceMutation) ResetActionID() {
-	m.action = nil
-}
-
-// ClearAction clears the "action" edge to the SysMenuAction entity.
-func (m *SysMenuActionResourceMutation) ClearAction() {
-	m.clearedaction = true
-}
-
-// ActionCleared reports if the "action" edge to the SysMenuAction entity was cleared.
-func (m *SysMenuActionResourceMutation) ActionCleared() bool {
-	return m.clearedaction
-}
-
-// ActionIDs returns the "action" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// ActionID instead. It exists only for internal usage by the builders.
-func (m *SysMenuActionResourceMutation) ActionIDs() (ids []string) {
-	if id := m.action; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetAction resets all changes to the "action" edge.
-func (m *SysMenuActionResourceMutation) ResetAction() {
-	m.action = nil
-	m.clearedaction = false
+	m.action_id = nil
 }
 
 // Op returns the operation name.
@@ -5695,7 +5279,7 @@ func (m *SysMenuActionResourceMutation) Fields() []string {
 	if m._path != nil {
 		fields = append(fields, sysmenuactionresource.FieldPath)
 	}
-	if m.action != nil {
+	if m.action_id != nil {
 		fields = append(fields, sysmenuactionresource.FieldActionID)
 	}
 	return fields
@@ -5955,103 +5539,72 @@ func (m *SysMenuActionResourceMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysMenuActionResourceMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.action != nil {
-		edges = append(edges, sysmenuactionresource.EdgeAction)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysMenuActionResourceMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysmenuactionresource.EdgeAction:
-		if id := m.action; id != nil {
-			return []ent.Value{*id}
-		}
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysMenuActionResourceMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysMenuActionResourceMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysMenuActionResourceMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedaction {
-		edges = append(edges, sysmenuactionresource.EdgeAction)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysMenuActionResourceMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysmenuactionresource.EdgeAction:
-		return m.clearedaction
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysMenuActionResourceMutation) ClearEdge(name string) error {
-	switch name {
-	case sysmenuactionresource.EdgeAction:
-		m.ClearAction()
-		return nil
-	}
 	return fmt.Errorf("unknown SysMenuActionResource unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysMenuActionResourceMutation) ResetEdge(name string) error {
-	switch name {
-	case sysmenuactionresource.EdgeAction:
-		m.ResetAction()
-		return nil
-	}
 	return fmt.Errorf("unknown SysMenuActionResource edge %s", name)
 }
 
 // SysRoleMutation represents an operation that mutates the SysRole nodes in the graph.
 type SysRoleMutation struct {
 	config
-	op               Op
-	typ              string
-	id               *string
-	is_del           *bool
-	status           *int32
-	addstatus        *int32
-	sort             *int32
-	addsort          *int32
-	memo             *string
-	created_at       *time.Time
-	updated_at       *time.Time
-	deleted_at       *time.Time
-	name             *string
-	clearedFields    map[string]struct{}
-	userRoles        map[string]struct{}
-	removeduserRoles map[string]struct{}
-	cleareduserRoles bool
-	done             bool
-	oldValue         func(context.Context) (*SysRole, error)
-	predicates       []predicate.SysRole
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	status        *int32
+	addstatus     *int32
+	sort          *int32
+	addsort       *int32
+	memo          *string
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	name          *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysRole, error)
+	predicates    []predicate.SysRole
 }
 
 var _ ent.Mutation = (*SysRoleMutation)(nil)
@@ -6480,59 +6033,6 @@ func (m *SysRoleMutation) ResetName() {
 	m.name = nil
 }
 
-// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by ids.
-func (m *SysRoleMutation) AddUserRoleIDs(ids ...string) {
-	if m.userRoles == nil {
-		m.userRoles = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.userRoles[ids[i]] = struct{}{}
-	}
-}
-
-// ClearUserRoles clears the "userRoles" edge to the SysUserRole entity.
-func (m *SysRoleMutation) ClearUserRoles() {
-	m.cleareduserRoles = true
-}
-
-// UserRolesCleared reports if the "userRoles" edge to the SysUserRole entity was cleared.
-func (m *SysRoleMutation) UserRolesCleared() bool {
-	return m.cleareduserRoles
-}
-
-// RemoveUserRoleIDs removes the "userRoles" edge to the SysUserRole entity by IDs.
-func (m *SysRoleMutation) RemoveUserRoleIDs(ids ...string) {
-	if m.removeduserRoles == nil {
-		m.removeduserRoles = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.removeduserRoles[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedUserRoles returns the removed IDs of the "userRoles" edge to the SysUserRole entity.
-func (m *SysRoleMutation) RemovedUserRolesIDs() (ids []string) {
-	for id := range m.removeduserRoles {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// UserRolesIDs returns the "userRoles" edge IDs in the mutation.
-func (m *SysRoleMutation) UserRolesIDs() (ids []string) {
-	for id := range m.userRoles {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetUserRoles resets all changes to the "userRoles" edge.
-func (m *SysRoleMutation) ResetUserRoles() {
-	m.userRoles = nil
-	m.cleareduserRoles = false
-	m.removeduserRoles = nil
-}
-
 // Op returns the operation name.
 func (m *SysRoleMutation) Op() Op {
 	return m.op
@@ -6801,85 +6301,49 @@ func (m *SysRoleMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysRoleMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.userRoles != nil {
-		edges = append(edges, sysrole.EdgeUserRoles)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysRoleMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysrole.EdgeUserRoles:
-		ids := make([]ent.Value, 0, len(m.userRoles))
-		for id := range m.userRoles {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysRoleMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.removeduserRoles != nil {
-		edges = append(edges, sysrole.EdgeUserRoles)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysRoleMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case sysrole.EdgeUserRoles:
-		ids := make([]ent.Value, 0, len(m.removeduserRoles))
-		for id := range m.removeduserRoles {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysRoleMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.cleareduserRoles {
-		edges = append(edges, sysrole.EdgeUserRoles)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysRoleMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysrole.EdgeUserRoles:
-		return m.cleareduserRoles
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysRoleMutation) ClearEdge(name string) error {
-	switch name {
-	}
 	return fmt.Errorf("unknown SysRole unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysRoleMutation) ResetEdge(name string) error {
-	switch name {
-	case sysrole.EdgeUserRoles:
-		m.ResetUserRoles()
-		return nil
-	}
 	return fmt.Errorf("unknown SysRole edge %s", name)
 }
 
@@ -7544,32 +7008,29 @@ func (m *SysRoleMenuMutation) ResetEdge(name string) error {
 // SysUserMutation represents an operation that mutates the SysUser nodes in the graph.
 type SysUserMutation struct {
 	config
-	op               Op
-	typ              string
-	id               *string
-	is_del           *bool
-	sort             *int32
-	addsort          *int32
-	created_at       *time.Time
-	updated_at       *time.Time
-	deleted_at       *time.Time
-	status           *int32
-	addstatus        *int32
-	user_name        *string
-	real_name        *string
-	first_name       *string
-	last_name        *string
-	_Password        *string
-	_Email           *string
-	_Phone           *string
-	salt             *string
-	clearedFields    map[string]struct{}
-	userRoles        map[string]struct{}
-	removeduserRoles map[string]struct{}
-	cleareduserRoles bool
-	done             bool
-	oldValue         func(context.Context) (*SysUser, error)
-	predicates       []predicate.SysUser
+	op            Op
+	typ           string
+	id            *string
+	is_del        *bool
+	sort          *int32
+	addsort       *int32
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	status        *int32
+	addstatus     *int32
+	user_name     *string
+	real_name     *string
+	first_name    *string
+	last_name     *string
+	_Password     *string
+	_Email        *string
+	_Phone        *string
+	salt          *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysUser, error)
+	predicates    []predicate.SysUser
 }
 
 var _ ent.Mutation = (*SysUserMutation)(nil)
@@ -8253,59 +7714,6 @@ func (m *SysUserMutation) ResetSalt() {
 	m.salt = nil
 }
 
-// AddUserRoleIDs adds the "userRoles" edge to the SysUserRole entity by ids.
-func (m *SysUserMutation) AddUserRoleIDs(ids ...string) {
-	if m.userRoles == nil {
-		m.userRoles = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.userRoles[ids[i]] = struct{}{}
-	}
-}
-
-// ClearUserRoles clears the "userRoles" edge to the SysUserRole entity.
-func (m *SysUserMutation) ClearUserRoles() {
-	m.cleareduserRoles = true
-}
-
-// UserRolesCleared reports if the "userRoles" edge to the SysUserRole entity was cleared.
-func (m *SysUserMutation) UserRolesCleared() bool {
-	return m.cleareduserRoles
-}
-
-// RemoveUserRoleIDs removes the "userRoles" edge to the SysUserRole entity by IDs.
-func (m *SysUserMutation) RemoveUserRoleIDs(ids ...string) {
-	if m.removeduserRoles == nil {
-		m.removeduserRoles = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.removeduserRoles[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedUserRoles returns the removed IDs of the "userRoles" edge to the SysUserRole entity.
-func (m *SysUserMutation) RemovedUserRolesIDs() (ids []string) {
-	for id := range m.removeduserRoles {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// UserRolesIDs returns the "userRoles" edge IDs in the mutation.
-func (m *SysUserMutation) UserRolesIDs() (ids []string) {
-	for id := range m.userRoles {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetUserRoles resets all changes to the "userRoles" edge.
-func (m *SysUserMutation) ResetUserRoles() {
-	m.userRoles = nil
-	m.cleareduserRoles = false
-	m.removeduserRoles = nil
-}
-
 // Op returns the operation name.
 func (m *SysUserMutation) Op() Op {
 	return m.op
@@ -8694,85 +8102,49 @@ func (m *SysUserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysUserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.userRoles != nil {
-		edges = append(edges, sysuser.EdgeUserRoles)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysUserMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysuser.EdgeUserRoles:
-		ids := make([]ent.Value, 0, len(m.userRoles))
-		for id := range m.userRoles {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysUserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.removeduserRoles != nil {
-		edges = append(edges, sysuser.EdgeUserRoles)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysUserMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	case sysuser.EdgeUserRoles:
-		ids := make([]ent.Value, 0, len(m.removeduserRoles))
-		for id := range m.removeduserRoles {
-			ids = append(ids, id)
-		}
-		return ids
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysUserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.cleareduserRoles {
-		edges = append(edges, sysuser.EdgeUserRoles)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysUserMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysuser.EdgeUserRoles:
-		return m.cleareduserRoles
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysUserMutation) ClearEdge(name string) error {
-	switch name {
-	}
 	return fmt.Errorf("unknown SysUser unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysUserMutation) ResetEdge(name string) error {
-	switch name {
-	case sysuser.EdgeUserRoles:
-		m.ResetUserRoles()
-		return nil
-	}
 	return fmt.Errorf("unknown SysUser edge %s", name)
 }
 
@@ -8786,11 +8158,9 @@ type SysUserRoleMutation struct {
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
+	user_id       *string
+	role_id       *string
 	clearedFields map[string]struct{}
-	user          *string
-	cleareduser   bool
-	role          *string
-	clearedrole   bool
 	done          bool
 	oldValue      func(context.Context) (*SysUserRole, error)
 	predicates    []predicate.SysUserRole
@@ -9040,12 +8410,12 @@ func (m *SysUserRoleMutation) ResetDeletedAt() {
 
 // SetUserID sets the "user_id" field.
 func (m *SysUserRoleMutation) SetUserID(s string) {
-	m.user = &s
+	m.user_id = &s
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
 func (m *SysUserRoleMutation) UserID() (r string, exists bool) {
-	v := m.user
+	v := m.user_id
 	if v == nil {
 		return
 	}
@@ -9071,17 +8441,17 @@ func (m *SysUserRoleMutation) OldUserID(ctx context.Context) (v string, err erro
 
 // ResetUserID resets all changes to the "user_id" field.
 func (m *SysUserRoleMutation) ResetUserID() {
-	m.user = nil
+	m.user_id = nil
 }
 
 // SetRoleID sets the "role_id" field.
 func (m *SysUserRoleMutation) SetRoleID(s string) {
-	m.role = &s
+	m.role_id = &s
 }
 
 // RoleID returns the value of the "role_id" field in the mutation.
 func (m *SysUserRoleMutation) RoleID() (r string, exists bool) {
-	v := m.role
+	v := m.role_id
 	if v == nil {
 		return
 	}
@@ -9107,59 +8477,7 @@ func (m *SysUserRoleMutation) OldRoleID(ctx context.Context) (v string, err erro
 
 // ResetRoleID resets all changes to the "role_id" field.
 func (m *SysUserRoleMutation) ResetRoleID() {
-	m.role = nil
-}
-
-// ClearUser clears the "user" edge to the SysUser entity.
-func (m *SysUserRoleMutation) ClearUser() {
-	m.cleareduser = true
-}
-
-// UserCleared reports if the "user" edge to the SysUser entity was cleared.
-func (m *SysUserRoleMutation) UserCleared() bool {
-	return m.cleareduser
-}
-
-// UserIDs returns the "user" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// UserID instead. It exists only for internal usage by the builders.
-func (m *SysUserRoleMutation) UserIDs() (ids []string) {
-	if id := m.user; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetUser resets all changes to the "user" edge.
-func (m *SysUserRoleMutation) ResetUser() {
-	m.user = nil
-	m.cleareduser = false
-}
-
-// ClearRole clears the "role" edge to the SysRole entity.
-func (m *SysUserRoleMutation) ClearRole() {
-	m.clearedrole = true
-}
-
-// RoleCleared reports if the "role" edge to the SysRole entity was cleared.
-func (m *SysUserRoleMutation) RoleCleared() bool {
-	return m.clearedrole
-}
-
-// RoleIDs returns the "role" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// RoleID instead. It exists only for internal usage by the builders.
-func (m *SysUserRoleMutation) RoleIDs() (ids []string) {
-	if id := m.role; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetRole resets all changes to the "role" edge.
-func (m *SysUserRoleMutation) ResetRole() {
-	m.role = nil
-	m.clearedrole = false
+	m.role_id = nil
 }
 
 // Op returns the operation name.
@@ -9189,10 +8507,10 @@ func (m *SysUserRoleMutation) Fields() []string {
 	if m.deleted_at != nil {
 		fields = append(fields, sysuserrole.FieldDeletedAt)
 	}
-	if m.user != nil {
+	if m.user_id != nil {
 		fields = append(fields, sysuserrole.FieldUserID)
 	}
-	if m.role != nil {
+	if m.role_id != nil {
 		fields = append(fields, sysuserrole.FieldRoleID)
 	}
 	return fields
@@ -9369,94 +8687,48 @@ func (m *SysUserRoleMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysUserRoleMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.user != nil {
-		edges = append(edges, sysuserrole.EdgeUser)
-	}
-	if m.role != nil {
-		edges = append(edges, sysuserrole.EdgeRole)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysUserRoleMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case sysuserrole.EdgeUser:
-		if id := m.user; id != nil {
-			return []ent.Value{*id}
-		}
-	case sysuserrole.EdgeRole:
-		if id := m.role; id != nil {
-			return []ent.Value{*id}
-		}
-	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysUserRoleMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysUserRoleMutation) RemovedIDs(name string) []ent.Value {
-	switch name {
-	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysUserRoleMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
-	if m.cleareduser {
-		edges = append(edges, sysuserrole.EdgeUser)
-	}
-	if m.clearedrole {
-		edges = append(edges, sysuserrole.EdgeRole)
-	}
+	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysUserRoleMutation) EdgeCleared(name string) bool {
-	switch name {
-	case sysuserrole.EdgeUser:
-		return m.cleareduser
-	case sysuserrole.EdgeRole:
-		return m.clearedrole
-	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysUserRoleMutation) ClearEdge(name string) error {
-	switch name {
-	case sysuserrole.EdgeUser:
-		m.ClearUser()
-		return nil
-	case sysuserrole.EdgeRole:
-		m.ClearRole()
-		return nil
-	}
 	return fmt.Errorf("unknown SysUserRole unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysUserRoleMutation) ResetEdge(name string) error {
-	switch name {
-	case sysuserrole.EdgeUser:
-		m.ResetUser()
-		return nil
-	case sysuserrole.EdgeRole:
-		m.ResetRole()
-		return nil
-	}
 	return fmt.Errorf("unknown SysUserRole edge %s", name)
 }

@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
@@ -37,48 +35,6 @@ type SysUserRole struct {
 	// RoleID holds the value of the "role_id" field.
 	// 角色ID, sys_role.id
 	RoleID string `json:"role_id,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the SysUserRoleQuery when eager-loading is set.
-	Edges SysUserRoleEdges `json:"edges"`
-}
-
-// SysUserRoleEdges holds the relations/edges for other nodes in the graph.
-type SysUserRoleEdges struct {
-	// User holds the value of the user edge.
-	User *SysUser `json:"user,omitempty"`
-	// Role holds the value of the role edge.
-	Role *SysRole `json:"role,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
-}
-
-// UserOrErr returns the User value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e SysUserRoleEdges) UserOrErr() (*SysUser, error) {
-	if e.loadedTypes[0] {
-		if e.User == nil {
-			// The edge user was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: sysuser.Label}
-		}
-		return e.User, nil
-	}
-	return nil, &NotLoadedError{edge: "user"}
-}
-
-// RoleOrErr returns the Role value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e SysUserRoleEdges) RoleOrErr() (*SysRole, error) {
-	if e.loadedTypes[1] {
-		if e.Role == nil {
-			// The edge role was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: sysrole.Label}
-		}
-		return e.Role, nil
-	}
-	return nil, &NotLoadedError{edge: "role"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -153,16 +109,6 @@ func (sur *SysUserRole) assignValues(columns []string, values []interface{}) err
 		}
 	}
 	return nil
-}
-
-// QueryUser queries the "user" edge of the SysUserRole entity.
-func (sur *SysUserRole) QueryUser() *SysUserQuery {
-	return (&SysUserRoleClient{config: sur.config}).QueryUser(sur)
-}
-
-// QueryRole queries the "role" edge of the SysUserRole entity.
-func (sur *SysUserRole) QueryRole() *SysRoleQuery {
-	return (&SysUserRoleClient{config: sur.config}).QueryRole(sur)
 }
 
 // Update returns a builder for updating this SysUserRole.

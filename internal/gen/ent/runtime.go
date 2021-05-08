@@ -212,9 +212,9 @@ func init() {
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(_SysDict string) error {
+		return func(dict_id string) error {
 			for _, fn := range fns {
-				if err := fn(_SysDict); err != nil {
+				if err := fn(dict_id); err != nil {
 					return err
 				}
 			}
@@ -404,9 +404,9 @@ func init() {
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(menu string) error {
+		return func(menu_id string) error {
 			for _, fn := range fns {
-				if err := fn(menu); err != nil {
+				if err := fn(menu_id); err != nil {
 					return err
 				}
 			}
@@ -555,9 +555,9 @@ func init() {
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(action string) error {
+		return func(action_id string) error {
 			for _, fn := range fns {
-				if err := fn(action); err != nil {
+				if err := fn(action_id); err != nil {
 					return err
 				}
 			}
@@ -875,9 +875,9 @@ func init() {
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(user string) error {
+		return func(user_id string) error {
 			for _, fn := range fns {
-				if err := fn(user); err != nil {
+				if err := fn(user_id); err != nil {
 					return err
 				}
 			}
@@ -893,9 +893,9 @@ func init() {
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(role string) error {
+		return func(role_id string) error {
 			for _, fn := range fns {
-				if err := fn(role); err != nil {
+				if err := fn(role_id); err != nil {
 					return err
 				}
 			}

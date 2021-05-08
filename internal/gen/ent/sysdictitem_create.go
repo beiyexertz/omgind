@@ -10,7 +10,6 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 )
 
@@ -143,17 +142,6 @@ func (sdic *SysDictItemCreate) SetNillableID(s *string) *SysDictItemCreate {
 	return sdic
 }
 
-// SetSysDictID sets the "SysDict" edge to the SysDict entity by ID.
-func (sdic *SysDictItemCreate) SetSysDictID(id string) *SysDictItemCreate {
-	sdic.mutation.SetSysDictID(id)
-	return sdic
-}
-
-// SetSysDict sets the "SysDict" edge to the SysDict entity.
-func (sdic *SysDictItemCreate) SetSysDict(s *SysDict) *SysDictItemCreate {
-	return sdic.SetSysDictID(s.ID)
-}
-
 // Mutation returns the SysDictItemMutation object of the builder.
 func (sdic *SysDictItemCreate) Mutation() *SysDictItemMutation {
 	return sdic.mutation
@@ -281,9 +269,6 @@ func (sdic *SysDictItemCreate) check() error {
 			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
 		}
 	}
-	if _, ok := sdic.mutation.SysDictID(); !ok {
-		return &ValidationError{Name: "SysDict", err: errors.New("ent: missing required edge \"SysDict\"")}
-	}
 	return nil
 }
 
@@ -385,25 +370,13 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 		})
 		_node.Status = value
 	}
-	if nodes := sdic.mutation.SysDictIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysdictitem.SysDictTable,
-			Columns: []string{sysdictitem.SysDictColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdict.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.DictID = nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
+	if value, ok := sdic.mutation.DictID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysdictitem.FieldDictID,
+		})
+		_node.DictID = value
 	}
 	return _node, _spec
 }

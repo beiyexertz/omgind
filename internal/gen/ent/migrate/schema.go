@@ -127,21 +127,14 @@ var (
 		{Name: "label", Type: field.TypeString, Size: 128},
 		{Name: "val", Type: field.TypeInt},
 		{Name: "status", Type: field.TypeBool},
-		{Name: "dict_id", Type: field.TypeString, Nullable: true, Size: 36},
+		{Name: "dict_id", Type: field.TypeString, Size: 26},
 	}
 	// SysDictItemsTable holds the schema information for the "sys_dict_items" table.
 	SysDictItemsTable = &schema.Table{
-		Name:       "sys_dict_items",
-		Columns:    SysDictItemsColumns,
-		PrimaryKey: []*schema.Column{SysDictItemsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "sys_dict_items_sys_dicts_SysDictItems",
-				Columns:    []*schema.Column{SysDictItemsColumns[10]},
-				RefColumns: []*schema.Column{SysDictsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
+		Name:        "sys_dict_items",
+		Columns:     SysDictItemsColumns,
+		PrimaryKey:  []*schema.Column{SysDictItemsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
 				Name:    "sysdictitem_id",
@@ -256,23 +249,16 @@ var (
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "menu_id", Type: field.TypeString, Size: 36},
 		{Name: "code", Type: field.TypeString, Size: 128},
 		{Name: "name", Type: field.TypeString, Size: 128},
-		{Name: "menu_id", Type: field.TypeString, Nullable: true, Size: 36},
 	}
 	// SysMenuActionsTable holds the schema information for the "sys_menu_actions" table.
 	SysMenuActionsTable = &schema.Table{
-		Name:       "sys_menu_actions",
-		Columns:    SysMenuActionsColumns,
-		PrimaryKey: []*schema.Column{SysMenuActionsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "sys_menu_actions_sys_menus_actions",
-				Columns:    []*schema.Column{SysMenuActionsColumns[10]},
-				RefColumns: []*schema.Column{SysMenusColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
+		Name:        "sys_menu_actions",
+		Columns:     SysMenuActionsColumns,
+		PrimaryKey:  []*schema.Column{SysMenuActionsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
 				Name:    "sysmenuaction_id",
@@ -323,21 +309,14 @@ var (
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "method", Type: field.TypeString, Size: 128},
 		{Name: "path", Type: field.TypeString, Size: 256},
-		{Name: "action_id", Type: field.TypeString, Nullable: true, Size: 36},
+		{Name: "action_id", Type: field.TypeString, Size: 36},
 	}
 	// SysMenuActionResourcesTable holds the schema information for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesTable = &schema.Table{
-		Name:       "sys_menu_action_resources",
-		Columns:    SysMenuActionResourcesColumns,
-		PrimaryKey: []*schema.Column{SysMenuActionResourcesColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "sys_menu_action_resources_sys_menu_actions_resources",
-				Columns:    []*schema.Column{SysMenuActionResourcesColumns[10]},
-				RefColumns: []*schema.Column{SysMenuActionsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
+		Name:        "sys_menu_action_resources",
+		Columns:     SysMenuActionResourcesColumns,
+		PrimaryKey:  []*schema.Column{SysMenuActionResourcesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
 				Name:    "sysmenuactionresource_id",
@@ -551,28 +530,15 @@ var (
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
-		{Name: "role_id", Type: field.TypeString, Nullable: true, Size: 36},
-		{Name: "user_id", Type: field.TypeString, Nullable: true, Size: 36},
+		{Name: "user_id", Type: field.TypeString, Size: 36},
+		{Name: "role_id", Type: field.TypeString, Size: 36},
 	}
 	// SysUserRolesTable holds the schema information for the "sys_user_roles" table.
 	SysUserRolesTable = &schema.Table{
-		Name:       "sys_user_roles",
-		Columns:    SysUserRolesColumns,
-		PrimaryKey: []*schema.Column{SysUserRolesColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "sys_user_roles_sys_roles_userRoles",
-				Columns:    []*schema.Column{SysUserRolesColumns[5]},
-				RefColumns: []*schema.Column{SysRolesColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
-				Symbol:     "sys_user_roles_sys_users_userRoles",
-				Columns:    []*schema.Column{SysUserRolesColumns[6]},
-				RefColumns: []*schema.Column{SysUsersColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
+		Name:        "sys_user_roles",
+		Columns:     SysUserRolesColumns,
+		PrimaryKey:  []*schema.Column{SysUserRolesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
 				Name:    "sysuserrole_id",
@@ -617,9 +583,4 @@ var (
 )
 
 func init() {
-	SysDictItemsTable.ForeignKeys[0].RefTable = SysDictsTable
-	SysMenuActionsTable.ForeignKeys[0].RefTable = SysMenusTable
-	SysMenuActionResourcesTable.ForeignKeys[0].RefTable = SysMenuActionsTable
-	SysUserRolesTable.ForeignKeys[0].RefTable = SysRolesTable
-	SysUserRolesTable.ForeignKeys[1].RefTable = SysUsersTable
 }

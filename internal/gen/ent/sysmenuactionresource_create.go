@@ -10,7 +10,6 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
@@ -151,11 +150,6 @@ func (smarc *SysMenuActionResourceCreate) SetNillableID(s *string) *SysMenuActio
 	return smarc
 }
 
-// SetAction sets the "action" edge to the SysMenuAction entity.
-func (smarc *SysMenuActionResourceCreate) SetAction(s *SysMenuAction) *SysMenuActionResourceCreate {
-	return smarc.SetActionID(s.ID)
-}
-
 // Mutation returns the SysMenuActionResourceMutation object of the builder.
 func (smarc *SysMenuActionResourceCreate) Mutation() *SysMenuActionResourceMutation {
 	return smarc.mutation
@@ -292,9 +286,6 @@ func (smarc *SysMenuActionResourceCreate) check() error {
 			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
 		}
 	}
-	if _, ok := smarc.mutation.ActionID(); !ok {
-		return &ValidationError{Name: "action", err: errors.New("ent: missing required edge \"action\"")}
-	}
 	return nil
 }
 
@@ -396,25 +387,13 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 		})
 		_node.Path = value
 	}
-	if nodes := smarc.mutation.ActionIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysmenuactionresource.ActionTable,
-			Columns: []string{sysmenuactionresource.ActionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysmenuaction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.ActionID = nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
+	if value, ok := smarc.mutation.ActionID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysmenuactionresource.FieldActionID,
+		})
+		_node.ActionID = value
 	}
 	return _node, _spec
 }

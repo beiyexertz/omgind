@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 )
 
@@ -48,43 +47,6 @@ type SysMenuAction struct {
 	// Name holds the value of the "name" field.
 	// 动作名称
 	Name string `json:"name,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the SysMenuActionQuery when eager-loading is set.
-	Edges SysMenuActionEdges `json:"edges"`
-}
-
-// SysMenuActionEdges holds the relations/edges for other nodes in the graph.
-type SysMenuActionEdges struct {
-	// Resources holds the value of the resources edge.
-	Resources []*SysMenuActionResource `json:"resources,omitempty"`
-	// Menu holds the value of the menu edge.
-	Menu *SysMenu `json:"menu,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
-}
-
-// ResourcesOrErr returns the Resources value or an error if the edge
-// was not loaded in eager-loading.
-func (e SysMenuActionEdges) ResourcesOrErr() ([]*SysMenuActionResource, error) {
-	if e.loadedTypes[0] {
-		return e.Resources, nil
-	}
-	return nil, &NotLoadedError{edge: "resources"}
-}
-
-// MenuOrErr returns the Menu value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e SysMenuActionEdges) MenuOrErr() (*SysMenu, error) {
-	if e.loadedTypes[1] {
-		if e.Menu == nil {
-			// The edge menu was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: sysmenu.Label}
-		}
-		return e.Menu, nil
-	}
-	return nil, &NotLoadedError{edge: "menu"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -185,16 +147,6 @@ func (sma *SysMenuAction) assignValues(columns []string, values []interface{}) e
 		}
 	}
 	return nil
-}
-
-// QueryResources queries the "resources" edge of the SysMenuAction entity.
-func (sma *SysMenuAction) QueryResources() *SysMenuActionResourceQuery {
-	return (&SysMenuActionClient{config: sma.config}).QueryResources(sma)
-}
-
-// QueryMenu queries the "menu" edge of the SysMenuAction entity.
-func (sma *SysMenuAction) QueryMenu() *SysMenuQuery {
-	return (&SysMenuActionClient{config: sma.config}).QueryMenu(sma)
 }
 
 // Update returns a builder for updating this SysMenuAction.

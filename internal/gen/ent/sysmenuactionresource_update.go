@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
@@ -12,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
 
@@ -143,20 +141,9 @@ func (smaru *SysMenuActionResourceUpdate) SetActionID(s string) *SysMenuActionRe
 	return smaru
 }
 
-// SetAction sets the "action" edge to the SysMenuAction entity.
-func (smaru *SysMenuActionResourceUpdate) SetAction(s *SysMenuAction) *SysMenuActionResourceUpdate {
-	return smaru.SetActionID(s.ID)
-}
-
 // Mutation returns the SysMenuActionResourceMutation object of the builder.
 func (smaru *SysMenuActionResourceUpdate) Mutation() *SysMenuActionResourceMutation {
 	return smaru.mutation
-}
-
-// ClearAction clears the "action" edge to the SysMenuAction entity.
-func (smaru *SysMenuActionResourceUpdate) ClearAction() *SysMenuActionResourceUpdate {
-	smaru.mutation.ClearAction()
-	return smaru
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -246,9 +233,6 @@ func (smaru *SysMenuActionResourceUpdate) check() error {
 		if err := sysmenuactionresource.ActionIDValidator(v); err != nil {
 			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
 		}
-	}
-	if _, ok := smaru.mutation.ActionID(); smaru.mutation.ActionCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"action\"")
 	}
 	return nil
 }
@@ -347,40 +331,12 @@ func (smaru *SysMenuActionResourceUpdate) sqlSave(ctx context.Context) (n int, e
 			Column: sysmenuactionresource.FieldPath,
 		})
 	}
-	if smaru.mutation.ActionCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysmenuactionresource.ActionTable,
-			Columns: []string{sysmenuactionresource.ActionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysmenuaction.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := smaru.mutation.ActionIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysmenuactionresource.ActionTable,
-			Columns: []string{sysmenuactionresource.ActionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysmenuaction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := smaru.mutation.ActionID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysmenuactionresource.FieldActionID,
+		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, smaru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -515,20 +471,9 @@ func (smaruo *SysMenuActionResourceUpdateOne) SetActionID(s string) *SysMenuActi
 	return smaruo
 }
 
-// SetAction sets the "action" edge to the SysMenuAction entity.
-func (smaruo *SysMenuActionResourceUpdateOne) SetAction(s *SysMenuAction) *SysMenuActionResourceUpdateOne {
-	return smaruo.SetActionID(s.ID)
-}
-
 // Mutation returns the SysMenuActionResourceMutation object of the builder.
 func (smaruo *SysMenuActionResourceUpdateOne) Mutation() *SysMenuActionResourceMutation {
 	return smaruo.mutation
-}
-
-// ClearAction clears the "action" edge to the SysMenuAction entity.
-func (smaruo *SysMenuActionResourceUpdateOne) ClearAction() *SysMenuActionResourceUpdateOne {
-	smaruo.mutation.ClearAction()
-	return smaruo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -625,9 +570,6 @@ func (smaruo *SysMenuActionResourceUpdateOne) check() error {
 		if err := sysmenuactionresource.ActionIDValidator(v); err != nil {
 			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
 		}
-	}
-	if _, ok := smaruo.mutation.ActionID(); smaruo.mutation.ActionCleared() && !ok {
-		return errors.New("ent: clearing a required unique edge \"action\"")
 	}
 	return nil
 }
@@ -743,40 +685,12 @@ func (smaruo *SysMenuActionResourceUpdateOne) sqlSave(ctx context.Context) (_nod
 			Column: sysmenuactionresource.FieldPath,
 		})
 	}
-	if smaruo.mutation.ActionCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysmenuactionresource.ActionTable,
-			Columns: []string{sysmenuactionresource.ActionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysmenuaction.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := smaruo.mutation.ActionIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysmenuactionresource.ActionTable,
-			Columns: []string{sysmenuactionresource.ActionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysmenuaction.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	if value, ok := smaruo.mutation.ActionID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysmenuactionresource.FieldActionID,
+		})
 	}
 	_node = &SysMenuActionResource{config: smaruo.config}
 	_spec.Assign = _node.assignValues

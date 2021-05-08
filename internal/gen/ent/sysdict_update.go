@@ -12,7 +12,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
-	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 )
 
 // SysDictUpdate is the builder for updating SysDict entities.
@@ -129,45 +128,9 @@ func (sdu *SysDictUpdate) SetNillableStatus(b *bool) *SysDictUpdate {
 	return sdu
 }
 
-// AddSysDictItemIDs adds the "SysDictItems" edge to the SysDictItem entity by IDs.
-func (sdu *SysDictUpdate) AddSysDictItemIDs(ids ...string) *SysDictUpdate {
-	sdu.mutation.AddSysDictItemIDs(ids...)
-	return sdu
-}
-
-// AddSysDictItems adds the "SysDictItems" edges to the SysDictItem entity.
-func (sdu *SysDictUpdate) AddSysDictItems(s ...*SysDictItem) *SysDictUpdate {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sdu.AddSysDictItemIDs(ids...)
-}
-
 // Mutation returns the SysDictMutation object of the builder.
 func (sdu *SysDictUpdate) Mutation() *SysDictMutation {
 	return sdu.mutation
-}
-
-// ClearSysDictItems clears all "SysDictItems" edges to the SysDictItem entity.
-func (sdu *SysDictUpdate) ClearSysDictItems() *SysDictUpdate {
-	sdu.mutation.ClearSysDictItems()
-	return sdu
-}
-
-// RemoveSysDictItemIDs removes the "SysDictItems" edge to SysDictItem entities by IDs.
-func (sdu *SysDictUpdate) RemoveSysDictItemIDs(ids ...string) *SysDictUpdate {
-	sdu.mutation.RemoveSysDictItemIDs(ids...)
-	return sdu
-}
-
-// RemoveSysDictItems removes "SysDictItems" edges to SysDictItem entities.
-func (sdu *SysDictUpdate) RemoveSysDictItems(s ...*SysDictItem) *SysDictUpdate {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sdu.RemoveSysDictItemIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -343,60 +306,6 @@ func (sdu *SysDictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: sysdict.FieldStatus,
 		})
 	}
-	if sdu.mutation.SysDictItemsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sdu.mutation.RemovedSysDictItemsIDs(); len(nodes) > 0 && !sdu.mutation.SysDictItemsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sdu.mutation.SysDictItemsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, sdu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{sysdict.Label}
@@ -517,45 +426,9 @@ func (sduo *SysDictUpdateOne) SetNillableStatus(b *bool) *SysDictUpdateOne {
 	return sduo
 }
 
-// AddSysDictItemIDs adds the "SysDictItems" edge to the SysDictItem entity by IDs.
-func (sduo *SysDictUpdateOne) AddSysDictItemIDs(ids ...string) *SysDictUpdateOne {
-	sduo.mutation.AddSysDictItemIDs(ids...)
-	return sduo
-}
-
-// AddSysDictItems adds the "SysDictItems" edges to the SysDictItem entity.
-func (sduo *SysDictUpdateOne) AddSysDictItems(s ...*SysDictItem) *SysDictUpdateOne {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sduo.AddSysDictItemIDs(ids...)
-}
-
 // Mutation returns the SysDictMutation object of the builder.
 func (sduo *SysDictUpdateOne) Mutation() *SysDictMutation {
 	return sduo.mutation
-}
-
-// ClearSysDictItems clears all "SysDictItems" edges to the SysDictItem entity.
-func (sduo *SysDictUpdateOne) ClearSysDictItems() *SysDictUpdateOne {
-	sduo.mutation.ClearSysDictItems()
-	return sduo
-}
-
-// RemoveSysDictItemIDs removes the "SysDictItems" edge to SysDictItem entities by IDs.
-func (sduo *SysDictUpdateOne) RemoveSysDictItemIDs(ids ...string) *SysDictUpdateOne {
-	sduo.mutation.RemoveSysDictItemIDs(ids...)
-	return sduo
-}
-
-// RemoveSysDictItems removes "SysDictItems" edges to SysDictItem entities.
-func (sduo *SysDictUpdateOne) RemoveSysDictItems(s ...*SysDictItem) *SysDictUpdateOne {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sduo.RemoveSysDictItemIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -754,60 +627,6 @@ func (sduo *SysDictUpdateOne) sqlSave(ctx context.Context) (_node *SysDict, err 
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})
-	}
-	if sduo.mutation.SysDictItemsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sduo.mutation.RemovedSysDictItemsIDs(); len(nodes) > 0 && !sduo.mutation.SysDictItemsCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := sduo.mutation.SysDictItemsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysDict{config: sduo.config}
 	_spec.Assign = _node.assignValues

@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
-	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 )
 
 // SysDictCreate is the builder for creating a SysDict entity.
@@ -143,21 +142,6 @@ func (sdc *SysDictCreate) SetNillableID(s *string) *SysDictCreate {
 		sdc.SetID(*s)
 	}
 	return sdc
-}
-
-// AddSysDictItemIDs adds the "SysDictItems" edge to the SysDictItem entity by IDs.
-func (sdc *SysDictCreate) AddSysDictItemIDs(ids ...string) *SysDictCreate {
-	sdc.mutation.AddSysDictItemIDs(ids...)
-	return sdc
-}
-
-// AddSysDictItems adds the "SysDictItems" edges to the SysDictItem entity.
-func (sdc *SysDictCreate) AddSysDictItems(s ...*SysDictItem) *SysDictCreate {
-	ids := make([]string, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sdc.AddSysDictItemIDs(ids...)
 }
 
 // Mutation returns the SysDictMutation object of the builder.
@@ -388,25 +372,6 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 			Column: sysdict.FieldStatus,
 		})
 		_node.Status = value
-	}
-	if nodes := sdc.mutation.SysDictItemsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   sysdict.SysDictItemsTable,
-			Columns: []string{sysdict.SysDictItemsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysdictitem.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

@@ -12,8 +12,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
-	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
@@ -26,9 +24,6 @@ type SysUserRoleQuery struct {
 	order      []OrderFunc
 	fields     []string
 	predicates []predicate.SysUserRole
-	// eager-loading edges.
-	withUser *SysUserQuery
-	withRole *SysRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -63,50 +58,6 @@ func (surq *SysUserRoleQuery) Unique(unique bool) *SysUserRoleQuery {
 func (surq *SysUserRoleQuery) Order(o ...OrderFunc) *SysUserRoleQuery {
 	surq.order = append(surq.order, o...)
 	return surq
-}
-
-// QueryUser chains the current query on the "user" edge.
-func (surq *SysUserRoleQuery) QueryUser() *SysUserQuery {
-	query := &SysUserQuery{config: surq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := surq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := surq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysuserrole.Table, sysuserrole.FieldID, selector),
-			sqlgraph.To(sysuser.Table, sysuser.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuserrole.UserTable, sysuserrole.UserColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(surq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryRole chains the current query on the "role" edge.
-func (surq *SysUserRoleQuery) QueryRole() *SysRoleQuery {
-	query := &SysRoleQuery{config: surq.config}
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := surq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := surq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(sysuserrole.Table, sysuserrole.FieldID, selector),
-			sqlgraph.To(sysrole.Table, sysrole.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuserrole.RoleTable, sysuserrole.RoleColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(surq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
 }
 
 // First returns the first SysUserRole entity from the query.
@@ -290,34 +241,10 @@ func (surq *SysUserRoleQuery) Clone() *SysUserRoleQuery {
 		offset:     surq.offset,
 		order:      append([]OrderFunc{}, surq.order...),
 		predicates: append([]predicate.SysUserRole{}, surq.predicates...),
-		withUser:   surq.withUser.Clone(),
-		withRole:   surq.withRole.Clone(),
 		// clone intermediate query.
 		sql:  surq.sql.Clone(),
 		path: surq.path,
 	}
-}
-
-// WithUser tells the query-builder to eager-load the nodes that are connected to
-// the "user" edge. The optional arguments are used to configure the query builder of the edge.
-func (surq *SysUserRoleQuery) WithUser(opts ...func(*SysUserQuery)) *SysUserRoleQuery {
-	query := &SysUserQuery{config: surq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	surq.withUser = query
-	return surq
-}
-
-// WithRole tells the query-builder to eager-load the nodes that are connected to
-// the "role" edge. The optional arguments are used to configure the query builder of the edge.
-func (surq *SysUserRoleQuery) WithRole(opts ...func(*SysRoleQuery)) *SysUserRoleQuery {
-	query := &SysRoleQuery{config: surq.config}
-	for _, opt := range opts {
-		opt(query)
-	}
-	surq.withRole = query
-	return surq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -383,12 +310,8 @@ func (surq *SysUserRoleQuery) prepareQuery(ctx context.Context) error {
 
 func (surq *SysUserRoleQuery) sqlAll(ctx context.Context) ([]*SysUserRole, error) {
 	var (
-		nodes       = []*SysUserRole{}
-		_spec       = surq.querySpec()
-		loadedTypes = [2]bool{
-			surq.withUser != nil,
-			surq.withRole != nil,
-		}
+		nodes = []*SysUserRole{}
+		_spec = surq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &SysUserRole{config: surq.config}
@@ -400,7 +323,6 @@ func (surq *SysUserRoleQuery) sqlAll(ctx context.Context) ([]*SysUserRole, error
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
-		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if err := sqlgraph.QueryNodes(ctx, surq.driver, _spec); err != nil {
@@ -409,59 +331,6 @@ func (surq *SysUserRoleQuery) sqlAll(ctx context.Context) ([]*SysUserRole, error
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-
-	if query := surq.withUser; query != nil {
-		ids := make([]string, 0, len(nodes))
-		nodeids := make(map[string][]*SysUserRole)
-		for i := range nodes {
-			fk := nodes[i].UserID
-			if _, ok := nodeids[fk]; !ok {
-				ids = append(ids, fk)
-			}
-			nodeids[fk] = append(nodeids[fk], nodes[i])
-		}
-		query.Where(sysuser.IDIn(ids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "user_id" returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.User = n
-			}
-		}
-	}
-
-	if query := surq.withRole; query != nil {
-		ids := make([]string, 0, len(nodes))
-		nodeids := make(map[string][]*SysUserRole)
-		for i := range nodes {
-			fk := nodes[i].RoleID
-			if _, ok := nodeids[fk]; !ok {
-				ids = append(ids, fk)
-			}
-			nodeids[fk] = append(nodeids[fk], nodes[i])
-		}
-		query.Where(sysrole.IDIn(ids...))
-		neighbors, err := query.All(ctx)
-		if err != nil {
-			return nil, err
-		}
-		for _, n := range neighbors {
-			nodes, ok := nodeids[n.ID]
-			if !ok {
-				return nil, fmt.Errorf(`unexpected foreign-key "role_id" returned %v`, n.ID)
-			}
-			for i := range nodes {
-				nodes[i].Edges.Role = n
-			}
-		}
-	}
-
 	return nodes, nil
 }
 

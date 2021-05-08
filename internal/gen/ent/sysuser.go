@@ -58,27 +58,6 @@ type SysUser struct {
 	// Salt holds the value of the "salt" field.
 	// 盐
 	Salt string `json:"salt,omitempty"`
-	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the SysUserQuery when eager-loading is set.
-	Edges SysUserEdges `json:"edges"`
-}
-
-// SysUserEdges holds the relations/edges for other nodes in the graph.
-type SysUserEdges struct {
-	// UserRoles holds the value of the userRoles edge.
-	UserRoles []*SysUserRole `json:"userRoles,omitempty"`
-	// loadedTypes holds the information for reporting if a
-	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
-}
-
-// UserRolesOrErr returns the UserRoles value or an error if the edge
-// was not loaded in eager-loading.
-func (e SysUserEdges) UserRolesOrErr() ([]*SysUserRole, error) {
-	if e.loadedTypes[0] {
-		return e.UserRoles, nil
-	}
-	return nil, &NotLoadedError{edge: "userRoles"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -206,11 +185,6 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
-}
-
-// QueryUserRoles queries the "userRoles" edge of the SysUser entity.
-func (su *SysUser) QueryUserRoles() *SysUserRoleQuery {
-	return (&SysUserClient{config: su.config}).QueryUserRoles(su)
 }
 
 // Update returns a builder for updating this SysUser.

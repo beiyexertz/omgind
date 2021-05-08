@@ -10,8 +10,6 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 )
 
@@ -102,16 +100,6 @@ func (surc *SysUserRoleCreate) SetNillableID(s *string) *SysUserRoleCreate {
 		surc.SetID(*s)
 	}
 	return surc
-}
-
-// SetUser sets the "user" edge to the SysUser entity.
-func (surc *SysUserRoleCreate) SetUser(s *SysUser) *SysUserRoleCreate {
-	return surc.SetUserID(s.ID)
-}
-
-// SetRole sets the "role" edge to the SysRole entity.
-func (surc *SysUserRoleCreate) SetRole(s *SysRole) *SysUserRoleCreate {
-	return surc.SetRoleID(s.ID)
 }
 
 // Mutation returns the SysUserRoleMutation object of the builder.
@@ -216,12 +204,6 @@ func (surc *SysUserRoleCreate) check() error {
 			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
 		}
 	}
-	if _, ok := surc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user", err: errors.New("ent: missing required edge \"user\"")}
-	}
-	if _, ok := surc.mutation.RoleID(); !ok {
-		return &ValidationError{Name: "role", err: errors.New("ent: missing required edge \"role\"")}
-	}
 	return nil
 }
 
@@ -283,45 +265,21 @@ func (surc *SysUserRoleCreate) createSpec() (*SysUserRole, *sqlgraph.CreateSpec)
 		})
 		_node.DeletedAt = &value
 	}
-	if nodes := surc.mutation.UserIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.UserTable,
-			Columns: []string{sysuserrole.UserColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysuser.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.UserID = nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
+	if value, ok := surc.mutation.UserID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuserrole.FieldUserID,
+		})
+		_node.UserID = value
 	}
-	if nodes := surc.mutation.RoleIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   sysuserrole.RoleTable,
-			Columns: []string{sysuserrole.RoleColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeString,
-					Column: sysrole.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_node.RoleID = nodes[0]
-		_spec.Edges = append(_spec.Edges, edge)
+	if value, ok := surc.mutation.RoleID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: sysuserrole.FieldRoleID,
+		})
+		_node.RoleID = value
 	}
 	return _node, _spec
 }

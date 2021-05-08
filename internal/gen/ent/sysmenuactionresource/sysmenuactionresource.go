@@ -31,17 +31,8 @@ const (
 	FieldPath = "path"
 	// FieldActionID holds the string denoting the action_id field in the database.
 	FieldActionID = "action_id"
-	// EdgeAction holds the string denoting the action edge name in mutations.
-	EdgeAction = "action"
 	// Table holds the table name of the sysmenuactionresource in the database.
 	Table = "sys_menu_action_resources"
-	// ActionTable is the table the holds the action relation/edge.
-	ActionTable = "sys_menu_action_resources"
-	// ActionInverseTable is the table name for the SysMenuAction entity.
-	// It exists in this package in order to avoid circular dependency with the "sysmenuaction" package.
-	ActionInverseTable = "sys_menu_actions"
-	// ActionColumn is the table column denoting the action relation/edge.
-	ActionColumn = "action_id"
 )
 
 // Columns holds all SQL columns for sysmenuactionresource fields.
