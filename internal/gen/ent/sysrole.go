@@ -22,7 +22,7 @@ type SysRole struct {
 	IsDel bool `json:"is_del,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int32 `json:"sort,omitempty"`
+	Status int32 `json:"status,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
 	Sort int32 `json:"sort,omitempty"`

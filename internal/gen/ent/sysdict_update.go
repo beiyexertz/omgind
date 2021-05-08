@@ -115,13 +115,13 @@ func (sdu *SysDictUpdate) SetNameEn(s string) *SysDictUpdate {
 	return sdu
 }
 
-// SetStatus sets the "Status" field.
+// SetStatus sets the "status" field.
 func (sdu *SysDictUpdate) SetStatus(b bool) *SysDictUpdate {
 	sdu.mutation.SetStatus(b)
 	return sdu
 }
 
-// SetNillableStatus sets the "Status" field if the given value is not nil.
+// SetNillableStatus sets the "status" field if the given value is not nil.
 func (sdu *SysDictUpdate) SetNillableStatus(b *bool) *SysDictUpdate {
 	if b != nil {
 		sdu.SetStatus(*b)
@@ -503,13 +503,13 @@ func (sduo *SysDictUpdateOne) SetNameEn(s string) *SysDictUpdateOne {
 	return sduo
 }
 
-// SetStatus sets the "Status" field.
+// SetStatus sets the "status" field.
 func (sduo *SysDictUpdateOne) SetStatus(b bool) *SysDictUpdateOne {
 	sduo.mutation.SetStatus(b)
 	return sduo
 }
 
-// SetNillableStatus sets the "Status" field if the given value is not nil.
+// SetNillableStatus sets the "status" field if the given value is not nil.
 func (sduo *SysDictUpdateOne) SetNillableStatus(b *bool) *SysDictUpdateOne {
 	if b != nil {
 		sduo.SetStatus(*b)

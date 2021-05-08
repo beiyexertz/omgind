@@ -256,16 +256,23 @@ var (
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
-		{Name: "menu_id", Type: field.TypeString, Size: 36},
 		{Name: "code", Type: field.TypeString, Size: 128},
 		{Name: "name", Type: field.TypeString, Size: 128},
+		{Name: "menu_id", Type: field.TypeString, Nullable: true, Size: 36},
 	}
 	// SysMenuActionsTable holds the schema information for the "sys_menu_actions" table.
 	SysMenuActionsTable = &schema.Table{
-		Name:        "sys_menu_actions",
-		Columns:     SysMenuActionsColumns,
-		PrimaryKey:  []*schema.Column{SysMenuActionsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "sys_menu_actions",
+		Columns:    SysMenuActionsColumns,
+		PrimaryKey: []*schema.Column{SysMenuActionsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "sys_menu_actions_sys_menus_actions",
+				Columns:    []*schema.Column{SysMenuActionsColumns[10]},
+				RefColumns: []*schema.Column{SysMenusColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 		Indexes: []*schema.Index{
 			{
 				Name:    "sysmenuaction_id",
@@ -611,6 +618,7 @@ var (
 
 func init() {
 	SysDictItemsTable.ForeignKeys[0].RefTable = SysDictsTable
+	SysMenuActionsTable.ForeignKeys[0].RefTable = SysMenusTable
 	SysMenuActionResourcesTable.ForeignKeys[0].RefTable = SysMenuActionsTable
 	SysUserRolesTable.ForeignKeys[0].RefTable = SysRolesTable
 	SysUserRolesTable.ForeignKeys[1].RefTable = SysUsersTable

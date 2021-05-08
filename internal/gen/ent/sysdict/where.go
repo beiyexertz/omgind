@@ -149,7 +149,7 @@ func NameEn(v string) predicate.SysDict {
 	})
 }
 
-// Status applies equality check predicate on the "Status" field. It's identical to StatusEQ.
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v bool) predicate.SysDict {
 	return predicate.SysDict(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
@@ -821,14 +821,14 @@ func NameEnContainsFold(v string) predicate.SysDict {
 	})
 }
 
-// StatusEQ applies the EQ predicate on the "Status" field.
+// StatusEQ applies the EQ predicate on the "status" field.
 func StatusEQ(v bool) predicate.SysDict {
 	return predicate.SysDict(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
 }
 
-// StatusNEQ applies the NEQ predicate on the "Status" field.
+// StatusNEQ applies the NEQ predicate on the "status" field.
 func StatusNEQ(v bool) predicate.SysDict {
 	return predicate.SysDict(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))

@@ -38,7 +38,7 @@ type SysMenuActionResource struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int32 `json:"sort,omitempty"`
+	Status int32 `json:"status,omitempty"`
 	// Method holds the value of the "method" field.
 	// 资源HTTP请求方式(支持正则, get, delete, delete, put, patch )
 	Method string `json:"method,omitempty"`

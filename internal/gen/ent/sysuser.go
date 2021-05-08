@@ -34,7 +34,7 @@ type SysUser struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int32 `json:"sort,omitempty"`
+	Status int32 `json:"status,omitempty"`
 	// UserName holds the value of the "user_name" field.
 	// 用户名
 	UserName string `json:"user_name,omitempty"`

@@ -10,6 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
@@ -166,6 +167,11 @@ func (smac *SysMenuActionCreate) AddResources(s ...*SysMenuActionResource) *SysM
 	return smac.AddResourceIDs(ids...)
 }
 
+// SetMenu sets the "menu" edge to the SysMenu entity.
+func (smac *SysMenuActionCreate) SetMenu(s *SysMenu) *SysMenuActionCreate {
+	return smac.SetMenuID(s.ID)
+}
+
 // Mutation returns the SysMenuActionMutation object of the builder.
 func (smac *SysMenuActionCreate) Mutation() *SysMenuActionMutation {
 	return smac.mutation
@@ -302,6 +308,9 @@ func (smac *SysMenuActionCreate) check() error {
 			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
 		}
 	}
+	if _, ok := smac.mutation.MenuID(); !ok {
+		return &ValidationError{Name: "menu", err: errors.New("ent: missing required edge \"menu\"")}
+	}
 	return nil
 }
 
@@ -387,14 +396,6 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 		})
 		_node.DeletedAt = &value
 	}
-	if value, ok := smac.mutation.MenuID(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: sysmenuaction.FieldMenuID,
-		})
-		_node.MenuID = value
-	}
 	if value, ok := smac.mutation.Code(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -428,6 +429,26 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := smac.mutation.MenuIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysmenuaction.MenuTable,
+			Columns: []string{sysmenuaction.MenuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenu.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.MenuID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

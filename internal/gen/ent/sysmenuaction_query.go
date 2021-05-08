@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
@@ -28,6 +29,7 @@ type SysMenuActionQuery struct {
 	predicates []predicate.SysMenuAction
 	// eager-loading edges.
 	withResources *SysMenuActionResourceQuery
+	withMenu      *SysMenuQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -79,6 +81,28 @@ func (smaq *SysMenuActionQuery) QueryResources() *SysMenuActionResourceQuery {
 			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, selector),
 			sqlgraph.To(sysmenuactionresource.Table, sysmenuactionresource.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, sysmenuaction.ResourcesTable, sysmenuaction.ResourcesColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(smaq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryMenu chains the current query on the "menu" edge.
+func (smaq *SysMenuActionQuery) QueryMenu() *SysMenuQuery {
+	query := &SysMenuQuery{config: smaq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := smaq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := smaq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, selector),
+			sqlgraph.To(sysmenu.Table, sysmenu.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuaction.MenuTable, sysmenuaction.MenuColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(smaq.driver.Dialect(), step)
 		return fromU, nil
@@ -268,6 +292,7 @@ func (smaq *SysMenuActionQuery) Clone() *SysMenuActionQuery {
 		order:         append([]OrderFunc{}, smaq.order...),
 		predicates:    append([]predicate.SysMenuAction{}, smaq.predicates...),
 		withResources: smaq.withResources.Clone(),
+		withMenu:      smaq.withMenu.Clone(),
 		// clone intermediate query.
 		sql:  smaq.sql.Clone(),
 		path: smaq.path,
@@ -282,6 +307,17 @@ func (smaq *SysMenuActionQuery) WithResources(opts ...func(*SysMenuActionResourc
 		opt(query)
 	}
 	smaq.withResources = query
+	return smaq
+}
+
+// WithMenu tells the query-builder to eager-load the nodes that are connected to
+// the "menu" edge. The optional arguments are used to configure the query builder of the edge.
+func (smaq *SysMenuActionQuery) WithMenu(opts ...func(*SysMenuQuery)) *SysMenuActionQuery {
+	query := &SysMenuQuery{config: smaq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	smaq.withMenu = query
 	return smaq
 }
 
@@ -350,8 +386,9 @@ func (smaq *SysMenuActionQuery) sqlAll(ctx context.Context) ([]*SysMenuAction, e
 	var (
 		nodes       = []*SysMenuAction{}
 		_spec       = smaq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
 			smaq.withResources != nil,
+			smaq.withMenu != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -396,6 +433,32 @@ func (smaq *SysMenuActionQuery) sqlAll(ctx context.Context) ([]*SysMenuAction, e
 				return nil, fmt.Errorf(`unexpected foreign-key "action_id" returned %v for node %v`, fk, n.ID)
 			}
 			node.Edges.Resources = append(node.Edges.Resources, n)
+		}
+	}
+
+	if query := smaq.withMenu; query != nil {
+		ids := make([]string, 0, len(nodes))
+		nodeids := make(map[string][]*SysMenuAction)
+		for i := range nodes {
+			fk := nodes[i].MenuID
+			if _, ok := nodeids[fk]; !ok {
+				ids = append(ids, fk)
+			}
+			nodeids[fk] = append(nodeids[fk], nodes[i])
+		}
+		query.Where(sysmenu.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "menu_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Menu = n
+			}
 		}
 	}
 

@@ -1043,6 +1043,34 @@ func HasResourcesWith(preds ...predicate.SysMenuActionResource) predicate.SysMen
 	})
 }
 
+// HasMenu applies the HasEdge predicate on the "menu" edge.
+func HasMenu() predicate.SysMenuAction {
+	return predicate.SysMenuAction(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(MenuTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, MenuTable, MenuColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasMenuWith applies the HasEdge predicate on the "menu" edge with a given conditions (other predicates).
+func HasMenuWith(preds ...predicate.SysMenu) predicate.SysMenuAction {
+	return predicate.SysMenuAction(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(MenuInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, MenuTable, MenuColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.SysMenuAction) predicate.SysMenuAction {
 	return predicate.SysMenuAction(func(s *sql.Selector) {

@@ -1137,7 +1137,7 @@ type SysDictMutation struct {
 	deleted_at           *time.Time
 	name_cn              *string
 	name_en              *string
-	_Status              *bool
+	status               *bool
 	clearedFields        map[string]struct{}
 	_SysDictItems        map[string]struct{}
 	removed_SysDictItems map[string]struct{}
@@ -1553,21 +1553,21 @@ func (m *SysDictMutation) ResetNameEn() {
 	m.name_en = nil
 }
 
-// SetStatus sets the "Status" field.
+// SetStatus sets the "status" field.
 func (m *SysDictMutation) SetStatus(b bool) {
-	m._Status = &b
+	m.status = &b
 }
 
-// Status returns the value of the "Status" field in the mutation.
+// Status returns the value of the "status" field in the mutation.
 func (m *SysDictMutation) Status() (r bool, exists bool) {
-	v := m._Status
+	v := m.status
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStatus returns the old "Status" field's value of the SysDict entity.
+// OldStatus returns the old "status" field's value of the SysDict entity.
 // If the SysDict object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *SysDictMutation) OldStatus(ctx context.Context) (v bool, err error) {
@@ -1584,9 +1584,9 @@ func (m *SysDictMutation) OldStatus(ctx context.Context) (v bool, err error) {
 	return oldValue.Status, nil
 }
 
-// ResetStatus resets all changes to the "Status" field.
+// ResetStatus resets all changes to the "status" field.
 func (m *SysDictMutation) ResetStatus() {
-	m._Status = nil
+	m.status = nil
 }
 
 // AddSysDictItemIDs adds the "SysDictItems" edge to the SysDictItem entity by ids.
@@ -1681,7 +1681,7 @@ func (m *SysDictMutation) Fields() []string {
 	if m.name_en != nil {
 		fields = append(fields, sysdict.FieldNameEn)
 	}
-	if m._Status != nil {
+	if m.status != nil {
 		fields = append(fields, sysdict.FieldStatus)
 	}
 	return fields
@@ -2938,28 +2938,31 @@ func (m *SysDictItemMutation) ResetEdge(name string) error {
 // SysMenuMutation represents an operation that mutates the SysMenu nodes in the graph.
 type SysMenuMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *string
-	is_del        *bool
-	memo          *string
-	sort          *int32
-	addsort       *int32
-	created_at    *time.Time
-	updated_at    *time.Time
-	deleted_at    *time.Time
-	status        *int32
-	addstatus     *int32
-	name          *string
-	icon          *string
-	router        *string
-	is_show       *bool
-	parent_id     *string
-	parent_path   *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*SysMenu, error)
-	predicates    []predicate.SysMenu
+	op             Op
+	typ            string
+	id             *string
+	is_del         *bool
+	memo           *string
+	sort           *int32
+	addsort        *int32
+	created_at     *time.Time
+	updated_at     *time.Time
+	deleted_at     *time.Time
+	status         *int32
+	addstatus      *int32
+	name           *string
+	icon           *string
+	router         *string
+	is_show        *bool
+	parent_id      *string
+	parent_path    *string
+	clearedFields  map[string]struct{}
+	actions        map[string]struct{}
+	removedactions map[string]struct{}
+	clearedactions bool
+	done           bool
+	oldValue       func(context.Context) (*SysMenu, error)
+	predicates     []predicate.SysMenu
 }
 
 var _ ent.Mutation = (*SysMenuMutation)(nil)
@@ -3594,6 +3597,59 @@ func (m *SysMenuMutation) ResetParentPath() {
 	delete(m.clearedFields, sysmenu.FieldParentPath)
 }
 
+// AddActionIDs adds the "actions" edge to the SysMenuAction entity by ids.
+func (m *SysMenuMutation) AddActionIDs(ids ...string) {
+	if m.actions == nil {
+		m.actions = make(map[string]struct{})
+	}
+	for i := range ids {
+		m.actions[ids[i]] = struct{}{}
+	}
+}
+
+// ClearActions clears the "actions" edge to the SysMenuAction entity.
+func (m *SysMenuMutation) ClearActions() {
+	m.clearedactions = true
+}
+
+// ActionsCleared reports if the "actions" edge to the SysMenuAction entity was cleared.
+func (m *SysMenuMutation) ActionsCleared() bool {
+	return m.clearedactions
+}
+
+// RemoveActionIDs removes the "actions" edge to the SysMenuAction entity by IDs.
+func (m *SysMenuMutation) RemoveActionIDs(ids ...string) {
+	if m.removedactions == nil {
+		m.removedactions = make(map[string]struct{})
+	}
+	for i := range ids {
+		m.removedactions[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedActions returns the removed IDs of the "actions" edge to the SysMenuAction entity.
+func (m *SysMenuMutation) RemovedActionsIDs() (ids []string) {
+	for id := range m.removedactions {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ActionsIDs returns the "actions" edge IDs in the mutation.
+func (m *SysMenuMutation) ActionsIDs() (ids []string) {
+	for id := range m.actions {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetActions resets all changes to the "actions" edge.
+func (m *SysMenuMutation) ResetActions() {
+	m.actions = nil
+	m.clearedactions = false
+	m.removedactions = nil
+}
+
 // Op returns the operation name.
 func (m *SysMenuMutation) Op() Op {
 	return m.op
@@ -3959,49 +4015,85 @@ func (m *SysMenuMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysMenuMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.actions != nil {
+		edges = append(edges, sysmenu.EdgeActions)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysMenuMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sysmenu.EdgeActions:
+		ids := make([]ent.Value, 0, len(m.actions))
+		for id := range m.actions {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysMenuMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.removedactions != nil {
+		edges = append(edges, sysmenu.EdgeActions)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysMenuMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case sysmenu.EdgeActions:
+		ids := make([]ent.Value, 0, len(m.removedactions))
+		for id := range m.removedactions {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysMenuMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedactions {
+		edges = append(edges, sysmenu.EdgeActions)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysMenuMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sysmenu.EdgeActions:
+		return m.clearedactions
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysMenuMutation) ClearEdge(name string) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown SysMenu unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysMenuMutation) ResetEdge(name string) error {
+	switch name {
+	case sysmenu.EdgeActions:
+		m.ResetActions()
+		return nil
+	}
 	return fmt.Errorf("unknown SysMenu edge %s", name)
 }
 
@@ -4020,13 +4112,14 @@ type SysMenuActionMutation struct {
 	created_at       *time.Time
 	updated_at       *time.Time
 	deleted_at       *time.Time
-	menu_id          *string
 	code             *string
 	name             *string
 	clearedFields    map[string]struct{}
 	resources        map[string]struct{}
 	removedresources map[string]struct{}
 	clearedresources bool
+	menu             *string
+	clearedmenu      bool
 	done             bool
 	oldValue         func(context.Context) (*SysMenuAction, error)
 	predicates       []predicate.SysMenuAction
@@ -4424,12 +4517,12 @@ func (m *SysMenuActionMutation) ResetDeletedAt() {
 
 // SetMenuID sets the "menu_id" field.
 func (m *SysMenuActionMutation) SetMenuID(s string) {
-	m.menu_id = &s
+	m.menu = &s
 }
 
 // MenuID returns the value of the "menu_id" field in the mutation.
 func (m *SysMenuActionMutation) MenuID() (r string, exists bool) {
-	v := m.menu_id
+	v := m.menu
 	if v == nil {
 		return
 	}
@@ -4455,7 +4548,7 @@ func (m *SysMenuActionMutation) OldMenuID(ctx context.Context) (v string, err er
 
 // ResetMenuID resets all changes to the "menu_id" field.
 func (m *SysMenuActionMutation) ResetMenuID() {
-	m.menu_id = nil
+	m.menu = nil
 }
 
 // SetCode sets the "code" field.
@@ -4583,6 +4676,32 @@ func (m *SysMenuActionMutation) ResetResources() {
 	m.removedresources = nil
 }
 
+// ClearMenu clears the "menu" edge to the SysMenu entity.
+func (m *SysMenuActionMutation) ClearMenu() {
+	m.clearedmenu = true
+}
+
+// MenuCleared reports if the "menu" edge to the SysMenu entity was cleared.
+func (m *SysMenuActionMutation) MenuCleared() bool {
+	return m.clearedmenu
+}
+
+// MenuIDs returns the "menu" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// MenuID instead. It exists only for internal usage by the builders.
+func (m *SysMenuActionMutation) MenuIDs() (ids []string) {
+	if id := m.menu; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetMenu resets all changes to the "menu" edge.
+func (m *SysMenuActionMutation) ResetMenu() {
+	m.menu = nil
+	m.clearedmenu = false
+}
+
 // Op returns the operation name.
 func (m *SysMenuActionMutation) Op() Op {
 	return m.op
@@ -4619,7 +4738,7 @@ func (m *SysMenuActionMutation) Fields() []string {
 	if m.deleted_at != nil {
 		fields = append(fields, sysmenuaction.FieldDeletedAt)
 	}
-	if m.menu_id != nil {
+	if m.menu != nil {
 		fields = append(fields, sysmenuaction.FieldMenuID)
 	}
 	if m.code != nil {
@@ -4885,9 +5004,12 @@ func (m *SysMenuActionMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysMenuActionMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.resources != nil {
 		edges = append(edges, sysmenuaction.EdgeResources)
+	}
+	if m.menu != nil {
+		edges = append(edges, sysmenuaction.EdgeMenu)
 	}
 	return edges
 }
@@ -4902,13 +5024,17 @@ func (m *SysMenuActionMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case sysmenuaction.EdgeMenu:
+		if id := m.menu; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysMenuActionMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.removedresources != nil {
 		edges = append(edges, sysmenuaction.EdgeResources)
 	}
@@ -4931,9 +5057,12 @@ func (m *SysMenuActionMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysMenuActionMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.clearedresources {
 		edges = append(edges, sysmenuaction.EdgeResources)
+	}
+	if m.clearedmenu {
+		edges = append(edges, sysmenuaction.EdgeMenu)
 	}
 	return edges
 }
@@ -4944,6 +5073,8 @@ func (m *SysMenuActionMutation) EdgeCleared(name string) bool {
 	switch name {
 	case sysmenuaction.EdgeResources:
 		return m.clearedresources
+	case sysmenuaction.EdgeMenu:
+		return m.clearedmenu
 	}
 	return false
 }
@@ -4952,6 +5083,9 @@ func (m *SysMenuActionMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *SysMenuActionMutation) ClearEdge(name string) error {
 	switch name {
+	case sysmenuaction.EdgeMenu:
+		m.ClearMenu()
+		return nil
 	}
 	return fmt.Errorf("unknown SysMenuAction unique edge %s", name)
 }
@@ -4962,6 +5096,9 @@ func (m *SysMenuActionMutation) ResetEdge(name string) error {
 	switch name {
 	case sysmenuaction.EdgeResources:
 		m.ResetResources()
+		return nil
+	case sysmenuaction.EdgeMenu:
+		m.ResetMenu()
 		return nil
 	}
 	return fmt.Errorf("unknown SysMenuAction edge %s", name)

@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 )
@@ -157,6 +159,11 @@ func (smau *SysMenuActionUpdate) AddResources(s ...*SysMenuActionResource) *SysM
 	return smau.AddResourceIDs(ids...)
 }
 
+// SetMenu sets the "menu" edge to the SysMenu entity.
+func (smau *SysMenuActionUpdate) SetMenu(s *SysMenu) *SysMenuActionUpdate {
+	return smau.SetMenuID(s.ID)
+}
+
 // Mutation returns the SysMenuActionMutation object of the builder.
 func (smau *SysMenuActionUpdate) Mutation() *SysMenuActionMutation {
 	return smau.mutation
@@ -181,6 +188,12 @@ func (smau *SysMenuActionUpdate) RemoveResources(s ...*SysMenuActionResource) *S
 		ids[i] = s[i].ID
 	}
 	return smau.RemoveResourceIDs(ids...)
+}
+
+// ClearMenu clears the "menu" edge to the SysMenu entity.
+func (smau *SysMenuActionUpdate) ClearMenu() *SysMenuActionUpdate {
+	smau.mutation.ClearMenu()
+	return smau
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -271,6 +284,9 @@ func (smau *SysMenuActionUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
+	if _, ok := smau.mutation.MenuID(); smau.mutation.MenuCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"menu\"")
+	}
 	return nil
 }
 
@@ -354,13 +370,6 @@ func (smau *SysMenuActionUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Column: sysmenuaction.FieldDeletedAt,
 		})
 	}
-	if value, ok := smau.mutation.MenuID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: sysmenuaction.FieldMenuID,
-		})
-	}
 	if value, ok := smau.mutation.Code(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -421,6 +430,41 @@ func (smau *SysMenuActionUpdate) sqlSave(ctx context.Context) (n int, err error)
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeString,
 					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if smau.mutation.MenuCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysmenuaction.MenuTable,
+			Columns: []string{sysmenuaction.MenuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenu.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smau.mutation.MenuIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysmenuaction.MenuTable,
+			Columns: []string{sysmenuaction.MenuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenu.FieldID,
 				},
 			},
 		}
@@ -577,6 +621,11 @@ func (smauo *SysMenuActionUpdateOne) AddResources(s ...*SysMenuActionResource) *
 	return smauo.AddResourceIDs(ids...)
 }
 
+// SetMenu sets the "menu" edge to the SysMenu entity.
+func (smauo *SysMenuActionUpdateOne) SetMenu(s *SysMenu) *SysMenuActionUpdateOne {
+	return smauo.SetMenuID(s.ID)
+}
+
 // Mutation returns the SysMenuActionMutation object of the builder.
 func (smauo *SysMenuActionUpdateOne) Mutation() *SysMenuActionMutation {
 	return smauo.mutation
@@ -601,6 +650,12 @@ func (smauo *SysMenuActionUpdateOne) RemoveResources(s ...*SysMenuActionResource
 		ids[i] = s[i].ID
 	}
 	return smauo.RemoveResourceIDs(ids...)
+}
+
+// ClearMenu clears the "menu" edge to the SysMenu entity.
+func (smauo *SysMenuActionUpdateOne) ClearMenu() *SysMenuActionUpdateOne {
+	smauo.mutation.ClearMenu()
+	return smauo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -697,6 +752,9 @@ func (smauo *SysMenuActionUpdateOne) check() error {
 		if err := sysmenuaction.NameValidator(v); err != nil {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
+	}
+	if _, ok := smauo.mutation.MenuID(); smauo.mutation.MenuCleared() && !ok {
+		return errors.New("ent: clearing a required unique edge \"menu\"")
 	}
 	return nil
 }
@@ -798,13 +856,6 @@ func (smauo *SysMenuActionUpdateOne) sqlSave(ctx context.Context) (_node *SysMen
 			Column: sysmenuaction.FieldDeletedAt,
 		})
 	}
-	if value, ok := smauo.mutation.MenuID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: sysmenuaction.FieldMenuID,
-		})
-	}
 	if value, ok := smauo.mutation.Code(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -865,6 +916,41 @@ func (smauo *SysMenuActionUpdateOne) sqlSave(ctx context.Context) (_node *SysMen
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeString,
 					Column: sysmenuactionresource.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if smauo.mutation.MenuCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysmenuaction.MenuTable,
+			Columns: []string{sysmenuaction.MenuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenu.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smauo.mutation.MenuIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysmenuaction.MenuTable,
+			Columns: []string{sysmenuaction.MenuColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeString,
+					Column: sysmenu.FieldID,
 				},
 			},
 		}

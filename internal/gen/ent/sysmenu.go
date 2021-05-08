@@ -37,7 +37,7 @@ type SysMenu struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int32 `json:"sort,omitempty"`
+	Status int32 `json:"status,omitempty"`
 	// Name holds the value of the "name" field.
 	// 菜单名称
 	Name string `json:"name,omitempty"`
@@ -56,6 +56,27 @@ type SysMenu struct {
 	// ParentPath holds the value of the "parent_path" field.
 	// 父级路径: 1/2/3
 	ParentPath *string `json:"parent_path,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SysMenuQuery when eager-loading is set.
+	Edges SysMenuEdges `json:"edges"`
+}
+
+// SysMenuEdges holds the relations/edges for other nodes in the graph.
+type SysMenuEdges struct {
+	// Actions holds the value of the actions edge.
+	Actions []*SysMenuAction `json:"actions,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// ActionsOrErr returns the Actions value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysMenuEdges) ActionsOrErr() ([]*SysMenuAction, error) {
+	if e.loadedTypes[0] {
+		return e.Actions, nil
+	}
+	return nil, &NotLoadedError{edge: "actions"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -176,6 +197,11 @@ func (sm *SysMenu) assignValues(columns []string, values []interface{}) error {
 		}
 	}
 	return nil
+}
+
+// QueryActions queries the "actions" edge of the SysMenu entity.
+func (sm *SysMenu) QueryActions() *SysMenuActionQuery {
+	return (&SysMenuClient{config: sm.config}).QueryActions(sm)
 }
 
 // Update returns a builder for updating this SysMenu.

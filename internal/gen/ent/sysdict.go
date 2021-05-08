@@ -41,7 +41,7 @@ type SysDict struct {
 	// NameEn holds the value of the "name_en" field.
 	// 字典名（英）
 	NameEn string `json:"name_en,omitempty"`
-	// Status holds the value of the "Status" field.
+	// Status holds the value of the "status" field.
 	// 状态
 	Status bool `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -152,7 +152,7 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 			}
 		case sysdict.FieldStatus:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field Status", values[i])
+				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				sd.Status = value.Bool
 			}
@@ -207,7 +207,7 @@ func (sd *SysDict) String() string {
 	builder.WriteString(sd.NameCn)
 	builder.WriteString(", name_en=")
 	builder.WriteString(sd.NameEn)
-	builder.WriteString(", Status=")
+	builder.WriteString(", status=")
 	builder.WriteString(fmt.Sprintf("%v", sd.Status))
 	builder.WriteByte(')')
 	return builder.String()

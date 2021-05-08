@@ -140,9 +140,9 @@ func init() {
 	sysdictDescNameEn := sysdictFields[1].Descriptor()
 	// sysdict.NameEnValidator is a validator for the "name_en" field. It is called by the builders before save.
 	sysdict.NameEnValidator = sysdictDescNameEn.Validators[0].(func(string) error)
-	// sysdictDescStatus is the schema descriptor for Status field.
+	// sysdictDescStatus is the schema descriptor for status field.
 	sysdictDescStatus := sysdictFields[2].Descriptor()
-	// sysdict.DefaultStatus holds the default value on creation for the Status field.
+	// sysdict.DefaultStatus holds the default value on creation for the status field.
 	sysdict.DefaultStatus = sysdictDescStatus.Default.(bool)
 	// sysdictDescID is the schema descriptor for id field.
 	sysdictDescID := sysdictMixinFields0[0].Descriptor()
@@ -404,9 +404,9 @@ func init() {
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(menu_id string) error {
+		return func(menu string) error {
 			for _, fn := range fns {
-				if err := fn(menu_id); err != nil {
+				if err := fn(menu); err != nil {
 					return err
 				}
 			}

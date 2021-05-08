@@ -35,5 +35,6 @@ func (SysMenuAction) Fields() []ent.Field {
 func (SysMenuAction) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("resources", SysMenuActionResource.Type),
+		edge.From("menu", SysMenu.Type).Field("menu_id").Ref("actions").Unique().Required(),
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 )
 
@@ -1296,6 +1297,34 @@ func ParentPathEqualFold(v string) predicate.SysMenu {
 func ParentPathContainsFold(v string) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldParentPath), v))
+	})
+}
+
+// HasActions applies the HasEdge predicate on the "actions" edge.
+func HasActions() predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ActionsTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ActionsTable, ActionsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasActionsWith applies the HasEdge predicate on the "actions" edge with a given conditions (other predicates).
+func HasActionsWith(preds ...predicate.SysMenuAction) predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ActionsInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ActionsTable, ActionsColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
 	})
 }
 

@@ -572,6 +572,22 @@ func (c *SysMenuClient) GetX(ctx context.Context, id string) *SysMenu {
 	return obj
 }
 
+// QueryActions queries the actions edge of a SysMenu.
+func (c *SysMenuClient) QueryActions(sm *SysMenu) *SysMenuActionQuery {
+	query := &SysMenuActionQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sm.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenu.Table, sysmenu.FieldID, id),
+			sqlgraph.To(sysmenuaction.Table, sysmenuaction.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysmenu.ActionsTable, sysmenu.ActionsColumn),
+		)
+		fromV = sqlgraph.Neighbors(sm.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *SysMenuClient) Hooks() []Hook {
 	return c.hooks.SysMenu
@@ -671,6 +687,22 @@ func (c *SysMenuActionClient) QueryResources(sma *SysMenuAction) *SysMenuActionR
 			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, id),
 			sqlgraph.To(sysmenuactionresource.Table, sysmenuactionresource.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, sysmenuaction.ResourcesTable, sysmenuaction.ResourcesColumn),
+		)
+		fromV = sqlgraph.Neighbors(sma.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMenu queries the menu edge of a SysMenuAction.
+func (c *SysMenuActionClient) QueryMenu(sma *SysMenuAction) *SysMenuQuery {
+	query := &SysMenuQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := sma.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenuaction.Table, sysmenuaction.FieldID, id),
+			sqlgraph.To(sysmenu.Table, sysmenu.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysmenuaction.MenuTable, sysmenuaction.MenuColumn),
 		)
 		fromV = sqlgraph.Neighbors(sma.driver.Dialect(), step)
 		return fromV, nil

@@ -117,13 +117,13 @@ func (sdc *SysDictCreate) SetNameEn(s string) *SysDictCreate {
 	return sdc
 }
 
-// SetStatus sets the "Status" field.
+// SetStatus sets the "status" field.
 func (sdc *SysDictCreate) SetStatus(b bool) *SysDictCreate {
 	sdc.mutation.SetStatus(b)
 	return sdc
 }
 
-// SetNillableStatus sets the "Status" field if the given value is not nil.
+// SetNillableStatus sets the "status" field if the given value is not nil.
 func (sdc *SysDictCreate) SetNillableStatus(b *bool) *SysDictCreate {
 	if b != nil {
 		sdc.SetStatus(*b)
@@ -281,7 +281,7 @@ func (sdc *SysDictCreate) check() error {
 		}
 	}
 	if _, ok := sdc.mutation.Status(); !ok {
-		return &ValidationError{Name: "Status", err: errors.New("ent: missing required field \"Status\"")}
+		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
 	}
 	if v, ok := sdc.mutation.ID(); ok {
 		if err := sysdict.IDValidator(v); err != nil {
