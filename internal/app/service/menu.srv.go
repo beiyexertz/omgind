@@ -65,7 +65,7 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 		for _, item := range list {
 			sitem := schema.Menu{
 				Name:       item.Name,
-				Sequence:   item.Sequence,
+				Sort:       item.Sort,
 				Icon:       item.Icon,
 				Router:     item.Router,
 				ParentID:   parentID,

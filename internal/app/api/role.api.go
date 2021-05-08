@@ -28,7 +28,7 @@ func (a *Role) Query(c *gin.Context) {
 
 	params.Pagination = true
 	result, err := a.RoleSrv.Query(ctx, params, schema.RoleQueryOptions{
-		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByDESC)),
 	})
 	if err != nil {
 		ginx.ResError(c, err)
@@ -47,7 +47,7 @@ func (a *Role) QuerySelect(c *gin.Context) {
 	}
 
 	result, err := a.RoleSrv.Query(ctx, params, schema.RoleQueryOptions{
-		OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByDESC)),
 	})
 	if err != nil {
 		ginx.ResError(c, err)

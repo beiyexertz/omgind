@@ -2592,7 +2592,7 @@
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sequence": {
+                "sort": {
                     "description": "排序值",
                     "type": "integer"
                 },
@@ -2709,7 +2709,7 @@
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sequence": {
+                "sort": {
                     "description": "排序值",
                     "type": "integer"
                 },
@@ -2772,7 +2772,7 @@
                         "$ref": "#/definitions/schema.RoleMenu"
                     }
                 },
-                "sequence": {
+                "sort": {
                     "description": "排序值",
                     "type": "integer"
                 },

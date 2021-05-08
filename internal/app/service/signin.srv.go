@@ -176,7 +176,7 @@ func (a *SignIn) QueryUserMenuTree(ctx context.Context, userID string) (schema.M
 		result, err := a.MenuModel.Query(ctx, schema.MenuQueryParam{
 			Status: 1,
 		}, schema.MenuQueryOptions{
-			OrderFields: schema.NewOrderFields(schema.NewOrderField("sequence", schema.OrderByDESC)),
+			OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByDESC)),
 		})
 		if err != nil {
 			return nil, err

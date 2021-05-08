@@ -2604,7 +2604,7 @@ var doc = `{
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sequence": {
+                "sort": {
                     "description": "排序值",
                     "type": "integer"
                 },
@@ -2721,7 +2721,7 @@ var doc = `{
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sequence": {
+                "sort": {
                     "description": "排序值",
                     "type": "integer"
                 },
@@ -2784,7 +2784,7 @@ var doc = `{
                         "$ref": "#/definitions/schema.RoleMenu"
                     }
                 },
-                "sequence": {
+                "sort": {
                     "description": "排序值",
                     "type": "integer"
                 },

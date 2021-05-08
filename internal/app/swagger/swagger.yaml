@@ -164,7 +164,7 @@ definitions:
       router:
         description: 访问路由
         type: string
-      sequence:
+      sort:
         description: 排序值
         type: integer
       show_status:
@@ -253,7 +253,7 @@ definitions:
       router:
         description: 访问路由
         type: string
-      sequence:
+      sort:
         description: 排序值
         type: integer
       show_status:
@@ -294,7 +294,7 @@ definitions:
         items:
           $ref: '#/definitions/schema.RoleMenu'
         type: array
-      sequence:
+      sort:
         description: 排序值
         type: integer
       status:
