@@ -9,4 +9,6 @@ var MockSet = wire.NewSet(
 	MenuSet,
 	RoleSet,
 	UserSet,
+	DictSet,
+	DictItemSet,
 )
