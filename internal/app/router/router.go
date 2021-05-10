@@ -29,7 +29,7 @@ type Router struct {
 	RoleAPI        *api.Role
 	UserAPI        *api.User
 	DictAPI        *api.Dict
-	DictItemAPI    *api.DictItem
+	//DictItemAPI    *api.DictItem
 }
 
 // Register 注册路由

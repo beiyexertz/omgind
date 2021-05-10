@@ -136,15 +136,6 @@ func BuildInjector() (*Injector, func(), error) {
 	apiDict := &api.Dict{
 		DictSrv: serviceDict,
 	}
-	dictItem := &repo.DictItem{
-		DB: db,
-	}
-	serviceDictItem := &service.DictItem{
-		DictItemModel: dictItem,
-	}
-	apiDictItem := &api.DictItem{
-		DictItemSrv: serviceDictItem,
-	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
@@ -154,7 +145,6 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleAPI:        apiRole,
 		UserAPI:        apiUser,
 		DictAPI:        apiDict,
-		DictItemAPI:    apiDictItem,
 	}
 	engine := InitGinEngine(routerRouter)
 	injector := &Injector{

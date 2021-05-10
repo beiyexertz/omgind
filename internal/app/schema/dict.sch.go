@@ -4,17 +4,19 @@ import "time"
 
 // Dict 字典对象
 type Dict struct {
-	ID        string    `json:"id"`                         // 唯一标识
+	ID string `json:"id"` // 唯一标识
 
-	NameCn    string    `json:"name_cn" binding:"required"` // 字典名（中）
-	NameEn    string    `json:"name_en" binding:"required"` // 字典名（英）
-	Status    bool      `json:"status" binding:"required"`  // 状态
-	Memo      string    `json:"memo"`                       // 备注
-	Sort      int       `json:"sort"`                       // 排序
+	NameCn string `json:"name_cn" binding:"required"` // 字典名（中）
+	NameEn string `json:"name_en" binding:"required"` // 字典名（英）
+	Status bool   `json:"status" binding:"required"`  // 状态
+	Memo   string `json:"memo"`                       // 备注
+	Sort   int    `json:"sort"`                       // 排序
 
-	Creator   string    `json:"creator"`                    // 创建者
-	CreatedAt time.Time `json:"created_at"`                 // 创建时间
-	UpdatedAt time.Time `json:"updated_at"`                 // 更新时间
+	Creator   string    `json:"creator"`    // 创建者
+	CreatedAt time.Time `json:"created_at"` // 创建时间
+	UpdatedAt time.Time `json:"updated_at"` // 更新时间
+
+	Items DictItems `json:"actions" binding:"required,gt=0"` // 字典项列表
 
 }
 
