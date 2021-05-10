@@ -130,8 +130,13 @@ func BuildInjector() (*Injector, func(), error) {
 	dict := &repo.Dict{
 		DB: db,
 	}
+	dictItem := &repo.DictItem{
+		DB: db,
+	}
 	serviceDict := &service.Dict{
-		DictModel: dict,
+		TransModel:    trans,
+		DictModel:     dict,
+		DictItemModel: dictItem,
 	}
 	apiDict := &api.Dict{
 		DictSrv: serviceDict,

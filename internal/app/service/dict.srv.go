@@ -17,7 +17,9 @@ var DictSet = wire.NewSet(wire.Struct(new(Dict), "*"))
 
 // Dict 字典
 type Dict struct {
-	DictModel *repo.Dict
+	TransModel    *repo.Trans
+	DictModel     *repo.Dict
+	DictItemModel *repo.DictItem
 }
 
 // Query 查询数据
@@ -33,9 +35,39 @@ func (a *Dict) Get(ctx context.Context, id string, opts ...schema.DictQueryOptio
 	} else if item == nil {
 		return nil, errors.ErrNotFound
 	}
+	ditems, err := a.QueryItems(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	item.Items = ditems
 
 	return item, nil
 }
+
+func (d Dict) QueryItems(ctx context.Context, id string) (schema.DictItems, error) {
+	result, err := d.DictItemModel.Query(ctx, schema.DictItemQueryParam{
+		DictId: id,
+	})
+	if err != nil {
+		return nil, err
+	} else if len(result.Data) == 0 {
+		return nil, nil
+	}
+
+	return result.Data, nil
+}
+
+//func (d *Dict) checkName(ctx context.Context, item schema.Dict) error {
+//	result, err := d.DictModel.Query(ctx, schema.DictQueryParam{
+//		PaginationParam: schema.PaginationParam{
+//			OnlyCount: true,
+//		},
+//	})
+//	if err != nil {
+//		return nil
+//	}
+//	return nil
+//}
 
 // Create 创建数据
 func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, error) {

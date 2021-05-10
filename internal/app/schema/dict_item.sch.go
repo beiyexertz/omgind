@@ -22,6 +22,8 @@ type DictItem struct {
 // DictItemQueryParam 查询条件
 type DictItemQueryParam struct {
 	PaginationParam
+	DictId string //字典id
+	IDs    []string
 }
 
 // DictItemQueryOptions 查询可选参数项
