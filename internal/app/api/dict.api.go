@@ -97,3 +97,25 @@ func (a *Dict) Delete(c *gin.Context) {
 	}
 	ginx.ResOK(c)
 }
+
+// Enable 启用数据
+func (a *Dict) Enable(c *gin.Context) {
+	ctx := c.Request.Context()
+	err := a.DictSrv.UpdateStatus(ctx, c.Param("id"), 1)
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+	ginx.ResOK(c)
+}
+
+// Disable 禁用数据
+func (a *Dict) Disable(c *gin.Context) {
+	ctx := c.Request.Context()
+	err := a.DictSrv.UpdateStatus(ctx, c.Param("id"), 2)
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+	ginx.ResOK(c)
+}

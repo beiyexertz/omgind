@@ -215,3 +215,14 @@ func (a *Dict) DeleteS(ctx context.Context, id string) error {
 	oldItem.IsDel = true
 	return a.DictModel.Update(ctx, id, *oldItem)
 }
+
+func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
+	oldItem, err := a.DictModel.Get(ctx, id)
+	if err != nil {
+		return err
+	} else if oldItem == nil {
+		return errors.ErrNotFound
+	}
+
+	return a.DictModel.UpdateStatus(ctx, id, status)
+}

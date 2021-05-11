@@ -8,7 +8,7 @@ type Dict struct {
 
 	NameCn string `json:"name_cn" binding:"required"` // 字典名（中）
 	NameEn string `json:"name_en" binding:"required"` // 字典名（英）
-	Status bool   `json:"status" binding:"required"`  // 状态
+	Status int    `json:"status" binding:"required"`  // 状态
 	Memo   string `json:"memo"`                       // 备注
 	Sort   int    `json:"sort"`                       // 排序
 	IsDel  bool   `json:"is_del"`
