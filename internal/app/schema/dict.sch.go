@@ -16,7 +16,7 @@ type Dict struct {
 	CreatedAt time.Time `json:"created_at"` // 创建时间
 	UpdatedAt time.Time `json:"updated_at"` // 更新时间
 
-	Items DictItems `json:"actions" binding:"required,gt=0"` // 字典项列表
+	Items DictItems `json:"items" binding:"required,gt=0"` // 字典项列表
 
 }
 
