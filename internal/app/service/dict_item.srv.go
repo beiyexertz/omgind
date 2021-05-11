@@ -76,3 +76,14 @@ func (a *DictItem) Delete(ctx context.Context, id string) error {
 
 	return a.DictItemModel.Delete(ctx, id)
 }
+
+func (a *DictItem) DeleteS(ctx context.Context, id string) error {
+	oldItem, err := a.DictItemModel.Get(ctx, id)
+	if err != nil {
+		return err
+	} else if oldItem == nil {
+		return errors.ErrNotFound
+	}
+	oldItem.IsDel = true
+	return a.DictItemModel.Update(ctx, id, *oldItem)
+}

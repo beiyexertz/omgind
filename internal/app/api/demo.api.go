@@ -85,7 +85,7 @@ func (a *Demo) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *Demo) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DemoSrv.Delete(ctx, c.Param("id"))
+	err := a.DemoSrv.DeleteS(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return

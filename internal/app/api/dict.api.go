@@ -90,7 +90,7 @@ func (a *Dict) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *Dict) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DictSrv.Delete(ctx, c.Param("id"))
+	err := a.DictSrv.DeleteS(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return

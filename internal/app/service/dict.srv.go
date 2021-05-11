@@ -201,7 +201,17 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 	} else if oldItem == nil {
 		return errors.ErrNotFound
 	}
+	return a.DictModel.Delete(ctx, id)
+}
+
+// Delete 删除数据
+func (a *Dict) DeleteS(ctx context.Context, id string) error {
+	oldItem, err := a.DictModel.Get(ctx, id)
+	if err != nil {
+		return err
+	} else if oldItem == nil {
+		return errors.ErrNotFound
+	}
 	oldItem.IsDel = true
 	return a.DictModel.Update(ctx, id, *oldItem)
-	//return a.DictModel.Delete(ctx, id)
 }
