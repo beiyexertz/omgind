@@ -2418,11 +2418,19 @@ var doc = `{
         "schema.Dict": {
             "type": "object",
             "required": [
+                "actions",
                 "name_cn",
                 "name_en",
                 "status"
             ],
             "properties": {
+                "actions": {
+                    "description": "字典项列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.DictItem"
+                    }
+                },
                 "created_at": {
                     "description": "创建时间",
                     "type": "string"
@@ -2604,12 +2612,12 @@ var doc = `{
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sort": {
-                    "description": "排序值",
-                    "type": "integer"
-                },
                 "show_status": {
                     "description": "显示状态(1:显示 2:隐藏)",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序值",
                     "type": "integer"
                 },
                 "status": {
@@ -2721,12 +2729,12 @@ var doc = `{
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sort": {
-                    "description": "排序值",
-                    "type": "integer"
-                },
                 "show_status": {
                     "description": "显示状态(1:显示 2:隐藏)",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序值",
                     "type": "integer"
                 },
                 "status": {

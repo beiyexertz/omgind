@@ -10,5 +10,5 @@ var APISet = wire.NewSet(
 	RoleSet,
 	UserSet,
 	DictSet,
-	DictItemSet,
+	//DictItemSet,
 )
