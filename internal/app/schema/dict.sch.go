@@ -23,6 +23,12 @@ type Dict struct {
 // DictQueryParam 查询条件
 type DictQueryParam struct {
 	PaginationParam
+	IDs        []string `form:"-"`          // 唯一标识列表
+	NameCn     string   `form:"-"`          // 字典名称(中)
+	NameEn     string   `form:"-"`          // 字典名称(英)
+	QueryValue string   `form:"queryValue"` // 模糊查询
+	Status     int      `form:"status"`     // 状态(1:启用 2:禁用)
+	SqlRaw     string
 }
 
 // DictQueryOptions 查询可选参数项

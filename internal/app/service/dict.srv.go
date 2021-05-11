@@ -57,28 +57,49 @@ func (d Dict) QueryItems(ctx context.Context, id string) (schema.DictItems, erro
 	return result.Data, nil
 }
 
-//func (d *Dict) checkName(ctx context.Context, item schema.Dict) error {
-//	result, err := d.DictModel.Query(ctx, schema.DictQueryParam{
-//		PaginationParam: schema.PaginationParam{
-//			OnlyCount: true,
-//		},
-//	})
-//	if err != nil {
-//		return nil
-//	}
-//	return nil
-//}
+func (d *Dict) checkName(ctx context.Context, item schema.Dict) error {
+	result, err := d.DictModel.Query(ctx, schema.DictQueryParam{
+		PaginationParam: schema.PaginationParam{
+			OnlyCount: true,
+		},
+		QueryValue: item.NameEn,
+	})
+	if err != nil {
+		return nil
+	}
+	return nil
+}
 
 // Create 创建数据
 func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, error) {
 	// TODO: check?
+
 	item.ID = uid.MustString()
-	err := a.DictModel.Create(ctx, item)
+	err := a.TransModel.Exec(ctx, func(ctx context.Context) error {
+		err := a.createDictItems(ctx, item.ID, item.Items)
+		if err != nil {
+			return err
+		}
+		return a.DictModel.Create(ctx, item)
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	return schema.NewIDResult(item.ID), nil
+}
+
+func (a *Dict) createDictItems(ctx context.Context, dictID string, items schema.DictItems) error {
+
+	for _, item := range items {
+		item.ID = uid.MustString()
+		item.DictId = dictID
+		err := a.DictItemModel.Create(ctx, *item)
+		if err != nil {
+			return nil
+		}
+	}
+	return nil
 }
 
 // Update 更新数据

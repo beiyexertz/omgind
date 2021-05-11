@@ -48,6 +48,7 @@ func (a *Dict) Get(c *gin.Context) {
 
 // Create 创建数据
 func (a *Dict) Create(c *gin.Context) {
+
 	ctx := c.Request.Context()
 	var item schema.Dict
 	if err := ginx.ParseJSON(c, &item); err != nil {
@@ -66,6 +67,7 @@ func (a *Dict) Create(c *gin.Context) {
 
 // Update 更新数据
 func (a *Dict) Update(c *gin.Context) {
+
 	ctx := c.Request.Context()
 	var item schema.Dict
 	if err := ginx.ParseJSON(c, &item); err != nil {

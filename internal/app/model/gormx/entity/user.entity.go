@@ -35,7 +35,8 @@ type User struct {
 	Email     *string    `gorm:"column:email;size:255;index;"`                         // 邮箱
 	Phone     *string    `gorm:"column:phone;size:20;index;"`                          // 手机号
 	Status    int        `gorm:"column:status;index;default:0;not null;"`              // 状态(1:启用 2:停用)
-	Creator   string     `gorm:"column:creator;size:36;"`                              // 创建者
+	Gender    int        `gorm:"column:gender;default:0;not null;"`
+	Creator   string     `gorm:"column:creator;size:36;"` // 创建者
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`
 	UpdatedAt time.Time  `gorm:"column:updated_at;index;"`
 	DeletedAt *time.Time `gorm:"column:deleted_at;index;"`

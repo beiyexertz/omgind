@@ -2,8 +2,8 @@ module github.com/wanhello/omgind
 
 go 1.16
 
-
 require (
+	github.com/99designs/gqlgen v0.13.0
 	github.com/LyricTian/queue v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.11.3
@@ -28,6 +28,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/meehow/go-django-hashers v0.0.0-20171231135116-5e5d6afe52db
 	github.com/mojocn/base64Captcha v1.3.4
+	github.com/oklog/ulid v1.3.1
 	github.com/oklog/ulid/v2 v2.0.2
 	github.com/onsi/ginkgo v1.16.1 // indirect
 	github.com/onsi/gomega v1.11.0 // indirect
