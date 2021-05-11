@@ -94,8 +94,8 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gDict.POST("", a.DictAPI.Create)
 			gDict.PUT(":id", a.DictAPI.Update)
 			gDict.DELETE(":id", a.DictAPI.Delete)
-			gRole.PATCH(":id/enable", a.DictAPI.Enable)
-			gRole.PATCH(":id/disable", a.DictAPI.Disable)
+			gDict.PATCH(":id/enable", a.DictAPI.Enable)
+			gDict.PATCH(":id/disable", a.DictAPI.Disable)
 		}
 
 		//gDictItem := v1.Group("dict-items")
