@@ -58,7 +58,7 @@ func (a *Dict) Create(c *gin.Context) {
 		return
 	}
 
-	fmt.Printf(" 00000 ---- ====== %+v", item)
+	fmt.Printf(" 00000 ---- ====== creating %+v", item)
 
 	item.Creator = ginx.GetUserID(c)
 	result, err := a.DictSrv.Create(ctx, item)
@@ -78,6 +78,7 @@ func (a *Dict) Update(c *gin.Context) {
 		ginx.ResError(c, err)
 		return
 	}
+	fmt.Printf(" 00000 ---- ====== editing %+v", item)
 
 	err := a.DictSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {

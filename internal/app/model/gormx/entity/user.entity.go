@@ -35,7 +35,7 @@ type User struct {
 	Email     *string `gorm:"column:email;size:255;index;"`                         // 邮箱
 	Phone     *string `gorm:"column:phone;size:20;index;"`                          // 手机号
 	Status    int     `gorm:"column:status;index;default:0;not null;"`              // 状态(1:启用 2:停用)
-	Gender    int     `gorm:"column:gender;default:0;not null;"`
+	Gender    int     `gorm:"column:gender;default:3;not null;"`
 	IsDel     bool    `gorm:"column:is_del;default:false;index;not null;"`
 
 	Creator   string     `gorm:"column:creator;size:36;"` // 创建者

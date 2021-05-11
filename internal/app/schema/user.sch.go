@@ -42,7 +42,7 @@ type User struct {
 	Status    int    `json:"status" binding:"required,max=2,min=1"` // 用户状态(1:启用 2:停用)
 	IsDel     bool   `json:"is_del"`
 
-	Gender    int       `json:"gender" binding:"required,max=2,min=1"` // 性别(1:男,2:女)
+	Gender    int       `json:"gender" binding:"required,max=3,min=1"` // 性别(1:男,2:女)
 	Creator   string    `json:"creator"`                               // 创建者
 	CreatedAt time.Time `json:"created_at"`                            // 创建时间
 	UserRoles UserRoles `json:"user_roles" binding:"required,gt=0"`    // 角色授权
