@@ -58,22 +58,36 @@ func (d Dict) QueryItems(ctx context.Context, id string) (schema.DictItems, erro
 }
 
 func (d *Dict) checkName(ctx context.Context, item schema.Dict) error {
-	result, err := d.DictModel.Query(ctx, schema.DictQueryParam{
+	// TODO:: need optimization
+	result1, err1 := d.DictModel.Query(ctx, schema.DictQueryParam{
 		PaginationParam: schema.PaginationParam{
 			OnlyCount: true,
 		},
-		QueryValue: item.NameEn,
+		NameEn: item.NameEn,
 	})
-	if err != nil {
+	result2, err2 := d.DictModel.Query(ctx, schema.DictQueryParam{
+		PaginationParam: schema.PaginationParam{
+			OnlyCount: true,
+		},
+		NameCn: item.NameCn,
+	})
+
+	if err1 != nil && err2 != nil {
 		return nil
+	} else if result1.PageResult.Total > 0 {
+		return errors.New400Response("字典名称" + item.NameEn + "已经存在")
+	} else if result2.PageResult.Total > 0 {
+		return errors.New400Response("字典名称" + item.NameCn + "已经存在")
 	}
+
 	return nil
 }
 
 // Create 创建数据
 func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, error) {
-	// TODO: check?
-
+	if err := a.checkName(ctx, item); err != nil {
+		return nil, err
+	}
 	item.ID = uid.MustString()
 	err := a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		err := a.createDictItems(ctx, item.ID, item.Items)
