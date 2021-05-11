@@ -115,6 +115,7 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 
 // UpdateStatus 更新状态
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
-	result := entity.GetMenuDB(ctx, a.DB).Where("id=?", id).Update("status", status)
+	result := entity.GetDictDB(ctx, a.DB).Where("id=?", id).Update("status", status)
+	//result := entity.GetMenuDB(ctx, a.DB).Where("id=?", id).Update("status", status)
 	return errors.WithStack(result.Error)
 }

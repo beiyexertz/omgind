@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
@@ -217,6 +218,9 @@ func (a *Dict) DeleteS(ctx context.Context, id string) error {
 }
 
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
+
+	fmt.Printf(" ---- ==== status = %d ", status)
+
 	oldItem, err := a.DictModel.Get(ctx, id)
 	if err != nil {
 		return err
