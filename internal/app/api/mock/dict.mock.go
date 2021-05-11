@@ -86,7 +86,7 @@ func (a *Dict) Delete(c *gin.Context) {
 // @Success 200 {object} schema.StatusResult "{status:OK}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
-// @Router /api/v1/menus/{id}/enable [patch]
+// @Router /api/v1/dicts/{id}/enable [patch]
 func (a *Dict) Enable(c *gin.Context) {
 }
 
@@ -98,6 +98,6 @@ func (a *Dict) Enable(c *gin.Context) {
 // @Success 200 {object} schema.StatusResult "{status:OK}"
 // @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
 // @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
-// @Router /api/v1/menus/{id}/disable [patch]
+// @Router /api/v1/dicts/{id}/disable [patch]
 func (a *Dict) Disable(c *gin.Context) {
 }

@@ -2397,6 +2397,9 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
+                "is_del": {
+                    "type": "boolean"
+                },
                 "memo": {
                     "description": "备注",
                     "type": "string"
@@ -2418,19 +2421,12 @@ var doc = `{
         "schema.Dict": {
             "type": "object",
             "required": [
-                "actions",
+                "items",
                 "name_cn",
                 "name_en",
                 "status"
             ],
             "properties": {
-                "actions": {
-                    "description": "字典项列表",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/schema.DictItem"
-                    }
-                },
                 "created_at": {
                     "description": "创建时间",
                     "type": "string"
@@ -2442,6 +2438,16 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "description": "字典项列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.DictItem"
+                    }
                 },
                 "memo": {
                     "description": "备注",
@@ -2461,7 +2467,7 @@ var doc = `{
                 },
                 "status": {
                     "description": "状态",
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "updated_at": {
                     "description": "更新时间",
@@ -2493,6 +2499,9 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "label": {
                     "description": "显示值",
@@ -2646,6 +2655,9 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
+                "is_del": {
+                    "type": "boolean"
+                },
                 "menu_id": {
                     "description": "菜单ID",
                     "type": "string"
@@ -2776,6 +2788,9 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "memo": {
                     "description": "备注",
@@ -2915,6 +2930,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "first_name",
+                "gender",
                 "last_name",
                 "status",
                 "user_name",
@@ -2937,9 +2953,16 @@ var doc = `{
                     "description": "真实姓名",
                     "type": "string"
                 },
+                "gender": {
+                    "description": "性别(1:男,2:女)",
+                    "type": "integer"
+                },
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "last_name": {
                     "description": "真实姓名",
