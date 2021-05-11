@@ -39,6 +39,7 @@ type MenuQueryParam struct {
 	ParentID         *string  `form:"parentID"`   // 父级内码
 	ShowStatus       int      `form:"showStatus"` // 显示状态(1:显示 2:隐藏)
 	Status           int      `form:"status"`     // 状态(1:启用 2:禁用)
+	IsDel            bool     `json:"is_del"`
 }
 
 // MenuQueryOptions 查询可选参数项

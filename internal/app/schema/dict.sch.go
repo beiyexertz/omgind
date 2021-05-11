@@ -11,6 +11,7 @@ type Dict struct {
 	Status bool   `json:"status" binding:"required"`  // 状态
 	Memo   string `json:"memo"`                       // 备注
 	Sort   int    `json:"sort"`                       // 排序
+	IsDel  bool   `json:"is_del"`
 
 	Creator   string    `json:"creator"`    // 创建者
 	CreatedAt time.Time `json:"created_at"` // 创建时间

@@ -34,6 +34,8 @@ type Dict struct {
 	Sort    int    `gorm:"column:sort;default:9999;"` // 排序
 	Creator string `gorm:"column:creator;"`           // 创建者
 
+	IsDel bool `gorm:"column:is_del;default:false;index;not null;"`
+
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`
 	UpdatedAt time.Time  `gorm:"column:updated_at;index;"`
 	DeletedAt *time.Time `gorm:"column:deleted_at;index;"`

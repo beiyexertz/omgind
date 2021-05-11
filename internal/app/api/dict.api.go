@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
@@ -55,6 +57,8 @@ func (a *Dict) Create(c *gin.Context) {
 		ginx.ResError(c, err)
 		return
 	}
+
+	fmt.Printf(" 00000 ---- ====== %+v", item)
 
 	item.Creator = ginx.GetUserID(c)
 	result, err := a.DictSrv.Create(ctx, item)

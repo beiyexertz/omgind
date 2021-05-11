@@ -39,3 +39,12 @@ type DictItemQueryResult struct {
 
 // DictItems 字典项列表
 type DictItems []*DictItem
+
+// ToMap
+func (a DictItems) ToMap() map[string]*DictItem {
+	m := make(map[string]*DictItem)
+	for _, item := range a {
+		m[item.Label] = item
+	}
+	return m
+}

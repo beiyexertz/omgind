@@ -26,7 +26,7 @@ func (a SchemaDictItem) ToDictItem() *DictItem {
 
 // DictItem 字典项实体
 type DictItem struct {
-	ID      string `gorm:"column:id;primary_key;size:36;"`
+	ID string `gorm:"column:id;primary_key;size:36;"`
 
 	Label   string `gorm:"column:label;size:128;"`      // 显示值
 	Value   int    `gorm:"column:value;"`               // 字典值

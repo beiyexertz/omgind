@@ -118,18 +118,79 @@ func (a *Dict) createDictItems(ctx context.Context, dictID string, items schema.
 
 // Update 更新数据
 func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
+
 	oldItem, err := a.DictModel.Get(ctx, id)
 	if err != nil {
 		return err
 	} else if oldItem == nil {
 		return errors.ErrNotFound
+	} else if oldItem.NameEn != item.NameEn || oldItem.NameCn != item.NameCn {
+		if err := a.checkName(ctx, item); err != nil {
+			return err
+		}
 	}
 	// TODO: check?
+
 	item.ID = oldItem.ID
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
 
-	return a.DictModel.Update(ctx, id, item)
+	return a.TransModel.Exec(ctx, func(ctx context.Context) error {
+		err := a.updateDictItems(ctx, id, oldItem.Items, item.Items)
+		if err != nil {
+			return err
+		}
+		return a.DictModel.Update(ctx, id, item)
+	})
+	//return a.DictModel.Update(ctx, id, item)
+}
+
+func (a *Dict) updateDictItems(ctx context.Context, dictID string, oldItems, newItems schema.DictItems) error {
+	addItems, delItems, updateItems := a.compareDictItems(ctx, oldItems, newItems)
+	err := a.createDictItems(ctx, dictID, addItems)
+	if err != nil {
+		return err
+	}
+
+	for _, item := range delItems {
+		err := a.DictItemModel.Delete(ctx, item.ID)
+		if err != nil {
+			return err
+		}
+	}
+
+	mOldItems := oldItems.ToMap()
+	for _, item := range updateItems {
+		oitem := mOldItems[item.Label]
+		if item.Label != oitem.Label {
+			oitem.Label = item.Label
+			err := a.DictItemModel.Update(ctx, item.ID, *oitem)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+func (a *Dict) compareDictItems(ctx context.Context, oldItems, newItems schema.DictItems) (addList, delList,
+	updateList schema.DictItems) {
+
+	mOldItems := oldItems.ToMap()
+	mNewItems := newItems.ToMap()
+	for k, item := range mNewItems {
+		if _, ok := mOldItems[k]; ok {
+			updateList = append(updateList, item)
+			delete(mOldItems, k)
+			continue
+		}
+		addList = append(addList, item)
+	}
+	for _, item := range mOldItems {
+		delList = append(delList, item)
+	}
+	return
 }
 
 // Delete 删除数据
@@ -140,6 +201,7 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 	} else if oldItem == nil {
 		return errors.ErrNotFound
 	}
-
-	return a.DictModel.Delete(ctx, id)
+	oldItem.IsDel = true
+	return a.DictModel.Update(ctx, id, *oldItem)
+	//return a.DictModel.Delete(ctx, id)
 }

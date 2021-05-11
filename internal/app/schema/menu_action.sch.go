@@ -9,6 +9,7 @@ type MenuAction struct {
 	Code      string              `yaml:"code" binding:"required" json:"code"`  // 动作编号
 	Name      string              `yaml:"name" binding:"required" json:"name"`  // 动作名称
 	Resources MenuActionResources `yaml:"resources,omitempty" json:"resources"` // 资源列表
+	IsDel     bool                `json:"is_del"`
 }
 
 // MenuActionQueryParam 查询条件
