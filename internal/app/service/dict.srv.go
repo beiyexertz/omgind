@@ -120,7 +120,7 @@ func (a *Dict) createDictItems(ctx context.Context, dictID string, items schema.
 // Update 更新数据
 func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 
-	oldItem, err := a.DictModel.Get(ctx, id)
+	oldItem, err := a.Get(ctx, id)
 	if err != nil {
 		return err
 	} else if oldItem == nil {
@@ -130,13 +130,12 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 			return err
 		}
 	}
-	// TODO: check?
 
 	item.ID = oldItem.ID
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
-
 	return a.TransModel.Exec(ctx, func(ctx context.Context) error {
+
 		err := a.updateDictItems(ctx, id, oldItem.Items, item.Items)
 		if err != nil {
 			return err
@@ -147,7 +146,9 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 }
 
 func (a *Dict) updateDictItems(ctx context.Context, dictID string, oldItems, newItems schema.DictItems) error {
+
 	addItems, delItems, updateItems := a.compareDictItems(ctx, oldItems, newItems)
+
 	err := a.createDictItems(ctx, dictID, addItems)
 	if err != nil {
 		return err
@@ -175,8 +176,7 @@ func (a *Dict) updateDictItems(ctx context.Context, dictID string, oldItems, new
 	return nil
 }
 
-func (a *Dict) compareDictItems(ctx context.Context, oldItems, newItems schema.DictItems) (addList, delList,
-	updateList schema.DictItems) {
+func (a *Dict) compareDictItems(ctx context.Context, oldItems, newItems schema.DictItems) (addList, delList, updateList schema.DictItems) {
 
 	mOldItems := oldItems.ToMap()
 	mNewItems := newItems.ToMap()

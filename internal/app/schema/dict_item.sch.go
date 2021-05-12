@@ -8,7 +8,7 @@ type DictItem struct {
 
 	Label  string `json:"label" binding:"required"`   // 显示值
 	Value  int    `json:"value" binding:"required"`   // 字典值
-	Status bool   `json:"status" binding:"required"`  // 状态
+	Status int    `json:"status" binding:"required"`  // 状态(1:启用 2:禁用)
 	DictId string `json:"dict_id" binding:"required"` // dict.id
 	Memo   string `json:"memo"`                       // 备注
 	Sort   int    `json:"sort"`                       // 排序

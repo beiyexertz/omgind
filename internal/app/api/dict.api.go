@@ -79,6 +79,7 @@ func (a *Dict) Update(c *gin.Context) {
 		return
 	}
 	fmt.Printf(" 00000 ---- ====== editing %+v", item)
+	fmt.Printf(" 00000 ---- ====== editing %+v", item.Items)
 
 	err := a.DictSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
