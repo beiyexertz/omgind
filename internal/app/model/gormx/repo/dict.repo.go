@@ -33,7 +33,26 @@ func (a *Dict) Query(ctx context.Context, params schema.DictQueryParam, opts ...
 	opt := a.getQueryOption(opts...)
 
 	db := entity.GetDictDB(ctx, a.DB)
-	// TODO: 查询条件
+	if v := params.IDs; len(v) > 0 {
+		db = db.Where("id IN (?)", v)
+	}
+
+	if v := params.NameCn; v != "" {
+		db = db.Where("name_cn=?", v)
+	}
+
+	if v := params.NameEn; v != "" {
+		db = db.Where("name_en=?", v)
+	}
+
+	if v := params.Status; v > 0 {
+		db = db.Where("status=?", v)
+	}
+
+	if v := params.QueryValue; v != "" {
+		v = "%" + v + "%"
+		db = db.Where("name_cn LIKE ? OR name_en LIKE ? OR memo LIKE ?", v, v, v)
+	}
 
 	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
 	db = db.Order(ParseOrder(opt.OrderFields))
@@ -92,4 +111,11 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 		return errors.WithStack(err)
 	}
 	return nil
+}
+
+// UpdateStatus 更新状态
+func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
+	result := entity.GetDictDB(ctx, a.DB).Where("id=?", id).Update("status", status)
+	//result := entity.GetMenuDB(ctx, a.DB).Where("id=?", id).Update("status", status)
+	return errors.WithStack(result.Error)
 }

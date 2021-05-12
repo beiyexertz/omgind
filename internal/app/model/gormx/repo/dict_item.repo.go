@@ -35,6 +35,10 @@ func (a *DictItem) Query(ctx context.Context, params schema.DictItemQueryParam, 
 	db := entity.GetDictItemDB(ctx, a.DB)
 	// TODO: 查询条件
 
+	if v := params.IDs; len(v) > 0 {
+		db = db.Where("id IN (?)", v)
+	}
+
 	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
 	db = db.Order(ParseOrder(opt.OrderFields))
 

@@ -77,3 +77,27 @@ func (a *Dict) Update(c *gin.Context) {
 // @Router /api/v1/dicts/{id} [delete]
 func (a *Dict) Delete(c *gin.Context) {
 }
+
+// Enable 启用数据
+// @Tags 字典
+// @Summary 启用数据
+// @Security ApiKeyAuth
+// @Param id path string true "唯一标识"
+// @Success 200 {object} schema.StatusResult "{status:OK}"
+// @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
+// @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
+// @Router /api/v1/dicts/{id}/enable [patch]
+func (a *Dict) Enable(c *gin.Context) {
+}
+
+// Disable 禁用数据
+// @Tags 字典
+// @Summary 禁用数据
+// @Security ApiKeyAuth
+// @Param id path string true "唯一标识"
+// @Success 200 {object} schema.StatusResult "{status:OK}"
+// @Failure 401 {object} schema.ErrorResult "{error:{code:0,message:未授权}}"
+// @Failure 500 {object} schema.ErrorResult "{error:{code:0,message:服务器错误}}"
+// @Router /api/v1/dicts/{id}/disable [patch]
+func (a *Dict) Disable(c *gin.Context) {
+}

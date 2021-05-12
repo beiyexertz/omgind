@@ -886,6 +886,90 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/dicts/{id}/disable": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "字典"
+                ],
+                "summary": "禁用数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/dicts/{id}/enable": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "字典"
+                ],
+                "summary": "启用数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "唯一标识",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{status:OK}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.StatusResult"
+                        }
+                    },
+                    "401": {
+                        "description": "{error:{code:0,message:未授权}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    },
+                    "500": {
+                        "description": "{error:{code:0,message:服务器错误}}",
+                        "schema": {
+                            "$ref": "#/definitions/schema.ErrorResult"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/menus": {
             "get": {
                 "security": [
@@ -2397,6 +2481,9 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
+                "is_del": {
+                    "type": "boolean"
+                },
                 "memo": {
                     "description": "备注",
                     "type": "string"
@@ -2418,6 +2505,7 @@ var doc = `{
         "schema.Dict": {
             "type": "object",
             "required": [
+                "items",
                 "name_cn",
                 "name_en",
                 "status"
@@ -2434,6 +2522,16 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "description": "字典项列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.DictItem"
+                    }
                 },
                 "memo": {
                     "description": "备注",
@@ -2453,7 +2551,7 @@ var doc = `{
                 },
                 "status": {
                     "description": "状态",
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "updated_at": {
                     "description": "更新时间",
@@ -2485,6 +2583,9 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "label": {
                     "description": "显示值",
@@ -2604,12 +2705,12 @@ var doc = `{
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sort": {
-                    "description": "排序值",
-                    "type": "integer"
-                },
                 "show_status": {
                     "description": "显示状态(1:显示 2:隐藏)",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序值",
                     "type": "integer"
                 },
                 "status": {
@@ -2637,6 +2738,9 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "menu_id": {
                     "description": "菜单ID",
@@ -2721,12 +2825,12 @@ var doc = `{
                     "description": "访问路由",
                     "type": "string"
                 },
-                "sort": {
-                    "description": "排序值",
-                    "type": "integer"
-                },
                 "show_status": {
                     "description": "显示状态(1:显示 2:隐藏)",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序值",
                     "type": "integer"
                 },
                 "status": {
@@ -2768,6 +2872,9 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "memo": {
                     "description": "备注",
@@ -2907,6 +3014,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "first_name",
+                "gender",
                 "last_name",
                 "status",
                 "user_name",
@@ -2929,9 +3037,16 @@ var doc = `{
                     "description": "真实姓名",
                     "type": "string"
                 },
+                "gender": {
+                    "description": "性别(1:男,2:女)",
+                    "type": "integer"
+                },
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
+                },
+                "is_del": {
+                    "type": "boolean"
                 },
                 "last_name": {
                     "description": "真实姓名",

@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
@@ -48,12 +50,15 @@ func (a *Dict) Get(c *gin.Context) {
 
 // Create 创建数据
 func (a *Dict) Create(c *gin.Context) {
+
 	ctx := c.Request.Context()
 	var item schema.Dict
 	if err := ginx.ParseJSON(c, &item); err != nil {
 		ginx.ResError(c, err)
 		return
 	}
+
+	fmt.Printf(" 00000 ---- ====== creating %+v", item)
 
 	item.Creator = ginx.GetUserID(c)
 	result, err := a.DictSrv.Create(ctx, item)
@@ -66,12 +71,14 @@ func (a *Dict) Create(c *gin.Context) {
 
 // Update 更新数据
 func (a *Dict) Update(c *gin.Context) {
+
 	ctx := c.Request.Context()
 	var item schema.Dict
 	if err := ginx.ParseJSON(c, &item); err != nil {
 		ginx.ResError(c, err)
 		return
 	}
+	fmt.Printf(" 00000 ---- ====== editing %+v", item)
 
 	err := a.DictSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
@@ -84,7 +91,29 @@ func (a *Dict) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *Dict) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DictSrv.Delete(ctx, c.Param("id"))
+	err := a.DictSrv.DeleteS(ctx, c.Param("id"))
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+	ginx.ResOK(c)
+}
+
+// Enable 启用数据
+func (a *Dict) Enable(c *gin.Context) {
+	ctx := c.Request.Context()
+	err := a.DictSrv.UpdateStatus(ctx, c.Param("id"), 1)
+	if err != nil {
+		ginx.ResError(c, err)
+		return
+	}
+	ginx.ResOK(c)
+}
+
+// Disable 禁用数据
+func (a *Dict) Disable(c *gin.Context) {
+	ctx := c.Request.Context()
+	err := a.DictSrv.UpdateStatus(ctx, c.Param("id"), 2)
 	if err != nil {
 		ginx.ResError(c, err)
 		return

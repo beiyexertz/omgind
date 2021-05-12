@@ -100,6 +100,17 @@ func (a *Demo) Delete(ctx context.Context, id string) error {
 	return a.DemoModel.Delete(ctx, id)
 }
 
+func (a *Demo) DeleteS(ctx context.Context, id string) error {
+	oldItem, err := a.DemoModel.Get(ctx, id)
+	if err != nil {
+		return err
+	} else if oldItem == nil {
+		return errors.ErrNotFound
+	}
+	oldItem.IsDel = true
+	return a.DemoModel.Update(ctx, id, *oldItem)
+}
+
 // UpdateStatus 更新状态
 func (a *Demo) UpdateStatus(ctx context.Context, id string, status int) error {
 	oldItem, err := a.DemoModel.Get(ctx, id)

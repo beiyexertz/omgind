@@ -94,16 +94,18 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			gDict.POST("", a.DictAPI.Create)
 			gDict.PUT(":id", a.DictAPI.Update)
 			gDict.DELETE(":id", a.DictAPI.Delete)
+			gDict.PATCH(":id/enable", a.DictAPI.Enable)
+			gDict.PATCH(":id/disable", a.DictAPI.Disable)
 		}
 
-		gDictItem := v1.Group("dict-items")
-		{
-			gDictItem.GET("", a.DictItemAPI.Query)
-			gDictItem.GET(":id", a.DictItemAPI.Get)
-			gDictItem.POST("", a.DictItemAPI.Create)
-			gDictItem.PUT(":id", a.DictItemAPI.Update)
-			gDictItem.DELETE(":id", a.DictItemAPI.Delete)
-		}
+		//gDictItem := v1.Group("dict-items")
+		//{
+		//	gDictItem.GET("", a.DictItemAPI.Query)
+		//	gDictItem.GET(":id", a.DictItemAPI.Get)
+		//	gDictItem.POST("", a.DictItemAPI.Create)
+		//	gDictItem.PUT(":id", a.DictItemAPI.Update)
+		//	gDictItem.DELETE(":id", a.DictItemAPI.Delete)
+		//}
 
 	}
 }

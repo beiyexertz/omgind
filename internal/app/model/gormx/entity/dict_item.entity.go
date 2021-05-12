@@ -26,16 +26,17 @@ func (a SchemaDictItem) ToDictItem() *DictItem {
 
 // DictItem 字典项实体
 type DictItem struct {
-	ID      string `gorm:"column:id;primary_key;size:36;"`
+	ID string `gorm:"column:id;primary_key;size:36;"`
 
-	Label   string `gorm:"column:label;size:128;"`      // 显示值
-	Value   int    `gorm:"column:value;"`               // 字典值
-	Status  bool   `gorm:"column:status;default:true;"` // 状态
-	DictId  string `gorm:"column:dict_id;size:36;"`     // dict.id
-	Memo    string `gorm:"column:memo;size:128;"`       // 备注
-	Sort    int    `gorm:"column:sort;default:9999;"`   // 排序
-	Creator string `gorm:"column:creator;"`             // 创建者
+	Label  string `gorm:"column:label;size:128;"`      // 显示值
+	Value  int    `gorm:"column:value;"`               // 字典值
+	Status bool   `gorm:"column:status;default:true;"` // 状态
+	DictId string `gorm:"column:dict_id;size:36;"`     // dict.id
+	Memo   string `gorm:"column:memo;size:128;"`       // 备注
+	Sort   int    `gorm:"column:sort;default:9999;"`   // 排序
 
+	IsDel     bool       `json:"is_del"`
+	Creator   string     `gorm:"column:creator;"` // 创建者
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`
 	UpdatedAt time.Time  `gorm:"column:updated_at;index;"`
 	DeletedAt *time.Time `gorm:"column:deleted_at;index;"`

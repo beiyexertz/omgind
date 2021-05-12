@@ -130,20 +130,16 @@ func BuildInjector() (*Injector, func(), error) {
 	dict := &repo.Dict{
 		DB: db,
 	}
-	serviceDict := &service.Dict{
-		DictModel: dict,
-	}
-	apiDict := &api.Dict{
-		DictSrv: serviceDict,
-	}
 	dictItem := &repo.DictItem{
 		DB: db,
 	}
-	serviceDictItem := &service.DictItem{
+	serviceDict := &service.Dict{
+		TransModel:    trans,
+		DictModel:     dict,
 		DictItemModel: dictItem,
 	}
-	apiDictItem := &api.DictItem{
-		DictItemSrv: serviceDictItem,
+	apiDict := &api.Dict{
+		DictSrv: serviceDict,
 	}
 	routerRouter := &router.Router{
 		Auth:           auther,
@@ -154,7 +150,6 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleAPI:        apiRole,
 		UserAPI:        apiUser,
 		DictAPI:        apiDict,
-		DictItemAPI:    apiDictItem,
 	}
 	engine := InitGinEngine(routerRouter)
 	client, cleanup5, err := InitEntClient()
