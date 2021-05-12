@@ -35,7 +35,6 @@ type DictItem struct {
 	Memo   string `gorm:"column:memo;size:128;"`       // 备注
 	Sort   int    `gorm:"column:sort;default:9999;"`   // 排序
 
-	IsDel     bool       `json:"is_del"`
 	Creator   string     `gorm:"column:creator;"` // 创建者
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`
 	UpdatedAt time.Time  `gorm:"column:updated_at;index;"`

@@ -1,6 +1,8 @@
 package schema
 
-import "time"
+import (
+	"time"
+)
 
 // DictItem 字典项对象
 type DictItem struct {
@@ -12,12 +14,31 @@ type DictItem struct {
 	DictId string `json:"dict_id" binding:"required"` // dict.id
 	Memo   string `json:"memo"`                       // 备注
 	Sort   int    `json:"sort"`                       // 排序
-	IsDel  bool   `json:"is_del"`
 
 	Creator   string    `json:"creator"`    // 创建者
 	CreatedAt time.Time `json:"created_at"` // 创建时间
 	UpdatedAt time.Time `json:"updated_at"` // 更新时间
 
+}
+
+// is queal
+func (di *DictItem) Compare(target *DictItem) bool {
+	if di.Label != target.Label {
+		return false
+	} else if di.Value != target.Value {
+		return false
+	}
+	if di.DictId != target.DictId {
+		return false
+	}
+	if di.Sort != target.Sort {
+		return false
+	}
+	if di.Status != target.Status {
+		return false
+	}
+
+	return true
 }
 
 // DictItemQueryParam 查询条件

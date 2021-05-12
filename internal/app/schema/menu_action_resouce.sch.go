@@ -4,7 +4,7 @@ package schema
 
 // MenuActionResource 菜单动作关联资源对象
 type MenuActionResource struct {
-	ID       string `yaml:"-" json:"id"`                             // 唯一标识
+	ID       string `yaml:"-" json:"id" `                            // 唯一标识
 	ActionID string `yaml:"-" json:"action_id"`                      // 菜单动作ID
 	Method   string `yaml:"method" binding:"required" json:"method"` // 资源请求方式(支持正则)
 	Path     string `yaml:"path" binding:"required" json:"path"`     // 资源请求路径（支持/:id匹配）

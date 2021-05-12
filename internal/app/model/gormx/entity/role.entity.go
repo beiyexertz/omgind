@@ -32,8 +32,7 @@ type Role struct {
 	Sort int     `gorm:"column:sort;index;default:0;not null;"`           // 排序值
 	Memo *string `gorm:"column:memo;size:1024;"`                          // 备注
 
-	Status int  `gorm:"column:status;index;default:0;not null;"` // 状态(1:启用 2:禁用)
-	IsDel  bool `gorm:"column:is_del;default:false;index;not null;"`
+	Status int `gorm:"column:status;index;default:0;not null;"` // 状态(1:启用 2:禁用)
 
 	Creator   string     `gorm:"column:creator;size:36;"` // 创建者
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`

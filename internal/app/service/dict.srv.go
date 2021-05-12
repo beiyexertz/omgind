@@ -8,6 +8,9 @@ import (
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/errors"
+
+	"github.com/wanhello/omgind/pkg/helper/deepcopier"
+
 	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 )
 
@@ -164,9 +167,13 @@ func (a *Dict) updateDictItems(ctx context.Context, dictID string, oldItems, new
 	mOldItems := oldItems.ToMap()
 	for _, item := range updateItems {
 		oitem := mOldItems[item.Label]
-		if item.Label != oitem.Label {
-			oitem.Label = item.Label
-			err := a.DictItemModel.Update(ctx, item.ID, *oitem)
+
+		hasChange := oitem.Compare(item)
+		deepcopier.Copy(item).Include([]string{"Label", "Value", "Memo", "Status"}).Exclude([]string{"CreatedAt",
+			"UpdatedAt", "ID"}).To(oitem)
+
+		if !hasChange {
+			err := a.DictItemModel.Update(ctx, oitem.ID, *oitem)
 			if err != nil {
 				return err
 			}
@@ -213,7 +220,6 @@ func (a *Dict) DeleteS(ctx context.Context, id string) error {
 	} else if oldItem == nil {
 		return errors.ErrNotFound
 	}
-	oldItem.IsDel = true
 	return a.DictModel.Update(ctx, id, *oldItem)
 }
 
