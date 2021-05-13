@@ -78,7 +78,8 @@ func (a *Dict) Update(c *gin.Context) {
 		ginx.ResError(c, err)
 		return
 	}
-	fmt.Printf(" 00000 ---- ====== editing %+v", item)
+	fmt.Printf(" 00000 ---- ====== editing %+v\n", item)
+	fmt.Printf(" 00000 ---- ====== editing %+v", item.Items)
 
 	err := a.DictSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
@@ -91,7 +92,7 @@ func (a *Dict) Update(c *gin.Context) {
 // Delete 删除数据
 func (a *Dict) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
-	err := a.DictSrv.DeleteS(ctx, c.Param("id"))
+	err := a.DictSrv.Delete(ctx, c.Param("id"))
 	if err != nil {
 		ginx.ResError(c, err)
 		return

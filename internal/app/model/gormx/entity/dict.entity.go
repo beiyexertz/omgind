@@ -29,12 +29,10 @@ type Dict struct {
 	ID      string `gorm:"column:id;primary_key;size:36;"`
 	NameCn  string `gorm:"column:name_cn;size:128;"`  // 字典名（中）
 	NameEn  string `gorm:"column:name_en;size:128;"`  // 字典名（英）
-	Status  int    `gorm:"column:status;default:1;"`  // 状态
+	Status  int    `gorm:"column:status;default:1;"`  // 状态(1:启用 2:禁用)
 	Memo    string `gorm:"column:memo;size:128;"`     // 备注
 	Sort    int    `gorm:"column:sort;default:9999;"` // 排序
 	Creator string `gorm:"column:creator;"`           // 创建者
-
-	IsDel bool `gorm:"column:is_del;default:false;index;not null;"`
 
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`
 	UpdatedAt time.Time  `gorm:"column:updated_at;index;"`

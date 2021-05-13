@@ -84,6 +84,5 @@ func (a *DictItem) DeleteS(ctx context.Context, id string) error {
 	} else if oldItem == nil {
 		return errors.ErrNotFound
 	}
-	oldItem.IsDel = true
 	return a.DictItemModel.Update(ctx, id, *oldItem)
 }

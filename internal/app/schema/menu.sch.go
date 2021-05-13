@@ -19,10 +19,10 @@ type Menu struct {
 	ShowStatus int         `json:"show_status" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
 	Status     int         `json:"status" binding:"required,max=2,min=1"`      // 状态(1:启用 2:禁用)
 	Memo       string      `json:"memo"`                                       // 备注
-	Creator    string      `json:"creator"`                                    // 创建者
-	CreatedAt  time.Time   `json:"created_at"`                                 // 创建时间
-	UpdatedAt  time.Time   `json:"updated_at"`                                 // 更新时间
-	Actions    MenuActions `json:"actions"`                                    // 动作列表
+	Creator    string      `json:"creator" `                                   // 创建者
+	CreatedAt  time.Time   `json:"created_at" `                                // 创建时间
+	UpdatedAt  time.Time   `json:"updated_at" `                                // 更新时间
+	Actions    MenuActions `json:"actions" `                                   // 动作列表
 }
 
 func (a *Menu) String() string {
@@ -39,7 +39,6 @@ type MenuQueryParam struct {
 	ParentID         *string  `form:"parentID"`   // 父级内码
 	ShowStatus       int      `form:"showStatus"` // 显示状态(1:显示 2:隐藏)
 	Status           int      `form:"status"`     // 状态(1:启用 2:禁用)
-	IsDel            bool     `json:"is_del"`
 }
 
 // MenuQueryOptions 查询可选参数项

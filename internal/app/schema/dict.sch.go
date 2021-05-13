@@ -4,14 +4,13 @@ import "time"
 
 // Dict 字典对象
 type Dict struct {
-	ID string `json:"id"` // 唯一标识
+	ID string `json:"id" ` // 唯一标识
 
 	NameCn string `json:"name_cn" binding:"required"` // 字典名（中）
 	NameEn string `json:"name_en" binding:"required"` // 字典名（英）
 	Status int    `json:"status" binding:"required"`  // 状态
 	Memo   string `json:"memo"`                       // 备注
 	Sort   int    `json:"sort"`                       // 排序
-	IsDel  bool   `json:"is_del"`
 
 	Creator   string    `json:"creator"`    // 创建者
 	CreatedAt time.Time `json:"created_at"` // 创建时间
