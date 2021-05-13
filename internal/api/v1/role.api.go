@@ -1,4 +1,4 @@
-package api
+package api_v1
 
 import (
 	"github.com/wanhello/omgind/internal/app/ginx"

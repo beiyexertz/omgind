@@ -1,9 +1,9 @@
-package api
+package api_v1
 
 import "github.com/google/wire"
 
 // APISet 注入api
-var APISet = wire.NewSet(
+var APIV1Set = wire.NewSet(
 	DemoSet,
 	SignInSet,
 	MenuSet,
