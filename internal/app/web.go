@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/wanhello/omgind/internal/app/middleware"
-	"github.com/wanhello/omgind/internal/app/router"
+	"github.com/wanhello/omgind/internal/router"
 	"github.com/wanhello/omgind/pkg/global"
 
 	"github.com/gin-contrib/gzip"

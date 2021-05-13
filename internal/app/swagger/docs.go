@@ -2481,9 +2481,6 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "is_del": {
-                    "type": "boolean"
-                },
                 "memo": {
                     "description": "备注",
                     "type": "string"
@@ -2522,9 +2519,6 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
-                },
-                "is_del": {
-                    "type": "boolean"
                 },
                 "items": {
                     "description": "字典项列表",
@@ -2584,9 +2578,6 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "is_del": {
-                    "type": "boolean"
-                },
                 "label": {
                     "description": "显示值",
                     "type": "string"
@@ -2600,8 +2591,8 @@ var doc = `{
                     "type": "integer"
                 },
                 "status": {
-                    "description": "状态",
-                    "type": "boolean"
+                    "description": "状态(1:启用 2:禁用)",
+                    "type": "integer"
                 },
                 "updated_at": {
                     "description": "更新时间",
@@ -2739,9 +2730,6 @@ var doc = `{
                     "description": "唯一标识",
                     "type": "string"
                 },
-                "is_del": {
-                    "type": "boolean"
-                },
                 "menu_id": {
                     "description": "菜单ID",
                     "type": "string"
@@ -2872,9 +2860,6 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
-                },
-                "is_del": {
-                    "type": "boolean"
                 },
                 "memo": {
                     "description": "备注",
@@ -3044,9 +3029,6 @@ var doc = `{
                 "id": {
                     "description": "唯一标识",
                     "type": "string"
-                },
-                "is_del": {
-                    "type": "boolean"
                 },
                 "last_name": {
                     "description": "真实姓名",

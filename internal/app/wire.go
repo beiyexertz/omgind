@@ -4,12 +4,12 @@
 package app
 
 import (
-	"github.com/wanhello/omgind/internal/app/api"
-	// "github.com/wanhello/omgind/internal/app/api/mock"
+	"github.com/wanhello/omgind/internal/api/v1"
+	// "github.com/wanhello/omgind/internal/app/api_v1/mock"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
-	"github.com/wanhello/omgind/internal/app/router"
 	"github.com/wanhello/omgind/internal/app/service"
+	"github.com/wanhello/omgind/internal/router"
 
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 )
@@ -27,7 +27,7 @@ func BuildInjector() (*Injector, func(), error) {
 		InitCasbin,
 		InitGinEngine,
 		service.ServiceSet,
-		api.APISet,
+		api_v1.APIV1Set,
 		router.RouterSet,
 		adapter.CasbinAdapterSet,
 		InjectorSet,

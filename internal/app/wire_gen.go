@@ -6,11 +6,11 @@
 package app
 
 import (
-	"github.com/wanhello/omgind/internal/app/api"
+	"github.com/wanhello/omgind/internal/api/v1"
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
-	"github.com/wanhello/omgind/internal/app/router"
 	"github.com/wanhello/omgind/internal/app/service"
+	"github.com/wanhello/omgind/internal/router"
 )
 
 import (
@@ -64,7 +64,7 @@ func BuildInjector() (*Injector, func(), error) {
 	serviceDemo := &service.Demo{
 		DemoModel: demo,
 	}
-	apiDemo := &api.Demo{
+	api_v1Demo := &api_v1.Demo{
 		DemoSrv: serviceDemo,
 	}
 	menu := &repo.Menu{
@@ -91,7 +91,7 @@ func BuildInjector() (*Injector, func(), error) {
 		MenuActionModel: menuAction,
 		Vcode:           vcode,
 	}
-	apiSignIn := &api.SignIn{
+	api_v1SignIn := &api_v1.SignIn{
 		SigninSrv: signIn,
 		Vcode:     vcode,
 	}
@@ -104,7 +104,7 @@ func BuildInjector() (*Injector, func(), error) {
 		MenuActionModel:         menuAction,
 		MenuActionResourceModel: menuActionResource,
 	}
-	apiMenu := &api.Menu{
+	api_v1Menu := &api_v1.Menu{
 		MenuSrv: serviceMenu,
 	}
 	serviceRole := &service.Role{
@@ -114,7 +114,7 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleMenuModel: roleMenu,
 		UserModel:     user,
 	}
-	apiRole := &api.Role{
+	api_v1Role := &api_v1.Role{
 		RoleSrv: serviceRole,
 	}
 	serviceUser := &service.User{
@@ -124,7 +124,7 @@ func BuildInjector() (*Injector, func(), error) {
 		UserRoleModel: userRole,
 		RoleModel:     role,
 	}
-	apiUser := &api.User{
+	api_v1User := &api_v1.User{
 		UserSrv: serviceUser,
 	}
 	dict := &repo.Dict{
@@ -138,18 +138,18 @@ func BuildInjector() (*Injector, func(), error) {
 		DictModel:     dict,
 		DictItemModel: dictItem,
 	}
-	apiDict := &api.Dict{
+	api_v1Dict := &api_v1.Dict{
 		DictSrv: serviceDict,
 	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
-		DemoAPI:        apiDemo,
-		SignInAPI:      apiSignIn,
-		MenuAPI:        apiMenu,
-		RoleAPI:        apiRole,
-		UserAPI:        apiUser,
-		DictAPI:        apiDict,
+		DemoAPI:        api_v1Demo,
+		SignInAPI:      api_v1SignIn,
+		MenuAPI:        api_v1Menu,
+		RoleAPI:        api_v1Role,
+		UserAPI:        api_v1User,
+		DictAPI:        api_v1Dict,
 	}
 	engine := InitGinEngine(routerRouter)
 	client, cleanup5, err := InitEntClient()
