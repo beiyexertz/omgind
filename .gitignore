@@ -19,6 +19,8 @@
 /internal/app/test/data
 /tmp
 
+go.sum
+
 /scripts/g
 
 # IDE configs
