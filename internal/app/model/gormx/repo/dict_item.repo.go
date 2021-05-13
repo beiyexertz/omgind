@@ -39,6 +39,10 @@ func (a *DictItem) Query(ctx context.Context, params schema.DictItemQueryParam, 
 		db = db.Where("id IN (?)", v)
 	}
 
+	if v := params.DictId; v != "" {
+		db = db.Where("dict_id=?", v)
+	}
+
 	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
 	db = db.Order(ParseOrder(opt.OrderFields))
 
