@@ -5,7 +5,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/internal/app/service"
+	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
 )
 
 // DemoSet 注入Demo
@@ -13,7 +13,7 @@ var DemoSet = wire.NewSet(wire.Struct(new(Demo), "*"))
 
 // Demo 示例程序
 type Demo struct {
-	DemoSrv *service.Demo
+	DemoSrv *service_ent.Demo
 }
 
 // Query 查询数据
@@ -73,12 +73,13 @@ func (a *Demo) Update(c *gin.Context) {
 		return
 	}
 
-	err := a.DemoSrv.Update(ctx, c.Param("id"), item)
+	_, err := a.DemoSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
 		ginx.ResError(c, err)
 		return
 	}
 	ginx.ResOK(c)
+	//ginx.ResSuccess(c, result)
 }
 
 // Delete 删除数据
