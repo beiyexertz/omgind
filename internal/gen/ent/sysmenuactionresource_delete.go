@@ -69,7 +69,7 @@ func (smard *SysMenuActionResourceDelete) sqlExec(ctx context.Context) (int, err
 		Node: &sqlgraph.NodeSpec{
 			Table: sysmenuactionresource.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenuactionresource.FieldID,
 			},
 		},

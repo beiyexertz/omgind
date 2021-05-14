@@ -3,13 +3,12 @@ module github.com/wanhello/omgind
 go 1.16
 
 require (
+	entgo.io/contrib v0.0.0-20210510070807-19d2feb90dc4 // indirect
 	entgo.io/ent v0.8.0
 	github.com/99designs/gqlgen v0.13.0
 	github.com/LyricTian/queue v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.11.3
-	github.com/chenhg5/collection v0.0.0-20200925143926-f403b87088f9 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/camelcase v1.0.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
@@ -22,15 +21,15 @@ require (
 	github.com/google/gops v0.3.12
 	github.com/google/uuid v1.2.0
 	github.com/google/wire v0.4.0
+	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
+	github.com/jackc/pgx/v4 v4.11.0
 	github.com/jinzhu/copier v0.3.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10
 	github.com/koding/multiconfig v0.0.0-20171124222453-69c27309b2d7
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/meehow/go-django-hashers v0.0.0-20171231135116-5e5d6afe52db
 	github.com/mojocn/base64Captcha v1.3.4
-	github.com/oklog/ulid v1.3.1
 	github.com/oklog/ulid/v2 v2.0.2
 	github.com/onsi/ginkgo v1.16.1 // indirect
 	github.com/onsi/gomega v1.11.0 // indirect
@@ -42,12 +41,11 @@ require (
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.7.0
 	github.com/tidwall/buntdb v1.1.2
-	github.com/ulule/deepcopier v0.0.0-20200430083143-45decc6639b6 // indirect
 	github.com/urfave/cli/v2 v2.3.0
-	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
+	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a // indirect
 	golang.org/x/net v0.0.0-20210326220855-61e056675ecf // indirect
 	golang.org/x/sys v0.0.0-20210326220804-49726bf1d181 // indirect
+	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e
-	golang.org/x/tools v0.1.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )

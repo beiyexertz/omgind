@@ -12,7 +12,6 @@ type SysJwtBlock struct {
 
 func (sjb SysJwtBlock) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.MemoMixin{},
 		mixin.TimeMixin{},
 		mixin.StatusMixin{},
@@ -21,6 +20,8 @@ func (sjb SysJwtBlock) Mixin() []ent.Mixin {
 
 func (sjb SysJwtBlock) Fields() []ent.Field {
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.Text("jwt").StorageKey("jwt").NotEmpty().Comment("jwt"),
 	}
 }

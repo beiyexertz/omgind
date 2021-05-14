@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuActionCreate is the builder for creating a SysMenuAction entity.
@@ -18,20 +19,6 @@ type SysMenuActionCreate struct {
 	config
 	mutation *SysMenuActionMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (smac *SysMenuActionCreate) SetIsDel(b bool) *SysMenuActionCreate {
-	smac.mutation.SetIsDel(b)
-	return smac
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (smac *SysMenuActionCreate) SetNillableIsDel(b *bool) *SysMenuActionCreate {
-	if b != nil {
-		smac.SetIsDel(*b)
-	}
-	return smac
 }
 
 // SetSort sets the "sort" field.
@@ -137,16 +124,8 @@ func (smac *SysMenuActionCreate) SetName(s string) *SysMenuActionCreate {
 }
 
 // SetID sets the "id" field.
-func (smac *SysMenuActionCreate) SetID(s string) *SysMenuActionCreate {
-	smac.mutation.SetID(s)
-	return smac
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (smac *SysMenuActionCreate) SetNillableID(s *string) *SysMenuActionCreate {
-	if s != nil {
-		smac.SetID(*s)
-	}
+func (smac *SysMenuActionCreate) SetID(pu pulid.ID) *SysMenuActionCreate {
+	smac.mutation.SetID(pu)
 	return smac
 }
 
@@ -202,10 +181,6 @@ func (smac *SysMenuActionCreate) SaveX(ctx context.Context) *SysMenuAction {
 
 // defaults sets the default values of the builder before save.
 func (smac *SysMenuActionCreate) defaults() {
-	if _, ok := smac.mutation.IsDel(); !ok {
-		v := sysmenuaction.DefaultIsDel
-		smac.mutation.SetIsDel(v)
-	}
 	if _, ok := smac.mutation.Sort(); !ok {
 		v := sysmenuaction.DefaultSort
 		smac.mutation.SetSort(v)
@@ -227,16 +202,13 @@ func (smac *SysMenuActionCreate) defaults() {
 		smac.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := smac.mutation.ID(); !ok {
-		v := sysmenuaction.DefaultID
+		v := sysmenuaction.DefaultID()
 		smac.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (smac *SysMenuActionCreate) check() error {
-	if _, ok := smac.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := smac.mutation.Sort(); !ok {
 		return &ValidationError{Name: "sort", err: errors.New("ent: missing required field \"sort\"")}
 	}
@@ -281,11 +253,6 @@ func (smac *SysMenuActionCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
-	if v, ok := smac.mutation.ID(); ok {
-		if err := sysmenuaction.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -306,7 +273,7 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysmenuaction.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenuaction.FieldID,
 			},
 		}
@@ -314,14 +281,6 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 	if id, ok := smac.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := smac.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysmenuaction.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := smac.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

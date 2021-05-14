@@ -9,17 +9,14 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDict is the model entity for the SysDict schema.
 type SysDict struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
-	ID string `json:"id,omitempty"`
-	// IsDel holds the value of the "is_del" field.
-	// 是否删除
-	IsDel bool `json:"is_del,omitempty"`
+	ID pulid.ID `json:"id,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -51,11 +48,13 @@ func (*SysDict) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdict.FieldIsDel, sysdict.FieldStatus:
+		case sysdict.FieldID:
+			values[i] = new(pulid.ID)
+		case sysdict.FieldStatus:
 			values[i] = new(sql.NullBool)
 		case sysdict.FieldSort:
 			values[i] = new(sql.NullInt64)
-		case sysdict.FieldID, sysdict.FieldMemo, sysdict.FieldNameCn, sysdict.FieldNameEn:
+		case sysdict.FieldMemo, sysdict.FieldNameCn, sysdict.FieldNameEn:
 			values[i] = new(sql.NullString)
 		case sysdict.FieldCreatedAt, sysdict.FieldUpdatedAt, sysdict.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -75,16 +74,10 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case sysdict.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*pulid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				sd.ID = value.String
-			}
-		case sysdict.FieldIsDel:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_del", values[i])
-			} else if value.Valid {
-				sd.IsDel = value.Bool
+			} else if value != nil {
+				sd.ID = *value
 			}
 		case sysdict.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -163,8 +156,6 @@ func (sd *SysDict) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysDict(")
 	builder.WriteString(fmt.Sprintf("id=%v", sd.ID))
-	builder.WriteString(", is_del=")
-	builder.WriteString(fmt.Sprintf("%v", sd.IsDel))
 	builder.WriteString(", memo=")
 	builder.WriteString(sd.Memo)
 	builder.WriteString(", sort=")

@@ -69,7 +69,7 @@ func (smd *SysMenuDelete) sqlExec(ctx context.Context) (int, error) {
 		Node: &sqlgraph.NodeSpec{
 			Table: sysmenu.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenu.FieldID,
 			},
 		},

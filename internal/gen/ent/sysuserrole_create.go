@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserRoleCreate is the builder for creating a SysUserRole entity.
@@ -18,20 +19,6 @@ type SysUserRoleCreate struct {
 	config
 	mutation *SysUserRoleMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (surc *SysUserRoleCreate) SetIsDel(b bool) *SysUserRoleCreate {
-	surc.mutation.SetIsDel(b)
-	return surc
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (surc *SysUserRoleCreate) SetNillableIsDel(b *bool) *SysUserRoleCreate {
-	if b != nil {
-		surc.SetIsDel(*b)
-	}
-	return surc
 }
 
 // SetCreatedAt sets the "created_at" field.
@@ -89,16 +76,8 @@ func (surc *SysUserRoleCreate) SetRoleID(s string) *SysUserRoleCreate {
 }
 
 // SetID sets the "id" field.
-func (surc *SysUserRoleCreate) SetID(s string) *SysUserRoleCreate {
-	surc.mutation.SetID(s)
-	return surc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (surc *SysUserRoleCreate) SetNillableID(s *string) *SysUserRoleCreate {
-	if s != nil {
-		surc.SetID(*s)
-	}
+func (surc *SysUserRoleCreate) SetID(pu pulid.ID) *SysUserRoleCreate {
+	surc.mutation.SetID(pu)
 	return surc
 }
 
@@ -154,10 +133,6 @@ func (surc *SysUserRoleCreate) SaveX(ctx context.Context) *SysUserRole {
 
 // defaults sets the default values of the builder before save.
 func (surc *SysUserRoleCreate) defaults() {
-	if _, ok := surc.mutation.IsDel(); !ok {
-		v := sysuserrole.DefaultIsDel
-		surc.mutation.SetIsDel(v)
-	}
 	if _, ok := surc.mutation.CreatedAt(); !ok {
 		v := sysuserrole.DefaultCreatedAt()
 		surc.mutation.SetCreatedAt(v)
@@ -167,16 +142,13 @@ func (surc *SysUserRoleCreate) defaults() {
 		surc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := surc.mutation.ID(); !ok {
-		v := sysuserrole.DefaultID
+		v := sysuserrole.DefaultID()
 		surc.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (surc *SysUserRoleCreate) check() error {
-	if _, ok := surc.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := surc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New("ent: missing required field \"created_at\"")}
 	}
@@ -199,11 +171,6 @@ func (surc *SysUserRoleCreate) check() error {
 			return &ValidationError{Name: "role_id", err: fmt.Errorf("ent: validator failed for field \"role_id\": %w", err)}
 		}
 	}
-	if v, ok := surc.mutation.ID(); ok {
-		if err := sysuserrole.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -224,7 +191,7 @@ func (surc *SysUserRoleCreate) createSpec() (*SysUserRole, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysuserrole.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysuserrole.FieldID,
 			},
 		}
@@ -232,14 +199,6 @@ func (surc *SysUserRoleCreate) createSpec() (*SysUserRole, *sqlgraph.CreateSpec)
 	if id, ok := surc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := surc.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysuserrole.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := surc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

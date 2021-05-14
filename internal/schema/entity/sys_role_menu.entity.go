@@ -13,7 +13,6 @@ type SysRoleMenu struct {
 
 func (rm SysRoleMenu) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.TimeMixin{},
 	}
 }
@@ -21,15 +20,17 @@ func (rm SysRoleMenu) Mixin() []ent.Mixin {
 // Fields of the SysRoleMenu.
 func (SysRoleMenu) Fields() []ent.Field {
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.String("role_id").MaxLen(36).NotEmpty().Comment("角色ID, sys_role.id"),
 		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID, sys_menu.id"),
 		field.String("action_id").MaxLen(36).Nillable().Optional().Comment("菜单ID, sys_menu_action.id"),
 	}
 }
 
-// Edges of the SysRoleMenu.
-func (SysRoleMenu) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.To(),
-	}
-}
+//// Edges of the SysRoleMenu.
+//func (SysRoleMenu) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		//edge.To(),
+//	}
+//}

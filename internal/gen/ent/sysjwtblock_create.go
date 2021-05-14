@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysJwtBlockCreate is the builder for creating a SysJwtBlock entity.
@@ -18,20 +19,6 @@ type SysJwtBlockCreate struct {
 	config
 	mutation *SysJwtBlockMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (sjbc *SysJwtBlockCreate) SetIsDel(b bool) *SysJwtBlockCreate {
-	sjbc.mutation.SetIsDel(b)
-	return sjbc
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (sjbc *SysJwtBlockCreate) SetNillableIsDel(b *bool) *SysJwtBlockCreate {
-	if b != nil {
-		sjbc.SetIsDel(*b)
-	}
-	return sjbc
 }
 
 // SetMemo sets the "memo" field.
@@ -111,16 +98,8 @@ func (sjbc *SysJwtBlockCreate) SetJwt(s string) *SysJwtBlockCreate {
 }
 
 // SetID sets the "id" field.
-func (sjbc *SysJwtBlockCreate) SetID(s string) *SysJwtBlockCreate {
-	sjbc.mutation.SetID(s)
-	return sjbc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (sjbc *SysJwtBlockCreate) SetNillableID(s *string) *SysJwtBlockCreate {
-	if s != nil {
-		sjbc.SetID(*s)
-	}
+func (sjbc *SysJwtBlockCreate) SetID(pu pulid.ID) *SysJwtBlockCreate {
+	sjbc.mutation.SetID(pu)
 	return sjbc
 }
 
@@ -176,10 +155,6 @@ func (sjbc *SysJwtBlockCreate) SaveX(ctx context.Context) *SysJwtBlock {
 
 // defaults sets the default values of the builder before save.
 func (sjbc *SysJwtBlockCreate) defaults() {
-	if _, ok := sjbc.mutation.IsDel(); !ok {
-		v := sysjwtblock.DefaultIsDel
-		sjbc.mutation.SetIsDel(v)
-	}
 	if _, ok := sjbc.mutation.Memo(); !ok {
 		v := sysjwtblock.DefaultMemo
 		sjbc.mutation.SetMemo(v)
@@ -197,16 +172,13 @@ func (sjbc *SysJwtBlockCreate) defaults() {
 		sjbc.mutation.SetStatus(v)
 	}
 	if _, ok := sjbc.mutation.ID(); !ok {
-		v := sysjwtblock.DefaultID
+		v := sysjwtblock.DefaultID()
 		sjbc.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (sjbc *SysJwtBlockCreate) check() error {
-	if _, ok := sjbc.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := sjbc.mutation.Memo(); !ok {
 		return &ValidationError{Name: "memo", err: errors.New("ent: missing required field \"memo\"")}
 	}
@@ -232,11 +204,6 @@ func (sjbc *SysJwtBlockCreate) check() error {
 			return &ValidationError{Name: "jwt", err: fmt.Errorf("ent: validator failed for field \"jwt\": %w", err)}
 		}
 	}
-	if v, ok := sjbc.mutation.ID(); ok {
-		if err := sysjwtblock.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -257,7 +224,7 @@ func (sjbc *SysJwtBlockCreate) createSpec() (*SysJwtBlock, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysjwtblock.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysjwtblock.FieldID,
 			},
 		}
@@ -265,14 +232,6 @@ func (sjbc *SysJwtBlockCreate) createSpec() (*SysJwtBlock, *sqlgraph.CreateSpec)
 	if id, ok := sjbc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := sjbc.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysjwtblock.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := sjbc.mutation.Memo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

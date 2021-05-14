@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuActionResourceQuery is the builder for querying SysMenuActionResource entities.
@@ -84,8 +85,8 @@ func (smarq *SysMenuActionResourceQuery) FirstX(ctx context.Context) *SysMenuAct
 
 // FirstID returns the first SysMenuActionResource ID from the query.
 // Returns a *NotFoundError when no SysMenuActionResource ID was found.
-func (smarq *SysMenuActionResourceQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (smarq *SysMenuActionResourceQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = smarq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (smarq *SysMenuActionResourceQuery) FirstID(ctx context.Context) (id string
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (smarq *SysMenuActionResourceQuery) FirstIDX(ctx context.Context) string {
+func (smarq *SysMenuActionResourceQuery) FirstIDX(ctx context.Context) pulid.ID {
 	id, err := smarq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (smarq *SysMenuActionResourceQuery) OnlyX(ctx context.Context) *SysMenuActi
 // OnlyID is like Only, but returns the only SysMenuActionResource ID in the query.
 // Returns a *NotSingularError when exactly one SysMenuActionResource ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (smarq *SysMenuActionResourceQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (smarq *SysMenuActionResourceQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = smarq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (smarq *SysMenuActionResourceQuery) OnlyID(ctx context.Context) (id string,
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (smarq *SysMenuActionResourceQuery) OnlyIDX(ctx context.Context) string {
+func (smarq *SysMenuActionResourceQuery) OnlyIDX(ctx context.Context) pulid.ID {
 	id, err := smarq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (smarq *SysMenuActionResourceQuery) AllX(ctx context.Context) []*SysMenuAct
 }
 
 // IDs executes the query and returns a list of SysMenuActionResource IDs.
-func (smarq *SysMenuActionResourceQuery) IDs(ctx context.Context) ([]string, error) {
-	var ids []string
+func (smarq *SysMenuActionResourceQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
+	var ids []pulid.ID
 	if err := smarq.Select(sysmenuactionresource.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (smarq *SysMenuActionResourceQuery) IDs(ctx context.Context) ([]string, err
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (smarq *SysMenuActionResourceQuery) IDsX(ctx context.Context) []string {
+func (smarq *SysMenuActionResourceQuery) IDsX(ctx context.Context) []pulid.ID {
 	ids, err := smarq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -253,12 +254,12 @@ func (smarq *SysMenuActionResourceQuery) Clone() *SysMenuActionResourceQuery {
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Sort int32 `json:"sort,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysMenuActionResource.Query().
-//		GroupBy(sysmenuactionresource.FieldIsDel).
+//		GroupBy(sysmenuactionresource.FieldSort).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +281,11 @@ func (smarq *SysMenuActionResourceQuery) GroupBy(field string, fields ...string)
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Sort int32 `json:"sort,omitempty"`
 //	}
 //
 //	client.SysMenuActionResource.Query().
-//		Select(sysmenuactionresource.FieldIsDel).
+//		Select(sysmenuactionresource.FieldSort).
 //		Scan(ctx, &v)
 //
 func (smarq *SysMenuActionResourceQuery) Select(field string, fields ...string) *SysMenuActionResourceSelect {
@@ -353,7 +354,7 @@ func (smarq *SysMenuActionResourceQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysmenuactionresource.Table,
 			Columns: sysmenuactionresource.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenuactionresource.FieldID,
 			},
 		},

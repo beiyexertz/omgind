@@ -4,6 +4,8 @@ package sysrolemenu
 
 import (
 	"time"
+
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 const (
@@ -11,8 +13,6 @@ const (
 	Label = "sys_role_menu"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldIsDel holds the string denoting the is_del field in the database.
-	FieldIsDel = "is_del"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "crtd_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
@@ -32,7 +32,6 @@ const (
 // Columns holds all SQL columns for sysrolemenu fields.
 var Columns = []string{
 	FieldID,
-	FieldIsDel,
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
@@ -52,8 +51,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultIsDel holds the default value on creation for the "is_del" field.
-	DefaultIsDel bool
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
@@ -67,7 +64,5 @@ var (
 	// ActionIDValidator is a validator for the "action_id" field. It is called by the builders before save.
 	ActionIDValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID string
-	// IDValidator is a validator for the "id" field. It is called by the builders before save.
-	IDValidator func(string) error
+	DefaultID func() pulid.ID
 )

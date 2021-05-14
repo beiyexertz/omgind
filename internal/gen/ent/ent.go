@@ -10,7 +10,6 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
@@ -41,7 +40,6 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		syscasbinrule.Table:         syscasbinrule.ValidColumn,
 		sysdict.Table:               sysdict.ValidColumn,
 		sysdictitem.Table:           sysdictitem.ValidColumn,
 		sysjwtblock.Table:           sysjwtblock.ValidColumn,

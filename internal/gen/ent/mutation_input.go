@@ -6,167 +6,8 @@ import (
 	"time"
 )
 
-// CreateSysCasbinRuleInput represents a mutation input for creating syscasbinrules.
-type CreateSysCasbinRuleInput struct {
-	IsDel     *bool
-	Sort      *int32
-	CreatedAt *time.Time
-	UpdatedAt *time.Time
-	DeletedAt *time.Time
-	PType     *string
-	RoleID    *string
-	Path      *string
-	Method    *string
-	V3        *string
-	V4        *string
-	V5        *string
-}
-
-// Mutate applies the CreateSysCasbinRuleInput on the SysCasbinRuleCreate builder.
-func (i *CreateSysCasbinRuleInput) Mutate(m *SysCasbinRuleCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
-	if v := i.Sort; v != nil {
-		m.SetSort(*v)
-	}
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if v := i.PType; v != nil {
-		m.SetPType(*v)
-	}
-	if v := i.RoleID; v != nil {
-		m.SetRoleID(*v)
-	}
-	if v := i.Path; v != nil {
-		m.SetPath(*v)
-	}
-	if v := i.Method; v != nil {
-		m.SetMethod(*v)
-	}
-	if v := i.V3; v != nil {
-		m.SetV3(*v)
-	}
-	if v := i.V4; v != nil {
-		m.SetV4(*v)
-	}
-	if v := i.V5; v != nil {
-		m.SetV5(*v)
-	}
-}
-
-// SetInput applies the change-set in the CreateSysCasbinRuleInput on the create builder.
-func (c *SysCasbinRuleCreate) SetInput(i CreateSysCasbinRuleInput) *SysCasbinRuleCreate {
-	i.Mutate(c)
-	return c
-}
-
-// UpdateSysCasbinRuleInput represents a mutation input for updating syscasbinrules.
-type UpdateSysCasbinRuleInput struct {
-	IsDel          *bool
-	Sort           *int32
-	UpdatedAt      *time.Time
-	DeletedAt      *time.Time
-	ClearDeletedAt bool
-	PType          *string
-	ClearPType     bool
-	RoleID         *string
-	ClearRoleID    bool
-	Path           *string
-	ClearPath      bool
-	Method         *string
-	ClearMethod    bool
-	V3             *string
-	ClearV3        bool
-	V4             *string
-	ClearV4        bool
-	V5             *string
-	ClearV5        bool
-}
-
-// Mutate applies the UpdateSysCasbinRuleInput on the SysCasbinRuleMutation.
-func (i *UpdateSysCasbinRuleInput) Mutate(m *SysCasbinRuleMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
-	if v := i.Sort; v != nil {
-		m.SetSort(*v)
-	}
-	if v := i.UpdatedAt; v != nil {
-		m.SetUpdatedAt(*v)
-	}
-	if i.ClearDeletedAt {
-		m.ClearDeletedAt()
-	}
-	if v := i.DeletedAt; v != nil {
-		m.SetDeletedAt(*v)
-	}
-	if i.ClearPType {
-		m.ClearPType()
-	}
-	if v := i.PType; v != nil {
-		m.SetPType(*v)
-	}
-	if i.ClearRoleID {
-		m.ClearRoleID()
-	}
-	if v := i.RoleID; v != nil {
-		m.SetRoleID(*v)
-	}
-	if i.ClearPath {
-		m.ClearPath()
-	}
-	if v := i.Path; v != nil {
-		m.SetPath(*v)
-	}
-	if i.ClearMethod {
-		m.ClearMethod()
-	}
-	if v := i.Method; v != nil {
-		m.SetMethod(*v)
-	}
-	if i.ClearV3 {
-		m.ClearV3()
-	}
-	if v := i.V3; v != nil {
-		m.SetV3(*v)
-	}
-	if i.ClearV4 {
-		m.ClearV4()
-	}
-	if v := i.V4; v != nil {
-		m.SetV4(*v)
-	}
-	if i.ClearV5 {
-		m.ClearV5()
-	}
-	if v := i.V5; v != nil {
-		m.SetV5(*v)
-	}
-}
-
-// SetInput applies the change-set in the UpdateSysCasbinRuleInput on the update builder.
-func (u *SysCasbinRuleUpdate) SetInput(i UpdateSysCasbinRuleInput) *SysCasbinRuleUpdate {
-	i.Mutate(u.Mutation())
-	return u
-}
-
-// SetInput applies the change-set in the UpdateSysCasbinRuleInput on the update-one builder.
-func (u *SysCasbinRuleUpdateOne) SetInput(i UpdateSysCasbinRuleInput) *SysCasbinRuleUpdateOne {
-	i.Mutate(u.Mutation())
-	return u
-}
-
 // CreateSysDictInput represents a mutation input for creating sysdicts.
 type CreateSysDictInput struct {
-	IsDel     *bool
 	Memo      *string
 	Sort      *int32
 	CreatedAt *time.Time
@@ -179,9 +20,6 @@ type CreateSysDictInput struct {
 
 // Mutate applies the CreateSysDictInput on the SysDictCreate builder.
 func (i *CreateSysDictInput) Mutate(m *SysDictCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -212,7 +50,6 @@ func (c *SysDictCreate) SetInput(i CreateSysDictInput) *SysDictCreate {
 
 // UpdateSysDictInput represents a mutation input for updating sysdicts.
 type UpdateSysDictInput struct {
-	IsDel          *bool
 	Memo           *string
 	Sort           *int32
 	UpdatedAt      *time.Time
@@ -225,9 +62,6 @@ type UpdateSysDictInput struct {
 
 // Mutate applies the UpdateSysDictInput on the SysDictMutation.
 func (i *UpdateSysDictInput) Mutate(m *SysDictMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -268,7 +102,6 @@ func (u *SysDictUpdateOne) SetInput(i UpdateSysDictInput) *SysDictUpdateOne {
 
 // CreateSysDictItemInput represents a mutation input for creating sysdictitems.
 type CreateSysDictItemInput struct {
-	IsDel     *bool
 	Memo      *string
 	Sort      *int32
 	CreatedAt *time.Time
@@ -282,9 +115,6 @@ type CreateSysDictItemInput struct {
 
 // Mutate applies the CreateSysDictItemInput on the SysDictItemCreate builder.
 func (i *CreateSysDictItemInput) Mutate(m *SysDictItemCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -314,7 +144,6 @@ func (c *SysDictItemCreate) SetInput(i CreateSysDictItemInput) *SysDictItemCreat
 
 // UpdateSysDictItemInput represents a mutation input for updating sysdictitems.
 type UpdateSysDictItemInput struct {
-	IsDel          *bool
 	Memo           *string
 	Sort           *int32
 	UpdatedAt      *time.Time
@@ -328,9 +157,6 @@ type UpdateSysDictItemInput struct {
 
 // Mutate applies the UpdateSysDictItemInput on the SysDictItemMutation.
 func (i *UpdateSysDictItemInput) Mutate(m *SysDictItemMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -374,7 +200,6 @@ func (u *SysDictItemUpdateOne) SetInput(i UpdateSysDictItemInput) *SysDictItemUp
 
 // CreateSysJwtBlockInput represents a mutation input for creating sysjwtblocks.
 type CreateSysJwtBlockInput struct {
-	IsDel     *bool
 	Memo      *string
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
@@ -385,9 +210,6 @@ type CreateSysJwtBlockInput struct {
 
 // Mutate applies the CreateSysJwtBlockInput on the SysJwtBlockCreate builder.
 func (i *CreateSysJwtBlockInput) Mutate(m *SysJwtBlockCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -414,7 +236,6 @@ func (c *SysJwtBlockCreate) SetInput(i CreateSysJwtBlockInput) *SysJwtBlockCreat
 
 // UpdateSysJwtBlockInput represents a mutation input for updating sysjwtblocks.
 type UpdateSysJwtBlockInput struct {
-	IsDel          *bool
 	Memo           *string
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
@@ -425,9 +246,6 @@ type UpdateSysJwtBlockInput struct {
 
 // Mutate applies the UpdateSysJwtBlockInput on the SysJwtBlockMutation.
 func (i *UpdateSysJwtBlockInput) Mutate(m *SysJwtBlockMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -462,7 +280,6 @@ func (u *SysJwtBlockUpdateOne) SetInput(i UpdateSysJwtBlockInput) *SysJwtBlockUp
 
 // CreateSysMenuInput represents a mutation input for creating sysmenus.
 type CreateSysMenuInput struct {
-	IsDel      *bool
 	Memo       *string
 	Sort       *int32
 	CreatedAt  *time.Time
@@ -479,9 +296,6 @@ type CreateSysMenuInput struct {
 
 // Mutate applies the CreateSysMenuInput on the SysMenuCreate builder.
 func (i *CreateSysMenuInput) Mutate(m *SysMenuCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -522,7 +336,6 @@ func (c *SysMenuCreate) SetInput(i CreateSysMenuInput) *SysMenuCreate {
 
 // UpdateSysMenuInput represents a mutation input for updating sysmenus.
 type UpdateSysMenuInput struct {
-	IsDel           *bool
 	Memo            *string
 	Sort            *int32
 	UpdatedAt       *time.Time
@@ -541,9 +354,6 @@ type UpdateSysMenuInput struct {
 
 // Mutate applies the UpdateSysMenuInput on the SysMenuMutation.
 func (i *UpdateSysMenuInput) Mutate(m *SysMenuMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Memo; v != nil {
 		m.SetMemo(*v)
 	}
@@ -602,7 +412,6 @@ func (u *SysMenuUpdateOne) SetInput(i UpdateSysMenuInput) *SysMenuUpdateOne {
 
 // CreateSysMenuActionInput represents a mutation input for creating sysmenuactions.
 type CreateSysMenuActionInput struct {
-	IsDel     *bool
 	Sort      *int32
 	Status    *int32
 	Memo      *string
@@ -616,9 +425,6 @@ type CreateSysMenuActionInput struct {
 
 // Mutate applies the CreateSysMenuActionInput on the SysMenuActionCreate builder.
 func (i *CreateSysMenuActionInput) Mutate(m *SysMenuActionCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Sort; v != nil {
 		m.SetSort(*v)
 	}
@@ -650,7 +456,6 @@ func (c *SysMenuActionCreate) SetInput(i CreateSysMenuActionInput) *SysMenuActio
 
 // UpdateSysMenuActionInput represents a mutation input for updating sysmenuactions.
 type UpdateSysMenuActionInput struct {
-	IsDel          *bool
 	Sort           *int32
 	Status         *int32
 	Memo           *string
@@ -664,9 +469,6 @@ type UpdateSysMenuActionInput struct {
 
 // Mutate applies the UpdateSysMenuActionInput on the SysMenuActionMutation.
 func (i *UpdateSysMenuActionInput) Mutate(m *SysMenuActionMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Sort; v != nil {
 		m.SetSort(*v)
 	}
@@ -710,7 +512,6 @@ func (u *SysMenuActionUpdateOne) SetInput(i UpdateSysMenuActionInput) *SysMenuAc
 
 // CreateSysMenuActionResourceInput represents a mutation input for creating sysmenuactionresources.
 type CreateSysMenuActionResourceInput struct {
-	IsDel     *bool
 	Sort      *int32
 	Memo      *string
 	CreatedAt *time.Time
@@ -724,9 +525,6 @@ type CreateSysMenuActionResourceInput struct {
 
 // Mutate applies the CreateSysMenuActionResourceInput on the SysMenuActionResourceCreate builder.
 func (i *CreateSysMenuActionResourceInput) Mutate(m *SysMenuActionResourceCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Sort; v != nil {
 		m.SetSort(*v)
 	}
@@ -758,7 +556,6 @@ func (c *SysMenuActionResourceCreate) SetInput(i CreateSysMenuActionResourceInpu
 
 // UpdateSysMenuActionResourceInput represents a mutation input for updating sysmenuactionresources.
 type UpdateSysMenuActionResourceInput struct {
-	IsDel          *bool
 	Sort           *int32
 	Memo           *string
 	UpdatedAt      *time.Time
@@ -772,9 +569,6 @@ type UpdateSysMenuActionResourceInput struct {
 
 // Mutate applies the UpdateSysMenuActionResourceInput on the SysMenuActionResourceMutation.
 func (i *UpdateSysMenuActionResourceInput) Mutate(m *SysMenuActionResourceMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Sort; v != nil {
 		m.SetSort(*v)
 	}
@@ -818,7 +612,6 @@ func (u *SysMenuActionResourceUpdateOne) SetInput(i UpdateSysMenuActionResourceI
 
 // CreateSysRoleInput represents a mutation input for creating sysroles.
 type CreateSysRoleInput struct {
-	IsDel     *bool
 	Status    *int32
 	Sort      *int32
 	Memo      *string
@@ -830,9 +623,6 @@ type CreateSysRoleInput struct {
 
 // Mutate applies the CreateSysRoleInput on the SysRoleCreate builder.
 func (i *CreateSysRoleInput) Mutate(m *SysRoleCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
 	}
@@ -862,7 +652,6 @@ func (c *SysRoleCreate) SetInput(i CreateSysRoleInput) *SysRoleCreate {
 
 // UpdateSysRoleInput represents a mutation input for updating sysroles.
 type UpdateSysRoleInput struct {
-	IsDel          *bool
 	Status         *int32
 	Sort           *int32
 	Memo           *string
@@ -874,9 +663,6 @@ type UpdateSysRoleInput struct {
 
 // Mutate applies the UpdateSysRoleInput on the SysRoleMutation.
 func (i *UpdateSysRoleInput) Mutate(m *SysRoleMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
 	}
@@ -914,7 +700,6 @@ func (u *SysRoleUpdateOne) SetInput(i UpdateSysRoleInput) *SysRoleUpdateOne {
 
 // CreateSysRoleMenuInput represents a mutation input for creating sysrolemenus.
 type CreateSysRoleMenuInput struct {
-	IsDel     *bool
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
@@ -925,9 +710,6 @@ type CreateSysRoleMenuInput struct {
 
 // Mutate applies the CreateSysRoleMenuInput on the SysRoleMenuCreate builder.
 func (i *CreateSysRoleMenuInput) Mutate(m *SysRoleMenuCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.CreatedAt; v != nil {
 		m.SetCreatedAt(*v)
 	}
@@ -952,7 +734,6 @@ func (c *SysRoleMenuCreate) SetInput(i CreateSysRoleMenuInput) *SysRoleMenuCreat
 
 // UpdateSysRoleMenuInput represents a mutation input for updating sysrolemenus.
 type UpdateSysRoleMenuInput struct {
-	IsDel          *bool
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
@@ -964,9 +745,6 @@ type UpdateSysRoleMenuInput struct {
 
 // Mutate applies the UpdateSysRoleMenuInput on the SysRoleMenuMutation.
 func (i *UpdateSysRoleMenuInput) Mutate(m *SysRoleMenuMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
 	}
@@ -1004,7 +782,6 @@ func (u *SysRoleMenuUpdateOne) SetInput(i UpdateSysRoleMenuInput) *SysRoleMenuUp
 
 // CreateSysUserInput represents a mutation input for creating sysusers.
 type CreateSysUserInput struct {
-	IsDel     *bool
 	Sort      *int32
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
@@ -1022,9 +799,6 @@ type CreateSysUserInput struct {
 
 // Mutate applies the CreateSysUserInput on the SysUserCreate builder.
 func (i *CreateSysUserInput) Mutate(m *SysUserCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Sort; v != nil {
 		m.SetSort(*v)
 	}
@@ -1066,7 +840,6 @@ func (c *SysUserCreate) SetInput(i CreateSysUserInput) *SysUserCreate {
 
 // UpdateSysUserInput represents a mutation input for updating sysusers.
 type UpdateSysUserInput struct {
-	IsDel          *bool
 	Sort           *int32
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
@@ -1087,9 +860,6 @@ type UpdateSysUserInput struct {
 
 // Mutate applies the UpdateSysUserInput on the SysUserMutation.
 func (i *UpdateSysUserInput) Mutate(m *SysUserMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.Sort; v != nil {
 		m.SetSort(*v)
 	}
@@ -1154,7 +924,6 @@ func (u *SysUserUpdateOne) SetInput(i UpdateSysUserInput) *SysUserUpdateOne {
 
 // CreateSysUserRoleInput represents a mutation input for creating sysuserroles.
 type CreateSysUserRoleInput struct {
-	IsDel     *bool
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
@@ -1164,9 +933,6 @@ type CreateSysUserRoleInput struct {
 
 // Mutate applies the CreateSysUserRoleInput on the SysUserRoleCreate builder.
 func (i *CreateSysUserRoleInput) Mutate(m *SysUserRoleCreate) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.CreatedAt; v != nil {
 		m.SetCreatedAt(*v)
 	}
@@ -1188,7 +954,6 @@ func (c *SysUserRoleCreate) SetInput(i CreateSysUserRoleInput) *SysUserRoleCreat
 
 // UpdateSysUserRoleInput represents a mutation input for updating sysuserroles.
 type UpdateSysUserRoleInput struct {
-	IsDel          *bool
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
@@ -1198,9 +963,6 @@ type UpdateSysUserRoleInput struct {
 
 // Mutate applies the UpdateSysUserRoleInput on the SysUserRoleMutation.
 func (i *UpdateSysUserRoleInput) Mutate(m *SysUserRoleMutation) {
-	if v := i.IsDel; v != nil {
-		m.SetIsDel(*v)
-	}
 	if v := i.UpdatedAt; v != nil {
 		m.SetUpdatedAt(*v)
 	}

@@ -27,20 +27,6 @@ func (smu *SysMenuUpdate) Where(ps ...predicate.SysMenu) *SysMenuUpdate {
 	return smu
 }
 
-// SetIsDel sets the "is_del" field.
-func (smu *SysMenuUpdate) SetIsDel(b bool) *SysMenuUpdate {
-	smu.mutation.SetIsDel(b)
-	return smu
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableIsDel(b *bool) *SysMenuUpdate {
-	if b != nil {
-		smu.SetIsDel(*b)
-	}
-	return smu
-}
-
 // SetMemo sets the "memo" field.
 func (smu *SysMenuUpdate) SetMemo(s string) *SysMenuUpdate {
 	smu.mutation.SetMemo(s)
@@ -307,7 +293,7 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysmenu.Table,
 			Columns: sysmenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenu.FieldID,
 			},
 		},
@@ -318,13 +304,6 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := smu.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysmenu.FieldIsDel,
-		})
 	}
 	if value, ok := smu.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -452,20 +431,6 @@ type SysMenuUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysMenuMutation
-}
-
-// SetIsDel sets the "is_del" field.
-func (smuo *SysMenuUpdateOne) SetIsDel(b bool) *SysMenuUpdateOne {
-	smuo.mutation.SetIsDel(b)
-	return smuo
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableIsDel(b *bool) *SysMenuUpdateOne {
-	if b != nil {
-		smuo.SetIsDel(*b)
-	}
-	return smuo
 }
 
 // SetMemo sets the "memo" field.
@@ -741,7 +706,7 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 			Table:   sysmenu.Table,
 			Columns: sysmenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenu.FieldID,
 			},
 		},
@@ -769,13 +734,6 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := smuo.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysmenu.FieldIsDel,
-		})
 	}
 	if value, ok := smuo.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

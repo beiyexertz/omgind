@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDictQuery is the builder for querying SysDict entities.
@@ -84,8 +85,8 @@ func (sdq *SysDictQuery) FirstX(ctx context.Context) *SysDict {
 
 // FirstID returns the first SysDict ID from the query.
 // Returns a *NotFoundError when no SysDict ID was found.
-func (sdq *SysDictQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sdq *SysDictQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = sdq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (sdq *SysDictQuery) FirstID(ctx context.Context) (id string, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (sdq *SysDictQuery) FirstIDX(ctx context.Context) string {
+func (sdq *SysDictQuery) FirstIDX(ctx context.Context) pulid.ID {
 	id, err := sdq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (sdq *SysDictQuery) OnlyX(ctx context.Context) *SysDict {
 // OnlyID is like Only, but returns the only SysDict ID in the query.
 // Returns a *NotSingularError when exactly one SysDict ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (sdq *SysDictQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sdq *SysDictQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = sdq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (sdq *SysDictQuery) OnlyID(ctx context.Context) (id string, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (sdq *SysDictQuery) OnlyIDX(ctx context.Context) string {
+func (sdq *SysDictQuery) OnlyIDX(ctx context.Context) pulid.ID {
 	id, err := sdq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (sdq *SysDictQuery) AllX(ctx context.Context) []*SysDict {
 }
 
 // IDs executes the query and returns a list of SysDict IDs.
-func (sdq *SysDictQuery) IDs(ctx context.Context) ([]string, error) {
-	var ids []string
+func (sdq *SysDictQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
+	var ids []pulid.ID
 	if err := sdq.Select(sysdict.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (sdq *SysDictQuery) IDs(ctx context.Context) ([]string, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (sdq *SysDictQuery) IDsX(ctx context.Context) []string {
+func (sdq *SysDictQuery) IDsX(ctx context.Context) []pulid.ID {
 	ids, err := sdq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -253,12 +254,12 @@ func (sdq *SysDictQuery) Clone() *SysDictQuery {
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysDict.Query().
-//		GroupBy(sysdict.FieldIsDel).
+//		GroupBy(sysdict.FieldMemo).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +281,11 @@ func (sdq *SysDictQuery) GroupBy(field string, fields ...string) *SysDictGroupBy
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //	}
 //
 //	client.SysDict.Query().
-//		Select(sysdict.FieldIsDel).
+//		Select(sysdict.FieldMemo).
 //		Scan(ctx, &v)
 //
 func (sdq *SysDictQuery) Select(field string, fields ...string) *SysDictSelect {
@@ -353,7 +354,7 @@ func (sdq *SysDictQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysdict.Table,
 			Columns: sysdict.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysdict.FieldID,
 			},
 		},

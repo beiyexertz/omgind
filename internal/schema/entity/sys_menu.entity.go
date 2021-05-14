@@ -14,7 +14,6 @@ type SysMenu struct {
 
 func (sm SysMenu) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.MemoMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
@@ -25,6 +24,8 @@ func (sm SysMenu) Mixin() []ent.Mixin {
 // Fields of the SysMenu.
 func (SysMenu) Fields() []ent.Field {
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.String("name").StorageKey("name").MaxLen(64).NotEmpty().
 			StructTag(`json:"name,omitempty"`).Comment("菜单名称"),
 		field.String("icon").StorageKey("icon").MaxLen(256).
@@ -42,12 +43,12 @@ func (SysMenu) Fields() []ent.Field {
 	}
 }
 
-// Edges of the SysMenu.
-func (SysMenu) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.To("actions", SysMenuAction.Type),
-	}
-}
+//// Edges of the SysMenu.
+//func (SysMenu) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		//edge.To("actions", SysMenuAction.Type),
+//	}
+//}
 
 func (sm SysMenu) Indexes() []ent.Index {
 	return []ent.Index{

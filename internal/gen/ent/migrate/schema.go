@@ -8,65 +8,9 @@ import (
 )
 
 var (
-	// SysCasbinRulesColumns holds the columns for the "sys_casbin_rules" table.
-	SysCasbinRulesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
-		{Name: "sort", Type: field.TypeInt32, Default: 9999},
-		{Name: "crtd_at", Type: field.TypeTime},
-		{Name: "uptd_at", Type: field.TypeTime},
-		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
-		{Name: "p_type", Type: field.TypeString, Nullable: true, Size: 128},
-		{Name: "v0", Type: field.TypeString, Nullable: true, Size: 128},
-		{Name: "v1", Type: field.TypeString, Nullable: true, Size: 128},
-		{Name: "v2", Type: field.TypeString, Nullable: true, Size: 128},
-		{Name: "v3", Type: field.TypeString, Nullable: true, Size: 128},
-		{Name: "v4", Type: field.TypeString, Nullable: true, Size: 128},
-		{Name: "v5", Type: field.TypeString, Nullable: true, Size: 128},
-	}
-	// SysCasbinRulesTable holds the schema information for the "sys_casbin_rules" table.
-	SysCasbinRulesTable = &schema.Table{
-		Name:        "sys_casbin_rules",
-		Columns:     SysCasbinRulesColumns,
-		PrimaryKey:  []*schema.Column{SysCasbinRulesColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
-		Indexes: []*schema.Index{
-			{
-				Name:    "syscasbinrule_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysCasbinRulesColumns[0]},
-			},
-			{
-				Name:    "syscasbinrule_is_del",
-				Unique:  false,
-				Columns: []*schema.Column{SysCasbinRulesColumns[1]},
-			},
-			{
-				Name:    "syscasbinrule_sort",
-				Unique:  false,
-				Columns: []*schema.Column{SysCasbinRulesColumns[2]},
-			},
-			{
-				Name:    "syscasbinrule_crtd_at",
-				Unique:  false,
-				Columns: []*schema.Column{SysCasbinRulesColumns[3]},
-			},
-			{
-				Name:    "syscasbinrule_uptd_at",
-				Unique:  false,
-				Columns: []*schema.Column{SysCasbinRulesColumns[4]},
-			},
-			{
-				Name:    "syscasbinrule_dltd_at",
-				Unique:  false,
-				Columns: []*schema.Column{SysCasbinRulesColumns[5]},
-			},
-		},
-	}
 	// SysDictsColumns holds the columns for the "sys_dicts" table.
 	SysDictsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -84,41 +28,30 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysdict_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysDictsColumns[0]},
-			},
-			{
-				Name:    "sysdict_is_del",
-				Unique:  false,
-				Columns: []*schema.Column{SysDictsColumns[1]},
-			},
-			{
 				Name:    "sysdict_sort",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictsColumns[3]},
+				Columns: []*schema.Column{SysDictsColumns[2]},
 			},
 			{
 				Name:    "sysdict_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictsColumns[4]},
+				Columns: []*schema.Column{SysDictsColumns[3]},
 			},
 			{
 				Name:    "sysdict_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictsColumns[5]},
+				Columns: []*schema.Column{SysDictsColumns[4]},
 			},
 			{
 				Name:    "sysdict_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictsColumns[6]},
+				Columns: []*schema.Column{SysDictsColumns[5]},
 			},
 		},
 	}
 	// SysDictItemsColumns holds the columns for the "sys_dict_items" table.
 	SysDictItemsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -137,41 +70,30 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysdictitem_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysDictItemsColumns[0]},
-			},
-			{
-				Name:    "sysdictitem_is_del",
-				Unique:  false,
-				Columns: []*schema.Column{SysDictItemsColumns[1]},
-			},
-			{
 				Name:    "sysdictitem_sort",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictItemsColumns[3]},
+				Columns: []*schema.Column{SysDictItemsColumns[2]},
 			},
 			{
 				Name:    "sysdictitem_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictItemsColumns[4]},
+				Columns: []*schema.Column{SysDictItemsColumns[3]},
 			},
 			{
 				Name:    "sysdictitem_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictItemsColumns[5]},
+				Columns: []*schema.Column{SysDictItemsColumns[4]},
 			},
 			{
 				Name:    "sysdictitem_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysDictItemsColumns[6]},
+				Columns: []*schema.Column{SysDictItemsColumns[5]},
 			},
 		},
 	}
 	// SysJwtBlocksColumns holds the columns for the "sys_jwt_blocks" table.
 	SysJwtBlocksColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
@@ -187,41 +109,30 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysjwtblock_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysJwtBlocksColumns[0]},
-			},
-			{
-				Name:    "sysjwtblock_is_del",
-				Unique:  false,
-				Columns: []*schema.Column{SysJwtBlocksColumns[1]},
-			},
-			{
 				Name:    "sysjwtblock_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysJwtBlocksColumns[3]},
+				Columns: []*schema.Column{SysJwtBlocksColumns[2]},
 			},
 			{
 				Name:    "sysjwtblock_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysJwtBlocksColumns[4]},
+				Columns: []*schema.Column{SysJwtBlocksColumns[3]},
 			},
 			{
 				Name:    "sysjwtblock_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysJwtBlocksColumns[5]},
+				Columns: []*schema.Column{SysJwtBlocksColumns[4]},
 			},
 			{
 				Name:    "sysjwtblock_status",
 				Unique:  false,
-				Columns: []*schema.Column{SysJwtBlocksColumns[6]},
+				Columns: []*schema.Column{SysJwtBlocksColumns[5]},
 			},
 		},
 	}
 	// SysMenusColumns holds the columns for the "sys_menus" table.
 	SysMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -243,56 +154,45 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysmenu_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysMenusColumns[0]},
-			},
-			{
-				Name:    "sysmenu_is_del",
-				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[1]},
-			},
-			{
 				Name:    "sysmenu_sort",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[3]},
+				Columns: []*schema.Column{SysMenusColumns[2]},
 			},
 			{
 				Name:    "sysmenu_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[4]},
+				Columns: []*schema.Column{SysMenusColumns[3]},
 			},
 			{
 				Name:    "sysmenu_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[5]},
+				Columns: []*schema.Column{SysMenusColumns[4]},
 			},
 			{
 				Name:    "sysmenu_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[6]},
+				Columns: []*schema.Column{SysMenusColumns[5]},
 			},
 			{
 				Name:    "sysmenu_status",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[7]},
+				Columns: []*schema.Column{SysMenusColumns[6]},
 			},
 			{
 				Name:    "sysmenu_pid",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[12]},
+				Columns: []*schema.Column{SysMenusColumns[11]},
 			},
 			{
 				Name:    "sysmenu_pid_name",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenusColumns[12], SysMenusColumns[8]},
+				Columns: []*schema.Column{SysMenusColumns[11], SysMenusColumns[7]},
 			},
 		},
 	}
 	// SysMenuActionsColumns holds the columns for the "sys_menu_actions" table.
 	SysMenuActionsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
@@ -311,46 +211,35 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysmenuaction_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysMenuActionsColumns[0]},
-			},
-			{
-				Name:    "sysmenuaction_is_del",
+				Name:    "sysmenuaction_sort",
 				Unique:  false,
 				Columns: []*schema.Column{SysMenuActionsColumns[1]},
 			},
 			{
-				Name:    "sysmenuaction_sort",
+				Name:    "sysmenuaction_status",
 				Unique:  false,
 				Columns: []*schema.Column{SysMenuActionsColumns[2]},
 			},
 			{
-				Name:    "sysmenuaction_status",
-				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionsColumns[3]},
-			},
-			{
 				Name:    "sysmenuaction_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionsColumns[5]},
+				Columns: []*schema.Column{SysMenuActionsColumns[4]},
 			},
 			{
 				Name:    "sysmenuaction_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionsColumns[6]},
+				Columns: []*schema.Column{SysMenuActionsColumns[5]},
 			},
 			{
 				Name:    "sysmenuaction_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionsColumns[7]},
+				Columns: []*schema.Column{SysMenuActionsColumns[6]},
 			},
 		},
 	}
 	// SysMenuActionResourcesColumns holds the columns for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -369,46 +258,35 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysmenuactionresource_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysMenuActionResourcesColumns[0]},
-			},
-			{
-				Name:    "sysmenuactionresource_is_del",
+				Name:    "sysmenuactionresource_sort",
 				Unique:  false,
 				Columns: []*schema.Column{SysMenuActionResourcesColumns[1]},
 			},
 			{
-				Name:    "sysmenuactionresource_sort",
-				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionResourcesColumns[2]},
-			},
-			{
 				Name:    "sysmenuactionresource_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionResourcesColumns[4]},
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[3]},
 			},
 			{
 				Name:    "sysmenuactionresource_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionResourcesColumns[5]},
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[4]},
 			},
 			{
 				Name:    "sysmenuactionresource_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionResourcesColumns[6]},
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[5]},
 			},
 			{
 				Name:    "sysmenuactionresource_status",
 				Unique:  false,
-				Columns: []*schema.Column{SysMenuActionResourcesColumns[7]},
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[6]},
 			},
 		},
 	}
 	// SysRolesColumns holds the columns for the "sys_roles" table.
 	SysRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
@@ -425,46 +303,35 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysrole_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysRolesColumns[0]},
-			},
-			{
-				Name:    "sysrole_is_del",
+				Name:    "sysrole_status",
 				Unique:  false,
 				Columns: []*schema.Column{SysRolesColumns[1]},
 			},
 			{
-				Name:    "sysrole_status",
+				Name:    "sysrole_sort",
 				Unique:  false,
 				Columns: []*schema.Column{SysRolesColumns[2]},
 			},
 			{
-				Name:    "sysrole_sort",
-				Unique:  false,
-				Columns: []*schema.Column{SysRolesColumns[3]},
-			},
-			{
 				Name:    "sysrole_crtd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysRolesColumns[5]},
+				Columns: []*schema.Column{SysRolesColumns[4]},
 			},
 			{
 				Name:    "sysrole_uptd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysRolesColumns[6]},
+				Columns: []*schema.Column{SysRolesColumns[5]},
 			},
 			{
 				Name:    "sysrole_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysRolesColumns[7]},
+				Columns: []*schema.Column{SysRolesColumns[6]},
 			},
 		},
 	}
 	// SysRoleMenusColumns holds the columns for the "sys_role_menus" table.
 	SysRoleMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
@@ -480,36 +347,25 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysrolemenu_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysRoleMenusColumns[0]},
-			},
-			{
-				Name:    "sysrolemenu_is_del",
+				Name:    "sysrolemenu_crtd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysRoleMenusColumns[1]},
 			},
 			{
-				Name:    "sysrolemenu_crtd_at",
+				Name:    "sysrolemenu_uptd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysRoleMenusColumns[2]},
 			},
 			{
-				Name:    "sysrolemenu_uptd_at",
-				Unique:  false,
-				Columns: []*schema.Column{SysRoleMenusColumns[3]},
-			},
-			{
 				Name:    "sysrolemenu_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysRoleMenusColumns[4]},
+				Columns: []*schema.Column{SysRoleMenusColumns[3]},
 			},
 		},
 	}
 	// SysUsersColumns holds the columns for the "sys_users" table.
 	SysUsersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
@@ -532,51 +388,40 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysuser_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysUsersColumns[0]},
-			},
-			{
-				Name:    "sysuser_is_del",
+				Name:    "sysuser_sort",
 				Unique:  false,
 				Columns: []*schema.Column{SysUsersColumns[1]},
 			},
 			{
-				Name:    "sysuser_sort",
+				Name:    "sysuser_crtd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysUsersColumns[2]},
 			},
 			{
-				Name:    "sysuser_crtd_at",
+				Name:    "sysuser_uptd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysUsersColumns[3]},
 			},
 			{
-				Name:    "sysuser_uptd_at",
+				Name:    "sysuser_dltd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysUsersColumns[4]},
 			},
 			{
-				Name:    "sysuser_dltd_at",
+				Name:    "sysuser_status",
 				Unique:  false,
 				Columns: []*schema.Column{SysUsersColumns[5]},
 			},
 			{
-				Name:    "sysuser_status",
-				Unique:  false,
-				Columns: []*schema.Column{SysUsersColumns[6]},
-			},
-			{
 				Name:    "sysuser_user_name",
 				Unique:  true,
-				Columns: []*schema.Column{SysUsersColumns[7]},
+				Columns: []*schema.Column{SysUsersColumns[6]},
 			},
 		},
 	}
 	// SysUserRolesColumns holds the columns for the "sys_user_roles" table.
 	SysUserRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 36},
-		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
@@ -591,35 +436,24 @@ var (
 		ForeignKeys: []*schema.ForeignKey{},
 		Indexes: []*schema.Index{
 			{
-				Name:    "sysuserrole_id",
-				Unique:  true,
-				Columns: []*schema.Column{SysUserRolesColumns[0]},
-			},
-			{
-				Name:    "sysuserrole_is_del",
+				Name:    "sysuserrole_crtd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysUserRolesColumns[1]},
 			},
 			{
-				Name:    "sysuserrole_crtd_at",
+				Name:    "sysuserrole_uptd_at",
 				Unique:  false,
 				Columns: []*schema.Column{SysUserRolesColumns[2]},
 			},
 			{
-				Name:    "sysuserrole_uptd_at",
-				Unique:  false,
-				Columns: []*schema.Column{SysUserRolesColumns[3]},
-			},
-			{
 				Name:    "sysuserrole_dltd_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysUserRolesColumns[4]},
+				Columns: []*schema.Column{SysUserRolesColumns[3]},
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		SysCasbinRulesTable,
 		SysDictsTable,
 		SysDictItemsTable,
 		SysJwtBlocksTable,

@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserCreate is the builder for creating a SysUser entity.
@@ -18,20 +19,6 @@ type SysUserCreate struct {
 	config
 	mutation *SysUserMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (suc *SysUserCreate) SetIsDel(b bool) *SysUserCreate {
-	suc.mutation.SetIsDel(b)
-	return suc
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableIsDel(b *bool) *SysUserCreate {
-	if b != nil {
-		suc.SetIsDel(*b)
-	}
-	return suc
 }
 
 // SetSort sets the "sort" field.
@@ -185,16 +172,8 @@ func (suc *SysUserCreate) SetNillableSalt(s *string) *SysUserCreate {
 }
 
 // SetID sets the "id" field.
-func (suc *SysUserCreate) SetID(s string) *SysUserCreate {
-	suc.mutation.SetID(s)
-	return suc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableID(s *string) *SysUserCreate {
-	if s != nil {
-		suc.SetID(*s)
-	}
+func (suc *SysUserCreate) SetID(pu pulid.ID) *SysUserCreate {
+	suc.mutation.SetID(pu)
 	return suc
 }
 
@@ -250,10 +229,6 @@ func (suc *SysUserCreate) SaveX(ctx context.Context) *SysUser {
 
 // defaults sets the default values of the builder before save.
 func (suc *SysUserCreate) defaults() {
-	if _, ok := suc.mutation.IsDel(); !ok {
-		v := sysuser.DefaultIsDel
-		suc.mutation.SetIsDel(v)
-	}
 	if _, ok := suc.mutation.Sort(); !ok {
 		v := sysuser.DefaultSort
 		suc.mutation.SetSort(v)
@@ -275,16 +250,13 @@ func (suc *SysUserCreate) defaults() {
 		suc.mutation.SetSalt(v)
 	}
 	if _, ok := suc.mutation.ID(); !ok {
-		v := sysuser.DefaultID
+		v := sysuser.DefaultID()
 		suc.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (suc *SysUserCreate) check() error {
-	if _, ok := suc.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := suc.mutation.Sort(); !ok {
 		return &ValidationError{Name: "sort", err: errors.New("ent: missing required field \"sort\"")}
 	}
@@ -347,11 +319,6 @@ func (suc *SysUserCreate) check() error {
 	if _, ok := suc.mutation.Salt(); !ok {
 		return &ValidationError{Name: "salt", err: errors.New("ent: missing required field \"salt\"")}
 	}
-	if v, ok := suc.mutation.ID(); ok {
-		if err := sysuser.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -372,7 +339,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysuser.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysuser.FieldID,
 			},
 		}
@@ -380,14 +347,6 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 	if id, ok := suc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := suc.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysuser.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := suc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

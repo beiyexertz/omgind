@@ -63,7 +63,7 @@ func InitLogger() (func(), error) {
 			case "sqlite3":
 				dsn = global.CFG.Sqlite3.DSN()
 			case "postgres":
-				dsn = global.CFG.Postgres.DSN()
+				dsn = global.CFG.Postgres.DSN("gorm")
 			default:
 				return nil, errors.New("unknown db")
 			}

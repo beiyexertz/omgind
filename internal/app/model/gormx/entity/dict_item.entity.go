@@ -28,12 +28,12 @@ func (a SchemaDictItem) ToDictItem() *DictItem {
 type DictItem struct {
 	ID string `gorm:"column:id;primary_key;size:36;"`
 
-	Label  string `gorm:"column:label;size:128;"`      // 显示值
-	Value  int    `gorm:"column:value;"`               // 字典值
-	Status int    `gorm:"column:status;default:true;"` // 状态(1:启用 2:禁用)
-	DictId string `gorm:"column:dict_id;size:36;"`     // dict.id
-	Memo   string `gorm:"column:memo;size:128;"`       // 备注
-	Sort   int    `gorm:"column:sort;default:9999;"`   // 排序
+	Label  string `gorm:"column:label;size:128;"`    // 显示值
+	Value  int    `gorm:"column:value;"`             // 字典值
+	Status int    `gorm:"column:status;default:1;"`  // 状态(1:启用 2:禁用)
+	DictId string `gorm:"column:dict_id;size:36;"`   // dict.id
+	Memo   string `gorm:"column:memo;size:128;"`     // 备注
+	Sort   int    `gorm:"column:sort;default:9999;"` // 排序
 
 	Creator   string     `gorm:"column:creator;"` // 创建者
 	CreatedAt time.Time  `gorm:"column:created_at;index;"`

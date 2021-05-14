@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuQuery is the builder for querying SysMenu entities.
@@ -84,8 +85,8 @@ func (smq *SysMenuQuery) FirstX(ctx context.Context) *SysMenu {
 
 // FirstID returns the first SysMenu ID from the query.
 // Returns a *NotFoundError when no SysMenu ID was found.
-func (smq *SysMenuQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (smq *SysMenuQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = smq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (smq *SysMenuQuery) FirstID(ctx context.Context) (id string, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (smq *SysMenuQuery) FirstIDX(ctx context.Context) string {
+func (smq *SysMenuQuery) FirstIDX(ctx context.Context) pulid.ID {
 	id, err := smq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (smq *SysMenuQuery) OnlyX(ctx context.Context) *SysMenu {
 // OnlyID is like Only, but returns the only SysMenu ID in the query.
 // Returns a *NotSingularError when exactly one SysMenu ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (smq *SysMenuQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (smq *SysMenuQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = smq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (smq *SysMenuQuery) OnlyID(ctx context.Context) (id string, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (smq *SysMenuQuery) OnlyIDX(ctx context.Context) string {
+func (smq *SysMenuQuery) OnlyIDX(ctx context.Context) pulid.ID {
 	id, err := smq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (smq *SysMenuQuery) AllX(ctx context.Context) []*SysMenu {
 }
 
 // IDs executes the query and returns a list of SysMenu IDs.
-func (smq *SysMenuQuery) IDs(ctx context.Context) ([]string, error) {
-	var ids []string
+func (smq *SysMenuQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
+	var ids []pulid.ID
 	if err := smq.Select(sysmenu.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (smq *SysMenuQuery) IDs(ctx context.Context) ([]string, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (smq *SysMenuQuery) IDsX(ctx context.Context) []string {
+func (smq *SysMenuQuery) IDsX(ctx context.Context) []pulid.ID {
 	ids, err := smq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -253,12 +254,12 @@ func (smq *SysMenuQuery) Clone() *SysMenuQuery {
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysMenu.Query().
-//		GroupBy(sysmenu.FieldIsDel).
+//		GroupBy(sysmenu.FieldMemo).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +281,11 @@ func (smq *SysMenuQuery) GroupBy(field string, fields ...string) *SysMenuGroupBy
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //	}
 //
 //	client.SysMenu.Query().
-//		Select(sysmenu.FieldIsDel).
+//		Select(sysmenu.FieldMemo).
 //		Scan(ctx, &v)
 //
 func (smq *SysMenuQuery) Select(field string, fields ...string) *SysMenuSelect {
@@ -353,7 +354,7 @@ func (smq *SysMenuQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysmenu.Table,
 			Columns: sysmenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenu.FieldID,
 			},
 		},

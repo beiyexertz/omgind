@@ -8,8 +8,8 @@ import (
 	"log"
 
 	"github.com/wanhello/omgind/internal/gen/ent/migrate"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 
-	"github.com/wanhello/omgind/internal/gen/ent/syscasbinrule"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
@@ -30,8 +30,6 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// SysCasbinRule is the client for interacting with the SysCasbinRule builders.
-	SysCasbinRule *SysCasbinRuleClient
 	// SysDict is the client for interacting with the SysDict builders.
 	SysDict *SysDictClient
 	// SysDictItem is the client for interacting with the SysDictItem builders.
@@ -65,7 +63,6 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.SysCasbinRule = NewSysCasbinRuleClient(c.config)
 	c.SysDict = NewSysDictClient(c.config)
 	c.SysDictItem = NewSysDictItemClient(c.config)
 	c.SysJwtBlock = NewSysJwtBlockClient(c.config)
@@ -109,7 +106,6 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:                   ctx,
 		config:                cfg,
-		SysCasbinRule:         NewSysCasbinRuleClient(cfg),
 		SysDict:               NewSysDictClient(cfg),
 		SysDictItem:           NewSysDictItemClient(cfg),
 		SysJwtBlock:           NewSysJwtBlockClient(cfg),
@@ -138,7 +134,6 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
 		config:                cfg,
-		SysCasbinRule:         NewSysCasbinRuleClient(cfg),
 		SysDict:               NewSysDictClient(cfg),
 		SysDictItem:           NewSysDictItemClient(cfg),
 		SysJwtBlock:           NewSysJwtBlockClient(cfg),
@@ -155,7 +150,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		SysCasbinRule.
+//		SysDict.
 //		Query().
 //		Count(ctx)
 //
@@ -178,7 +173,6 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.SysCasbinRule.Use(hooks...)
 	c.SysDict.Use(hooks...)
 	c.SysDictItem.Use(hooks...)
 	c.SysJwtBlock.Use(hooks...)
@@ -189,96 +183,6 @@ func (c *Client) Use(hooks ...Hook) {
 	c.SysRoleMenu.Use(hooks...)
 	c.SysUser.Use(hooks...)
 	c.SysUserRole.Use(hooks...)
-}
-
-// SysCasbinRuleClient is a client for the SysCasbinRule schema.
-type SysCasbinRuleClient struct {
-	config
-}
-
-// NewSysCasbinRuleClient returns a client for the SysCasbinRule from the given config.
-func NewSysCasbinRuleClient(c config) *SysCasbinRuleClient {
-	return &SysCasbinRuleClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `syscasbinrule.Hooks(f(g(h())))`.
-func (c *SysCasbinRuleClient) Use(hooks ...Hook) {
-	c.hooks.SysCasbinRule = append(c.hooks.SysCasbinRule, hooks...)
-}
-
-// Create returns a create builder for SysCasbinRule.
-func (c *SysCasbinRuleClient) Create() *SysCasbinRuleCreate {
-	mutation := newSysCasbinRuleMutation(c.config, OpCreate)
-	return &SysCasbinRuleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of SysCasbinRule entities.
-func (c *SysCasbinRuleClient) CreateBulk(builders ...*SysCasbinRuleCreate) *SysCasbinRuleCreateBulk {
-	return &SysCasbinRuleCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for SysCasbinRule.
-func (c *SysCasbinRuleClient) Update() *SysCasbinRuleUpdate {
-	mutation := newSysCasbinRuleMutation(c.config, OpUpdate)
-	return &SysCasbinRuleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *SysCasbinRuleClient) UpdateOne(scr *SysCasbinRule) *SysCasbinRuleUpdateOne {
-	mutation := newSysCasbinRuleMutation(c.config, OpUpdateOne, withSysCasbinRule(scr))
-	return &SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *SysCasbinRuleClient) UpdateOneID(id string) *SysCasbinRuleUpdateOne {
-	mutation := newSysCasbinRuleMutation(c.config, OpUpdateOne, withSysCasbinRuleID(id))
-	return &SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for SysCasbinRule.
-func (c *SysCasbinRuleClient) Delete() *SysCasbinRuleDelete {
-	mutation := newSysCasbinRuleMutation(c.config, OpDelete)
-	return &SysCasbinRuleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *SysCasbinRuleClient) DeleteOne(scr *SysCasbinRule) *SysCasbinRuleDeleteOne {
-	return c.DeleteOneID(scr.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *SysCasbinRuleClient) DeleteOneID(id string) *SysCasbinRuleDeleteOne {
-	builder := c.Delete().Where(syscasbinrule.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &SysCasbinRuleDeleteOne{builder}
-}
-
-// Query returns a query builder for SysCasbinRule.
-func (c *SysCasbinRuleClient) Query() *SysCasbinRuleQuery {
-	return &SysCasbinRuleQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a SysCasbinRule entity by its id.
-func (c *SysCasbinRuleClient) Get(ctx context.Context, id string) (*SysCasbinRule, error) {
-	return c.Query().Where(syscasbinrule.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *SysCasbinRuleClient) GetX(ctx context.Context, id string) *SysCasbinRule {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *SysCasbinRuleClient) Hooks() []Hook {
-	return c.hooks.SysCasbinRule
 }
 
 // SysDictClient is a client for the SysDict schema.
@@ -321,7 +225,7 @@ func (c *SysDictClient) UpdateOne(sd *SysDict) *SysDictUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysDictClient) UpdateOneID(id string) *SysDictUpdateOne {
+func (c *SysDictClient) UpdateOneID(id pulid.ID) *SysDictUpdateOne {
 	mutation := newSysDictMutation(c.config, OpUpdateOne, withSysDictID(id))
 	return &SysDictUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -338,7 +242,7 @@ func (c *SysDictClient) DeleteOne(sd *SysDict) *SysDictDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysDictClient) DeleteOneID(id string) *SysDictDeleteOne {
+func (c *SysDictClient) DeleteOneID(id pulid.ID) *SysDictDeleteOne {
 	builder := c.Delete().Where(sysdict.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -353,12 +257,12 @@ func (c *SysDictClient) Query() *SysDictQuery {
 }
 
 // Get returns a SysDict entity by its id.
-func (c *SysDictClient) Get(ctx context.Context, id string) (*SysDict, error) {
+func (c *SysDictClient) Get(ctx context.Context, id pulid.ID) (*SysDict, error) {
 	return c.Query().Where(sysdict.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysDictClient) GetX(ctx context.Context, id string) *SysDict {
+func (c *SysDictClient) GetX(ctx context.Context, id pulid.ID) *SysDict {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -411,7 +315,7 @@ func (c *SysDictItemClient) UpdateOne(sdi *SysDictItem) *SysDictItemUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysDictItemClient) UpdateOneID(id string) *SysDictItemUpdateOne {
+func (c *SysDictItemClient) UpdateOneID(id pulid.ID) *SysDictItemUpdateOne {
 	mutation := newSysDictItemMutation(c.config, OpUpdateOne, withSysDictItemID(id))
 	return &SysDictItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -428,7 +332,7 @@ func (c *SysDictItemClient) DeleteOne(sdi *SysDictItem) *SysDictItemDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysDictItemClient) DeleteOneID(id string) *SysDictItemDeleteOne {
+func (c *SysDictItemClient) DeleteOneID(id pulid.ID) *SysDictItemDeleteOne {
 	builder := c.Delete().Where(sysdictitem.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -443,12 +347,12 @@ func (c *SysDictItemClient) Query() *SysDictItemQuery {
 }
 
 // Get returns a SysDictItem entity by its id.
-func (c *SysDictItemClient) Get(ctx context.Context, id string) (*SysDictItem, error) {
+func (c *SysDictItemClient) Get(ctx context.Context, id pulid.ID) (*SysDictItem, error) {
 	return c.Query().Where(sysdictitem.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysDictItemClient) GetX(ctx context.Context, id string) *SysDictItem {
+func (c *SysDictItemClient) GetX(ctx context.Context, id pulid.ID) *SysDictItem {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -501,7 +405,7 @@ func (c *SysJwtBlockClient) UpdateOne(sjb *SysJwtBlock) *SysJwtBlockUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysJwtBlockClient) UpdateOneID(id string) *SysJwtBlockUpdateOne {
+func (c *SysJwtBlockClient) UpdateOneID(id pulid.ID) *SysJwtBlockUpdateOne {
 	mutation := newSysJwtBlockMutation(c.config, OpUpdateOne, withSysJwtBlockID(id))
 	return &SysJwtBlockUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -518,7 +422,7 @@ func (c *SysJwtBlockClient) DeleteOne(sjb *SysJwtBlock) *SysJwtBlockDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysJwtBlockClient) DeleteOneID(id string) *SysJwtBlockDeleteOne {
+func (c *SysJwtBlockClient) DeleteOneID(id pulid.ID) *SysJwtBlockDeleteOne {
 	builder := c.Delete().Where(sysjwtblock.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -533,12 +437,12 @@ func (c *SysJwtBlockClient) Query() *SysJwtBlockQuery {
 }
 
 // Get returns a SysJwtBlock entity by its id.
-func (c *SysJwtBlockClient) Get(ctx context.Context, id string) (*SysJwtBlock, error) {
+func (c *SysJwtBlockClient) Get(ctx context.Context, id pulid.ID) (*SysJwtBlock, error) {
 	return c.Query().Where(sysjwtblock.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysJwtBlockClient) GetX(ctx context.Context, id string) *SysJwtBlock {
+func (c *SysJwtBlockClient) GetX(ctx context.Context, id pulid.ID) *SysJwtBlock {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -591,7 +495,7 @@ func (c *SysMenuClient) UpdateOne(sm *SysMenu) *SysMenuUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysMenuClient) UpdateOneID(id string) *SysMenuUpdateOne {
+func (c *SysMenuClient) UpdateOneID(id pulid.ID) *SysMenuUpdateOne {
 	mutation := newSysMenuMutation(c.config, OpUpdateOne, withSysMenuID(id))
 	return &SysMenuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -608,7 +512,7 @@ func (c *SysMenuClient) DeleteOne(sm *SysMenu) *SysMenuDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysMenuClient) DeleteOneID(id string) *SysMenuDeleteOne {
+func (c *SysMenuClient) DeleteOneID(id pulid.ID) *SysMenuDeleteOne {
 	builder := c.Delete().Where(sysmenu.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -623,12 +527,12 @@ func (c *SysMenuClient) Query() *SysMenuQuery {
 }
 
 // Get returns a SysMenu entity by its id.
-func (c *SysMenuClient) Get(ctx context.Context, id string) (*SysMenu, error) {
+func (c *SysMenuClient) Get(ctx context.Context, id pulid.ID) (*SysMenu, error) {
 	return c.Query().Where(sysmenu.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysMenuClient) GetX(ctx context.Context, id string) *SysMenu {
+func (c *SysMenuClient) GetX(ctx context.Context, id pulid.ID) *SysMenu {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -681,7 +585,7 @@ func (c *SysMenuActionClient) UpdateOne(sma *SysMenuAction) *SysMenuActionUpdate
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysMenuActionClient) UpdateOneID(id string) *SysMenuActionUpdateOne {
+func (c *SysMenuActionClient) UpdateOneID(id pulid.ID) *SysMenuActionUpdateOne {
 	mutation := newSysMenuActionMutation(c.config, OpUpdateOne, withSysMenuActionID(id))
 	return &SysMenuActionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -698,7 +602,7 @@ func (c *SysMenuActionClient) DeleteOne(sma *SysMenuAction) *SysMenuActionDelete
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysMenuActionClient) DeleteOneID(id string) *SysMenuActionDeleteOne {
+func (c *SysMenuActionClient) DeleteOneID(id pulid.ID) *SysMenuActionDeleteOne {
 	builder := c.Delete().Where(sysmenuaction.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -713,12 +617,12 @@ func (c *SysMenuActionClient) Query() *SysMenuActionQuery {
 }
 
 // Get returns a SysMenuAction entity by its id.
-func (c *SysMenuActionClient) Get(ctx context.Context, id string) (*SysMenuAction, error) {
+func (c *SysMenuActionClient) Get(ctx context.Context, id pulid.ID) (*SysMenuAction, error) {
 	return c.Query().Where(sysmenuaction.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysMenuActionClient) GetX(ctx context.Context, id string) *SysMenuAction {
+func (c *SysMenuActionClient) GetX(ctx context.Context, id pulid.ID) *SysMenuAction {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -771,7 +675,7 @@ func (c *SysMenuActionResourceClient) UpdateOne(smar *SysMenuActionResource) *Sy
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysMenuActionResourceClient) UpdateOneID(id string) *SysMenuActionResourceUpdateOne {
+func (c *SysMenuActionResourceClient) UpdateOneID(id pulid.ID) *SysMenuActionResourceUpdateOne {
 	mutation := newSysMenuActionResourceMutation(c.config, OpUpdateOne, withSysMenuActionResourceID(id))
 	return &SysMenuActionResourceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -788,7 +692,7 @@ func (c *SysMenuActionResourceClient) DeleteOne(smar *SysMenuActionResource) *Sy
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysMenuActionResourceClient) DeleteOneID(id string) *SysMenuActionResourceDeleteOne {
+func (c *SysMenuActionResourceClient) DeleteOneID(id pulid.ID) *SysMenuActionResourceDeleteOne {
 	builder := c.Delete().Where(sysmenuactionresource.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -803,12 +707,12 @@ func (c *SysMenuActionResourceClient) Query() *SysMenuActionResourceQuery {
 }
 
 // Get returns a SysMenuActionResource entity by its id.
-func (c *SysMenuActionResourceClient) Get(ctx context.Context, id string) (*SysMenuActionResource, error) {
+func (c *SysMenuActionResourceClient) Get(ctx context.Context, id pulid.ID) (*SysMenuActionResource, error) {
 	return c.Query().Where(sysmenuactionresource.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysMenuActionResourceClient) GetX(ctx context.Context, id string) *SysMenuActionResource {
+func (c *SysMenuActionResourceClient) GetX(ctx context.Context, id pulid.ID) *SysMenuActionResource {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -861,7 +765,7 @@ func (c *SysRoleClient) UpdateOne(sr *SysRole) *SysRoleUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysRoleClient) UpdateOneID(id string) *SysRoleUpdateOne {
+func (c *SysRoleClient) UpdateOneID(id pulid.ID) *SysRoleUpdateOne {
 	mutation := newSysRoleMutation(c.config, OpUpdateOne, withSysRoleID(id))
 	return &SysRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -878,7 +782,7 @@ func (c *SysRoleClient) DeleteOne(sr *SysRole) *SysRoleDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysRoleClient) DeleteOneID(id string) *SysRoleDeleteOne {
+func (c *SysRoleClient) DeleteOneID(id pulid.ID) *SysRoleDeleteOne {
 	builder := c.Delete().Where(sysrole.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -893,12 +797,12 @@ func (c *SysRoleClient) Query() *SysRoleQuery {
 }
 
 // Get returns a SysRole entity by its id.
-func (c *SysRoleClient) Get(ctx context.Context, id string) (*SysRole, error) {
+func (c *SysRoleClient) Get(ctx context.Context, id pulid.ID) (*SysRole, error) {
 	return c.Query().Where(sysrole.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysRoleClient) GetX(ctx context.Context, id string) *SysRole {
+func (c *SysRoleClient) GetX(ctx context.Context, id pulid.ID) *SysRole {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -951,7 +855,7 @@ func (c *SysRoleMenuClient) UpdateOne(srm *SysRoleMenu) *SysRoleMenuUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysRoleMenuClient) UpdateOneID(id string) *SysRoleMenuUpdateOne {
+func (c *SysRoleMenuClient) UpdateOneID(id pulid.ID) *SysRoleMenuUpdateOne {
 	mutation := newSysRoleMenuMutation(c.config, OpUpdateOne, withSysRoleMenuID(id))
 	return &SysRoleMenuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -968,7 +872,7 @@ func (c *SysRoleMenuClient) DeleteOne(srm *SysRoleMenu) *SysRoleMenuDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysRoleMenuClient) DeleteOneID(id string) *SysRoleMenuDeleteOne {
+func (c *SysRoleMenuClient) DeleteOneID(id pulid.ID) *SysRoleMenuDeleteOne {
 	builder := c.Delete().Where(sysrolemenu.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -983,12 +887,12 @@ func (c *SysRoleMenuClient) Query() *SysRoleMenuQuery {
 }
 
 // Get returns a SysRoleMenu entity by its id.
-func (c *SysRoleMenuClient) Get(ctx context.Context, id string) (*SysRoleMenu, error) {
+func (c *SysRoleMenuClient) Get(ctx context.Context, id pulid.ID) (*SysRoleMenu, error) {
 	return c.Query().Where(sysrolemenu.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysRoleMenuClient) GetX(ctx context.Context, id string) *SysRoleMenu {
+func (c *SysRoleMenuClient) GetX(ctx context.Context, id pulid.ID) *SysRoleMenu {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -1041,7 +945,7 @@ func (c *SysUserClient) UpdateOne(su *SysUser) *SysUserUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysUserClient) UpdateOneID(id string) *SysUserUpdateOne {
+func (c *SysUserClient) UpdateOneID(id pulid.ID) *SysUserUpdateOne {
 	mutation := newSysUserMutation(c.config, OpUpdateOne, withSysUserID(id))
 	return &SysUserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -1058,7 +962,7 @@ func (c *SysUserClient) DeleteOne(su *SysUser) *SysUserDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysUserClient) DeleteOneID(id string) *SysUserDeleteOne {
+func (c *SysUserClient) DeleteOneID(id pulid.ID) *SysUserDeleteOne {
 	builder := c.Delete().Where(sysuser.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -1073,12 +977,12 @@ func (c *SysUserClient) Query() *SysUserQuery {
 }
 
 // Get returns a SysUser entity by its id.
-func (c *SysUserClient) Get(ctx context.Context, id string) (*SysUser, error) {
+func (c *SysUserClient) Get(ctx context.Context, id pulid.ID) (*SysUser, error) {
 	return c.Query().Where(sysuser.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysUserClient) GetX(ctx context.Context, id string) *SysUser {
+func (c *SysUserClient) GetX(ctx context.Context, id pulid.ID) *SysUser {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -1131,7 +1035,7 @@ func (c *SysUserRoleClient) UpdateOne(sur *SysUserRole) *SysUserRoleUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *SysUserRoleClient) UpdateOneID(id string) *SysUserRoleUpdateOne {
+func (c *SysUserRoleClient) UpdateOneID(id pulid.ID) *SysUserRoleUpdateOne {
 	mutation := newSysUserRoleMutation(c.config, OpUpdateOne, withSysUserRoleID(id))
 	return &SysUserRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -1148,7 +1052,7 @@ func (c *SysUserRoleClient) DeleteOne(sur *SysUserRole) *SysUserRoleDeleteOne {
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *SysUserRoleClient) DeleteOneID(id string) *SysUserRoleDeleteOne {
+func (c *SysUserRoleClient) DeleteOneID(id pulid.ID) *SysUserRoleDeleteOne {
 	builder := c.Delete().Where(sysuserrole.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -1163,12 +1067,12 @@ func (c *SysUserRoleClient) Query() *SysUserRoleQuery {
 }
 
 // Get returns a SysUserRole entity by its id.
-func (c *SysUserRoleClient) Get(ctx context.Context, id string) (*SysUserRole, error) {
+func (c *SysUserRoleClient) Get(ctx context.Context, id pulid.ID) (*SysUserRole, error) {
 	return c.Query().Where(sysuserrole.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *SysUserRoleClient) GetX(ctx context.Context, id string) *SysUserRole {
+func (c *SysUserRoleClient) GetX(ctx context.Context, id pulid.ID) *SysUserRole {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

@@ -13,7 +13,6 @@ type SysUserRole struct {
 
 func (syr SysUserRole) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.TimeMixin{},
 	}
 }
@@ -21,15 +20,17 @@ func (syr SysUserRole) Mixin() []ent.Mixin {
 // Fields of the SysUserRole.
 func (SysUserRole) Fields() []ent.Field {
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.String("user_id").MaxLen(36).NotEmpty().Comment("用户ID, sys_user.id"),
 		field.String("role_id").MaxLen(36).NotEmpty().Comment("角色ID, sys_role.id"),
 	}
 }
 
-// Edges of the SysUserRole.
-func (SysUserRole) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.From("user", SysUser.Type).Field("user_id").Ref("userRoles").Unique().Comment("用户ID: sys_user.id").Required(),
-		//edge.From("role", SysRole.Type).Field("role_id").Ref("userRoles").Unique().Comment("角色ID: sys_role.id").Required(),
-	}
-}
+//// Edges of the SysUserRole.
+//func (SysUserRole) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		//edge.From("user", SysUser.Type).Field("user_id").Ref("userRoles").Unique().Comment("用户ID: sys_user.id").Required(),
+//		//edge.From("role", SysRole.Type).Field("role_id").Ref("userRoles").Unique().Comment("角色ID: sys_role.id").Required(),
+//	}
+//}

@@ -4,6 +4,8 @@ package sysjwtblock
 
 import (
 	"time"
+
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 const (
@@ -11,8 +13,6 @@ const (
 	Label = "sys_jwt_block"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldIsDel holds the string denoting the is_del field in the database.
-	FieldIsDel = "is_del"
 	// FieldMemo holds the string denoting the memo field in the database.
 	FieldMemo = "memo"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
@@ -32,7 +32,6 @@ const (
 // Columns holds all SQL columns for sysjwtblock fields.
 var Columns = []string{
 	FieldID,
-	FieldIsDel,
 	FieldMemo,
 	FieldCreatedAt,
 	FieldUpdatedAt,
@@ -52,8 +51,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultIsDel holds the default value on creation for the "is_del" field.
-	DefaultIsDel bool
 	// DefaultMemo holds the default value on creation for the "memo" field.
 	DefaultMemo string
 	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.
@@ -69,7 +66,5 @@ var (
 	// JwtValidator is a validator for the "jwt" field. It is called by the builders before save.
 	JwtValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID string
-	// IDValidator is a validator for the "id" field. It is called by the builders before save.
-	IDValidator func(string) error
+	DefaultID func() pulid.ID
 )

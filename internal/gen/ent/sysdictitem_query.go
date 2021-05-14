@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDictItemQuery is the builder for querying SysDictItem entities.
@@ -84,8 +85,8 @@ func (sdiq *SysDictItemQuery) FirstX(ctx context.Context) *SysDictItem {
 
 // FirstID returns the first SysDictItem ID from the query.
 // Returns a *NotFoundError when no SysDictItem ID was found.
-func (sdiq *SysDictItemQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sdiq *SysDictItemQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = sdiq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (sdiq *SysDictItemQuery) FirstID(ctx context.Context) (id string, err error
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (sdiq *SysDictItemQuery) FirstIDX(ctx context.Context) string {
+func (sdiq *SysDictItemQuery) FirstIDX(ctx context.Context) pulid.ID {
 	id, err := sdiq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (sdiq *SysDictItemQuery) OnlyX(ctx context.Context) *SysDictItem {
 // OnlyID is like Only, but returns the only SysDictItem ID in the query.
 // Returns a *NotSingularError when exactly one SysDictItem ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (sdiq *SysDictItemQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sdiq *SysDictItemQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = sdiq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (sdiq *SysDictItemQuery) OnlyID(ctx context.Context) (id string, err error)
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (sdiq *SysDictItemQuery) OnlyIDX(ctx context.Context) string {
+func (sdiq *SysDictItemQuery) OnlyIDX(ctx context.Context) pulid.ID {
 	id, err := sdiq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (sdiq *SysDictItemQuery) AllX(ctx context.Context) []*SysDictItem {
 }
 
 // IDs executes the query and returns a list of SysDictItem IDs.
-func (sdiq *SysDictItemQuery) IDs(ctx context.Context) ([]string, error) {
-	var ids []string
+func (sdiq *SysDictItemQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
+	var ids []pulid.ID
 	if err := sdiq.Select(sysdictitem.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (sdiq *SysDictItemQuery) IDs(ctx context.Context) ([]string, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (sdiq *SysDictItemQuery) IDsX(ctx context.Context) []string {
+func (sdiq *SysDictItemQuery) IDsX(ctx context.Context) []pulid.ID {
 	ids, err := sdiq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -253,12 +254,12 @@ func (sdiq *SysDictItemQuery) Clone() *SysDictItemQuery {
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysDictItem.Query().
-//		GroupBy(sysdictitem.FieldIsDel).
+//		GroupBy(sysdictitem.FieldMemo).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +281,11 @@ func (sdiq *SysDictItemQuery) GroupBy(field string, fields ...string) *SysDictIt
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //	}
 //
 //	client.SysDictItem.Query().
-//		Select(sysdictitem.FieldIsDel).
+//		Select(sysdictitem.FieldMemo).
 //		Scan(ctx, &v)
 //
 func (sdiq *SysDictItemQuery) Select(field string, fields ...string) *SysDictItemSelect {
@@ -353,7 +354,7 @@ func (sdiq *SysDictItemQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysdictitem.Table,
 			Columns: sysdictitem.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysdictitem.FieldID,
 			},
 		},

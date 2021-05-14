@@ -69,7 +69,7 @@ func (srmd *SysRoleMenuDelete) sqlExec(ctx context.Context) (int, error) {
 		Node: &sqlgraph.NodeSpec{
 			Table: sysrolemenu.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysrolemenu.FieldID,
 			},
 		},

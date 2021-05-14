@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysJwtBlockQuery is the builder for querying SysJwtBlock entities.
@@ -84,8 +85,8 @@ func (sjbq *SysJwtBlockQuery) FirstX(ctx context.Context) *SysJwtBlock {
 
 // FirstID returns the first SysJwtBlock ID from the query.
 // Returns a *NotFoundError when no SysJwtBlock ID was found.
-func (sjbq *SysJwtBlockQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sjbq *SysJwtBlockQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = sjbq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (sjbq *SysJwtBlockQuery) FirstID(ctx context.Context) (id string, err error
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (sjbq *SysJwtBlockQuery) FirstIDX(ctx context.Context) string {
+func (sjbq *SysJwtBlockQuery) FirstIDX(ctx context.Context) pulid.ID {
 	id, err := sjbq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (sjbq *SysJwtBlockQuery) OnlyX(ctx context.Context) *SysJwtBlock {
 // OnlyID is like Only, but returns the only SysJwtBlock ID in the query.
 // Returns a *NotSingularError when exactly one SysJwtBlock ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (sjbq *SysJwtBlockQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (sjbq *SysJwtBlockQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = sjbq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (sjbq *SysJwtBlockQuery) OnlyID(ctx context.Context) (id string, err error)
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (sjbq *SysJwtBlockQuery) OnlyIDX(ctx context.Context) string {
+func (sjbq *SysJwtBlockQuery) OnlyIDX(ctx context.Context) pulid.ID {
 	id, err := sjbq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (sjbq *SysJwtBlockQuery) AllX(ctx context.Context) []*SysJwtBlock {
 }
 
 // IDs executes the query and returns a list of SysJwtBlock IDs.
-func (sjbq *SysJwtBlockQuery) IDs(ctx context.Context) ([]string, error) {
-	var ids []string
+func (sjbq *SysJwtBlockQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
+	var ids []pulid.ID
 	if err := sjbq.Select(sysjwtblock.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (sjbq *SysJwtBlockQuery) IDs(ctx context.Context) ([]string, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (sjbq *SysJwtBlockQuery) IDsX(ctx context.Context) []string {
+func (sjbq *SysJwtBlockQuery) IDsX(ctx context.Context) []pulid.ID {
 	ids, err := sjbq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -253,12 +254,12 @@ func (sjbq *SysJwtBlockQuery) Clone() *SysJwtBlockQuery {
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysJwtBlock.Query().
-//		GroupBy(sysjwtblock.FieldIsDel).
+//		GroupBy(sysjwtblock.FieldMemo).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +281,11 @@ func (sjbq *SysJwtBlockQuery) GroupBy(field string, fields ...string) *SysJwtBlo
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		Memo string `json:"memo,omitempty"`
 //	}
 //
 //	client.SysJwtBlock.Query().
-//		Select(sysjwtblock.FieldIsDel).
+//		Select(sysjwtblock.FieldMemo).
 //		Scan(ctx, &v)
 //
 func (sjbq *SysJwtBlockQuery) Select(field string, fields ...string) *SysJwtBlockSelect {
@@ -353,7 +354,7 @@ func (sjbq *SysJwtBlockQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysjwtblock.Table,
 			Columns: sysjwtblock.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysjwtblock.FieldID,
 			},
 		},

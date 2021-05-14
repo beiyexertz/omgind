@@ -40,7 +40,7 @@ func NewGormDB() (*gorm.DB, func(), error) {
 		dsn = cfg.Sqlite3.DSN()
 		_ = os.MkdirAll(filepath.Dir(dsn), 0777)
 	case "postgres":
-		dsn = cfg.Postgres.DSN()
+		dsn = cfg.Postgres.DSN("gorm")
 	default:
 		return nil, nil, errors.New("unknown db")
 	}

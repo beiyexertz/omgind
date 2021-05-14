@@ -27,20 +27,6 @@ func (suru *SysUserRoleUpdate) Where(ps ...predicate.SysUserRole) *SysUserRoleUp
 	return suru
 }
 
-// SetIsDel sets the "is_del" field.
-func (suru *SysUserRoleUpdate) SetIsDel(b bool) *SysUserRoleUpdate {
-	suru.mutation.SetIsDel(b)
-	return suru
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (suru *SysUserRoleUpdate) SetNillableIsDel(b *bool) *SysUserRoleUpdate {
-	if b != nil {
-		suru.SetIsDel(*b)
-	}
-	return suru
-}
-
 // SetUpdatedAt sets the "updated_at" field.
 func (suru *SysUserRoleUpdate) SetUpdatedAt(t time.Time) *SysUserRoleUpdate {
 	suru.mutation.SetUpdatedAt(t)
@@ -171,7 +157,7 @@ func (suru *SysUserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysuserrole.FieldID,
 			},
 		},
@@ -182,13 +168,6 @@ func (suru *SysUserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := suru.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysuserrole.FieldIsDel,
-		})
 	}
 	if value, ok := suru.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -241,20 +220,6 @@ type SysUserRoleUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysUserRoleMutation
-}
-
-// SetIsDel sets the "is_del" field.
-func (suruo *SysUserRoleUpdateOne) SetIsDel(b bool) *SysUserRoleUpdateOne {
-	suruo.mutation.SetIsDel(b)
-	return suruo
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (suruo *SysUserRoleUpdateOne) SetNillableIsDel(b *bool) *SysUserRoleUpdateOne {
-	if b != nil {
-		suruo.SetIsDel(*b)
-	}
-	return suruo
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -394,7 +359,7 @@ func (suruo *SysUserRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysUserR
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysuserrole.FieldID,
 			},
 		},
@@ -422,13 +387,6 @@ func (suruo *SysUserRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysUserR
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := suruo.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysuserrole.FieldIsDel,
-		})
 	}
 	if value, ok := suruo.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

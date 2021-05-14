@@ -9,17 +9,14 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenu is the model entity for the SysMenu schema.
 type SysMenu struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
-	ID string `json:"id,omitempty"`
-	// IsDel holds the value of the "is_del" field.
-	// 是否删除
-	IsDel bool `json:"is_del,omitempty"`
+	ID pulid.ID `json:"id,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -63,11 +60,13 @@ func (*SysMenu) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldIsDel, sysmenu.FieldIsShow:
+		case sysmenu.FieldID:
+			values[i] = new(pulid.ID)
+		case sysmenu.FieldIsShow:
 			values[i] = new(sql.NullBool)
 		case sysmenu.FieldSort, sysmenu.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case sysmenu.FieldID, sysmenu.FieldMemo, sysmenu.FieldName, sysmenu.FieldIcon, sysmenu.FieldRouter, sysmenu.FieldParentID, sysmenu.FieldParentPath:
+		case sysmenu.FieldMemo, sysmenu.FieldName, sysmenu.FieldIcon, sysmenu.FieldRouter, sysmenu.FieldParentID, sysmenu.FieldParentPath:
 			values[i] = new(sql.NullString)
 		case sysmenu.FieldCreatedAt, sysmenu.FieldUpdatedAt, sysmenu.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -87,16 +86,10 @@ func (sm *SysMenu) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case sysmenu.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*pulid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				sm.ID = value.String
-			}
-		case sysmenu.FieldIsDel:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_del", values[i])
-			} else if value.Valid {
-				sm.IsDel = value.Bool
+			} else if value != nil {
+				sm.ID = *value
 			}
 		case sysmenu.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -201,8 +194,6 @@ func (sm *SysMenu) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysMenu(")
 	builder.WriteString(fmt.Sprintf("id=%v", sm.ID))
-	builder.WriteString(", is_del=")
-	builder.WriteString(fmt.Sprintf("%v", sm.IsDel))
 	builder.WriteString(", memo=")
 	builder.WriteString(sm.Memo)
 	builder.WriteString(", sort=")

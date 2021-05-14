@@ -12,7 +12,6 @@ type SysDict struct {
 
 func (sd SysDict) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.MemoMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
@@ -20,7 +19,10 @@ func (sd SysDict) Mixin() []ent.Mixin {
 }
 
 func (sd SysDict) Fields() []ent.Field {
+
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.String("name_cn").StorageKey("name_cn").
 			MaxLen(128).StructTag(`json:"name_cn,omitempty"`).Comment("字典名（中）"),
 		field.String("name_en").StorageKey("name_en").

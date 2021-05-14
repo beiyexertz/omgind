@@ -15,7 +15,6 @@ type SysUser struct {
 
 func (su SysUser) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
 		mixin.StatusMixin{},
@@ -25,6 +24,9 @@ func (su SysUser) Mixin() []ent.Mixin {
 // Fields of the SysUser.
 func (SysUser) Fields() []ent.Field {
 	return []ent.Field{
+
+		mixin.IdField("01"),
+
 		field.String("user_name").StorageKey("user_name").
 			MinLen(5).MaxLen(128).NotEmpty().Comment("用户名"),
 		field.String("real_name").StorageKey("real_name").
@@ -51,9 +53,9 @@ func (su SysUser) Indexes() []ent.Index {
 	}
 }
 
-// Edges of the SysUser.
-func (SysUser) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.To("userRoles", SysUserRole.Type).Comment("userroles: "),
-	}
-}
+//// Edges of the SysUser.
+//func (SysUser) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		//edge.To("userRoles", SysUserRole.Type).Comment("userroles: "),
+//	}
+//}

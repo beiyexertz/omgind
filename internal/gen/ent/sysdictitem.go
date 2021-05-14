@@ -9,17 +9,14 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDictItem is the model entity for the SysDictItem schema.
 type SysDictItem struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
-	ID string `json:"id,omitempty"`
-	// IsDel holds the value of the "is_del" field.
-	// 是否删除
-	IsDel bool `json:"is_del,omitempty"`
+	ID pulid.ID `json:"id,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -54,11 +51,13 @@ func (*SysDictItem) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdictitem.FieldIsDel, sysdictitem.FieldStatus:
+		case sysdictitem.FieldID:
+			values[i] = new(pulid.ID)
+		case sysdictitem.FieldStatus:
 			values[i] = new(sql.NullBool)
 		case sysdictitem.FieldSort, sysdictitem.FieldValue:
 			values[i] = new(sql.NullInt64)
-		case sysdictitem.FieldID, sysdictitem.FieldMemo, sysdictitem.FieldLabel, sysdictitem.FieldDictID:
+		case sysdictitem.FieldMemo, sysdictitem.FieldLabel, sysdictitem.FieldDictID:
 			values[i] = new(sql.NullString)
 		case sysdictitem.FieldCreatedAt, sysdictitem.FieldUpdatedAt, sysdictitem.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -78,16 +77,10 @@ func (sdi *SysDictItem) assignValues(columns []string, values []interface{}) err
 	for i := range columns {
 		switch columns[i] {
 		case sysdictitem.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*pulid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				sdi.ID = value.String
-			}
-		case sysdictitem.FieldIsDel:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_del", values[i])
-			} else if value.Valid {
-				sdi.IsDel = value.Bool
+			} else if value != nil {
+				sdi.ID = *value
 			}
 		case sysdictitem.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -172,8 +165,6 @@ func (sdi *SysDictItem) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysDictItem(")
 	builder.WriteString(fmt.Sprintf("id=%v", sdi.ID))
-	builder.WriteString(", is_del=")
-	builder.WriteString(fmt.Sprintf("%v", sdi.IsDel))
 	builder.WriteString(", memo=")
 	builder.WriteString(sdi.Memo)
 	builder.WriteString(", sort=")

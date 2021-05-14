@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuCreate is the builder for creating a SysMenu entity.
@@ -18,20 +19,6 @@ type SysMenuCreate struct {
 	config
 	mutation *SysMenuMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (smc *SysMenuCreate) SetIsDel(b bool) *SysMenuCreate {
-	smc.mutation.SetIsDel(b)
-	return smc
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableIsDel(b *bool) *SysMenuCreate {
-	if b != nil {
-		smc.SetIsDel(*b)
-	}
-	return smc
 }
 
 // SetMemo sets the "memo" field.
@@ -179,16 +166,8 @@ func (smc *SysMenuCreate) SetNillableParentPath(s *string) *SysMenuCreate {
 }
 
 // SetID sets the "id" field.
-func (smc *SysMenuCreate) SetID(s string) *SysMenuCreate {
-	smc.mutation.SetID(s)
-	return smc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableID(s *string) *SysMenuCreate {
-	if s != nil {
-		smc.SetID(*s)
-	}
+func (smc *SysMenuCreate) SetID(pu pulid.ID) *SysMenuCreate {
+	smc.mutation.SetID(pu)
 	return smc
 }
 
@@ -244,10 +223,6 @@ func (smc *SysMenuCreate) SaveX(ctx context.Context) *SysMenu {
 
 // defaults sets the default values of the builder before save.
 func (smc *SysMenuCreate) defaults() {
-	if _, ok := smc.mutation.IsDel(); !ok {
-		v := sysmenu.DefaultIsDel
-		smc.mutation.SetIsDel(v)
-	}
 	if _, ok := smc.mutation.Memo(); !ok {
 		v := sysmenu.DefaultMemo
 		smc.mutation.SetMemo(v)
@@ -273,16 +248,13 @@ func (smc *SysMenuCreate) defaults() {
 		smc.mutation.SetIsShow(v)
 	}
 	if _, ok := smc.mutation.ID(); !ok {
-		v := sysmenu.DefaultID
+		v := sysmenu.DefaultID()
 		smc.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (smc *SysMenuCreate) check() error {
-	if _, ok := smc.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := smc.mutation.Memo(); !ok {
 		return &ValidationError{Name: "memo", err: errors.New("ent: missing required field \"memo\"")}
 	}
@@ -340,11 +312,6 @@ func (smc *SysMenuCreate) check() error {
 			return &ValidationError{Name: "parent_path", err: fmt.Errorf("ent: validator failed for field \"parent_path\": %w", err)}
 		}
 	}
-	if v, ok := smc.mutation.ID(); ok {
-		if err := sysmenu.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -365,7 +332,7 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysmenu.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenu.FieldID,
 			},
 		}
@@ -373,14 +340,6 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if id, ok := smc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := smc.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysmenu.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := smc.mutation.Memo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

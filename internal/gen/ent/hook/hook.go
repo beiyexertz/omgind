@@ -9,19 +9,6 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent"
 )
 
-// The SysCasbinRuleFunc type is an adapter to allow the use of ordinary
-// function as SysCasbinRule mutator.
-type SysCasbinRuleFunc func(context.Context, *ent.SysCasbinRuleMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f SysCasbinRuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.SysCasbinRuleMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SysCasbinRuleMutation", m)
-	}
-	return f(ctx, mv)
-}
-
 // The SysDictFunc type is an adapter to allow the use of ordinary
 // function as SysDict mutator.
 type SysDictFunc func(context.Context, *ent.SysDictMutation) (ent.Value, error)

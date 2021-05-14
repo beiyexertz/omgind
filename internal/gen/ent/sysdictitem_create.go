@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDictItemCreate is the builder for creating a SysDictItem entity.
@@ -18,20 +19,6 @@ type SysDictItemCreate struct {
 	config
 	mutation *SysDictItemMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (sdic *SysDictItemCreate) SetIsDel(b bool) *SysDictItemCreate {
-	sdic.mutation.SetIsDel(b)
-	return sdic
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (sdic *SysDictItemCreate) SetNillableIsDel(b *bool) *SysDictItemCreate {
-	if b != nil {
-		sdic.SetIsDel(*b)
-	}
-	return sdic
 }
 
 // SetMemo sets the "memo" field.
@@ -129,16 +116,8 @@ func (sdic *SysDictItemCreate) SetDictID(s string) *SysDictItemCreate {
 }
 
 // SetID sets the "id" field.
-func (sdic *SysDictItemCreate) SetID(s string) *SysDictItemCreate {
-	sdic.mutation.SetID(s)
-	return sdic
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (sdic *SysDictItemCreate) SetNillableID(s *string) *SysDictItemCreate {
-	if s != nil {
-		sdic.SetID(*s)
-	}
+func (sdic *SysDictItemCreate) SetID(pu pulid.ID) *SysDictItemCreate {
+	sdic.mutation.SetID(pu)
 	return sdic
 }
 
@@ -194,10 +173,6 @@ func (sdic *SysDictItemCreate) SaveX(ctx context.Context) *SysDictItem {
 
 // defaults sets the default values of the builder before save.
 func (sdic *SysDictItemCreate) defaults() {
-	if _, ok := sdic.mutation.IsDel(); !ok {
-		v := sysdictitem.DefaultIsDel
-		sdic.mutation.SetIsDel(v)
-	}
 	if _, ok := sdic.mutation.Memo(); !ok {
 		v := sysdictitem.DefaultMemo
 		sdic.mutation.SetMemo(v)
@@ -215,16 +190,13 @@ func (sdic *SysDictItemCreate) defaults() {
 		sdic.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sdic.mutation.ID(); !ok {
-		v := sysdictitem.DefaultID
+		v := sysdictitem.DefaultID()
 		sdic.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (sdic *SysDictItemCreate) check() error {
-	if _, ok := sdic.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := sdic.mutation.Memo(); !ok {
 		return &ValidationError{Name: "memo", err: errors.New("ent: missing required field \"memo\"")}
 	}
@@ -264,11 +236,6 @@ func (sdic *SysDictItemCreate) check() error {
 			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
 		}
 	}
-	if v, ok := sdic.mutation.ID(); ok {
-		if err := sysdictitem.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -289,7 +256,7 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysdictitem.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysdictitem.FieldID,
 			},
 		}
@@ -297,14 +264,6 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 	if id, ok := sdic.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := sdic.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysdictitem.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := sdic.mutation.Memo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

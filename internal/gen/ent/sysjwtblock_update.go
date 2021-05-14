@@ -27,20 +27,6 @@ func (sjbu *SysJwtBlockUpdate) Where(ps ...predicate.SysJwtBlock) *SysJwtBlockUp
 	return sjbu
 }
 
-// SetIsDel sets the "is_del" field.
-func (sjbu *SysJwtBlockUpdate) SetIsDel(b bool) *SysJwtBlockUpdate {
-	sjbu.mutation.SetIsDel(b)
-	return sjbu
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (sjbu *SysJwtBlockUpdate) SetNillableIsDel(b *bool) *SysJwtBlockUpdate {
-	if b != nil {
-		sjbu.SetIsDel(*b)
-	}
-	return sjbu
-}
-
 // SetMemo sets the "memo" field.
 func (sjbu *SysJwtBlockUpdate) SetMemo(s string) *SysJwtBlockUpdate {
 	sjbu.mutation.SetMemo(s)
@@ -200,7 +186,7 @@ func (sjbu *SysJwtBlockUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysjwtblock.Table,
 			Columns: sysjwtblock.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysjwtblock.FieldID,
 			},
 		},
@@ -211,13 +197,6 @@ func (sjbu *SysJwtBlockUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := sjbu.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysjwtblock.FieldIsDel,
-		})
 	}
 	if value, ok := sjbu.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -284,20 +263,6 @@ type SysJwtBlockUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysJwtBlockMutation
-}
-
-// SetIsDel sets the "is_del" field.
-func (sjbuo *SysJwtBlockUpdateOne) SetIsDel(b bool) *SysJwtBlockUpdateOne {
-	sjbuo.mutation.SetIsDel(b)
-	return sjbuo
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (sjbuo *SysJwtBlockUpdateOne) SetNillableIsDel(b *bool) *SysJwtBlockUpdateOne {
-	if b != nil {
-		sjbuo.SetIsDel(*b)
-	}
-	return sjbuo
 }
 
 // SetMemo sets the "memo" field.
@@ -466,7 +431,7 @@ func (sjbuo *SysJwtBlockUpdateOne) sqlSave(ctx context.Context) (_node *SysJwtBl
 			Table:   sysjwtblock.Table,
 			Columns: sysjwtblock.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysjwtblock.FieldID,
 			},
 		},
@@ -494,13 +459,6 @@ func (sjbuo *SysJwtBlockUpdateOne) sqlSave(ctx context.Context) (_node *SysJwtBl
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := sjbuo.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysjwtblock.FieldIsDel,
-		})
 	}
 	if value, ok := sjbuo.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

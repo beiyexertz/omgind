@@ -12,7 +12,6 @@ type SysDictItem struct {
 
 func (sdd SysDictItem) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.MemoMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
@@ -21,6 +20,8 @@ func (sdd SysDictItem) Mixin() []ent.Mixin {
 
 func (sdd SysDictItem) Fields() []ent.Field {
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.String("label").StorageKey("label").
 			MaxLen(128).StructTag(`json:"label,omitempty"`).Comment("显示值"),
 		field.Int("value").StorageKey("val").StructTag(`json:"value,omitempty"`).Comment("字典值"),
@@ -30,8 +31,8 @@ func (sdd SysDictItem) Fields() []ent.Field {
 	}
 }
 
-func (sdd SysDictItem) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.From("SysDict", SysDict.Type).Field("dict_id").Ref("SysDictItems").Unique().Required(),
-	}
-}
+//func (sdd SysDictItem) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		//edge.From("SysDict", SysDict.Type).Field("dict_id").Ref("SysDictItems").Unique().Required(),
+//	}
+//}

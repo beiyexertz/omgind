@@ -4,6 +4,8 @@ package sysmenuactionresource
 
 import (
 	"time"
+
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 const (
@@ -11,8 +13,6 @@ const (
 	Label = "sys_menu_action_resource"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldIsDel holds the string denoting the is_del field in the database.
-	FieldIsDel = "is_del"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
 	// FieldMemo holds the string denoting the memo field in the database.
@@ -38,7 +38,6 @@ const (
 // Columns holds all SQL columns for sysmenuactionresource fields.
 var Columns = []string{
 	FieldID,
-	FieldIsDel,
 	FieldSort,
 	FieldMemo,
 	FieldCreatedAt,
@@ -61,8 +60,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultIsDel holds the default value on creation for the "is_del" field.
-	DefaultIsDel bool
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int32
 	// DefaultMemo holds the default value on creation for the "memo" field.
@@ -84,7 +81,5 @@ var (
 	// ActionIDValidator is a validator for the "action_id" field. It is called by the builders before save.
 	ActionIDValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID string
-	// IDValidator is a validator for the "id" field. It is called by the builders before save.
-	IDValidator func(string) error
+	DefaultID func() pulid.ID
 )

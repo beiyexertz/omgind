@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRoleMenuCreate is the builder for creating a SysRoleMenu entity.
@@ -18,20 +19,6 @@ type SysRoleMenuCreate struct {
 	config
 	mutation *SysRoleMenuMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (srmc *SysRoleMenuCreate) SetIsDel(b bool) *SysRoleMenuCreate {
-	srmc.mutation.SetIsDel(b)
-	return srmc
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (srmc *SysRoleMenuCreate) SetNillableIsDel(b *bool) *SysRoleMenuCreate {
-	if b != nil {
-		srmc.SetIsDel(*b)
-	}
-	return srmc
 }
 
 // SetCreatedAt sets the "created_at" field.
@@ -103,16 +90,8 @@ func (srmc *SysRoleMenuCreate) SetNillableActionID(s *string) *SysRoleMenuCreate
 }
 
 // SetID sets the "id" field.
-func (srmc *SysRoleMenuCreate) SetID(s string) *SysRoleMenuCreate {
-	srmc.mutation.SetID(s)
-	return srmc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (srmc *SysRoleMenuCreate) SetNillableID(s *string) *SysRoleMenuCreate {
-	if s != nil {
-		srmc.SetID(*s)
-	}
+func (srmc *SysRoleMenuCreate) SetID(pu pulid.ID) *SysRoleMenuCreate {
+	srmc.mutation.SetID(pu)
 	return srmc
 }
 
@@ -168,10 +147,6 @@ func (srmc *SysRoleMenuCreate) SaveX(ctx context.Context) *SysRoleMenu {
 
 // defaults sets the default values of the builder before save.
 func (srmc *SysRoleMenuCreate) defaults() {
-	if _, ok := srmc.mutation.IsDel(); !ok {
-		v := sysrolemenu.DefaultIsDel
-		srmc.mutation.SetIsDel(v)
-	}
 	if _, ok := srmc.mutation.CreatedAt(); !ok {
 		v := sysrolemenu.DefaultCreatedAt()
 		srmc.mutation.SetCreatedAt(v)
@@ -181,16 +156,13 @@ func (srmc *SysRoleMenuCreate) defaults() {
 		srmc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := srmc.mutation.ID(); !ok {
-		v := sysrolemenu.DefaultID
+		v := sysrolemenu.DefaultID()
 		srmc.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (srmc *SysRoleMenuCreate) check() error {
-	if _, ok := srmc.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := srmc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New("ent: missing required field \"created_at\"")}
 	}
@@ -218,11 +190,6 @@ func (srmc *SysRoleMenuCreate) check() error {
 			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
 		}
 	}
-	if v, ok := srmc.mutation.ID(); ok {
-		if err := sysrolemenu.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -243,7 +210,7 @@ func (srmc *SysRoleMenuCreate) createSpec() (*SysRoleMenu, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysrolemenu.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysrolemenu.FieldID,
 			},
 		}
@@ -251,14 +218,6 @@ func (srmc *SysRoleMenuCreate) createSpec() (*SysRoleMenu, *sqlgraph.CreateSpec)
 	if id, ok := srmc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := srmc.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysrolemenu.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := srmc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

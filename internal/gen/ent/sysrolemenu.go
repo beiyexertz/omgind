@@ -9,17 +9,14 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRoleMenu is the model entity for the SysRoleMenu schema.
 type SysRoleMenu struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
-	ID string `json:"id,omitempty"`
-	// IsDel holds the value of the "is_del" field.
-	// 是否删除
-	IsDel bool `json:"is_del,omitempty"`
+	ID pulid.ID `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -45,9 +42,9 @@ func (*SysRoleMenu) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysrolemenu.FieldIsDel:
-			values[i] = new(sql.NullBool)
-		case sysrolemenu.FieldID, sysrolemenu.FieldRoleID, sysrolemenu.FieldMenuID, sysrolemenu.FieldActionID:
+		case sysrolemenu.FieldID:
+			values[i] = new(pulid.ID)
+		case sysrolemenu.FieldRoleID, sysrolemenu.FieldMenuID, sysrolemenu.FieldActionID:
 			values[i] = new(sql.NullString)
 		case sysrolemenu.FieldCreatedAt, sysrolemenu.FieldUpdatedAt, sysrolemenu.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -67,16 +64,10 @@ func (srm *SysRoleMenu) assignValues(columns []string, values []interface{}) err
 	for i := range columns {
 		switch columns[i] {
 		case sysrolemenu.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*pulid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				srm.ID = value.String
-			}
-		case sysrolemenu.FieldIsDel:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_del", values[i])
-			} else if value.Valid {
-				srm.IsDel = value.Bool
+			} else if value != nil {
+				srm.ID = *value
 			}
 		case sysrolemenu.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -144,8 +135,6 @@ func (srm *SysRoleMenu) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysRoleMenu(")
 	builder.WriteString(fmt.Sprintf("id=%v", srm.ID))
-	builder.WriteString(", is_del=")
-	builder.WriteString(fmt.Sprintf("%v", srm.IsDel))
 	builder.WriteString(", created_at=")
 	builder.WriteString(srm.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", updated_at=")

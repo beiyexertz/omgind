@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserRoleQuery is the builder for querying SysUserRole entities.
@@ -84,8 +85,8 @@ func (surq *SysUserRoleQuery) FirstX(ctx context.Context) *SysUserRole {
 
 // FirstID returns the first SysUserRole ID from the query.
 // Returns a *NotFoundError when no SysUserRole ID was found.
-func (surq *SysUserRoleQuery) FirstID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (surq *SysUserRoleQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = surq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (surq *SysUserRoleQuery) FirstID(ctx context.Context) (id string, err error
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (surq *SysUserRoleQuery) FirstIDX(ctx context.Context) string {
+func (surq *SysUserRoleQuery) FirstIDX(ctx context.Context) pulid.ID {
 	id, err := surq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (surq *SysUserRoleQuery) OnlyX(ctx context.Context) *SysUserRole {
 // OnlyID is like Only, but returns the only SysUserRole ID in the query.
 // Returns a *NotSingularError when exactly one SysUserRole ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (surq *SysUserRoleQuery) OnlyID(ctx context.Context) (id string, err error) {
-	var ids []string
+func (surq *SysUserRoleQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
+	var ids []pulid.ID
 	if ids, err = surq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (surq *SysUserRoleQuery) OnlyID(ctx context.Context) (id string, err error)
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (surq *SysUserRoleQuery) OnlyIDX(ctx context.Context) string {
+func (surq *SysUserRoleQuery) OnlyIDX(ctx context.Context) pulid.ID {
 	id, err := surq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (surq *SysUserRoleQuery) AllX(ctx context.Context) []*SysUserRole {
 }
 
 // IDs executes the query and returns a list of SysUserRole IDs.
-func (surq *SysUserRoleQuery) IDs(ctx context.Context) ([]string, error) {
-	var ids []string
+func (surq *SysUserRoleQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
+	var ids []pulid.ID
 	if err := surq.Select(sysuserrole.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (surq *SysUserRoleQuery) IDs(ctx context.Context) ([]string, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (surq *SysUserRoleQuery) IDsX(ctx context.Context) []string {
+func (surq *SysUserRoleQuery) IDsX(ctx context.Context) []pulid.ID {
 	ids, err := surq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -253,12 +254,12 @@ func (surq *SysUserRoleQuery) Clone() *SysUserRoleQuery {
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysUserRole.Query().
-//		GroupBy(sysuserrole.FieldIsDel).
+//		GroupBy(sysuserrole.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +281,11 @@ func (surq *SysUserRoleQuery) GroupBy(field string, fields ...string) *SysUserRo
 // Example:
 //
 //	var v []struct {
-//		IsDel bool `json:"is_del,omitempty"`
+//		CreatedAt time.Time `json:"created_at,omitempty"`
 //	}
 //
 //	client.SysUserRole.Query().
-//		Select(sysuserrole.FieldIsDel).
+//		Select(sysuserrole.FieldCreatedAt).
 //		Scan(ctx, &v)
 //
 func (surq *SysUserRoleQuery) Select(field string, fields ...string) *SysUserRoleSelect {
@@ -353,7 +354,7 @@ func (surq *SysUserRoleQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysuserrole.FieldID,
 			},
 		},

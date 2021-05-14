@@ -27,20 +27,6 @@ func (srmu *SysRoleMenuUpdate) Where(ps ...predicate.SysRoleMenu) *SysRoleMenuUp
 	return srmu
 }
 
-// SetIsDel sets the "is_del" field.
-func (srmu *SysRoleMenuUpdate) SetIsDel(b bool) *SysRoleMenuUpdate {
-	srmu.mutation.SetIsDel(b)
-	return srmu
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (srmu *SysRoleMenuUpdate) SetNillableIsDel(b *bool) *SysRoleMenuUpdate {
-	if b != nil {
-		srmu.SetIsDel(*b)
-	}
-	return srmu
-}
-
 // SetUpdatedAt sets the "updated_at" field.
 func (srmu *SysRoleMenuUpdate) SetUpdatedAt(t time.Time) *SysRoleMenuUpdate {
 	srmu.mutation.SetUpdatedAt(t)
@@ -196,7 +182,7 @@ func (srmu *SysRoleMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysrolemenu.FieldID,
 			},
 		},
@@ -207,13 +193,6 @@ func (srmu *SysRoleMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := srmu.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysrolemenu.FieldIsDel,
-		})
 	}
 	if value, ok := srmu.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -279,20 +258,6 @@ type SysRoleMenuUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysRoleMenuMutation
-}
-
-// SetIsDel sets the "is_del" field.
-func (srmuo *SysRoleMenuUpdateOne) SetIsDel(b bool) *SysRoleMenuUpdateOne {
-	srmuo.mutation.SetIsDel(b)
-	return srmuo
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (srmuo *SysRoleMenuUpdateOne) SetNillableIsDel(b *bool) *SysRoleMenuUpdateOne {
-	if b != nil {
-		srmuo.SetIsDel(*b)
-	}
-	return srmuo
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -457,7 +422,7 @@ func (srmuo *SysRoleMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysRoleM
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysrolemenu.FieldID,
 			},
 		},
@@ -485,13 +450,6 @@ func (srmuo *SysRoleMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysRoleM
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := srmuo.mutation.IsDel(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysrolemenu.FieldIsDel,
-		})
 	}
 	if value, ok := srmuo.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

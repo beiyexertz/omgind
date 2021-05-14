@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/99designs/gqlgen/graphql"
-	"github.com/oklog/ulid"
+	"github.com/oklog/ulid/v2"
 )
 
 // ID - Prefixed ULID. The first two characters indicate the type of entity being described.

@@ -13,7 +13,6 @@ type SysRole struct {
 
 func (sr SysRole) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IDMixin{},
 		mixin.StatusMixin{},
 		mixin.SortMixin{},
 		mixin.MemoMixin{},
@@ -24,12 +23,14 @@ func (sr SysRole) Mixin() []ent.Mixin {
 // Fields of the SysRole.
 func (SysRole) Fields() []ent.Field {
 	return []ent.Field{
+		mixin.IdField("01"),
+
 		field.String("name").MaxLen(64).MinLen(2).NotEmpty().Comment("角色名称")}
 }
 
-// Edges of the SysRole.
-func (SysRole) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.To("userRoles", SysUserRole.Type).Comment("userroles"),
-	}
-}
+//// Edges of the SysRole.
+//func (SysRole) Edges() []ent.Edge {
+//	return []ent.Edge{
+//		//edge.To("userRoles", SysUserRole.Type).Comment("userroles"),
+//	}
+//}

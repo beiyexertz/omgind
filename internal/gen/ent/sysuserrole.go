@@ -9,17 +9,14 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserRole is the model entity for the SysUserRole schema.
 type SysUserRole struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
-	ID string `json:"id,omitempty"`
-	// IsDel holds the value of the "is_del" field.
-	// 是否删除
-	IsDel bool `json:"is_del,omitempty"`
+	ID pulid.ID `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -42,9 +39,9 @@ func (*SysUserRole) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuserrole.FieldIsDel:
-			values[i] = new(sql.NullBool)
-		case sysuserrole.FieldID, sysuserrole.FieldUserID, sysuserrole.FieldRoleID:
+		case sysuserrole.FieldID:
+			values[i] = new(pulid.ID)
+		case sysuserrole.FieldUserID, sysuserrole.FieldRoleID:
 			values[i] = new(sql.NullString)
 		case sysuserrole.FieldCreatedAt, sysuserrole.FieldUpdatedAt, sysuserrole.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -64,16 +61,10 @@ func (sur *SysUserRole) assignValues(columns []string, values []interface{}) err
 	for i := range columns {
 		switch columns[i] {
 		case sysuserrole.FieldID:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*pulid.ID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value.Valid {
-				sur.ID = value.String
-			}
-		case sysuserrole.FieldIsDel:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_del", values[i])
-			} else if value.Valid {
-				sur.IsDel = value.Bool
+			} else if value != nil {
+				sur.ID = *value
 			}
 		case sysuserrole.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -134,8 +125,6 @@ func (sur *SysUserRole) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysUserRole(")
 	builder.WriteString(fmt.Sprintf("id=%v", sur.ID))
-	builder.WriteString(", is_del=")
-	builder.WriteString(fmt.Sprintf("%v", sur.IsDel))
 	builder.WriteString(", created_at=")
 	builder.WriteString(sur.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", updated_at=")

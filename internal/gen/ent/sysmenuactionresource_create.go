@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuActionResourceCreate is the builder for creating a SysMenuActionResource entity.
@@ -18,20 +19,6 @@ type SysMenuActionResourceCreate struct {
 	config
 	mutation *SysMenuActionResourceMutation
 	hooks    []Hook
-}
-
-// SetIsDel sets the "is_del" field.
-func (smarc *SysMenuActionResourceCreate) SetIsDel(b bool) *SysMenuActionResourceCreate {
-	smarc.mutation.SetIsDel(b)
-	return smarc
-}
-
-// SetNillableIsDel sets the "is_del" field if the given value is not nil.
-func (smarc *SysMenuActionResourceCreate) SetNillableIsDel(b *bool) *SysMenuActionResourceCreate {
-	if b != nil {
-		smarc.SetIsDel(*b)
-	}
-	return smarc
 }
 
 // SetSort sets the "sort" field.
@@ -137,16 +124,8 @@ func (smarc *SysMenuActionResourceCreate) SetActionID(s string) *SysMenuActionRe
 }
 
 // SetID sets the "id" field.
-func (smarc *SysMenuActionResourceCreate) SetID(s string) *SysMenuActionResourceCreate {
-	smarc.mutation.SetID(s)
-	return smarc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (smarc *SysMenuActionResourceCreate) SetNillableID(s *string) *SysMenuActionResourceCreate {
-	if s != nil {
-		smarc.SetID(*s)
-	}
+func (smarc *SysMenuActionResourceCreate) SetID(pu pulid.ID) *SysMenuActionResourceCreate {
+	smarc.mutation.SetID(pu)
 	return smarc
 }
 
@@ -202,10 +181,6 @@ func (smarc *SysMenuActionResourceCreate) SaveX(ctx context.Context) *SysMenuAct
 
 // defaults sets the default values of the builder before save.
 func (smarc *SysMenuActionResourceCreate) defaults() {
-	if _, ok := smarc.mutation.IsDel(); !ok {
-		v := sysmenuactionresource.DefaultIsDel
-		smarc.mutation.SetIsDel(v)
-	}
 	if _, ok := smarc.mutation.Sort(); !ok {
 		v := sysmenuactionresource.DefaultSort
 		smarc.mutation.SetSort(v)
@@ -227,16 +202,13 @@ func (smarc *SysMenuActionResourceCreate) defaults() {
 		smarc.mutation.SetStatus(v)
 	}
 	if _, ok := smarc.mutation.ID(); !ok {
-		v := sysmenuactionresource.DefaultID
+		v := sysmenuactionresource.DefaultID()
 		smarc.mutation.SetID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (smarc *SysMenuActionResourceCreate) check() error {
-	if _, ok := smarc.mutation.IsDel(); !ok {
-		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
-	}
 	if _, ok := smarc.mutation.Sort(); !ok {
 		return &ValidationError{Name: "sort", err: errors.New("ent: missing required field \"sort\"")}
 	}
@@ -281,11 +253,6 @@ func (smarc *SysMenuActionResourceCreate) check() error {
 			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
 		}
 	}
-	if v, ok := smarc.mutation.ID(); ok {
-		if err := sysmenuactionresource.IDValidator(v); err != nil {
-			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
-		}
-	}
 	return nil
 }
 
@@ -306,7 +273,7 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysmenuactionresource.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeString,
+				Type:   field.TypeUUID,
 				Column: sysmenuactionresource.FieldID,
 			},
 		}
@@ -314,14 +281,6 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 	if id, ok := smarc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
-	}
-	if value, ok := smarc.mutation.IsDel(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: sysmenuactionresource.FieldIsDel,
-		})
-		_node.IsDel = value
 	}
 	if value, ok := smarc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

@@ -7,31 +7,32 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
+	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id string) predicate.SysRole {
+func ID(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id string) predicate.SysRole {
+func IDEQ(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id string) predicate.SysRole {
+func IDNEQ(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldID), id))
 	})
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...string) predicate.SysRole {
+func IDIn(ids ...pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		// if not arguments were provided, append the FALSE constants,
 		// since we can't apply "IN ()". This will make this predicate falsy.
@@ -48,7 +49,7 @@ func IDIn(ids ...string) predicate.SysRole {
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...string) predicate.SysRole {
+func IDNotIn(ids ...pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		// if not arguments were provided, append the FALSE constants,
 		// since we can't apply "IN ()". This will make this predicate falsy.
@@ -65,37 +66,30 @@ func IDNotIn(ids ...string) predicate.SysRole {
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id string) predicate.SysRole {
+func IDGT(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldID), id))
 	})
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id string) predicate.SysRole {
+func IDGTE(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldID), id))
 	})
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id string) predicate.SysRole {
+func IDLT(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldID), id))
 	})
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id string) predicate.SysRole {
+func IDLTE(id pulid.ID) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldID), id))
-	})
-}
-
-// IsDel applies equality check predicate on the "is_del" field. It's identical to IsDelEQ.
-func IsDel(v bool) predicate.SysRole {
-	return predicate.SysRole(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldIsDel), v))
 	})
 }
 
@@ -145,20 +139,6 @@ func DeletedAt(v time.Time) predicate.SysRole {
 func Name(v string) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldName), v))
-	})
-}
-
-// IsDelEQ applies the EQ predicate on the "is_del" field.
-func IsDelEQ(v bool) predicate.SysRole {
-	return predicate.SysRole(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldIsDel), v))
-	})
-}
-
-// IsDelNEQ applies the NEQ predicate on the "is_del" field.
-func IsDelNEQ(v bool) predicate.SysRole {
-	return predicate.SysRole(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldIsDel), v))
 	})
 }
 

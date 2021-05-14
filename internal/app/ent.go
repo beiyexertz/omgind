@@ -7,10 +7,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"entgo.io/ent/dialect/sql"
+	"database/sql"
+
+	entsql "entgo.io/ent/dialect/sql"
+	_ "github.com/jackc/pgx/v4/stdlib"
 
 	"github.com/wanhello/omgind/internal/gen/ent"
-	"github.com/wanhello/omgind/internal/gen/ent/migrate"
 	"github.com/wanhello/omgind/pkg/global"
 )
 
@@ -25,7 +27,8 @@ func InitEntClient() (*ent.Client, func(), error) {
 	if cfg.EnableAutoMigrate {
 		err := cli.Schema.Create(
 			context.Background(),
-			migrate.WithGlobalUniqueID(true),
+			// FIXME::  sql/schema: pq: column "id" of relation "xxxx_table" is not an identity column
+			//migrate.WithGlobalUniqueID(true),
 		)
 		if err != nil {
 			return nil, cleanFunc, err
@@ -47,17 +50,19 @@ func NewEntClient() (*ent.Client, func(), error) {
 		dsn = cfg.Sqlite3.DSN()
 		_ = os.MkdirAll(filepath.Dir(dsn), 0777)
 	case "postgres":
-		dsn = cfg.Postgres.DSN()
+		dsn = cfg.Postgres.DSN("ent")
 	default:
 		return nil, nil, errors.New("unknown db")
 	}
-
-	drv, err := sql.Open(cfg.Ent.DBType, cfg.MySQL.DSN())
+	//fmt.Println(" ----- wwwwwwww ======= ", dsn)
+	//fmt.Println(" ----- wwwwwwww ======= ", cfg.Ent.DBType)
+	db, err := sql.Open(cfg.Ent.DBType, dsn)
 	if err != nil {
 		return nil, func() {}, err
 	}
 
-	db := drv.DB()
+	drv := entsql.OpenDB(cfg.Ent.DBType, db)
+
 	cleanFunc := func() {
 		drv.Close()
 	}
