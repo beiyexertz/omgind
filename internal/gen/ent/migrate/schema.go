@@ -452,6 +452,47 @@ var (
 			},
 		},
 	}
+	// XxxDemosColumns holds the columns for the "xxx_demos" table.
+	XxxDemosColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "sort", Type: field.TypeInt32, Default: 9999},
+		{Name: "crtd_at", Type: field.TypeTime},
+		{Name: "uptd_at", Type: field.TypeTime},
+		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "code", Type: field.TypeString, Size: 128},
+		{Name: "name", Type: field.TypeString, Size: 128},
+		{Name: "status", Type: field.TypeInt, Default: 1},
+	}
+	// XxxDemosTable holds the schema information for the "xxx_demos" table.
+	XxxDemosTable = &schema.Table{
+		Name:        "xxx_demos",
+		Columns:     XxxDemosColumns,
+		PrimaryKey:  []*schema.Column{XxxDemosColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "xxxdemo_sort",
+				Unique:  false,
+				Columns: []*schema.Column{XxxDemosColumns[2]},
+			},
+			{
+				Name:    "xxxdemo_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{XxxDemosColumns[3]},
+			},
+			{
+				Name:    "xxxdemo_uptd_at",
+				Unique:  false,
+				Columns: []*schema.Column{XxxDemosColumns[4]},
+			},
+			{
+				Name:    "xxxdemo_dltd_at",
+				Unique:  false,
+				Columns: []*schema.Column{XxxDemosColumns[5]},
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		SysDictsTable,
@@ -464,6 +505,7 @@ var (
 		SysRoleMenusTable,
 		SysUsersTable,
 		SysUserRolesTable,
+		XxxDemosTable,
 	}
 )
 

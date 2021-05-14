@@ -20,6 +20,7 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
+	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -50,6 +51,8 @@ type Client struct {
 	SysUser *SysUserClient
 	// SysUserRole is the client for interacting with the SysUserRole builders.
 	SysUserRole *SysUserRoleClient
+	// XxxDemo is the client for interacting with the XxxDemo builders.
+	XxxDemo *XxxDemoClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -73,6 +76,7 @@ func (c *Client) init() {
 	c.SysRoleMenu = NewSysRoleMenuClient(c.config)
 	c.SysUser = NewSysUserClient(c.config)
 	c.SysUserRole = NewSysUserRoleClient(c.config)
+	c.XxxDemo = NewXxxDemoClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -116,6 +120,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		SysRoleMenu:           NewSysRoleMenuClient(cfg),
 		SysUser:               NewSysUserClient(cfg),
 		SysUserRole:           NewSysUserRoleClient(cfg),
+		XxxDemo:               NewXxxDemoClient(cfg),
 	}, nil
 }
 
@@ -144,6 +149,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		SysRoleMenu:           NewSysRoleMenuClient(cfg),
 		SysUser:               NewSysUserClient(cfg),
 		SysUserRole:           NewSysUserRoleClient(cfg),
+		XxxDemo:               NewXxxDemoClient(cfg),
 	}, nil
 }
 
@@ -183,6 +189,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.SysRoleMenu.Use(hooks...)
 	c.SysUser.Use(hooks...)
 	c.SysUserRole.Use(hooks...)
+	c.XxxDemo.Use(hooks...)
 }
 
 // SysDictClient is a client for the SysDict schema.
@@ -1083,4 +1090,94 @@ func (c *SysUserRoleClient) GetX(ctx context.Context, id pulid.ID) *SysUserRole 
 // Hooks returns the client hooks.
 func (c *SysUserRoleClient) Hooks() []Hook {
 	return c.hooks.SysUserRole
+}
+
+// XxxDemoClient is a client for the XxxDemo schema.
+type XxxDemoClient struct {
+	config
+}
+
+// NewXxxDemoClient returns a client for the XxxDemo from the given config.
+func NewXxxDemoClient(c config) *XxxDemoClient {
+	return &XxxDemoClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `xxxdemo.Hooks(f(g(h())))`.
+func (c *XxxDemoClient) Use(hooks ...Hook) {
+	c.hooks.XxxDemo = append(c.hooks.XxxDemo, hooks...)
+}
+
+// Create returns a create builder for XxxDemo.
+func (c *XxxDemoClient) Create() *XxxDemoCreate {
+	mutation := newXxxDemoMutation(c.config, OpCreate)
+	return &XxxDemoCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of XxxDemo entities.
+func (c *XxxDemoClient) CreateBulk(builders ...*XxxDemoCreate) *XxxDemoCreateBulk {
+	return &XxxDemoCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for XxxDemo.
+func (c *XxxDemoClient) Update() *XxxDemoUpdate {
+	mutation := newXxxDemoMutation(c.config, OpUpdate)
+	return &XxxDemoUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *XxxDemoClient) UpdateOne(xd *XxxDemo) *XxxDemoUpdateOne {
+	mutation := newXxxDemoMutation(c.config, OpUpdateOne, withXxxDemo(xd))
+	return &XxxDemoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *XxxDemoClient) UpdateOneID(id pulid.ID) *XxxDemoUpdateOne {
+	mutation := newXxxDemoMutation(c.config, OpUpdateOne, withXxxDemoID(id))
+	return &XxxDemoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for XxxDemo.
+func (c *XxxDemoClient) Delete() *XxxDemoDelete {
+	mutation := newXxxDemoMutation(c.config, OpDelete)
+	return &XxxDemoDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *XxxDemoClient) DeleteOne(xd *XxxDemo) *XxxDemoDeleteOne {
+	return c.DeleteOneID(xd.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *XxxDemoClient) DeleteOneID(id pulid.ID) *XxxDemoDeleteOne {
+	builder := c.Delete().Where(xxxdemo.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &XxxDemoDeleteOne{builder}
+}
+
+// Query returns a query builder for XxxDemo.
+func (c *XxxDemoClient) Query() *XxxDemoQuery {
+	return &XxxDemoQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a XxxDemo entity by its id.
+func (c *XxxDemoClient) Get(ctx context.Context, id pulid.ID) (*XxxDemo, error) {
+	return c.Query().Where(xxxdemo.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *XxxDemoClient) GetX(ctx context.Context, id pulid.ID) *XxxDemo {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *XxxDemoClient) Hooks() []Hook {
+	return c.hooks.XxxDemo
 }

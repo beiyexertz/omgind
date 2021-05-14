@@ -32,3 +32,6 @@ type DemoQueryResult struct {
 	Data       []*Demo
 	PageResult *PaginationResult
 }
+
+// demos 对象列表
+type Demos []*Demo

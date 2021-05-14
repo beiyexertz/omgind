@@ -65,6 +65,14 @@ func (a PaginationParam) GetPageSize() uint {
 	return pageSize
 }
 
+func (a PaginationParam) Limit() int {
+	return int(a.PageSize)
+}
+
+func (a PaginationParam) Offset() int {
+	return a.Limit() * int(a.Current-1)
+}
+
 // OrderDirection 排序方向
 type OrderDirection int
 

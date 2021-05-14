@@ -34,6 +34,7 @@ type hooks struct {
 	SysRoleMenu           []ent.Hook
 	SysUser               []ent.Hook
 	SysUserRole           []ent.Hook
+	XxxDemo               []ent.Hook
 }
 
 // Options applies the options on the config object.

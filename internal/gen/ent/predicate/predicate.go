@@ -35,3 +35,6 @@ type SysUser func(*sql.Selector)
 
 // SysUserRole is the predicate function for sysuserrole builders.
 type SysUserRole func(*sql.Selector)
+
+// XxxDemo is the predicate function for xxxdemo builders.
+type XxxDemo func(*sql.Selector)

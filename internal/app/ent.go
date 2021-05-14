@@ -50,12 +50,11 @@ func NewEntClient() (*ent.Client, func(), error) {
 		dsn = cfg.Sqlite3.DSN()
 		_ = os.MkdirAll(filepath.Dir(dsn), 0777)
 	case "postgres":
-		dsn = cfg.Postgres.DSN("ent")
+		dsn = cfg.Postgres.DSN()
 	default:
 		return nil, nil, errors.New("unknown db")
 	}
-	//fmt.Println(" ----- wwwwwwww ======= ", dsn)
-	//fmt.Println(" ----- wwwwwwww ======= ", cfg.Ent.DBType)
+
 	db, err := sql.Open(cfg.Ent.DBType, dsn)
 	if err != nil {
 		return nil, func() {}, err

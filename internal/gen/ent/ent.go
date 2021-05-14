@@ -20,6 +20,7 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
+	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -50,6 +51,7 @@ func columnChecker(table string) func(string) error {
 		sysrolemenu.Table:           sysrolemenu.ValidColumn,
 		sysuser.Table:               sysuser.ValidColumn,
 		sysuserrole.Table:           sysuserrole.ValidColumn,
+		xxxdemo.Table:               xxxdemo.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

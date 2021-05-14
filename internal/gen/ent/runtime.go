@@ -15,6 +15,7 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
+	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
 	"github.com/wanhello/omgind/internal/schema/entity"
 	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
@@ -687,4 +688,49 @@ func init() {
 	sysuserroleDescID := sysuserroleFields[0].Descriptor()
 	// sysuserrole.DefaultID holds the default value on creation for the id field.
 	sysuserrole.DefaultID = sysuserroleDescID.Default.(func() pulid.ID)
+	xxxdemoMixin := entity.XxxDemo{}.Mixin()
+	xxxdemoMixinFields0 := xxxdemoMixin[0].Fields()
+	_ = xxxdemoMixinFields0
+	xxxdemoMixinFields1 := xxxdemoMixin[1].Fields()
+	_ = xxxdemoMixinFields1
+	xxxdemoMixinFields2 := xxxdemoMixin[2].Fields()
+	_ = xxxdemoMixinFields2
+	xxxdemoFields := entity.XxxDemo{}.Fields()
+	_ = xxxdemoFields
+	// xxxdemoDescMemo is the schema descriptor for memo field.
+	xxxdemoDescMemo := xxxdemoMixinFields0[0].Descriptor()
+	// xxxdemo.DefaultMemo holds the default value on creation for the memo field.
+	xxxdemo.DefaultMemo = xxxdemoDescMemo.Default.(string)
+	// xxxdemo.MemoValidator is a validator for the "memo" field. It is called by the builders before save.
+	xxxdemo.MemoValidator = xxxdemoDescMemo.Validators[0].(func(string) error)
+	// xxxdemoDescSort is the schema descriptor for sort field.
+	xxxdemoDescSort := xxxdemoMixinFields1[0].Descriptor()
+	// xxxdemo.DefaultSort holds the default value on creation for the sort field.
+	xxxdemo.DefaultSort = xxxdemoDescSort.Default.(int32)
+	// xxxdemoDescCreatedAt is the schema descriptor for created_at field.
+	xxxdemoDescCreatedAt := xxxdemoMixinFields2[0].Descriptor()
+	// xxxdemo.DefaultCreatedAt holds the default value on creation for the created_at field.
+	xxxdemo.DefaultCreatedAt = xxxdemoDescCreatedAt.Default.(func() time.Time)
+	// xxxdemoDescUpdatedAt is the schema descriptor for updated_at field.
+	xxxdemoDescUpdatedAt := xxxdemoMixinFields2[1].Descriptor()
+	// xxxdemo.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	xxxdemo.DefaultUpdatedAt = xxxdemoDescUpdatedAt.Default.(func() time.Time)
+	// xxxdemo.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	xxxdemo.UpdateDefaultUpdatedAt = xxxdemoDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// xxxdemoDescCode is the schema descriptor for code field.
+	xxxdemoDescCode := xxxdemoFields[1].Descriptor()
+	// xxxdemo.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	xxxdemo.CodeValidator = xxxdemoDescCode.Validators[0].(func(string) error)
+	// xxxdemoDescName is the schema descriptor for name field.
+	xxxdemoDescName := xxxdemoFields[2].Descriptor()
+	// xxxdemo.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	xxxdemo.NameValidator = xxxdemoDescName.Validators[0].(func(string) error)
+	// xxxdemoDescStatus is the schema descriptor for status field.
+	xxxdemoDescStatus := xxxdemoFields[3].Descriptor()
+	// xxxdemo.DefaultStatus holds the default value on creation for the status field.
+	xxxdemo.DefaultStatus = xxxdemoDescStatus.Default.(int)
+	// xxxdemoDescID is the schema descriptor for id field.
+	xxxdemoDescID := xxxdemoFields[0].Descriptor()
+	// xxxdemo.DefaultID holds the default value on creation for the id field.
+	xxxdemo.DefaultID = xxxdemoDescID.Default.(func() pulid.ID)
 }

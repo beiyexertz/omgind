@@ -32,6 +32,8 @@ type Tx struct {
 	SysUser *SysUserClient
 	// SysUserRole is the client for interacting with the SysUserRole builders.
 	SysUserRole *SysUserRoleClient
+	// XxxDemo is the client for interacting with the XxxDemo builders.
+	XxxDemo *XxxDemoClient
 
 	// lazily loaded.
 	client     *Client
@@ -177,6 +179,7 @@ func (tx *Tx) init() {
 	tx.SysRoleMenu = NewSysRoleMenuClient(tx.config)
 	tx.SysUser = NewSysUserClient(tx.config)
 	tx.SysUserRole = NewSysUserRoleClient(tx.config)
+	tx.XxxDemo = NewXxxDemoClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

@@ -991,3 +991,97 @@ func (u *SysUserRoleUpdateOne) SetInput(i UpdateSysUserRoleInput) *SysUserRoleUp
 	i.Mutate(u.Mutation())
 	return u
 }
+
+// CreateXxxDemoInput represents a mutation input for creating xxxdemos.
+type CreateXxxDemoInput struct {
+	Memo      *string
+	Sort      *int32
+	CreatedAt *time.Time
+	UpdatedAt *time.Time
+	DeletedAt *time.Time
+	Code      string
+	Name      string
+	Status    *int
+}
+
+// Mutate applies the CreateXxxDemoInput on the XxxDemoCreate builder.
+func (i *CreateXxxDemoInput) Mutate(m *XxxDemoCreate) {
+	if v := i.Memo; v != nil {
+		m.SetMemo(*v)
+	}
+	if v := i.Sort; v != nil {
+		m.SetSort(*v)
+	}
+	if v := i.CreatedAt; v != nil {
+		m.SetCreatedAt(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if v := i.DeletedAt; v != nil {
+		m.SetDeletedAt(*v)
+	}
+	m.SetCode(i.Code)
+	m.SetName(i.Name)
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+}
+
+// SetInput applies the change-set in the CreateXxxDemoInput on the create builder.
+func (c *XxxDemoCreate) SetInput(i CreateXxxDemoInput) *XxxDemoCreate {
+	i.Mutate(c)
+	return c
+}
+
+// UpdateXxxDemoInput represents a mutation input for updating xxxdemos.
+type UpdateXxxDemoInput struct {
+	Memo           *string
+	Sort           *int32
+	UpdatedAt      *time.Time
+	DeletedAt      *time.Time
+	ClearDeletedAt bool
+	Code           *string
+	Name           *string
+	Status         *int
+}
+
+// Mutate applies the UpdateXxxDemoInput on the XxxDemoMutation.
+func (i *UpdateXxxDemoInput) Mutate(m *XxxDemoMutation) {
+	if v := i.Memo; v != nil {
+		m.SetMemo(*v)
+	}
+	if v := i.Sort; v != nil {
+		m.SetSort(*v)
+	}
+	if v := i.UpdatedAt; v != nil {
+		m.SetUpdatedAt(*v)
+	}
+	if i.ClearDeletedAt {
+		m.ClearDeletedAt()
+	}
+	if v := i.DeletedAt; v != nil {
+		m.SetDeletedAt(*v)
+	}
+	if v := i.Code; v != nil {
+		m.SetCode(*v)
+	}
+	if v := i.Name; v != nil {
+		m.SetName(*v)
+	}
+	if v := i.Status; v != nil {
+		m.SetStatus(*v)
+	}
+}
+
+// SetInput applies the change-set in the UpdateXxxDemoInput on the update builder.
+func (u *XxxDemoUpdate) SetInput(i UpdateXxxDemoInput) *XxxDemoUpdate {
+	i.Mutate(u.Mutation())
+	return u
+}
+
+// SetInput applies the change-set in the UpdateXxxDemoInput on the update-one builder.
+func (u *XxxDemoUpdateOne) SetInput(i UpdateXxxDemoInput) *XxxDemoUpdateOne {
+	i.Mutate(u.Mutation())
+	return u
+}
