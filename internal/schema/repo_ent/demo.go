@@ -2,7 +2,6 @@ package repo_ent
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/google/wire"
@@ -10,7 +9,6 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
 	"github.com/wanhello/omgind/pkg/errors"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 )
 
@@ -112,11 +110,6 @@ func (a *Demo) Query(ctx context.Context, params schema.DemoQueryParam, opts ...
 
 // Get 查询指定数据
 func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptions) (*schema.Demo, error) {
-	uid, err := pulid.Parse(id)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println(" == -- 000 demo get +++++++ ", uid)
 
 	xxxdemo, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(id)).Only(ctx)
 	if err != nil {
@@ -130,14 +123,8 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, error) {
 
 	iteminput := toEntCreateDemoInput(&item)
-	fmt.Println(" --- -- 0000 ==== ", iteminput.Code)
-	fmt.Println(" --- -- 0000 ==== ", iteminput.Name)
-	fmt.Println(" --- -- 0000 ==== ", iteminput.Sort)
-	fmt.Println(" --- -- 0000 ==== ", iteminput.Memo)
-	fmt.Println(" --- -- 0000 ==== ", iteminput.Status)
 
 	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
-	//xxxdemo, err := a.EntCli.XxxDemo.Create().SetCode(item.Code).SetName(item.Name).SetMemo(item.Memo).SetSort(int32(item.Sort)).SetStatus(item.Status).Save(ctx)
 
 	if err != nil {
 		return nil, err
@@ -148,15 +135,6 @@ func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, erro
 
 // Update 更新数据
 func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema.Demo, error) {
-
-	uid, err := pulid.Parse(id)
-
-	fmt.Println(" == -- 000 demo Update +++++++ ", uid)
-	fmt.Println(" == -- 000 demo Update +++++++ ", err)
-
-	if err != nil {
-		return nil, err
-	}
 
 	oitem, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(id)).Only(ctx)
 	if err != nil {
@@ -172,15 +150,6 @@ func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema
 
 // Delete 删除数据
 func (a *Demo) Delete(ctx context.Context, id string) error {
-	uid, err := pulid.Parse(id)
-
-	fmt.Println(" == -- 000 demo Delete +++++++ ", uid)
-	fmt.Println(" == -- 000 demo Delete +++++++ ", err)
-
-	if err != nil {
-		return err
-	}
-	fmt.Println(" == -- 000 demo Delete +++++++ ", uid)
 
 	xxxdemo, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(id)).Only(ctx)
 
@@ -194,14 +163,7 @@ func (a *Demo) Delete(ctx context.Context, id string) error {
 
 // UpdateStatus 更新状态
 func (a *Demo) UpdateStatus(ctx context.Context, id string, status int) error {
-	uid, err := pulid.Parse(id)
 
-	fmt.Println(" == -- 000 demo UpdateStatus +++++++ ", uid)
-	fmt.Println(" == -- 000 demo UpdateStatus +++++++ ", err)
-
-	if err != nil {
-		return err
-	}
 	_, err1 := a.EntCli.XxxDemo.Update().Where(xxxdemo.IDEQ(id)).SetStatus(status).Save(ctx)
 
 	return errors.WithStack(err1)
