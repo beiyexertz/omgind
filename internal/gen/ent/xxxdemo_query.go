@@ -13,7 +13,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // XxxDemoQuery is the builder for querying XxxDemo entities.
@@ -85,8 +84,8 @@ func (xdq *XxxDemoQuery) FirstX(ctx context.Context) *XxxDemo {
 
 // FirstID returns the first XxxDemo ID from the query.
 // Returns a *NotFoundError when no XxxDemo ID was found.
-func (xdq *XxxDemoQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (xdq *XxxDemoQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = xdq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -98,7 +97,7 @@ func (xdq *XxxDemoQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (xdq *XxxDemoQuery) FirstIDX(ctx context.Context) pulid.ID {
+func (xdq *XxxDemoQuery) FirstIDX(ctx context.Context) string {
 	id, err := xdq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -136,8 +135,8 @@ func (xdq *XxxDemoQuery) OnlyX(ctx context.Context) *XxxDemo {
 // OnlyID is like Only, but returns the only XxxDemo ID in the query.
 // Returns a *NotSingularError when exactly one XxxDemo ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (xdq *XxxDemoQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (xdq *XxxDemoQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = xdq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -153,7 +152,7 @@ func (xdq *XxxDemoQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (xdq *XxxDemoQuery) OnlyIDX(ctx context.Context) pulid.ID {
+func (xdq *XxxDemoQuery) OnlyIDX(ctx context.Context) string {
 	id, err := xdq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -179,8 +178,8 @@ func (xdq *XxxDemoQuery) AllX(ctx context.Context) []*XxxDemo {
 }
 
 // IDs executes the query and returns a list of XxxDemo IDs.
-func (xdq *XxxDemoQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
-	var ids []pulid.ID
+func (xdq *XxxDemoQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := xdq.Select(xxxdemo.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -188,7 +187,7 @@ func (xdq *XxxDemoQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (xdq *XxxDemoQuery) IDsX(ctx context.Context) []pulid.ID {
+func (xdq *XxxDemoQuery) IDsX(ctx context.Context) []string {
 	ids, err := xdq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -354,7 +353,7 @@ func (xdq *XxxDemoQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   xxxdemo.Table,
 			Columns: xxxdemo.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: xxxdemo.FieldID,
 			},
 		},

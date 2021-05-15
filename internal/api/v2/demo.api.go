@@ -56,6 +56,7 @@ func (a *Demo) Create(c *gin.Context) {
 	}
 
 	item.Creator = ginx.GetUserID(c)
+
 	result, err := a.DemoSrv.Create(ctx, item)
 	if err != nil {
 		ginx.ResError(c, err)

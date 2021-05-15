@@ -157,7 +157,7 @@ func (suru *SysUserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysuserrole.FieldID,
 			},
 		},
@@ -359,7 +359,7 @@ func (suruo *SysUserRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysUserR
 			Table:   sysuserrole.Table,
 			Columns: sysuserrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysuserrole.FieldID,
 			},
 		},

@@ -186,7 +186,7 @@ func (sjbu *SysJwtBlockUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysjwtblock.Table,
 			Columns: sysjwtblock.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysjwtblock.FieldID,
 			},
 		},
@@ -431,7 +431,7 @@ func (sjbuo *SysJwtBlockUpdateOne) sqlSave(ctx context.Context) (_node *SysJwtBl
 			Table:   sysjwtblock.Table,
 			Columns: sysjwtblock.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysjwtblock.FieldID,
 			},
 		},

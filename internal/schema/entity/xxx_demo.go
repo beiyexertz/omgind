@@ -3,6 +3,7 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -30,7 +31,7 @@ func (xd XxxDemo) Mixin() []ent.Mixin {
 func (xd XxxDemo) Fields() []ent.Field {
 
 	return []ent.Field{
-		mixin.IdField("01"),
+		mixin.IdField(),
 
 		field.String("code").StorageKey("code").
 			MaxLen(128).StructTag(`json:"code,omitempty"`).Comment("编号"),
@@ -44,5 +45,11 @@ func (xd XxxDemo) Fields() []ent.Field {
 func (xd XxxDemo) Edges() []ent.Edge {
 	return []ent.Edge{
 		//edge.To("SysDictItems", SysDictItem.Type),
+	}
+}
+
+func (xd XxxDemo) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("id").Unique(),
 	}
 }

@@ -69,7 +69,7 @@ func (sjbd *SysJwtBlockDelete) sqlExec(ctx context.Context) (int, error) {
 		Node: &sqlgraph.NodeSpec{
 			Table: sysjwtblock.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysjwtblock.FieldID,
 			},
 		},

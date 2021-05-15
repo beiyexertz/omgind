@@ -3,6 +3,7 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -20,7 +21,7 @@ func (rm SysRoleMenu) Mixin() []ent.Mixin {
 // Fields of the SysRoleMenu.
 func (SysRoleMenu) Fields() []ent.Field {
 	return []ent.Field{
-		mixin.IdField("01"),
+		mixin.IdField(),
 
 		field.String("role_id").MaxLen(36).NotEmpty().Comment("角色ID, sys_role.id"),
 		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID, sys_menu.id"),
@@ -34,3 +35,9 @@ func (SysRoleMenu) Fields() []ent.Field {
 //		//edge.To(),
 //	}
 //}
+
+func (SysRoleMenu) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("id").Unique(),
+	}
+}

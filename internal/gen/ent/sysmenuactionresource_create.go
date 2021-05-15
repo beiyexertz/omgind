@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuActionResourceCreate is the builder for creating a SysMenuActionResource entity.
@@ -124,8 +123,16 @@ func (smarc *SysMenuActionResourceCreate) SetActionID(s string) *SysMenuActionRe
 }
 
 // SetID sets the "id" field.
-func (smarc *SysMenuActionResourceCreate) SetID(pu pulid.ID) *SysMenuActionResourceCreate {
-	smarc.mutation.SetID(pu)
+func (smarc *SysMenuActionResourceCreate) SetID(s string) *SysMenuActionResourceCreate {
+	smarc.mutation.SetID(s)
+	return smarc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (smarc *SysMenuActionResourceCreate) SetNillableID(s *string) *SysMenuActionResourceCreate {
+	if s != nil {
+		smarc.SetID(*s)
+	}
 	return smarc
 }
 
@@ -253,6 +260,11 @@ func (smarc *SysMenuActionResourceCreate) check() error {
 			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
 		}
 	}
+	if v, ok := smarc.mutation.ID(); ok {
+		if err := sysmenuactionresource.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -273,7 +285,7 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysmenuactionresource.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenuactionresource.FieldID,
 			},
 		}

@@ -13,7 +13,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserQuery is the builder for querying SysUser entities.
@@ -85,8 +84,8 @@ func (suq *SysUserQuery) FirstX(ctx context.Context) *SysUser {
 
 // FirstID returns the first SysUser ID from the query.
 // Returns a *NotFoundError when no SysUser ID was found.
-func (suq *SysUserQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (suq *SysUserQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = suq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -98,7 +97,7 @@ func (suq *SysUserQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (suq *SysUserQuery) FirstIDX(ctx context.Context) pulid.ID {
+func (suq *SysUserQuery) FirstIDX(ctx context.Context) string {
 	id, err := suq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -136,8 +135,8 @@ func (suq *SysUserQuery) OnlyX(ctx context.Context) *SysUser {
 // OnlyID is like Only, but returns the only SysUser ID in the query.
 // Returns a *NotSingularError when exactly one SysUser ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (suq *SysUserQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (suq *SysUserQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = suq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -153,7 +152,7 @@ func (suq *SysUserQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (suq *SysUserQuery) OnlyIDX(ctx context.Context) pulid.ID {
+func (suq *SysUserQuery) OnlyIDX(ctx context.Context) string {
 	id, err := suq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -179,8 +178,8 @@ func (suq *SysUserQuery) AllX(ctx context.Context) []*SysUser {
 }
 
 // IDs executes the query and returns a list of SysUser IDs.
-func (suq *SysUserQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
-	var ids []pulid.ID
+func (suq *SysUserQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := suq.Select(sysuser.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -188,7 +187,7 @@ func (suq *SysUserQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (suq *SysUserQuery) IDsX(ctx context.Context) []pulid.ID {
+func (suq *SysUserQuery) IDsX(ctx context.Context) []string {
 	ids, err := suq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -354,7 +353,7 @@ func (suq *SysUserQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysuser.Table,
 			Columns: sysuser.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysuser.FieldID,
 			},
 		},

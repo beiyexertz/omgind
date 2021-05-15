@@ -10,7 +10,7 @@ import (
 var (
 	// SysDictsColumns holds the columns for the "sys_dicts" table.
 	SysDictsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -47,11 +47,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysDictsColumns[5]},
 			},
+			{
+				Name:    "sysdict_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysDictsColumns[0]},
+			},
 		},
 	}
 	// SysDictItemsColumns holds the columns for the "sys_dict_items" table.
 	SysDictItemsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -89,11 +94,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysDictItemsColumns[5]},
 			},
+			{
+				Name:    "sysdictitem_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysDictItemsColumns[0]},
+			},
 		},
 	}
 	// SysJwtBlocksColumns holds the columns for the "sys_jwt_blocks" table.
 	SysJwtBlocksColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
@@ -128,11 +138,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysJwtBlocksColumns[5]},
 			},
+			{
+				Name:    "sysjwtblock_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysJwtBlocksColumns[0]},
+			},
 		},
 	}
 	// SysMenusColumns holds the columns for the "sys_menus" table.
 	SysMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -179,6 +194,11 @@ var (
 				Columns: []*schema.Column{SysMenusColumns[6]},
 			},
 			{
+				Name:    "sysmenu_id",
+				Unique:  false,
+				Columns: []*schema.Column{SysMenusColumns[0]},
+			},
+			{
 				Name:    "sysmenu_pid",
 				Unique:  false,
 				Columns: []*schema.Column{SysMenusColumns[11]},
@@ -192,7 +212,7 @@ var (
 	}
 	// SysMenuActionsColumns holds the columns for the "sys_menu_actions" table.
 	SysMenuActionsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
@@ -235,11 +255,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysMenuActionsColumns[6]},
 			},
+			{
+				Name:    "sysmenuaction_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysMenuActionsColumns[0]},
+			},
 		},
 	}
 	// SysMenuActionResourcesColumns holds the columns for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -282,11 +307,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysMenuActionResourcesColumns[6]},
 			},
+			{
+				Name:    "sysmenuactionresource_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysMenuActionResourcesColumns[0]},
+			},
 		},
 	}
 	// SysRolesColumns holds the columns for the "sys_roles" table.
 	SysRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
@@ -327,11 +357,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysRolesColumns[6]},
 			},
+			{
+				Name:    "sysrole_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysRolesColumns[0]},
+			},
 		},
 	}
 	// SysRoleMenusColumns holds the columns for the "sys_role_menus" table.
 	SysRoleMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
@@ -361,11 +396,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysRoleMenusColumns[3]},
 			},
+			{
+				Name:    "sysrolemenu_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysRoleMenusColumns[0]},
+			},
 		},
 	}
 	// SysUsersColumns holds the columns for the "sys_users" table.
 	SysUsersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
@@ -417,11 +457,16 @@ var (
 				Unique:  true,
 				Columns: []*schema.Column{SysUsersColumns[6]},
 			},
+			{
+				Name:    "sysuser_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysUsersColumns[0]},
+			},
 		},
 	}
 	// SysUserRolesColumns holds the columns for the "sys_user_roles" table.
 	SysUserRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
@@ -450,11 +495,16 @@ var (
 				Unique:  false,
 				Columns: []*schema.Column{SysUserRolesColumns[3]},
 			},
+			{
+				Name:    "sysuserrole_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysUserRolesColumns[0]},
+			},
 		},
 	}
 	// XxxDemosColumns holds the columns for the "xxx_demos" table.
 	XxxDemosColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeString, Size: 26},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -490,6 +540,11 @@ var (
 				Name:    "xxxdemo_dltd_at",
 				Unique:  false,
 				Columns: []*schema.Column{XxxDemosColumns[5]},
+			},
+			{
+				Name:    "xxxdemo_id",
+				Unique:  true,
+				Columns: []*schema.Column{XxxDemosColumns[0]},
 			},
 		},
 	}

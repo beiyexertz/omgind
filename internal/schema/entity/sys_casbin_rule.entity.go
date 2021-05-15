@@ -17,7 +17,7 @@ package entity
 //// Fields of the SysCasbinRule.
 //func (SysCasbinRule) Fields() []ent.Field {
 //	return []ent.Field{
-//		mixin.IdField("01"),
+//		mixin.IdField(),
 //		field.String("PType").MaxLen(128).StorageKey("p_type").StructTag(`json:"p_type,omitempty"`).Nillable().Optional().Comment("规则类型"),
 //		field.String("RoleID").MaxLen(128).StorageKey("v0").StructTag(`json:"v0,omitempty"`).Nillable().Optional().Comment("角色ID"),
 //		field.String("Path").MaxLen(128).StorageKey("v1").StructTag(`json:"v1,omitempty"`).Nillable().Optional().Comment("api路径"),

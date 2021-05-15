@@ -310,7 +310,7 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysuser.Table,
 			Columns: sysuser.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysuser.FieldID,
 			},
 		},
@@ -753,7 +753,7 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 			Table:   sysuser.Table,
 			Columns: sysuser.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysuser.FieldID,
 			},
 		},

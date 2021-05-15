@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDictCreate is the builder for creating a SysDict entity.
@@ -118,8 +117,16 @@ func (sdc *SysDictCreate) SetNillableStatus(b *bool) *SysDictCreate {
 }
 
 // SetID sets the "id" field.
-func (sdc *SysDictCreate) SetID(pu pulid.ID) *SysDictCreate {
-	sdc.mutation.SetID(pu)
+func (sdc *SysDictCreate) SetID(s string) *SysDictCreate {
+	sdc.mutation.SetID(s)
+	return sdc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (sdc *SysDictCreate) SetNillableID(s *string) *SysDictCreate {
+	if s != nil {
+		sdc.SetID(*s)
+	}
 	return sdc
 }
 
@@ -239,6 +246,11 @@ func (sdc *SysDictCreate) check() error {
 	if _, ok := sdc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
 	}
+	if v, ok := sdc.mutation.ID(); ok {
+		if err := sysdict.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -259,7 +271,7 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysdict.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysdict.FieldID,
 			},
 		}

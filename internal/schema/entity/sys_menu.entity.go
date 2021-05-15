@@ -24,7 +24,7 @@ func (sm SysMenu) Mixin() []ent.Mixin {
 // Fields of the SysMenu.
 func (SysMenu) Fields() []ent.Field {
 	return []ent.Field{
-		mixin.IdField("01"),
+		mixin.IdField(),
 
 		field.String("name").StorageKey("name").MaxLen(64).NotEmpty().
 			StructTag(`json:"name,omitempty"`).Comment("菜单名称"),
@@ -52,6 +52,7 @@ func (SysMenu) Fields() []ent.Field {
 
 func (sm SysMenu) Indexes() []ent.Index {
 	return []ent.Index{
+		index.Fields("id"),
 		index.Fields("parent_id"),
 		index.Fields("parent_id", "name"),
 	}

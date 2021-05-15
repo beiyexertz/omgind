@@ -218,7 +218,7 @@ func (xdu *XxxDemoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   xxxdemo.Table,
 			Columns: xxxdemo.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: xxxdemo.FieldID,
 			},
 		},
@@ -516,7 +516,7 @@ func (xduo *XxxDemoUpdateOne) sqlSave(ctx context.Context) (_node *XxxDemo, err 
 			Table:   xxxdemo.Table,
 			Columns: xxxdemo.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: xxxdemo.FieldID,
 			},
 		},

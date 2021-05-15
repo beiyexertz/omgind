@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // XxxDemoCreate is the builder for creating a XxxDemo entity.
@@ -118,8 +117,16 @@ func (xdc *XxxDemoCreate) SetNillableStatus(i *int) *XxxDemoCreate {
 }
 
 // SetID sets the "id" field.
-func (xdc *XxxDemoCreate) SetID(pu pulid.ID) *XxxDemoCreate {
-	xdc.mutation.SetID(pu)
+func (xdc *XxxDemoCreate) SetID(s string) *XxxDemoCreate {
+	xdc.mutation.SetID(s)
+	return xdc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (xdc *XxxDemoCreate) SetNillableID(s *string) *XxxDemoCreate {
+	if s != nil {
+		xdc.SetID(*s)
+	}
 	return xdc
 }
 
@@ -239,6 +246,11 @@ func (xdc *XxxDemoCreate) check() error {
 	if _, ok := xdc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
 	}
+	if v, ok := xdc.mutation.ID(); ok {
+		if err := xxxdemo.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -259,7 +271,7 @@ func (xdc *XxxDemoCreate) createSpec() (*XxxDemo, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: xxxdemo.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: xxxdemo.FieldID,
 			},
 		}

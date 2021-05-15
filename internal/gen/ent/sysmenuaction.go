@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuAction is the model entity for the SysMenuAction schema.
 type SysMenuAction struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
 	Sort int32 `json:"sort,omitempty"`
@@ -51,11 +50,9 @@ func (*SysMenuAction) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenuaction.FieldID:
-			values[i] = new(pulid.ID)
 		case sysmenuaction.FieldSort, sysmenuaction.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case sysmenuaction.FieldMemo, sysmenuaction.FieldMenuID, sysmenuaction.FieldCode, sysmenuaction.FieldName:
+		case sysmenuaction.FieldID, sysmenuaction.FieldMemo, sysmenuaction.FieldMenuID, sysmenuaction.FieldCode, sysmenuaction.FieldName:
 			values[i] = new(sql.NullString)
 		case sysmenuaction.FieldCreatedAt, sysmenuaction.FieldUpdatedAt, sysmenuaction.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -75,10 +72,10 @@ func (sma *SysMenuAction) assignValues(columns []string, values []interface{}) e
 	for i := range columns {
 		switch columns[i] {
 		case sysmenuaction.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				sma.ID = *value
+			} else if value.Valid {
+				sma.ID = value.String
 			}
 		case sysmenuaction.FieldSort:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

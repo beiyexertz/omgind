@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRoleCreate is the builder for creating a SysRole entity.
@@ -112,8 +111,16 @@ func (src *SysRoleCreate) SetName(s string) *SysRoleCreate {
 }
 
 // SetID sets the "id" field.
-func (src *SysRoleCreate) SetID(pu pulid.ID) *SysRoleCreate {
-	src.mutation.SetID(pu)
+func (src *SysRoleCreate) SetID(s string) *SysRoleCreate {
+	src.mutation.SetID(s)
+	return src
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableID(s *string) *SysRoleCreate {
+	if s != nil {
+		src.SetID(*s)
+	}
 	return src
 }
 
@@ -225,6 +232,11 @@ func (src *SysRoleCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf("ent: validator failed for field \"name\": %w", err)}
 		}
 	}
+	if v, ok := src.mutation.ID(); ok {
+		if err := sysrole.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -245,7 +257,7 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysrole.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysrole.FieldID,
 			},
 		}

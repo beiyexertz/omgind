@@ -229,7 +229,7 @@ func (smau *SysMenuActionUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Table:   sysmenuaction.Table,
 			Columns: sysmenuaction.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenuaction.FieldID,
 			},
 		},
@@ -545,7 +545,7 @@ func (smauo *SysMenuActionUpdateOne) sqlSave(ctx context.Context) (_node *SysMen
 			Table:   sysmenuaction.Table,
 			Columns: sysmenuaction.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenuaction.FieldID,
 			},
 		},

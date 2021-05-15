@@ -216,7 +216,7 @@ func (sdiu *SysDictItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysdictitem.Table,
 			Columns: sysdictitem.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysdictitem.FieldID,
 			},
 		},
@@ -519,7 +519,7 @@ func (sdiuo *SysDictItemUpdateOne) sqlSave(ctx context.Context) (_node *SysDictI
 			Table:   sysdictitem.Table,
 			Columns: sysdictitem.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysdictitem.FieldID,
 			},
 		},

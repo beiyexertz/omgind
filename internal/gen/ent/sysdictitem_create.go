@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDictItemCreate is the builder for creating a SysDictItem entity.
@@ -116,8 +115,16 @@ func (sdic *SysDictItemCreate) SetDictID(s string) *SysDictItemCreate {
 }
 
 // SetID sets the "id" field.
-func (sdic *SysDictItemCreate) SetID(pu pulid.ID) *SysDictItemCreate {
-	sdic.mutation.SetID(pu)
+func (sdic *SysDictItemCreate) SetID(s string) *SysDictItemCreate {
+	sdic.mutation.SetID(s)
+	return sdic
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (sdic *SysDictItemCreate) SetNillableID(s *string) *SysDictItemCreate {
+	if s != nil {
+		sdic.SetID(*s)
+	}
 	return sdic
 }
 
@@ -236,6 +243,11 @@ func (sdic *SysDictItemCreate) check() error {
 			return &ValidationError{Name: "dict_id", err: fmt.Errorf("ent: validator failed for field \"dict_id\": %w", err)}
 		}
 	}
+	if v, ok := sdic.mutation.ID(); ok {
+		if err := sysdictitem.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -256,7 +268,7 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysdictitem.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysdictitem.FieldID,
 			},
 		}

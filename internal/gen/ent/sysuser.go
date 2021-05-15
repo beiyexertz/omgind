@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUser is the model entity for the SysUser schema.
 type SysUser struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
 	Sort int32 `json:"sort,omitempty"`
@@ -62,11 +61,9 @@ func (*SysUser) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuser.FieldID:
-			values[i] = new(pulid.ID)
 		case sysuser.FieldSort, sysuser.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case sysuser.FieldUserName, sysuser.FieldRealName, sysuser.FieldFirstName, sysuser.FieldLastName, sysuser.FieldPassword, sysuser.FieldEmail, sysuser.FieldPhone, sysuser.FieldSalt:
+		case sysuser.FieldID, sysuser.FieldUserName, sysuser.FieldRealName, sysuser.FieldFirstName, sysuser.FieldLastName, sysuser.FieldPassword, sysuser.FieldEmail, sysuser.FieldPhone, sysuser.FieldSalt:
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -86,10 +83,10 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case sysuser.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				su.ID = *value
+			} else if value.Valid {
+				su.ID = value.String
 			}
 		case sysuser.FieldSort:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

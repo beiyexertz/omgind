@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // XxxDemo is the model entity for the XxxDemo schema.
 type XxxDemo struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -48,11 +47,9 @@ func (*XxxDemo) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case xxxdemo.FieldID:
-			values[i] = new(pulid.ID)
 		case xxxdemo.FieldSort, xxxdemo.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case xxxdemo.FieldMemo, xxxdemo.FieldCode, xxxdemo.FieldName:
+		case xxxdemo.FieldID, xxxdemo.FieldMemo, xxxdemo.FieldCode, xxxdemo.FieldName:
 			values[i] = new(sql.NullString)
 		case xxxdemo.FieldCreatedAt, xxxdemo.FieldUpdatedAt, xxxdemo.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -72,10 +69,10 @@ func (xd *XxxDemo) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case xxxdemo.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				xd.ID = *value
+			} else if value.Valid {
+				xd.ID = value.String
 			}
 		case xxxdemo.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {

@@ -4,8 +4,6 @@ package xxxdemo
 
 import (
 	"time"
-
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 const (
@@ -76,5 +74,7 @@ var (
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() pulid.ID
+	DefaultID func() string
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
 )

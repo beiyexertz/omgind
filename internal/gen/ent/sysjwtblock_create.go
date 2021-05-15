@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysjwtblock"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysJwtBlockCreate is the builder for creating a SysJwtBlock entity.
@@ -98,8 +97,16 @@ func (sjbc *SysJwtBlockCreate) SetJwt(s string) *SysJwtBlockCreate {
 }
 
 // SetID sets the "id" field.
-func (sjbc *SysJwtBlockCreate) SetID(pu pulid.ID) *SysJwtBlockCreate {
-	sjbc.mutation.SetID(pu)
+func (sjbc *SysJwtBlockCreate) SetID(s string) *SysJwtBlockCreate {
+	sjbc.mutation.SetID(s)
+	return sjbc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (sjbc *SysJwtBlockCreate) SetNillableID(s *string) *SysJwtBlockCreate {
+	if s != nil {
+		sjbc.SetID(*s)
+	}
 	return sjbc
 }
 
@@ -204,6 +211,11 @@ func (sjbc *SysJwtBlockCreate) check() error {
 			return &ValidationError{Name: "jwt", err: fmt.Errorf("ent: validator failed for field \"jwt\": %w", err)}
 		}
 	}
+	if v, ok := sjbc.mutation.ID(); ok {
+		if err := sysjwtblock.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -224,7 +236,7 @@ func (sjbc *SysJwtBlockCreate) createSpec() (*SysJwtBlock, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysjwtblock.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysjwtblock.FieldID,
 			},
 		}

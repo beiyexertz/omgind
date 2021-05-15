@@ -1,6 +1,7 @@
 package mixin
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -63,12 +64,31 @@ func (idg *idGenerator) newULID() pulid.ID {
 	t := timeFn()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
 	id := pulid.ID{Prefix: idg.prefix}
+
 	id.ULID = ulid.MustNew(ulid.Timestamp(t), entropy)
+
+	fmt.Println(" 0000 ------- 0000 ", id.String())
+
 	return id
 }
 
-func IdField(prefix string) ent.Field {
+func IdField1(prefix string) ent.Field {
 	idGen := &idGenerator{prefix: prefix}
+
 	return field.UUID("id", pulid.ID{}).Immutable().
 		Unique().Default(idGen.newULID)
+}
+
+func IdField() ent.Field {
+	// return field.UUID("id", uuid.UUID{}).Unique().Default(uuid.New)
+	// return field.UUID("id", uuid.UUID{}).Default(uuid.New)
+	return field.String("id").MaxLen(26).NotEmpty().Immutable().DefaultFunc(func() string {
+
+		seed := time.Now().UnixNano()
+		source := rand.NewSource(seed)
+		entropy := rand.New(source)
+
+		return ulid.MustNew(ulid.Timestamp(time.Now()), entropy).String()
+	})
+
 }

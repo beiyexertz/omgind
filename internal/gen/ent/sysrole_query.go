@@ -13,7 +13,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRoleQuery is the builder for querying SysRole entities.
@@ -85,8 +84,8 @@ func (srq *SysRoleQuery) FirstX(ctx context.Context) *SysRole {
 
 // FirstID returns the first SysRole ID from the query.
 // Returns a *NotFoundError when no SysRole ID was found.
-func (srq *SysRoleQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (srq *SysRoleQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = srq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -98,7 +97,7 @@ func (srq *SysRoleQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (srq *SysRoleQuery) FirstIDX(ctx context.Context) pulid.ID {
+func (srq *SysRoleQuery) FirstIDX(ctx context.Context) string {
 	id, err := srq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -136,8 +135,8 @@ func (srq *SysRoleQuery) OnlyX(ctx context.Context) *SysRole {
 // OnlyID is like Only, but returns the only SysRole ID in the query.
 // Returns a *NotSingularError when exactly one SysRole ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (srq *SysRoleQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (srq *SysRoleQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = srq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -153,7 +152,7 @@ func (srq *SysRoleQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (srq *SysRoleQuery) OnlyIDX(ctx context.Context) pulid.ID {
+func (srq *SysRoleQuery) OnlyIDX(ctx context.Context) string {
 	id, err := srq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -179,8 +178,8 @@ func (srq *SysRoleQuery) AllX(ctx context.Context) []*SysRole {
 }
 
 // IDs executes the query and returns a list of SysRole IDs.
-func (srq *SysRoleQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
-	var ids []pulid.ID
+func (srq *SysRoleQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := srq.Select(sysrole.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -188,7 +187,7 @@ func (srq *SysRoleQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (srq *SysRoleQuery) IDsX(ctx context.Context) []pulid.ID {
+func (srq *SysRoleQuery) IDsX(ctx context.Context) []string {
 	ids, err := srq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -354,7 +353,7 @@ func (srq *SysRoleQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysrole.Table,
 			Columns: sysrole.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysrole.FieldID,
 			},
 		},

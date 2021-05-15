@@ -4,8 +4,6 @@ package sysjwtblock
 
 import (
 	"time"
-
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 const (
@@ -66,5 +64,7 @@ var (
 	// JwtValidator is a validator for the "jwt" field. It is called by the builders before save.
 	JwtValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() pulid.ID
+	DefaultID func() string
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
 )

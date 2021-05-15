@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRoleMenuCreate is the builder for creating a SysRoleMenu entity.
@@ -90,8 +89,16 @@ func (srmc *SysRoleMenuCreate) SetNillableActionID(s *string) *SysRoleMenuCreate
 }
 
 // SetID sets the "id" field.
-func (srmc *SysRoleMenuCreate) SetID(pu pulid.ID) *SysRoleMenuCreate {
-	srmc.mutation.SetID(pu)
+func (srmc *SysRoleMenuCreate) SetID(s string) *SysRoleMenuCreate {
+	srmc.mutation.SetID(s)
+	return srmc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (srmc *SysRoleMenuCreate) SetNillableID(s *string) *SysRoleMenuCreate {
+	if s != nil {
+		srmc.SetID(*s)
+	}
 	return srmc
 }
 
@@ -190,6 +197,11 @@ func (srmc *SysRoleMenuCreate) check() error {
 			return &ValidationError{Name: "action_id", err: fmt.Errorf("ent: validator failed for field \"action_id\": %w", err)}
 		}
 	}
+	if v, ok := srmc.mutation.ID(); ok {
+		if err := sysrolemenu.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -210,7 +222,7 @@ func (srmc *SysRoleMenuCreate) createSpec() (*SysRoleMenu, *sqlgraph.CreateSpec)
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysrolemenu.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		}

@@ -3,6 +3,7 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -20,8 +21,14 @@ func (sjb SysJwtBlock) Mixin() []ent.Mixin {
 
 func (sjb SysJwtBlock) Fields() []ent.Field {
 	return []ent.Field{
-		mixin.IdField("01"),
+		mixin.IdField(),
 
 		field.Text("jwt").StorageKey("jwt").NotEmpty().Comment("jwt"),
+	}
+}
+
+func (SysJwtBlock) Indexes() []ent.Index {
+	return []ent.Index{
+		index.Fields("id").Unique(),
 	}
 }

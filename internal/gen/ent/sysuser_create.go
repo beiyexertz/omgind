@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserCreate is the builder for creating a SysUser entity.
@@ -172,8 +171,16 @@ func (suc *SysUserCreate) SetNillableSalt(s *string) *SysUserCreate {
 }
 
 // SetID sets the "id" field.
-func (suc *SysUserCreate) SetID(pu pulid.ID) *SysUserCreate {
-	suc.mutation.SetID(pu)
+func (suc *SysUserCreate) SetID(s string) *SysUserCreate {
+	suc.mutation.SetID(s)
+	return suc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableID(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetID(*s)
+	}
 	return suc
 }
 
@@ -319,6 +326,11 @@ func (suc *SysUserCreate) check() error {
 	if _, ok := suc.mutation.Salt(); !ok {
 		return &ValidationError{Name: "salt", err: errors.New("ent: missing required field \"salt\"")}
 	}
+	if v, ok := suc.mutation.ID(); ok {
+		if err := sysuser.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -339,7 +351,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysuser.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysuser.FieldID,
 			},
 		}

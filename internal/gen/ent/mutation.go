@@ -20,7 +20,6 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 
 	"entgo.io/ent"
 )
@@ -52,7 +51,7 @@ type SysDictMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -88,7 +87,7 @@ func newSysDictMutation(c config, op Op, opts ...sysdictOption) *SysDictMutation
 }
 
 // withSysDictID sets the ID field of the mutation.
-func withSysDictID(id pulid.ID) sysdictOption {
+func withSysDictID(id string) sysdictOption {
 	return func(m *SysDictMutation) {
 		var (
 			err   error
@@ -140,13 +139,13 @@ func (m SysDictMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysDict entities.
-func (m *SysDictMutation) SetID(id pulid.ID) {
+func (m *SysDictMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysDictMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysDictMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -781,7 +780,7 @@ type SysDictItemMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -819,7 +818,7 @@ func newSysDictItemMutation(c config, op Op, opts ...sysdictitemOption) *SysDict
 }
 
 // withSysDictItemID sets the ID field of the mutation.
-func withSysDictItemID(id pulid.ID) sysdictitemOption {
+func withSysDictItemID(id string) sysdictitemOption {
 	return func(m *SysDictItemMutation) {
 		var (
 			err   error
@@ -871,13 +870,13 @@ func (m SysDictItemMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysDictItem entities.
-func (m *SysDictItemMutation) SetID(id pulid.ID) {
+func (m *SysDictItemMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysDictItemMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysDictItemMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -1597,7 +1596,7 @@ type SysJwtBlockMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	memo          *string
 	created_at    *time.Time
 	updated_at    *time.Time
@@ -1631,7 +1630,7 @@ func newSysJwtBlockMutation(c config, op Op, opts ...sysjwtblockOption) *SysJwtB
 }
 
 // withSysJwtBlockID sets the ID field of the mutation.
-func withSysJwtBlockID(id pulid.ID) sysjwtblockOption {
+func withSysJwtBlockID(id string) sysjwtblockOption {
 	return func(m *SysJwtBlockMutation) {
 		var (
 			err   error
@@ -1683,13 +1682,13 @@ func (m SysJwtBlockMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysJwtBlock entities.
-func (m *SysJwtBlockMutation) SetID(id pulid.ID) {
+func (m *SysJwtBlockMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysJwtBlockMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysJwtBlockMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -2218,7 +2217,7 @@ type SysMenuMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -2259,7 +2258,7 @@ func newSysMenuMutation(c config, op Op, opts ...sysmenuOption) *SysMenuMutation
 }
 
 // withSysMenuID sets the ID field of the mutation.
-func withSysMenuID(id pulid.ID) sysmenuOption {
+func withSysMenuID(id string) sysmenuOption {
 	return func(m *SysMenuMutation) {
 		var (
 			err   error
@@ -2311,13 +2310,13 @@ func (m SysMenuMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysMenu entities.
-func (m *SysMenuMutation) SetID(id pulid.ID) {
+func (m *SysMenuMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysMenuMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysMenuMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -3234,7 +3233,7 @@ type SysMenuActionMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	sort          *int32
 	addsort       *int32
 	status        *int32
@@ -3272,7 +3271,7 @@ func newSysMenuActionMutation(c config, op Op, opts ...sysmenuactionOption) *Sys
 }
 
 // withSysMenuActionID sets the ID field of the mutation.
-func withSysMenuActionID(id pulid.ID) sysmenuactionOption {
+func withSysMenuActionID(id string) sysmenuactionOption {
 	return func(m *SysMenuActionMutation) {
 		var (
 			err   error
@@ -3324,13 +3323,13 @@ func (m SysMenuActionMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysMenuAction entities.
-func (m *SysMenuActionMutation) SetID(id pulid.ID) {
+func (m *SysMenuActionMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysMenuActionMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysMenuActionMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -4050,7 +4049,7 @@ type SysMenuActionResourceMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	sort          *int32
 	addsort       *int32
 	memo          *string
@@ -4088,7 +4087,7 @@ func newSysMenuActionResourceMutation(c config, op Op, opts ...sysmenuactionreso
 }
 
 // withSysMenuActionResourceID sets the ID field of the mutation.
-func withSysMenuActionResourceID(id pulid.ID) sysmenuactionresourceOption {
+func withSysMenuActionResourceID(id string) sysmenuactionresourceOption {
 	return func(m *SysMenuActionResourceMutation) {
 		var (
 			err   error
@@ -4140,13 +4139,13 @@ func (m SysMenuActionResourceMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysMenuActionResource entities.
-func (m *SysMenuActionResourceMutation) SetID(id pulid.ID) {
+func (m *SysMenuActionResourceMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysMenuActionResourceMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysMenuActionResourceMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -4866,7 +4865,7 @@ type SysRoleMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	status        *int32
 	addstatus     *int32
 	sort          *int32
@@ -4902,7 +4901,7 @@ func newSysRoleMutation(c config, op Op, opts ...sysroleOption) *SysRoleMutation
 }
 
 // withSysRoleID sets the ID field of the mutation.
-func withSysRoleID(id pulid.ID) sysroleOption {
+func withSysRoleID(id string) sysroleOption {
 	return func(m *SysRoleMutation) {
 		var (
 			err   error
@@ -4954,13 +4953,13 @@ func (m SysRoleMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysRole entities.
-func (m *SysRoleMutation) SetID(id pulid.ID) {
+func (m *SysRoleMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysRoleMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysRoleMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -5574,7 +5573,7 @@ type SysRoleMenuMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
@@ -5607,7 +5606,7 @@ func newSysRoleMenuMutation(c config, op Op, opts ...sysrolemenuOption) *SysRole
 }
 
 // withSysRoleMenuID sets the ID field of the mutation.
-func withSysRoleMenuID(id pulid.ID) sysrolemenuOption {
+func withSysRoleMenuID(id string) sysrolemenuOption {
 	return func(m *SysRoleMenuMutation) {
 		var (
 			err   error
@@ -5659,13 +5658,13 @@ func (m SysRoleMenuMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysRoleMenu entities.
-func (m *SysRoleMenuMutation) SetID(id pulid.ID) {
+func (m *SysRoleMenuMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysRoleMenuMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysRoleMenuMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -6178,7 +6177,7 @@ type SysUserMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	sort          *int32
 	addsort       *int32
 	created_at    *time.Time
@@ -6220,7 +6219,7 @@ func newSysUserMutation(c config, op Op, opts ...sysuserOption) *SysUserMutation
 }
 
 // withSysUserID sets the ID field of the mutation.
-func withSysUserID(id pulid.ID) sysuserOption {
+func withSysUserID(id string) sysuserOption {
 	return func(m *SysUserMutation) {
 		var (
 			err   error
@@ -6272,13 +6271,13 @@ func (m SysUserMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysUser entities.
-func (m *SysUserMutation) SetID(id pulid.ID) {
+func (m *SysUserMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysUserMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysUserMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -7267,7 +7266,7 @@ type SysUserRoleMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
@@ -7299,7 +7298,7 @@ func newSysUserRoleMutation(c config, op Op, opts ...sysuserroleOption) *SysUser
 }
 
 // withSysUserRoleID sets the ID field of the mutation.
-func withSysUserRoleID(id pulid.ID) sysuserroleOption {
+func withSysUserRoleID(id string) sysuserroleOption {
 	return func(m *SysUserRoleMutation) {
 		var (
 			err   error
@@ -7351,13 +7350,13 @@ func (m SysUserRoleMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of SysUserRole entities.
-func (m *SysUserRoleMutation) SetID(id pulid.ID) {
+func (m *SysUserRoleMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *SysUserRoleMutation) ID() (id pulid.ID, exists bool) {
+func (m *SysUserRoleMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -7798,7 +7797,7 @@ type XxxDemoMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *pulid.ID
+	id            *string
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -7835,7 +7834,7 @@ func newXxxDemoMutation(c config, op Op, opts ...xxxdemoOption) *XxxDemoMutation
 }
 
 // withXxxDemoID sets the ID field of the mutation.
-func withXxxDemoID(id pulid.ID) xxxdemoOption {
+func withXxxDemoID(id string) xxxdemoOption {
 	return func(m *XxxDemoMutation) {
 		var (
 			err   error
@@ -7887,13 +7886,13 @@ func (m XxxDemoMutation) Tx() (*Tx, error) {
 
 // SetID sets the value of the id field. Note that this
 // operation is only accepted on creation of XxxDemo entities.
-func (m *XxxDemoMutation) SetID(id pulid.ID) {
+func (m *XxxDemoMutation) SetID(id string) {
 	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID
 // is only available if it was provided to the builder.
-func (m *XxxDemoMutation) ID() (id pulid.ID, exists bool) {
+func (m *XxxDemoMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}

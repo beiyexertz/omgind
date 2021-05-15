@@ -25,7 +25,7 @@ func (su SysUser) Mixin() []ent.Mixin {
 func (SysUser) Fields() []ent.Field {
 	return []ent.Field{
 
-		mixin.IdField("01"),
+		mixin.IdField(),
 
 		field.String("user_name").StorageKey("user_name").
 			MinLen(5).MaxLen(128).NotEmpty().Comment("用户名"),
@@ -50,6 +50,7 @@ func (SysUser) Fields() []ent.Field {
 func (su SysUser) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("user_name").Unique(),
+		index.Fields("id").Unique(),
 	}
 }
 

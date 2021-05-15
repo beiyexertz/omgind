@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysUserRole is the model entity for the SysUserRole schema.
 type SysUserRole struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -39,9 +38,7 @@ func (*SysUserRole) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuserrole.FieldID:
-			values[i] = new(pulid.ID)
-		case sysuserrole.FieldUserID, sysuserrole.FieldRoleID:
+		case sysuserrole.FieldID, sysuserrole.FieldUserID, sysuserrole.FieldRoleID:
 			values[i] = new(sql.NullString)
 		case sysuserrole.FieldCreatedAt, sysuserrole.FieldUpdatedAt, sysuserrole.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -61,10 +58,10 @@ func (sur *SysUserRole) assignValues(columns []string, values []interface{}) err
 	for i := range columns {
 		switch columns[i] {
 		case sysuserrole.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				sur.ID = *value
+			} else if value.Valid {
+				sur.ID = value.String
 			}
 		case sysuserrole.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {

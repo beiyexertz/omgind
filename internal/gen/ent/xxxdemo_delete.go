@@ -69,7 +69,7 @@ func (xdd *XxxDemoDelete) sqlExec(ctx context.Context) (int, error) {
 		Node: &sqlgraph.NodeSpec{
 			Table: xxxdemo.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: xxxdemo.FieldID,
 			},
 		},

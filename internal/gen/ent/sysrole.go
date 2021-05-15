@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRole is the model entity for the SysRole schema.
 type SysRole struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
 	Status int32 `json:"status,omitempty"`
@@ -45,11 +44,9 @@ func (*SysRole) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysrole.FieldID:
-			values[i] = new(pulid.ID)
 		case sysrole.FieldStatus, sysrole.FieldSort:
 			values[i] = new(sql.NullInt64)
-		case sysrole.FieldMemo, sysrole.FieldName:
+		case sysrole.FieldID, sysrole.FieldMemo, sysrole.FieldName:
 			values[i] = new(sql.NullString)
 		case sysrole.FieldCreatedAt, sysrole.FieldUpdatedAt, sysrole.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -69,10 +66,10 @@ func (sr *SysRole) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case sysrole.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				sr.ID = *value
+			} else if value.Valid {
+				sr.ID = value.String
 			}
 		case sysrole.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

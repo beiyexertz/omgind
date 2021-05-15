@@ -17,7 +17,6 @@ import (
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
 	"github.com/wanhello/omgind/internal/schema/entity"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -68,7 +67,23 @@ func init() {
 	// sysdictDescID is the schema descriptor for id field.
 	sysdictDescID := sysdictFields[0].Descriptor()
 	// sysdict.DefaultID holds the default value on creation for the id field.
-	sysdict.DefaultID = sysdictDescID.Default.(func() pulid.ID)
+	sysdict.DefaultID = sysdictDescID.Default.(func() string)
+	// sysdict.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysdict.IDValidator = func() func(string) error {
+		validators := sysdictDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysdictitemMixin := entity.SysDictItem{}.Mixin()
 	sysdictitemMixinFields0 := sysdictitemMixin[0].Fields()
 	_ = sysdictitemMixinFields0
@@ -123,7 +138,23 @@ func init() {
 	// sysdictitemDescID is the schema descriptor for id field.
 	sysdictitemDescID := sysdictitemFields[0].Descriptor()
 	// sysdictitem.DefaultID holds the default value on creation for the id field.
-	sysdictitem.DefaultID = sysdictitemDescID.Default.(func() pulid.ID)
+	sysdictitem.DefaultID = sysdictitemDescID.Default.(func() string)
+	// sysdictitem.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysdictitem.IDValidator = func() func(string) error {
+		validators := sysdictitemDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysjwtblockMixin := entity.SysJwtBlock{}.Mixin()
 	sysjwtblockMixinFields0 := sysjwtblockMixin[0].Fields()
 	_ = sysjwtblockMixinFields0
@@ -160,7 +191,23 @@ func init() {
 	// sysjwtblockDescID is the schema descriptor for id field.
 	sysjwtblockDescID := sysjwtblockFields[0].Descriptor()
 	// sysjwtblock.DefaultID holds the default value on creation for the id field.
-	sysjwtblock.DefaultID = sysjwtblockDescID.Default.(func() pulid.ID)
+	sysjwtblock.DefaultID = sysjwtblockDescID.Default.(func() string)
+	// sysjwtblock.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysjwtblock.IDValidator = func() func(string) error {
+		validators := sysjwtblockDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysmenuMixin := entity.SysMenu{}.Mixin()
 	sysmenuMixinFields0 := sysmenuMixin[0].Fields()
 	_ = sysmenuMixinFields0
@@ -251,7 +298,23 @@ func init() {
 	// sysmenuDescID is the schema descriptor for id field.
 	sysmenuDescID := sysmenuFields[0].Descriptor()
 	// sysmenu.DefaultID holds the default value on creation for the id field.
-	sysmenu.DefaultID = sysmenuDescID.Default.(func() pulid.ID)
+	sysmenu.DefaultID = sysmenuDescID.Default.(func() string)
+	// sysmenu.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysmenu.IDValidator = func() func(string) error {
+		validators := sysmenuDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysmenuactionMixin := entity.SysMenuAction{}.Mixin()
 	sysmenuactionMixinFields0 := sysmenuactionMixin[0].Fields()
 	_ = sysmenuactionMixinFields0
@@ -344,7 +407,23 @@ func init() {
 	// sysmenuactionDescID is the schema descriptor for id field.
 	sysmenuactionDescID := sysmenuactionFields[0].Descriptor()
 	// sysmenuaction.DefaultID holds the default value on creation for the id field.
-	sysmenuaction.DefaultID = sysmenuactionDescID.Default.(func() pulid.ID)
+	sysmenuaction.DefaultID = sysmenuactionDescID.Default.(func() string)
+	// sysmenuaction.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysmenuaction.IDValidator = func() func(string) error {
+		validators := sysmenuactionDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysmenuactionresourceMixin := entity.SysMenuActionResource{}.Mixin()
 	sysmenuactionresourceMixinFields0 := sysmenuactionresourceMixin[0].Fields()
 	_ = sysmenuactionresourceMixinFields0
@@ -437,7 +516,23 @@ func init() {
 	// sysmenuactionresourceDescID is the schema descriptor for id field.
 	sysmenuactionresourceDescID := sysmenuactionresourceFields[0].Descriptor()
 	// sysmenuactionresource.DefaultID holds the default value on creation for the id field.
-	sysmenuactionresource.DefaultID = sysmenuactionresourceDescID.Default.(func() pulid.ID)
+	sysmenuactionresource.DefaultID = sysmenuactionresourceDescID.Default.(func() string)
+	// sysmenuactionresource.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysmenuactionresource.IDValidator = func() func(string) error {
+		validators := sysmenuactionresourceDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysroleMixin := entity.SysRole{}.Mixin()
 	sysroleMixinFields0 := sysroleMixin[0].Fields()
 	_ = sysroleMixinFields0
@@ -495,7 +590,23 @@ func init() {
 	// sysroleDescID is the schema descriptor for id field.
 	sysroleDescID := sysroleFields[0].Descriptor()
 	// sysrole.DefaultID holds the default value on creation for the id field.
-	sysrole.DefaultID = sysroleDescID.Default.(func() pulid.ID)
+	sysrole.DefaultID = sysroleDescID.Default.(func() string)
+	// sysrole.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysrole.IDValidator = func() func(string) error {
+		validators := sysroleDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysrolemenuMixin := entity.SysRoleMenu{}.Mixin()
 	sysrolemenuMixinFields0 := sysrolemenuMixin[0].Fields()
 	_ = sysrolemenuMixinFields0
@@ -554,7 +665,23 @@ func init() {
 	// sysrolemenuDescID is the schema descriptor for id field.
 	sysrolemenuDescID := sysrolemenuFields[0].Descriptor()
 	// sysrolemenu.DefaultID holds the default value on creation for the id field.
-	sysrolemenu.DefaultID = sysrolemenuDescID.Default.(func() pulid.ID)
+	sysrolemenu.DefaultID = sysrolemenuDescID.Default.(func() string)
+	// sysrolemenu.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysrolemenu.IDValidator = func() func(string) error {
+		validators := sysrolemenuDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysuserMixin := entity.SysUser{}.Mixin()
 	sysuserMixinFields0 := sysuserMixin[0].Fields()
 	_ = sysuserMixinFields0
@@ -632,7 +759,23 @@ func init() {
 	// sysuserDescID is the schema descriptor for id field.
 	sysuserDescID := sysuserFields[0].Descriptor()
 	// sysuser.DefaultID holds the default value on creation for the id field.
-	sysuser.DefaultID = sysuserDescID.Default.(func() pulid.ID)
+	sysuser.DefaultID = sysuserDescID.Default.(func() string)
+	// sysuser.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysuser.IDValidator = func() func(string) error {
+		validators := sysuserDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	sysuserroleMixin := entity.SysUserRole{}.Mixin()
 	sysuserroleMixinFields0 := sysuserroleMixin[0].Fields()
 	_ = sysuserroleMixinFields0
@@ -687,7 +830,23 @@ func init() {
 	// sysuserroleDescID is the schema descriptor for id field.
 	sysuserroleDescID := sysuserroleFields[0].Descriptor()
 	// sysuserrole.DefaultID holds the default value on creation for the id field.
-	sysuserrole.DefaultID = sysuserroleDescID.Default.(func() pulid.ID)
+	sysuserrole.DefaultID = sysuserroleDescID.Default.(func() string)
+	// sysuserrole.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	sysuserrole.IDValidator = func() func(string) error {
+		validators := sysuserroleDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	xxxdemoMixin := entity.XxxDemo{}.Mixin()
 	xxxdemoMixinFields0 := xxxdemoMixin[0].Fields()
 	_ = xxxdemoMixinFields0
@@ -732,5 +891,21 @@ func init() {
 	// xxxdemoDescID is the schema descriptor for id field.
 	xxxdemoDescID := xxxdemoFields[0].Descriptor()
 	// xxxdemo.DefaultID holds the default value on creation for the id field.
-	xxxdemo.DefaultID = xxxdemoDescID.Default.(func() pulid.ID)
+	xxxdemo.DefaultID = xxxdemoDescID.Default.(func() string)
+	// xxxdemo.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	xxxdemo.IDValidator = func() func(string) error {
+		validators := xxxdemoDescID.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(id string) error {
+			for _, fn := range fns {
+				if err := fn(id); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 }

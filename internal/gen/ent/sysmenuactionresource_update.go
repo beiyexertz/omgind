@@ -229,7 +229,7 @@ func (smaru *SysMenuActionResourceUpdate) sqlSave(ctx context.Context) (n int, e
 			Table:   sysmenuactionresource.Table,
 			Columns: sysmenuactionresource.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenuactionresource.FieldID,
 			},
 		},
@@ -545,7 +545,7 @@ func (smaruo *SysMenuActionResourceUpdateOne) sqlSave(ctx context.Context) (_nod
 			Table:   sysmenuactionresource.Table,
 			Columns: sysmenuactionresource.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenuactionresource.FieldID,
 			},
 		},

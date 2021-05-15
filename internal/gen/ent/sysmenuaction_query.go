@@ -13,7 +13,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuActionQuery is the builder for querying SysMenuAction entities.
@@ -85,8 +84,8 @@ func (smaq *SysMenuActionQuery) FirstX(ctx context.Context) *SysMenuAction {
 
 // FirstID returns the first SysMenuAction ID from the query.
 // Returns a *NotFoundError when no SysMenuAction ID was found.
-func (smaq *SysMenuActionQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (smaq *SysMenuActionQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smaq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -98,7 +97,7 @@ func (smaq *SysMenuActionQuery) FirstID(ctx context.Context) (id pulid.ID, err e
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (smaq *SysMenuActionQuery) FirstIDX(ctx context.Context) pulid.ID {
+func (smaq *SysMenuActionQuery) FirstIDX(ctx context.Context) string {
 	id, err := smaq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -136,8 +135,8 @@ func (smaq *SysMenuActionQuery) OnlyX(ctx context.Context) *SysMenuAction {
 // OnlyID is like Only, but returns the only SysMenuAction ID in the query.
 // Returns a *NotSingularError when exactly one SysMenuAction ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (smaq *SysMenuActionQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (smaq *SysMenuActionQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = smaq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -153,7 +152,7 @@ func (smaq *SysMenuActionQuery) OnlyID(ctx context.Context) (id pulid.ID, err er
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (smaq *SysMenuActionQuery) OnlyIDX(ctx context.Context) pulid.ID {
+func (smaq *SysMenuActionQuery) OnlyIDX(ctx context.Context) string {
 	id, err := smaq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -179,8 +178,8 @@ func (smaq *SysMenuActionQuery) AllX(ctx context.Context) []*SysMenuAction {
 }
 
 // IDs executes the query and returns a list of SysMenuAction IDs.
-func (smaq *SysMenuActionQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
-	var ids []pulid.ID
+func (smaq *SysMenuActionQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := smaq.Select(sysmenuaction.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -188,7 +187,7 @@ func (smaq *SysMenuActionQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (smaq *SysMenuActionQuery) IDsX(ctx context.Context) []pulid.ID {
+func (smaq *SysMenuActionQuery) IDsX(ctx context.Context) []string {
 	ids, err := smaq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -354,7 +353,7 @@ func (smaq *SysMenuActionQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysmenuaction.Table,
 			Columns: sysmenuaction.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenuaction.FieldID,
 			},
 		},

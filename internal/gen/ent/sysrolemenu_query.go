@@ -13,7 +13,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/predicate"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysRoleMenuQuery is the builder for querying SysRoleMenu entities.
@@ -85,8 +84,8 @@ func (srmq *SysRoleMenuQuery) FirstX(ctx context.Context) *SysRoleMenu {
 
 // FirstID returns the first SysRoleMenu ID from the query.
 // Returns a *NotFoundError when no SysRoleMenu ID was found.
-func (srmq *SysRoleMenuQuery) FirstID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (srmq *SysRoleMenuQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = srmq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -98,7 +97,7 @@ func (srmq *SysRoleMenuQuery) FirstID(ctx context.Context) (id pulid.ID, err err
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (srmq *SysRoleMenuQuery) FirstIDX(ctx context.Context) pulid.ID {
+func (srmq *SysRoleMenuQuery) FirstIDX(ctx context.Context) string {
 	id, err := srmq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -136,8 +135,8 @@ func (srmq *SysRoleMenuQuery) OnlyX(ctx context.Context) *SysRoleMenu {
 // OnlyID is like Only, but returns the only SysRoleMenu ID in the query.
 // Returns a *NotSingularError when exactly one SysRoleMenu ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (srmq *SysRoleMenuQuery) OnlyID(ctx context.Context) (id pulid.ID, err error) {
-	var ids []pulid.ID
+func (srmq *SysRoleMenuQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = srmq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -153,7 +152,7 @@ func (srmq *SysRoleMenuQuery) OnlyID(ctx context.Context) (id pulid.ID, err erro
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (srmq *SysRoleMenuQuery) OnlyIDX(ctx context.Context) pulid.ID {
+func (srmq *SysRoleMenuQuery) OnlyIDX(ctx context.Context) string {
 	id, err := srmq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -179,8 +178,8 @@ func (srmq *SysRoleMenuQuery) AllX(ctx context.Context) []*SysRoleMenu {
 }
 
 // IDs executes the query and returns a list of SysRoleMenu IDs.
-func (srmq *SysRoleMenuQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
-	var ids []pulid.ID
+func (srmq *SysRoleMenuQuery) IDs(ctx context.Context) ([]string, error) {
+	var ids []string
 	if err := srmq.Select(sysrolemenu.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -188,7 +187,7 @@ func (srmq *SysRoleMenuQuery) IDs(ctx context.Context) ([]pulid.ID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (srmq *SysRoleMenuQuery) IDsX(ctx context.Context) []pulid.ID {
+func (srmq *SysRoleMenuQuery) IDsX(ctx context.Context) []string {
 	ids, err := srmq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -354,7 +353,7 @@ func (srmq *SysRoleMenuQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		},

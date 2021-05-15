@@ -11,7 +11,6 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenu"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuCreate is the builder for creating a SysMenu entity.
@@ -166,8 +165,16 @@ func (smc *SysMenuCreate) SetNillableParentPath(s *string) *SysMenuCreate {
 }
 
 // SetID sets the "id" field.
-func (smc *SysMenuCreate) SetID(pu pulid.ID) *SysMenuCreate {
-	smc.mutation.SetID(pu)
+func (smc *SysMenuCreate) SetID(s string) *SysMenuCreate {
+	smc.mutation.SetID(s)
+	return smc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableID(s *string) *SysMenuCreate {
+	if s != nil {
+		smc.SetID(*s)
+	}
 	return smc
 }
 
@@ -312,6 +319,11 @@ func (smc *SysMenuCreate) check() error {
 			return &ValidationError{Name: "parent_path", err: fmt.Errorf("ent: validator failed for field \"parent_path\": %w", err)}
 		}
 	}
+	if v, ok := smc.mutation.ID(); ok {
+		if err := sysmenu.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf("ent: validator failed for field \"id\": %w", err)}
+		}
+	}
 	return nil
 }
 
@@ -332,7 +344,7 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 		_spec = &sqlgraph.CreateSpec{
 			Table: sysmenu.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysmenu.FieldID,
 			},
 		}

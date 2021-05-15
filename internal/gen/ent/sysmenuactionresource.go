@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysMenuActionResource is the model entity for the SysMenuActionResource schema.
 type SysMenuActionResource struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
 	Sort int32 `json:"sort,omitempty"`
@@ -51,11 +50,9 @@ func (*SysMenuActionResource) scanValues(columns []string) ([]interface{}, error
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenuactionresource.FieldID:
-			values[i] = new(pulid.ID)
 		case sysmenuactionresource.FieldSort, sysmenuactionresource.FieldStatus:
 			values[i] = new(sql.NullInt64)
-		case sysmenuactionresource.FieldMemo, sysmenuactionresource.FieldMethod, sysmenuactionresource.FieldPath, sysmenuactionresource.FieldActionID:
+		case sysmenuactionresource.FieldID, sysmenuactionresource.FieldMemo, sysmenuactionresource.FieldMethod, sysmenuactionresource.FieldPath, sysmenuactionresource.FieldActionID:
 			values[i] = new(sql.NullString)
 		case sysmenuactionresource.FieldCreatedAt, sysmenuactionresource.FieldUpdatedAt, sysmenuactionresource.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -75,10 +72,10 @@ func (smar *SysMenuActionResource) assignValues(columns []string, values []inter
 	for i := range columns {
 		switch columns[i] {
 		case sysmenuactionresource.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				smar.ID = *value
+			} else if value.Valid {
+				smar.ID = value.String
 			}
 		case sysmenuactionresource.FieldSort:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

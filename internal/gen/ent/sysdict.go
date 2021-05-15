@@ -9,14 +9,13 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 // SysDict is the model entity for the SysDict schema.
 type SysDict struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID pulid.ID `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -48,13 +47,11 @@ func (*SysDict) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdict.FieldID:
-			values[i] = new(pulid.ID)
 		case sysdict.FieldStatus:
 			values[i] = new(sql.NullBool)
 		case sysdict.FieldSort:
 			values[i] = new(sql.NullInt64)
-		case sysdict.FieldMemo, sysdict.FieldNameCn, sysdict.FieldNameEn:
+		case sysdict.FieldID, sysdict.FieldMemo, sysdict.FieldNameCn, sysdict.FieldNameEn:
 			values[i] = new(sql.NullString)
 		case sysdict.FieldCreatedAt, sysdict.FieldUpdatedAt, sysdict.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -74,10 +71,10 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case sysdict.FieldID:
-			if value, ok := values[i].(*pulid.ID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
-			} else if value != nil {
-				sd.ID = *value
+			} else if value.Valid {
+				sd.ID = value.String
 			}
 		case sysdict.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {

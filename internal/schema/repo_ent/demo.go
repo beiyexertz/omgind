@@ -73,14 +73,15 @@ func (a *Demo) Query(ctx context.Context, params schema.DemoQueryParam, opts ...
 		query = query.Where(xxxdemo.Or(xxxdemo.CodeContains(v), xxxdemo.NameContains(v)))
 	}
 
-	// order field
-	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
-	query = query.Order(ParseOrder(opt.OrderFields)...)
-
 	count, err := query.Count(ctx)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
+
+	// order field
+	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
+
+	query = query.Order(ParseOrder(opt.OrderFields)...)
 
 	// get total
 	pr := &schema.PaginationResult{Total: count}
@@ -115,7 +116,9 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 	if err != nil {
 		return nil, err
 	}
-	xxxdemo, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(uid)).Only(ctx)
+	fmt.Println(" == -- 000 demo get +++++++ ", uid)
+
+	xxxdemo, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(id)).Only(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +130,14 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, error) {
 
 	iteminput := toEntCreateDemoInput(&item)
-	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
+	fmt.Println(" --- -- 0000 ==== ", iteminput.Code)
+	fmt.Println(" --- -- 0000 ==== ", iteminput.Name)
+	fmt.Println(" --- -- 0000 ==== ", iteminput.Sort)
+	fmt.Println(" --- -- 0000 ==== ", iteminput.Memo)
+	fmt.Println(" --- -- 0000 ==== ", iteminput.Status)
+
+	//xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
+	xxxdemo, err := a.EntCli.XxxDemo.Create().SetCode(item.Code).SetName(item.Name).SetMemo(item.Memo).SetSort(int32(item.Sort)).SetStatus(item.Status).Save(ctx)
 
 	if err != nil {
 		return nil, err
@@ -148,7 +158,7 @@ func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema
 		return nil, err
 	}
 
-	oitem, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.ID(uid)).Only(ctx)
+	oitem, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(id)).Only(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -170,8 +180,10 @@ func (a *Demo) Delete(ctx context.Context, id string) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(" == -- 000 demo Delete +++++++ ", uid)
 
-	xxxdemo, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.ID(uid)).Only(ctx)
+	xxxdemo, err := a.EntCli.XxxDemo.Query().Where(xxxdemo.IDEQ(id)).Only(ctx)
+
 	if err != nil {
 		return err
 	}
@@ -190,7 +202,7 @@ func (a *Demo) UpdateStatus(ctx context.Context, id string, status int) error {
 	if err != nil {
 		return err
 	}
-	_, err1 := a.EntCli.XxxDemo.Update().Where(xxxdemo.ID(uid)).SetStatus(status).Save(ctx)
+	_, err1 := a.EntCli.XxxDemo.Update().Where(xxxdemo.IDEQ(id)).SetStatus(status).Save(ctx)
 
 	return errors.WithStack(err1)
 }

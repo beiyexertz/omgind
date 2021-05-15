@@ -4,8 +4,6 @@ package sysuserrole
 
 import (
 	"time"
-
-	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
 const (
@@ -59,5 +57,7 @@ var (
 	// RoleIDValidator is a validator for the "role_id" field. It is called by the builders before save.
 	RoleIDValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() pulid.ID
+	DefaultID func() string
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
 )

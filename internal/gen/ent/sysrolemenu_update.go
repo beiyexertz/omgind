@@ -182,7 +182,7 @@ func (srmu *SysRoleMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		},
@@ -422,7 +422,7 @@ func (srmuo *SysRoleMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysRoleM
 			Table:   sysrolemenu.Table,
 			Columns: sysrolemenu.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeString,
 				Column: sysrolemenu.FieldID,
 			},
 		},
