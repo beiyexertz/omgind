@@ -24,7 +24,7 @@ var VERSION = "7.0.0"
 
 // @title omgind
 // @version 7.0.0
-// @description RBAC scaffolding based on GIN + GORM + CASBIN + WIRE.
+// @description RBAC scaffolding based on GIN + GORM/ENT + CASBIN + WIRE.
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization

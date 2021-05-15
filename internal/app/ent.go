@@ -11,7 +11,6 @@ import (
 
 	entsql "entgo.io/ent/dialect/sql"
 	_ "github.com/jackc/pgx/v4/stdlib"
-
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/pkg/global"
 )
