@@ -41,62 +41,17 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			pub.POST("/refresh-token", a.SignInAPI.RefreshToken)
 		}
 
-		gDemo := v1.Group("demos")
-		{
-			gDemo.GET("", a.DemoAPI.Query)
-			gDemo.GET(":id", a.DemoAPI.Get)
-			gDemo.POST("", a.DemoAPI.Create)
-			gDemo.PUT(":id", a.DemoAPI.Update)
-			gDemo.DELETE(":id", a.DemoAPI.Delete)
-			gDemo.PATCH(":id/enable", a.DemoAPI.Enable)
-			gDemo.PATCH(":id/disable", a.DemoAPI.Disable)
-		}
+		a.initDemoRouterV1(v1, a.DemoAPI, "demos")
 
-		gMenu := v1.Group("menus")
-		{
-			gMenu.GET("", a.MenuAPI.Query)
-			gMenu.GET(":id", a.MenuAPI.Get)
-			gMenu.POST("", a.MenuAPI.Create)
-			gMenu.PUT(":id", a.MenuAPI.Update)
-			gMenu.DELETE(":id", a.MenuAPI.Delete)
-			gMenu.PATCH(":id/enable", a.MenuAPI.Enable)
-			gMenu.PATCH(":id/disable", a.MenuAPI.Disable)
-		}
+		a.initMenuRouterV1(v1, a.MenuAPI, "menus")
 		v1.GET("/menus.tree", a.MenuAPI.QueryTree)
 
-		gRole := v1.Group("roles")
-		{
-			gRole.GET("", a.RoleAPI.Query)
-			gRole.GET(":id", a.RoleAPI.Get)
-			gRole.POST("", a.RoleAPI.Create)
-			gRole.PUT(":id", a.RoleAPI.Update)
-			gRole.DELETE(":id", a.RoleAPI.Delete)
-			gRole.PATCH(":id/enable", a.RoleAPI.Enable)
-			gRole.PATCH(":id/disable", a.RoleAPI.Disable)
-		}
+		a.initRoleRouterV1(v1, a.RoleAPI, "roles")
 		v1.GET("/roles.select", a.RoleAPI.QuerySelect)
 
-		gUser := v1.Group("users")
-		{
-			gUser.GET("", a.UserAPI.Query)
-			gUser.GET(":id", a.UserAPI.Get)
-			gUser.POST("", a.UserAPI.Create)
-			gUser.PUT(":id", a.UserAPI.Update)
-			gUser.DELETE(":id", a.UserAPI.Delete)
-			gUser.PATCH(":id/enable", a.UserAPI.Enable)
-			gUser.PATCH(":id/disable", a.UserAPI.Disable)
-		}
+		a.initUserRouterV1(v1, a.UserAPI, "users")
 
-		gDict := v1.Group("dicts")
-		{
-			gDict.GET("", a.DictAPI.Query)
-			gDict.GET(":id", a.DictAPI.Get)
-			gDict.POST("", a.DictAPI.Create)
-			gDict.PUT(":id", a.DictAPI.Update)
-			gDict.DELETE(":id", a.DictAPI.Delete)
-			gDict.PATCH(":id/enable", a.DictAPI.Enable)
-			gDict.PATCH(":id/disable", a.DictAPI.Disable)
-		}
+		a.initDictRouterV1(v1, a.DictAPI, "dicts")
 
 		//gDictItem := v1.Group("dict-items")
 		//{
@@ -108,4 +63,10 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		//}
 
 	}
+
+	//v2 := g.Group("/v2")
+	//{
+	//	router_v2.InitDemoRouter(v2, a.DemoAPIV2, "demos")
+	//}
+
 }

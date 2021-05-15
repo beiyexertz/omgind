@@ -24,6 +24,7 @@ type Router struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
 	DemoAPI        *api_v1.Demo
+	//DemoAPIV2      *api_v2.Demo
 	SignInAPI      *api_v1.SignIn
 	MenuAPI        *api_v1.Menu
 	RoleAPI        *api_v1.Role
