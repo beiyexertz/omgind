@@ -136,8 +136,8 @@ func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, erro
 	fmt.Println(" --- -- 0000 ==== ", iteminput.Memo)
 	fmt.Println(" --- -- 0000 ==== ", iteminput.Status)
 
-	//xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
-	xxxdemo, err := a.EntCli.XxxDemo.Create().SetCode(item.Code).SetName(item.Name).SetMemo(item.Memo).SetSort(int32(item.Sort)).SetStatus(item.Status).Save(ctx)
+	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
+	//xxxdemo, err := a.EntCli.XxxDemo.Create().SetCode(item.Code).SetName(item.Name).SetMemo(item.Memo).SetSort(int32(item.Sort)).SetStatus(item.Status).Save(ctx)
 
 	if err != nil {
 		return nil, err
