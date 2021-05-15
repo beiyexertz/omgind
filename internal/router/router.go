@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/api/v1"
+	api_v2 "github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/pkg/auth"
 )
 
@@ -24,13 +25,15 @@ type Router struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
 	DemoAPI        *api_v1.Demo
-	//DemoAPIV2      *api_v2.Demo
 	SignInAPI      *api_v1.SignIn
 	MenuAPI        *api_v1.Menu
 	RoleAPI        *api_v1.Role
 	UserAPI        *api_v1.User
 	DictAPI        *api_v1.Dict
 	//DictItemAPI    *api_v1.DictItem
+
+	DemoAPIV2      *api_v2.Demo
+
 }
 
 // Register 注册路由

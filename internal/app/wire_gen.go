@@ -7,10 +7,13 @@ package app
 
 import (
 	"github.com/wanhello/omgind/internal/api/v1"
+	"github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
 	"github.com/wanhello/omgind/internal/app/service"
+	"github.com/wanhello/omgind/internal/app/service.ent"
 	"github.com/wanhello/omgind/internal/router"
+	"github.com/wanhello/omgind/internal/schema/repo_ent"
 )
 
 import (
@@ -142,6 +145,23 @@ func BuildInjector() (*Injector, func(), error) {
 	api_v1Dict := &api_v1.Dict{
 		DictSrv: serviceDict,
 	}
+	client, cleanup5, err := InitEntClient()
+	if err != nil {
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	repo_entDemo := &repo_ent.Demo{
+		EntCli: client,
+	}
+	service_entDemo := &service_ent.Demo{
+		DemoModel: repo_entDemo,
+	}
+	api_v2Demo := &api_v2.Demo{
+		DemoSrv: service_entDemo,
+	}
 	routerRouter := &router.Router{
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
@@ -151,16 +171,9 @@ func BuildInjector() (*Injector, func(), error) {
 		RoleAPI:        api_v1Role,
 		UserAPI:        api_v1User,
 		DictAPI:        api_v1Dict,
+		DemoAPIV2:      api_v2Demo,
 	}
 	engine := InitGinEngine(routerRouter)
-	client, cleanup5, err := InitEntClient()
-	if err != nil {
-		cleanup4()
-		cleanup3()
-		cleanup2()
-		cleanup()
-		return nil, nil, err
-	}
 	injector := &Injector{
 		Engine:         engine,
 		Auth:           auther,

@@ -64,9 +64,10 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 
 	}
 
-	//v2 := g.Group("/v2")
-	//{
-	//	router_v2.InitDemoRouter(v2, a.DemoAPIV2, "demos")
-	//}
+	v2 := g.Group("/v2")
+	{
+		//router_v2.InitDemoRouter(v2, a.DemoAPIV2, "demos")
+		a.initDemoRouterV2(v2, a.DemoAPIV2, "demos")
+	}
 
 }
