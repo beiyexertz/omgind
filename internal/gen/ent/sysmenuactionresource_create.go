@@ -209,7 +209,7 @@ func (smarc *SysMenuActionResourceCreate) defaults() {
 		smarc.mutation.SetStatus(v)
 	}
 	if _, ok := smarc.mutation.ID(); !ok {
-		v := sysmenuactionresource.DefaultID()
+		v := sysmenuactionresource.DefaultID
 		smarc.mutation.SetID(v)
 	}
 }

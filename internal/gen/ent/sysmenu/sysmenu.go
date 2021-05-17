@@ -94,7 +94,7 @@ var (
 	// ParentPathValidator is a validator for the "parent_path" field. It is called by the builders before save.
 	ParentPathValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() string
+	DefaultID string
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.
 	IDValidator func(string) error
 )

@@ -15,6 +15,7 @@ import (
 type SysUserRole struct {
 	config `json:"-"`
 	// ID of the ent.
+	// 主键
 	ID string `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成

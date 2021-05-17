@@ -15,6 +15,7 @@ import (
 type SysMenu struct {
 	config `json:"-"`
 	// ID of the ent.
+	// 主键
 	ID string `json:"id,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注

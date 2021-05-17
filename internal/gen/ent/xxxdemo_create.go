@@ -203,7 +203,7 @@ func (xdc *XxxDemoCreate) defaults() {
 		xdc.mutation.SetStatus(v)
 	}
 	if _, ok := xdc.mutation.ID(); !ok {
-		v := xxxdemo.DefaultID()
+		v := xxxdemo.DefaultID
 		xdc.mutation.SetID(v)
 	}
 }

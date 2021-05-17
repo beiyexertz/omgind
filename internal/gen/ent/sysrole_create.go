@@ -197,7 +197,7 @@ func (src *SysRoleCreate) defaults() {
 		src.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := src.mutation.ID(); !ok {
-		v := sysrole.DefaultID()
+		v := sysrole.DefaultID
 		src.mutation.SetID(v)
 	}
 }

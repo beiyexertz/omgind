@@ -10,7 +10,7 @@ import (
 var (
 	// SysDictsColumns holds the columns for the "sys_dicts" table.
 	SysDictsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -56,7 +56,7 @@ var (
 	}
 	// SysDictItemsColumns holds the columns for the "sys_dict_items" table.
 	SysDictItemsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -103,7 +103,7 @@ var (
 	}
 	// SysJwtBlocksColumns holds the columns for the "sys_jwt_blocks" table.
 	SysJwtBlocksColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
@@ -147,7 +147,7 @@ var (
 	}
 	// SysMenusColumns holds the columns for the "sys_menus" table.
 	SysMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -212,7 +212,7 @@ var (
 	}
 	// SysMenuActionsColumns holds the columns for the "sys_menu_actions" table.
 	SysMenuActionsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
@@ -264,7 +264,7 @@ var (
 	}
 	// SysMenuActionResourcesColumns holds the columns for the "sys_menu_action_resources" table.
 	SysMenuActionResourcesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "crtd_at", Type: field.TypeTime},
@@ -316,7 +316,7 @@ var (
 	}
 	// SysRolesColumns holds the columns for the "sys_roles" table.
 	SysRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "status", Type: field.TypeInt32, Default: 0},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
@@ -366,7 +366,7 @@ var (
 	}
 	// SysRoleMenusColumns holds the columns for the "sys_role_menus" table.
 	SysRoleMenusColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
@@ -405,7 +405,7 @@ var (
 	}
 	// SysUsersColumns holds the columns for the "sys_users" table.
 	SysUsersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
@@ -466,7 +466,7 @@ var (
 	}
 	// SysUserRolesColumns holds the columns for the "sys_user_roles" table.
 	SysUserRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "crtd_at", Type: field.TypeTime},
 		{Name: "uptd_at", Type: field.TypeTime},
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
@@ -504,7 +504,7 @@ var (
 	}
 	// XxxDemosColumns holds the columns for the "xxx_demos" table.
 	XxxDemosColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeString, Size: 26},
+		{Name: "id", Type: field.TypeString, Size: 36},
 		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
 		{Name: "sort", Type: field.TypeInt32, Default: 9999},
 		{Name: "crtd_at", Type: field.TypeTime},

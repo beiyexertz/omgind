@@ -203,7 +203,7 @@ func (sdc *SysDictCreate) defaults() {
 		sdc.mutation.SetStatus(v)
 	}
 	if _, ok := sdc.mutation.ID(); !ok {
-		v := sysdict.DefaultID()
+		v := sysdict.DefaultID
 		sdc.mutation.SetID(v)
 	}
 }

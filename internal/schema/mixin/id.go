@@ -82,13 +82,16 @@ func IdField1(prefix string) ent.Field {
 func IdField() ent.Field {
 	// return field.UUID("id", uuid.UUID{}).Unique().Default(uuid.New)
 	// return field.UUID("id", uuid.UUID{}).Default(uuid.New)
-	return field.String("id").MaxLen(26).NotEmpty().Immutable().DefaultFunc(func() string {
 
-		seed := time.Now().UnixNano()
-		source := rand.NewSource(seed)
-		entropy := rand.New(source)
+	return field.String("id").DefaultFunc(uid.MustString()).MaxLen(36).Immutable().NotEmpty().Comment("主键")
 
-		return ulid.MustNew(ulid.Timestamp(time.Now()), entropy).String()
-	})
+	//return field.String("id").MaxLen(26).NotEmpty().Immutable().DefaultFunc(func() string {
+	//
+	//	seed := time.Now().UnixNano()
+	//	source := rand.NewSource(seed)
+	//	entropy := rand.New(source)
+	//
+	//	return ulid.MustNew(ulid.Timestamp(time.Now()), entropy).String()
+	//})
 
 }

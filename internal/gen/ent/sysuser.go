@@ -15,6 +15,7 @@ import (
 type SysUser struct {
 	config `json:"-"`
 	// ID of the ent.
+	// 主键
 	ID string `json:"id,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序

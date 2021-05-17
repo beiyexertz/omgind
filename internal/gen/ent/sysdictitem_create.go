@@ -197,7 +197,7 @@ func (sdic *SysDictItemCreate) defaults() {
 		sdic.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sdic.mutation.ID(); !ok {
-		v := sysdictitem.DefaultID()
+		v := sysdictitem.DefaultID
 		sdic.mutation.SetID(v)
 	}
 }

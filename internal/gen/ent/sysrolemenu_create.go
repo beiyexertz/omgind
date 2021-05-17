@@ -163,7 +163,7 @@ func (srmc *SysRoleMenuCreate) defaults() {
 		srmc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := srmc.mutation.ID(); !ok {
-		v := sysrolemenu.DefaultID()
+		v := sysrolemenu.DefaultID
 		srmc.mutation.SetID(v)
 	}
 }

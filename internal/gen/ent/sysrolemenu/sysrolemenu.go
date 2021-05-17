@@ -62,7 +62,7 @@ var (
 	// ActionIDValidator is a validator for the "action_id" field. It is called by the builders before save.
 	ActionIDValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() string
+	DefaultID string
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.
 	IDValidator func(string) error
 )

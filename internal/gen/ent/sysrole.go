@@ -15,6 +15,7 @@ import (
 type SysRole struct {
 	config `json:"-"`
 	// ID of the ent.
+	// 主键
 	ID string `json:"id,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
