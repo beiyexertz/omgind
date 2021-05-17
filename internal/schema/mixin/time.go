@@ -20,6 +20,7 @@ func (TimeMixin) Fields() []ent.Field {
 			//StructTag(`json:"created_at,omitempty" sql:"crtd_at"`).
 			Immutable().
 			Default(time.Now).
+			Annotations().
 			Comment("创建时间,由程序自动生成"),
 
 		field.Time("updated_at").
@@ -37,10 +38,40 @@ func (TimeMixin) Fields() []ent.Field {
 	}
 }
 
-func (m TimeMixin) Indexes() []ent.Index {
+func (TimeMixin) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("created_at"),
 		index.Fields("updated_at"),
 		index.Fields("deleted_at"),
 	}
 }
+
+// TODO:: Hooks
+//func (TimeMixin) Hooks() []ent.Hook {
+//	return []ent.Hook{
+//		hook.On(func(mutator ent.Mutator) ent.Mutator {
+//
+//		}, ent.OpCreate|ent.OpUpdate|ent.OpUpdateOne),
+//		//func(next ent.Mutator) ent.Mutator {
+//		//
+//		//	//	fmt.Println(" +++++ ----- ======= 111 ")
+//		//
+//		//	return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+//		//		//		fmt.Println(" +++++ ----- ======= 222 ")
+//		//		//
+//		//		//		switch op := m.Op(); {
+//		//		//		case op.Is(ent.OpCreate):
+//		//		//			//m.SetField("created_at", time.Now())
+//		//		//
+//		//		//		case op.Is(ent.OpUpdate | ent.OpUpdateOne):
+//		//		//			//m.SetField("updated_at", time.Now())
+//		//		//
+//		//		//			//case op.Is(ent.OpDelete | ent.OpDeleteOne):
+//		//		//			//	m.SetField("deleted_at", time.Now())
+//		//		//
+//		//		//		}
+//		//		return next.Mutate(ctx, m)
+//		//	})
+//		//},
+//	}
+//}

@@ -122,6 +122,9 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 // Create 创建数据
 func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, error) {
 
+	item.CreatedAt = time.Now()
+	item.UpdatedAt = time.Now()
+
 	iteminput := toEntCreateDemoInput(&item)
 	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
 
@@ -140,6 +143,7 @@ func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema
 		return nil, err
 	}
 
+	item.UpdatedAt = time.Now()
 	iteminput := toEntUpdateDemoInput(&item)
 	xxxdemo, err := oitem.Update().SetInput(*iteminput).Save(ctx)
 	sch_demo := toSchemaDemo(xxxdemo)
@@ -155,6 +159,7 @@ func (a *Demo) Delete(ctx context.Context, id string) error {
 	if err != nil {
 		return err
 	}
+
 	_, err1 := xxxdemo.Update().SetDeletedAt(time.Now()).Save(ctx)
 
 	return errors.WithStack(err1)
