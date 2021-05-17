@@ -27,6 +27,20 @@ func (xdu *XxxDemoUpdate) Where(ps ...predicate.XxxDemo) *XxxDemoUpdate {
 	return xdu
 }
 
+// SetIsDel sets the "is_del" field.
+func (xdu *XxxDemoUpdate) SetIsDel(b bool) *XxxDemoUpdate {
+	xdu.mutation.SetIsDel(b)
+	return xdu
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (xdu *XxxDemoUpdate) SetNillableIsDel(b *bool) *XxxDemoUpdate {
+	if b != nil {
+		xdu.SetIsDel(*b)
+	}
+	return xdu
+}
+
 // SetMemo sets the "memo" field.
 func (xdu *XxxDemoUpdate) SetMemo(s string) *XxxDemoUpdate {
 	xdu.mutation.SetMemo(s)
@@ -230,6 +244,13 @@ func (xdu *XxxDemoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := xdu.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: xxxdemo.FieldIsDel,
+		})
+	}
 	if value, ok := xdu.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -316,6 +337,20 @@ type XxxDemoUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *XxxDemoMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (xduo *XxxDemoUpdateOne) SetIsDel(b bool) *XxxDemoUpdateOne {
+	xduo.mutation.SetIsDel(b)
+	return xduo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (xduo *XxxDemoUpdateOne) SetNillableIsDel(b *bool) *XxxDemoUpdateOne {
+	if b != nil {
+		xduo.SetIsDel(*b)
+	}
+	return xduo
 }
 
 // SetMemo sets the "memo" field.
@@ -544,6 +579,13 @@ func (xduo *XxxDemoUpdateOne) sqlSave(ctx context.Context) (_node *XxxDemo, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := xduo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: xxxdemo.FieldIsDel,
+		})
 	}
 	if value, ok := xduo.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

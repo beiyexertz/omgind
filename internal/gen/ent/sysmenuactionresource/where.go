@@ -92,6 +92,13 @@ func IDLTE(id string) predicate.SysMenuActionResource {
 	})
 }
 
+// IsDel applies equality check predicate on the "is_del" field. It's identical to IsDelEQ.
+func IsDel(v bool) predicate.SysMenuActionResource {
+	return predicate.SysMenuActionResource(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
 // Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
 func Sort(v int32) predicate.SysMenuActionResource {
 	return predicate.SysMenuActionResource(func(s *sql.Selector) {
@@ -152,6 +159,20 @@ func Path(v string) predicate.SysMenuActionResource {
 func ActionID(v string) predicate.SysMenuActionResource {
 	return predicate.SysMenuActionResource(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldActionID), v))
+	})
+}
+
+// IsDelEQ applies the EQ predicate on the "is_del" field.
+func IsDelEQ(v bool) predicate.SysMenuActionResource {
+	return predicate.SysMenuActionResource(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
+// IsDelNEQ applies the NEQ predicate on the "is_del" field.
+func IsDelNEQ(v bool) predicate.SysMenuActionResource {
+	return predicate.SysMenuActionResource(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIsDel), v))
 	})
 }
 

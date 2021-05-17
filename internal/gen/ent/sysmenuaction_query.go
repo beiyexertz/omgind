@@ -253,12 +253,12 @@ func (smaq *SysMenuActionQuery) Clone() *SysMenuActionQuery {
 // Example:
 //
 //	var v []struct {
-//		Sort int32 `json:"sort,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysMenuAction.Query().
-//		GroupBy(sysmenuaction.FieldSort).
+//		GroupBy(sysmenuaction.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (smaq *SysMenuActionQuery) GroupBy(field string, fields ...string) *SysMenu
 // Example:
 //
 //	var v []struct {
-//		Sort int32 `json:"sort,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysMenuAction.Query().
-//		Select(sysmenuaction.FieldSort).
+//		Select(sysmenuaction.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (smaq *SysMenuActionQuery) Select(field string, fields ...string) *SysMenuActionSelect {

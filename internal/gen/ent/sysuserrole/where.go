@@ -92,6 +92,13 @@ func IDLTE(id string) predicate.SysUserRole {
 	})
 }
 
+// IsDel applies equality check predicate on the "is_del" field. It's identical to IsDelEQ.
+func IsDel(v bool) predicate.SysUserRole {
+	return predicate.SysUserRole(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.SysUserRole {
 	return predicate.SysUserRole(func(s *sql.Selector) {
@@ -124,6 +131,20 @@ func UserID(v string) predicate.SysUserRole {
 func RoleID(v string) predicate.SysUserRole {
 	return predicate.SysUserRole(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldRoleID), v))
+	})
+}
+
+// IsDelEQ applies the EQ predicate on the "is_del" field.
+func IsDelEQ(v bool) predicate.SysUserRole {
+	return predicate.SysUserRole(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
+// IsDelNEQ applies the NEQ predicate on the "is_del" field.
+func IsDelNEQ(v bool) predicate.SysUserRole {
+	return predicate.SysUserRole(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIsDel), v))
 	})
 }
 

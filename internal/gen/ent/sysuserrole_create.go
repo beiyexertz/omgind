@@ -20,6 +20,20 @@ type SysUserRoleCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (surc *SysUserRoleCreate) SetIsDel(b bool) *SysUserRoleCreate {
+	surc.mutation.SetIsDel(b)
+	return surc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (surc *SysUserRoleCreate) SetNillableIsDel(b *bool) *SysUserRoleCreate {
+	if b != nil {
+		surc.SetIsDel(*b)
+	}
+	return surc
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (surc *SysUserRoleCreate) SetCreatedAt(t time.Time) *SysUserRoleCreate {
 	surc.mutation.SetCreatedAt(t)
@@ -140,6 +154,10 @@ func (surc *SysUserRoleCreate) SaveX(ctx context.Context) *SysUserRole {
 
 // defaults sets the default values of the builder before save.
 func (surc *SysUserRoleCreate) defaults() {
+	if _, ok := surc.mutation.IsDel(); !ok {
+		v := sysuserrole.DefaultIsDel
+		surc.mutation.SetIsDel(v)
+	}
 	if _, ok := surc.mutation.CreatedAt(); !ok {
 		v := sysuserrole.DefaultCreatedAt()
 		surc.mutation.SetCreatedAt(v)
@@ -156,6 +174,9 @@ func (surc *SysUserRoleCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (surc *SysUserRoleCreate) check() error {
+	if _, ok := surc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := surc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New("ent: missing required field \"created_at\"")}
 	}
@@ -211,6 +232,14 @@ func (surc *SysUserRoleCreate) createSpec() (*SysUserRole, *sqlgraph.CreateSpec)
 	if id, ok := surc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := surc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuserrole.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := surc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

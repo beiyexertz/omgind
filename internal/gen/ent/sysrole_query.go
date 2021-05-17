@@ -253,12 +253,12 @@ func (srq *SysRoleQuery) Clone() *SysRoleQuery {
 // Example:
 //
 //	var v []struct {
-//		Status int32 `json:"status,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysRole.Query().
-//		GroupBy(sysrole.FieldStatus).
+//		GroupBy(sysrole.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (srq *SysRoleQuery) GroupBy(field string, fields ...string) *SysRoleGroupBy
 // Example:
 //
 //	var v []struct {
-//		Status int32 `json:"status,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysRole.Query().
-//		Select(sysrole.FieldStatus).
+//		Select(sysrole.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (srq *SysRoleQuery) Select(field string, fields ...string) *SysRoleSelect {

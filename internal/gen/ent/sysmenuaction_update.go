@@ -27,6 +27,20 @@ func (smau *SysMenuActionUpdate) Where(ps ...predicate.SysMenuAction) *SysMenuAc
 	return smau
 }
 
+// SetIsDel sets the "is_del" field.
+func (smau *SysMenuActionUpdate) SetIsDel(b bool) *SysMenuActionUpdate {
+	smau.mutation.SetIsDel(b)
+	return smau
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smau *SysMenuActionUpdate) SetNillableIsDel(b *bool) *SysMenuActionUpdate {
+	if b != nil {
+		smau.SetIsDel(*b)
+	}
+	return smau
+}
+
 // SetSort sets the "sort" field.
 func (smau *SysMenuActionUpdate) SetSort(i int32) *SysMenuActionUpdate {
 	smau.mutation.ResetSort()
@@ -241,6 +255,13 @@ func (smau *SysMenuActionUpdate) sqlSave(ctx context.Context) (n int, err error)
 			}
 		}
 	}
+	if value, ok := smau.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenuaction.FieldIsDel,
+		})
+	}
 	if value, ok := smau.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt32,
@@ -334,6 +355,20 @@ type SysMenuActionUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysMenuActionMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (smauo *SysMenuActionUpdateOne) SetIsDel(b bool) *SysMenuActionUpdateOne {
+	smauo.mutation.SetIsDel(b)
+	return smauo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smauo *SysMenuActionUpdateOne) SetNillableIsDel(b *bool) *SysMenuActionUpdateOne {
+	if b != nil {
+		smauo.SetIsDel(*b)
+	}
+	return smauo
 }
 
 // SetSort sets the "sort" field.
@@ -573,6 +608,13 @@ func (smauo *SysMenuActionUpdateOne) sqlSave(ctx context.Context) (_node *SysMen
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := smauo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenuaction.FieldIsDel,
+		})
 	}
 	if value, ok := smauo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

@@ -20,6 +20,20 @@ type SysMenuActionCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (smac *SysMenuActionCreate) SetIsDel(b bool) *SysMenuActionCreate {
+	smac.mutation.SetIsDel(b)
+	return smac
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smac *SysMenuActionCreate) SetNillableIsDel(b *bool) *SysMenuActionCreate {
+	if b != nil {
+		smac.SetIsDel(*b)
+	}
+	return smac
+}
+
 // SetSort sets the "sort" field.
 func (smac *SysMenuActionCreate) SetSort(i int32) *SysMenuActionCreate {
 	smac.mutation.SetSort(i)
@@ -188,6 +202,10 @@ func (smac *SysMenuActionCreate) SaveX(ctx context.Context) *SysMenuAction {
 
 // defaults sets the default values of the builder before save.
 func (smac *SysMenuActionCreate) defaults() {
+	if _, ok := smac.mutation.IsDel(); !ok {
+		v := sysmenuaction.DefaultIsDel
+		smac.mutation.SetIsDel(v)
+	}
 	if _, ok := smac.mutation.Sort(); !ok {
 		v := sysmenuaction.DefaultSort
 		smac.mutation.SetSort(v)
@@ -216,6 +234,9 @@ func (smac *SysMenuActionCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (smac *SysMenuActionCreate) check() error {
+	if _, ok := smac.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := smac.mutation.Sort(); !ok {
 		return &ValidationError{Name: "sort", err: errors.New("ent: missing required field \"sort\"")}
 	}
@@ -293,6 +314,14 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 	if id, ok := smac.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := smac.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenuaction.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := smac.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

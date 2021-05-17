@@ -52,6 +52,7 @@ type SysDictMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -150,6 +151,42 @@ func (m *SysDictMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysDictMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysDictMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysDict entity.
+// If the SysDict object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysDictMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetMemo sets the "memo" field.
@@ -487,7 +524,10 @@ func (m *SysDictMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysDictMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
+	if m.is_del != nil {
+		fields = append(fields, sysdict.FieldIsDel)
+	}
 	if m.memo != nil {
 		fields = append(fields, sysdict.FieldMemo)
 	}
@@ -520,6 +560,8 @@ func (m *SysDictMutation) Fields() []string {
 // schema.
 func (m *SysDictMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysdict.FieldIsDel:
+		return m.IsDel()
 	case sysdict.FieldMemo:
 		return m.Memo()
 	case sysdict.FieldSort:
@@ -545,6 +587,8 @@ func (m *SysDictMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysDictMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysdict.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysdict.FieldMemo:
 		return m.OldMemo(ctx)
 	case sysdict.FieldSort:
@@ -570,6 +614,13 @@ func (m *SysDictMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *SysDictMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysdict.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysdict.FieldMemo:
 		v, ok := value.(string)
 		if !ok {
@@ -699,6 +750,9 @@ func (m *SysDictMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysDictMutation) ResetField(name string) error {
 	switch name {
+	case sysdict.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysdict.FieldMemo:
 		m.ResetMemo()
 		return nil
@@ -781,6 +835,7 @@ type SysDictItemMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -881,6 +936,42 @@ func (m *SysDictItemMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysDictItemMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysDictItemMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysDictItem entity.
+// If the SysDictItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictItemMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysDictItemMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetMemo sets the "memo" field.
@@ -1274,7 +1365,10 @@ func (m *SysDictItemMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysDictItemMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
+	if m.is_del != nil {
+		fields = append(fields, sysdictitem.FieldIsDel)
+	}
 	if m.memo != nil {
 		fields = append(fields, sysdictitem.FieldMemo)
 	}
@@ -1310,6 +1404,8 @@ func (m *SysDictItemMutation) Fields() []string {
 // schema.
 func (m *SysDictItemMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysdictitem.FieldIsDel:
+		return m.IsDel()
 	case sysdictitem.FieldMemo:
 		return m.Memo()
 	case sysdictitem.FieldSort:
@@ -1337,6 +1433,8 @@ func (m *SysDictItemMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysDictItemMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysdictitem.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysdictitem.FieldMemo:
 		return m.OldMemo(ctx)
 	case sysdictitem.FieldSort:
@@ -1364,6 +1462,13 @@ func (m *SysDictItemMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *SysDictItemMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysdictitem.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysdictitem.FieldMemo:
 		v, ok := value.(string)
 		if !ok {
@@ -1512,6 +1617,9 @@ func (m *SysDictItemMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysDictItemMutation) ResetField(name string) error {
 	switch name {
+	case sysdictitem.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysdictitem.FieldMemo:
 		m.ResetMemo()
 		return nil
@@ -1597,6 +1705,7 @@ type SysJwtBlockMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	memo          *string
 	created_at    *time.Time
 	updated_at    *time.Time
@@ -1693,6 +1802,42 @@ func (m *SysJwtBlockMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysJwtBlockMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysJwtBlockMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysJwtBlock entity.
+// If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysJwtBlockMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysJwtBlockMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetMemo sets the "memo" field.
@@ -1958,7 +2103,10 @@ func (m *SysJwtBlockMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysJwtBlockMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
+	if m.is_del != nil {
+		fields = append(fields, sysjwtblock.FieldIsDel)
+	}
 	if m.memo != nil {
 		fields = append(fields, sysjwtblock.FieldMemo)
 	}
@@ -1985,6 +2133,8 @@ func (m *SysJwtBlockMutation) Fields() []string {
 // schema.
 func (m *SysJwtBlockMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysjwtblock.FieldIsDel:
+		return m.IsDel()
 	case sysjwtblock.FieldMemo:
 		return m.Memo()
 	case sysjwtblock.FieldCreatedAt:
@@ -2006,6 +2156,8 @@ func (m *SysJwtBlockMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysJwtBlockMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysjwtblock.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysjwtblock.FieldMemo:
 		return m.OldMemo(ctx)
 	case sysjwtblock.FieldCreatedAt:
@@ -2027,6 +2179,13 @@ func (m *SysJwtBlockMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *SysJwtBlockMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysjwtblock.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysjwtblock.FieldMemo:
 		v, ok := value.(string)
 		if !ok {
@@ -2142,6 +2301,9 @@ func (m *SysJwtBlockMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysJwtBlockMutation) ResetField(name string) error {
 	switch name {
+	case sysjwtblock.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysjwtblock.FieldMemo:
 		m.ResetMemo()
 		return nil
@@ -2218,6 +2380,7 @@ type SysMenuMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -2321,6 +2484,42 @@ func (m *SysMenuMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysMenuMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysMenuMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysMenuMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetMemo sets the "memo" field.
@@ -2848,7 +3047,10 @@ func (m *SysMenuMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
+	if m.is_del != nil {
+		fields = append(fields, sysmenu.FieldIsDel)
+	}
 	if m.memo != nil {
 		fields = append(fields, sysmenu.FieldMemo)
 	}
@@ -2893,6 +3095,8 @@ func (m *SysMenuMutation) Fields() []string {
 // schema.
 func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysmenu.FieldIsDel:
+		return m.IsDel()
 	case sysmenu.FieldMemo:
 		return m.Memo()
 	case sysmenu.FieldSort:
@@ -2926,6 +3130,8 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysmenu.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysmenu.FieldMemo:
 		return m.OldMemo(ctx)
 	case sysmenu.FieldSort:
@@ -2959,6 +3165,13 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysmenu.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysmenu.FieldMemo:
 		v, ok := value.(string)
 		if !ok {
@@ -3140,6 +3353,9 @@ func (m *SysMenuMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysMenuMutation) ResetField(name string) error {
 	switch name {
+	case sysmenu.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysmenu.FieldMemo:
 		m.ResetMemo()
 		return nil
@@ -3234,6 +3450,7 @@ type SysMenuActionMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	sort          *int32
 	addsort       *int32
 	status        *int32
@@ -3334,6 +3551,42 @@ func (m *SysMenuActionMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysMenuActionMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysMenuActionMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysMenuAction entity.
+// If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysMenuActionMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetSort sets the "sort" field.
@@ -3727,7 +3980,10 @@ func (m *SysMenuActionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuActionMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
+	if m.is_del != nil {
+		fields = append(fields, sysmenuaction.FieldIsDel)
+	}
 	if m.sort != nil {
 		fields = append(fields, sysmenuaction.FieldSort)
 	}
@@ -3763,6 +4019,8 @@ func (m *SysMenuActionMutation) Fields() []string {
 // schema.
 func (m *SysMenuActionMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysmenuaction.FieldIsDel:
+		return m.IsDel()
 	case sysmenuaction.FieldSort:
 		return m.Sort()
 	case sysmenuaction.FieldStatus:
@@ -3790,6 +4048,8 @@ func (m *SysMenuActionMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysMenuActionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysmenuaction.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysmenuaction.FieldSort:
 		return m.OldSort(ctx)
 	case sysmenuaction.FieldStatus:
@@ -3817,6 +4077,13 @@ func (m *SysMenuActionMutation) OldField(ctx context.Context, name string) (ent.
 // type.
 func (m *SysMenuActionMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysmenuaction.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysmenuaction.FieldSort:
 		v, ok := value.(int32)
 		if !ok {
@@ -3965,6 +4232,9 @@ func (m *SysMenuActionMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysMenuActionMutation) ResetField(name string) error {
 	switch name {
+	case sysmenuaction.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysmenuaction.FieldSort:
 		m.ResetSort()
 		return nil
@@ -4050,6 +4320,7 @@ type SysMenuActionResourceMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	sort          *int32
 	addsort       *int32
 	memo          *string
@@ -4150,6 +4421,42 @@ func (m *SysMenuActionResourceMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysMenuActionResourceMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysMenuActionResourceMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysMenuActionResource entity.
+// If the SysMenuActionResource object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuActionResourceMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysMenuActionResourceMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetSort sets the "sort" field.
@@ -4543,7 +4850,10 @@ func (m *SysMenuActionResourceMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuActionResourceMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
+	if m.is_del != nil {
+		fields = append(fields, sysmenuactionresource.FieldIsDel)
+	}
 	if m.sort != nil {
 		fields = append(fields, sysmenuactionresource.FieldSort)
 	}
@@ -4579,6 +4889,8 @@ func (m *SysMenuActionResourceMutation) Fields() []string {
 // schema.
 func (m *SysMenuActionResourceMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysmenuactionresource.FieldIsDel:
+		return m.IsDel()
 	case sysmenuactionresource.FieldSort:
 		return m.Sort()
 	case sysmenuactionresource.FieldMemo:
@@ -4606,6 +4918,8 @@ func (m *SysMenuActionResourceMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysMenuActionResourceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysmenuactionresource.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysmenuactionresource.FieldSort:
 		return m.OldSort(ctx)
 	case sysmenuactionresource.FieldMemo:
@@ -4633,6 +4947,13 @@ func (m *SysMenuActionResourceMutation) OldField(ctx context.Context, name strin
 // type.
 func (m *SysMenuActionResourceMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysmenuactionresource.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysmenuactionresource.FieldSort:
 		v, ok := value.(int32)
 		if !ok {
@@ -4781,6 +5102,9 @@ func (m *SysMenuActionResourceMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysMenuActionResourceMutation) ResetField(name string) error {
 	switch name {
+	case sysmenuactionresource.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysmenuactionresource.FieldSort:
 		m.ResetSort()
 		return nil
@@ -4866,6 +5190,7 @@ type SysRoleMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	status        *int32
 	addstatus     *int32
 	sort          *int32
@@ -4964,6 +5289,42 @@ func (m *SysRoleMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysRoleMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysRoleMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysRoleMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetStatus sets the "status" field.
@@ -5285,7 +5646,10 @@ func (m *SysRoleMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysRoleMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
+	if m.is_del != nil {
+		fields = append(fields, sysrole.FieldIsDel)
+	}
 	if m.status != nil {
 		fields = append(fields, sysrole.FieldStatus)
 	}
@@ -5315,6 +5679,8 @@ func (m *SysRoleMutation) Fields() []string {
 // schema.
 func (m *SysRoleMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysrole.FieldIsDel:
+		return m.IsDel()
 	case sysrole.FieldStatus:
 		return m.Status()
 	case sysrole.FieldSort:
@@ -5338,6 +5704,8 @@ func (m *SysRoleMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysRoleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysrole.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysrole.FieldStatus:
 		return m.OldStatus(ctx)
 	case sysrole.FieldSort:
@@ -5361,6 +5729,13 @@ func (m *SysRoleMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysrole.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysrole.FieldStatus:
 		v, ok := value.(int32)
 		if !ok {
@@ -5495,6 +5870,9 @@ func (m *SysRoleMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysRoleMutation) ResetField(name string) error {
 	switch name {
+	case sysrole.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysrole.FieldStatus:
 		m.ResetStatus()
 		return nil
@@ -5574,6 +5952,7 @@ type SysRoleMenuMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
@@ -5669,6 +6048,42 @@ func (m *SysRoleMenuMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysRoleMenuMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysRoleMenuMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysRoleMenu entity.
+// If the SysRoleMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMenuMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysRoleMenuMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetCreatedAt sets the "created_at" field.
@@ -5927,7 +6342,10 @@ func (m *SysRoleMenuMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysRoleMenuMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
+	if m.is_del != nil {
+		fields = append(fields, sysrolemenu.FieldIsDel)
+	}
 	if m.created_at != nil {
 		fields = append(fields, sysrolemenu.FieldCreatedAt)
 	}
@@ -5954,6 +6372,8 @@ func (m *SysRoleMenuMutation) Fields() []string {
 // schema.
 func (m *SysRoleMenuMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysrolemenu.FieldIsDel:
+		return m.IsDel()
 	case sysrolemenu.FieldCreatedAt:
 		return m.CreatedAt()
 	case sysrolemenu.FieldUpdatedAt:
@@ -5975,6 +6395,8 @@ func (m *SysRoleMenuMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysRoleMenuMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysrolemenu.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysrolemenu.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case sysrolemenu.FieldUpdatedAt:
@@ -5996,6 +6418,13 @@ func (m *SysRoleMenuMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *SysRoleMenuMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysrolemenu.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysrolemenu.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -6102,6 +6531,9 @@ func (m *SysRoleMenuMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysRoleMenuMutation) ResetField(name string) error {
 	switch name {
+	case sysrolemenu.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysrolemenu.FieldCreatedAt:
 		m.ResetCreatedAt()
 		return nil
@@ -6178,6 +6610,7 @@ type SysUserMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	sort          *int32
 	addsort       *int32
 	created_at    *time.Time
@@ -6282,6 +6715,42 @@ func (m *SysUserMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysUserMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysUserMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysUser entity.
+// If the SysUser object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysUserMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetSort sets the "sort" field.
@@ -6858,7 +7327,10 @@ func (m *SysUserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysUserMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
+	if m.is_del != nil {
+		fields = append(fields, sysuser.FieldIsDel)
+	}
 	if m.sort != nil {
 		fields = append(fields, sysuser.FieldSort)
 	}
@@ -6906,6 +7378,8 @@ func (m *SysUserMutation) Fields() []string {
 // schema.
 func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysuser.FieldIsDel:
+		return m.IsDel()
 	case sysuser.FieldSort:
 		return m.Sort()
 	case sysuser.FieldCreatedAt:
@@ -6941,6 +7415,8 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysuser.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysuser.FieldSort:
 		return m.OldSort(ctx)
 	case sysuser.FieldCreatedAt:
@@ -6976,6 +7452,13 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysuser.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysuser.FieldSort:
 		v, ok := value.(int32)
 		if !ok {
@@ -7170,6 +7653,9 @@ func (m *SysUserMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysUserMutation) ResetField(name string) error {
 	switch name {
+	case sysuser.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysuser.FieldSort:
 		m.ResetSort()
 		return nil
@@ -7267,6 +7753,7 @@ type SysUserRoleMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
@@ -7361,6 +7848,42 @@ func (m *SysUserRoleMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *SysUserRoleMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *SysUserRoleMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the SysUserRole entity.
+// If the SysUserRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserRoleMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *SysUserRoleMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetCreatedAt sets the "created_at" field.
@@ -7570,7 +8093,10 @@ func (m *SysUserRoleMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysUserRoleMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
+	if m.is_del != nil {
+		fields = append(fields, sysuserrole.FieldIsDel)
+	}
 	if m.created_at != nil {
 		fields = append(fields, sysuserrole.FieldCreatedAt)
 	}
@@ -7594,6 +8120,8 @@ func (m *SysUserRoleMutation) Fields() []string {
 // schema.
 func (m *SysUserRoleMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case sysuserrole.FieldIsDel:
+		return m.IsDel()
 	case sysuserrole.FieldCreatedAt:
 		return m.CreatedAt()
 	case sysuserrole.FieldUpdatedAt:
@@ -7613,6 +8141,8 @@ func (m *SysUserRoleMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysUserRoleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case sysuserrole.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case sysuserrole.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case sysuserrole.FieldUpdatedAt:
@@ -7632,6 +8162,13 @@ func (m *SysUserRoleMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *SysUserRoleMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case sysuserrole.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case sysuserrole.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -7725,6 +8262,9 @@ func (m *SysUserRoleMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysUserRoleMutation) ResetField(name string) error {
 	switch name {
+	case sysuserrole.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case sysuserrole.FieldCreatedAt:
 		m.ResetCreatedAt()
 		return nil
@@ -7798,6 +8338,7 @@ type XxxDemoMutation struct {
 	op            Op
 	typ           string
 	id            *string
+	is_del        *bool
 	memo          *string
 	sort          *int32
 	addsort       *int32
@@ -7897,6 +8438,42 @@ func (m *XxxDemoMutation) ID() (id string, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetIsDel sets the "is_del" field.
+func (m *XxxDemoMutation) SetIsDel(b bool) {
+	m.is_del = &b
+}
+
+// IsDel returns the value of the "is_del" field in the mutation.
+func (m *XxxDemoMutation) IsDel() (r bool, exists bool) {
+	v := m.is_del
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDel returns the old "is_del" field's value of the XxxDemo entity.
+// If the XxxDemo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *XxxDemoMutation) OldIsDel(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsDel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsDel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDel: %w", err)
+	}
+	return oldValue.IsDel, nil
+}
+
+// ResetIsDel resets all changes to the "is_del" field.
+func (m *XxxDemoMutation) ResetIsDel() {
+	m.is_del = nil
 }
 
 // SetMemo sets the "memo" field.
@@ -8254,7 +8831,10 @@ func (m *XxxDemoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *XxxDemoMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
+	if m.is_del != nil {
+		fields = append(fields, xxxdemo.FieldIsDel)
+	}
 	if m.memo != nil {
 		fields = append(fields, xxxdemo.FieldMemo)
 	}
@@ -8287,6 +8867,8 @@ func (m *XxxDemoMutation) Fields() []string {
 // schema.
 func (m *XxxDemoMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case xxxdemo.FieldIsDel:
+		return m.IsDel()
 	case xxxdemo.FieldMemo:
 		return m.Memo()
 	case xxxdemo.FieldSort:
@@ -8312,6 +8894,8 @@ func (m *XxxDemoMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *XxxDemoMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case xxxdemo.FieldIsDel:
+		return m.OldIsDel(ctx)
 	case xxxdemo.FieldMemo:
 		return m.OldMemo(ctx)
 	case xxxdemo.FieldSort:
@@ -8337,6 +8921,13 @@ func (m *XxxDemoMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *XxxDemoMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case xxxdemo.FieldIsDel:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDel(v)
+		return nil
 	case xxxdemo.FieldMemo:
 		v, ok := value.(string)
 		if !ok {
@@ -8478,6 +9069,9 @@ func (m *XxxDemoMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *XxxDemoMutation) ResetField(name string) error {
 	switch name {
+	case xxxdemo.FieldIsDel:
+		m.ResetIsDel()
+		return nil
 	case xxxdemo.FieldMemo:
 		m.ResetMemo()
 		return nil

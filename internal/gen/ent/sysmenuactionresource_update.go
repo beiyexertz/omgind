@@ -27,6 +27,20 @@ func (smaru *SysMenuActionResourceUpdate) Where(ps ...predicate.SysMenuActionRes
 	return smaru
 }
 
+// SetIsDel sets the "is_del" field.
+func (smaru *SysMenuActionResourceUpdate) SetIsDel(b bool) *SysMenuActionResourceUpdate {
+	smaru.mutation.SetIsDel(b)
+	return smaru
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smaru *SysMenuActionResourceUpdate) SetNillableIsDel(b *bool) *SysMenuActionResourceUpdate {
+	if b != nil {
+		smaru.SetIsDel(*b)
+	}
+	return smaru
+}
+
 // SetSort sets the "sort" field.
 func (smaru *SysMenuActionResourceUpdate) SetSort(i int32) *SysMenuActionResourceUpdate {
 	smaru.mutation.ResetSort()
@@ -241,6 +255,13 @@ func (smaru *SysMenuActionResourceUpdate) sqlSave(ctx context.Context) (n int, e
 			}
 		}
 	}
+	if value, ok := smaru.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenuactionresource.FieldIsDel,
+		})
+	}
 	if value, ok := smaru.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt32,
@@ -334,6 +355,20 @@ type SysMenuActionResourceUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysMenuActionResourceMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (smaruo *SysMenuActionResourceUpdateOne) SetIsDel(b bool) *SysMenuActionResourceUpdateOne {
+	smaruo.mutation.SetIsDel(b)
+	return smaruo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smaruo *SysMenuActionResourceUpdateOne) SetNillableIsDel(b *bool) *SysMenuActionResourceUpdateOne {
+	if b != nil {
+		smaruo.SetIsDel(*b)
+	}
+	return smaruo
 }
 
 // SetSort sets the "sort" field.
@@ -573,6 +608,13 @@ func (smaruo *SysMenuActionResourceUpdateOne) sqlSave(ctx context.Context) (_nod
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := smaruo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenuactionresource.FieldIsDel,
+		})
 	}
 	if value, ok := smaruo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

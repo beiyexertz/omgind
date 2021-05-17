@@ -123,7 +123,6 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, error) {
 
 	iteminput := toEntCreateDemoInput(&item)
-
 	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
 
 	if err != nil {

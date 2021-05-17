@@ -17,6 +17,9 @@ type SysRole struct {
 	// ID of the ent.
 	// 主键
 	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
 	Status int32 `json:"status,omitempty"`
@@ -45,6 +48,8 @@ func (*SysRole) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case sysrole.FieldIsDel:
+			values[i] = new(sql.NullBool)
 		case sysrole.FieldStatus, sysrole.FieldSort:
 			values[i] = new(sql.NullInt64)
 		case sysrole.FieldID, sysrole.FieldMemo, sysrole.FieldName:
@@ -71,6 +76,12 @@ func (sr *SysRole) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value.Valid {
 				sr.ID = value.String
+			}
+		case sysrole.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				sr.IsDel = value.Bool
 			}
 		case sysrole.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -143,6 +154,8 @@ func (sr *SysRole) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysRole(")
 	builder.WriteString(fmt.Sprintf("id=%v", sr.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", sr.IsDel))
 	builder.WriteString(", status=")
 	builder.WriteString(fmt.Sprintf("%v", sr.Status))
 	builder.WriteString(", sort=")

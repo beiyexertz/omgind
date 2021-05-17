@@ -253,12 +253,12 @@ func (sjbq *SysJwtBlockQuery) Clone() *SysJwtBlockQuery {
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysJwtBlock.Query().
-//		GroupBy(sysjwtblock.FieldMemo).
+//		GroupBy(sysjwtblock.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (sjbq *SysJwtBlockQuery) GroupBy(field string, fields ...string) *SysJwtBlo
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysJwtBlock.Query().
-//		Select(sysjwtblock.FieldMemo).
+//		Select(sysjwtblock.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (sjbq *SysJwtBlockQuery) Select(field string, fields ...string) *SysJwtBlockSelect {

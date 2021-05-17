@@ -11,6 +11,8 @@ const (
 	Label = "xxx_demo"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
 	// FieldMemo holds the string denoting the memo field in the database.
 	FieldMemo = "memo"
 	// FieldSort holds the string denoting the sort field in the database.
@@ -34,6 +36,7 @@ const (
 // Columns holds all SQL columns for xxxdemo fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
 	FieldMemo,
 	FieldSort,
 	FieldCreatedAt,
@@ -55,6 +58,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
 	// DefaultMemo holds the default value on creation for the "memo" field.
 	DefaultMemo string
 	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.

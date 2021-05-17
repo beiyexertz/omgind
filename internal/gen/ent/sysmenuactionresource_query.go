@@ -253,12 +253,12 @@ func (smarq *SysMenuActionResourceQuery) Clone() *SysMenuActionResourceQuery {
 // Example:
 //
 //	var v []struct {
-//		Sort int32 `json:"sort,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysMenuActionResource.Query().
-//		GroupBy(sysmenuactionresource.FieldSort).
+//		GroupBy(sysmenuactionresource.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (smarq *SysMenuActionResourceQuery) GroupBy(field string, fields ...string)
 // Example:
 //
 //	var v []struct {
-//		Sort int32 `json:"sort,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysMenuActionResource.Query().
-//		Select(sysmenuactionresource.FieldSort).
+//		Select(sysmenuactionresource.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (smarq *SysMenuActionResourceQuery) Select(field string, fields ...string) *SysMenuActionResourceSelect {

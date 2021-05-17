@@ -20,6 +20,20 @@ type SysMenuActionResourceCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (smarc *SysMenuActionResourceCreate) SetIsDel(b bool) *SysMenuActionResourceCreate {
+	smarc.mutation.SetIsDel(b)
+	return smarc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smarc *SysMenuActionResourceCreate) SetNillableIsDel(b *bool) *SysMenuActionResourceCreate {
+	if b != nil {
+		smarc.SetIsDel(*b)
+	}
+	return smarc
+}
+
 // SetSort sets the "sort" field.
 func (smarc *SysMenuActionResourceCreate) SetSort(i int32) *SysMenuActionResourceCreate {
 	smarc.mutation.SetSort(i)
@@ -188,6 +202,10 @@ func (smarc *SysMenuActionResourceCreate) SaveX(ctx context.Context) *SysMenuAct
 
 // defaults sets the default values of the builder before save.
 func (smarc *SysMenuActionResourceCreate) defaults() {
+	if _, ok := smarc.mutation.IsDel(); !ok {
+		v := sysmenuactionresource.DefaultIsDel
+		smarc.mutation.SetIsDel(v)
+	}
 	if _, ok := smarc.mutation.Sort(); !ok {
 		v := sysmenuactionresource.DefaultSort
 		smarc.mutation.SetSort(v)
@@ -216,6 +234,9 @@ func (smarc *SysMenuActionResourceCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (smarc *SysMenuActionResourceCreate) check() error {
+	if _, ok := smarc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := smarc.mutation.Sort(); !ok {
 		return &ValidationError{Name: "sort", err: errors.New("ent: missing required field \"sort\"")}
 	}
@@ -293,6 +314,14 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 	if id, ok := smarc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := smarc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenuactionresource.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := smarc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

@@ -20,6 +20,20 @@ type SysDictItemCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (sdic *SysDictItemCreate) SetIsDel(b bool) *SysDictItemCreate {
+	sdic.mutation.SetIsDel(b)
+	return sdic
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sdic *SysDictItemCreate) SetNillableIsDel(b *bool) *SysDictItemCreate {
+	if b != nil {
+		sdic.SetIsDel(*b)
+	}
+	return sdic
+}
+
 // SetMemo sets the "memo" field.
 func (sdic *SysDictItemCreate) SetMemo(s string) *SysDictItemCreate {
 	sdic.mutation.SetMemo(s)
@@ -180,6 +194,10 @@ func (sdic *SysDictItemCreate) SaveX(ctx context.Context) *SysDictItem {
 
 // defaults sets the default values of the builder before save.
 func (sdic *SysDictItemCreate) defaults() {
+	if _, ok := sdic.mutation.IsDel(); !ok {
+		v := sysdictitem.DefaultIsDel
+		sdic.mutation.SetIsDel(v)
+	}
 	if _, ok := sdic.mutation.Memo(); !ok {
 		v := sysdictitem.DefaultMemo
 		sdic.mutation.SetMemo(v)
@@ -204,6 +222,9 @@ func (sdic *SysDictItemCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (sdic *SysDictItemCreate) check() error {
+	if _, ok := sdic.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := sdic.mutation.Memo(); !ok {
 		return &ValidationError{Name: "memo", err: errors.New("ent: missing required field \"memo\"")}
 	}
@@ -276,6 +297,14 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 	if id, ok := sdic.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := sdic.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysdictitem.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := sdic.mutation.Memo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

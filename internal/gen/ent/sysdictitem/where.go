@@ -92,6 +92,13 @@ func IDLTE(id string) predicate.SysDictItem {
 	})
 }
 
+// IsDel applies equality check predicate on the "is_del" field. It's identical to IsDelEQ.
+func IsDel(v bool) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
 // Memo applies equality check predicate on the "memo" field. It's identical to MemoEQ.
 func Memo(v string) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
@@ -145,6 +152,20 @@ func Status(v bool) predicate.SysDictItem {
 func DictID(v string) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDictID), v))
+	})
+}
+
+// IsDelEQ applies the EQ predicate on the "is_del" field.
+func IsDelEQ(v bool) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
+// IsDelNEQ applies the NEQ predicate on the "is_del" field.
+func IsDelNEQ(v bool) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIsDel), v))
 	})
 }
 

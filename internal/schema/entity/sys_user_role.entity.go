@@ -3,7 +3,6 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -14,6 +13,7 @@ type SysUserRole struct {
 
 func (syr SysUserRole) Mixin() []ent.Mixin {
 	return []ent.Mixin{
+		mixin.IDMixin{},
 		mixin.TimeMixin{},
 	}
 }
@@ -21,7 +21,7 @@ func (syr SysUserRole) Mixin() []ent.Mixin {
 // Fields of the SysUserRole.
 func (SysUserRole) Fields() []ent.Field {
 	return []ent.Field{
-		mixin.IdField(),
+		//mixin.IdField(),
 
 		field.String("user_id").MaxLen(36).NotEmpty().Comment("用户ID, sys_user.id"),
 		field.String("role_id").MaxLen(36).NotEmpty().Comment("角色ID, sys_role.id"),
@@ -30,7 +30,7 @@ func (SysUserRole) Fields() []ent.Field {
 
 func (SysUserRole) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("id").Unique(),
+		//index.Fields("id").Unique(),
 	}
 }
 

@@ -11,6 +11,8 @@ const (
 	Label = "sys_menu_action_resource"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
 	// FieldMemo holds the string denoting the memo field in the database.
@@ -36,6 +38,7 @@ const (
 // Columns holds all SQL columns for sysmenuactionresource fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
 	FieldSort,
 	FieldMemo,
 	FieldCreatedAt,
@@ -58,6 +61,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int32
 	// DefaultMemo holds the default value on creation for the "memo" field.

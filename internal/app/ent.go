@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -33,6 +34,16 @@ func InitEntClient() (*ent.Client, func(), error) {
 			return nil, cleanFunc, err
 		}
 	}
+	// add hooks
+	cli.Use(func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			start := time.Now()
+			defer func() {
+				log.Printf("Op=%s\tType=%s\tTime=%s\tConcreteType=%T\n", m.Op(), m.Type(), time.Since(start), m)
+			}()
+			return next.Mutate(ctx, m)
+		})
+	})
 
 	return cli, cleanFunc, nil
 }

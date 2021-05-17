@@ -11,6 +11,8 @@ const (
 	Label = "sys_user"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
@@ -44,6 +46,7 @@ const (
 // Columns holds all SQL columns for sysuser fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
 	FieldSort,
 	FieldCreatedAt,
 	FieldUpdatedAt,
@@ -70,6 +73,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int32
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.

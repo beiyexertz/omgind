@@ -3,7 +3,6 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -14,6 +13,7 @@ type SysMenuAction struct {
 
 func (ma SysMenuAction) Mixin() []ent.Mixin {
 	return []ent.Mixin{
+		mixin.IDMixin{},
 		mixin.SortMixin{},
 		mixin.StatusMixin{},
 		mixin.MemoMixin{},
@@ -24,7 +24,6 @@ func (ma SysMenuAction) Mixin() []ent.Mixin {
 // Fields of the SysMenuAction.
 func (SysMenuAction) Fields() []ent.Field {
 	return []ent.Field{
-		mixin.IdField(),
 
 		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID, sys_menu.id"),
 		field.String("code").MaxLen(128).NotEmpty().Comment("动作编号"),
@@ -41,7 +40,5 @@ func (SysMenuAction) Fields() []ent.Field {
 //}
 
 func (SysMenuAction) Indexes() []ent.Index {
-	return []ent.Index{
-		index.Fields("id").Unique(),
-	}
+	return []ent.Index{}
 }

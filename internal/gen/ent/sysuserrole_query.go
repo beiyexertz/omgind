@@ -253,12 +253,12 @@ func (surq *SysUserRoleQuery) Clone() *SysUserRoleQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysUserRole.Query().
-//		GroupBy(sysuserrole.FieldCreatedAt).
+//		GroupBy(sysuserrole.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (surq *SysUserRoleQuery) GroupBy(field string, fields ...string) *SysUserRo
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysUserRole.Query().
-//		Select(sysuserrole.FieldCreatedAt).
+//		Select(sysuserrole.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (surq *SysUserRoleQuery) Select(field string, fields ...string) *SysUserRoleSelect {

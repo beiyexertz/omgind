@@ -253,12 +253,12 @@ func (xdq *XxxDemoQuery) Clone() *XxxDemoQuery {
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.XxxDemo.Query().
-//		GroupBy(xxxdemo.FieldMemo).
+//		GroupBy(xxxdemo.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (xdq *XxxDemoQuery) GroupBy(field string, fields ...string) *XxxDemoGroupBy
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.XxxDemo.Query().
-//		Select(xxxdemo.FieldMemo).
+//		Select(xxxdemo.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (xdq *XxxDemoQuery) Select(field string, fields ...string) *XxxDemoSelect {

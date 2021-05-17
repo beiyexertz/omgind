@@ -17,6 +17,9 @@ type SysUser struct {
 	// ID of the ent.
 	// 主键
 	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
 	Sort int32 `json:"sort,omitempty"`
@@ -62,6 +65,8 @@ func (*SysUser) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case sysuser.FieldIsDel:
+			values[i] = new(sql.NullBool)
 		case sysuser.FieldSort, sysuser.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case sysuser.FieldID, sysuser.FieldUserName, sysuser.FieldRealName, sysuser.FieldFirstName, sysuser.FieldLastName, sysuser.FieldPassword, sysuser.FieldEmail, sysuser.FieldPhone, sysuser.FieldSalt:
@@ -88,6 +93,12 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value.Valid {
 				su.ID = value.String
+			}
+		case sysuser.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				su.IsDel = value.Bool
 			}
 		case sysuser.FieldSort:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -199,6 +210,8 @@ func (su *SysUser) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysUser(")
 	builder.WriteString(fmt.Sprintf("id=%v", su.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", su.IsDel))
 	builder.WriteString(", sort=")
 	builder.WriteString(fmt.Sprintf("%v", su.Sort))
 	builder.WriteString(", created_at=")

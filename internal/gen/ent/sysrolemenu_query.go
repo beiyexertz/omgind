@@ -253,12 +253,12 @@ func (srmq *SysRoleMenuQuery) Clone() *SysRoleMenuQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysRoleMenu.Query().
-//		GroupBy(sysrolemenu.FieldCreatedAt).
+//		GroupBy(sysrolemenu.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (srmq *SysRoleMenuQuery) GroupBy(field string, fields ...string) *SysRoleMe
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysRoleMenu.Query().
-//		Select(sysrolemenu.FieldCreatedAt).
+//		Select(sysrolemenu.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (srmq *SysRoleMenuQuery) Select(field string, fields ...string) *SysRoleMenuSelect {

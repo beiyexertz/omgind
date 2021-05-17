@@ -3,7 +3,6 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -13,6 +12,7 @@ type SysDictItem struct {
 
 func (sdd SysDictItem) Mixin() []ent.Mixin {
 	return []ent.Mixin{
+		mixin.IDMixin{},
 		mixin.MemoMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
@@ -21,7 +21,6 @@ func (sdd SysDictItem) Mixin() []ent.Mixin {
 
 func (sdd SysDictItem) Fields() []ent.Field {
 	return []ent.Field{
-		mixin.IdField(),
 
 		field.String("label").StorageKey("label").
 			MaxLen(128).StructTag(`json:"label,omitempty"`).Comment("显示值"),
@@ -39,7 +38,5 @@ func (sdd SysDictItem) Fields() []ent.Field {
 //}
 
 func (SysDictItem) Indexes() []ent.Index {
-	return []ent.Index{
-		index.Fields("id").Unique(),
-	}
+	return []ent.Index{}
 }

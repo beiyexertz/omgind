@@ -20,6 +20,20 @@ type SysMenuCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (smc *SysMenuCreate) SetIsDel(b bool) *SysMenuCreate {
+	smc.mutation.SetIsDel(b)
+	return smc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableIsDel(b *bool) *SysMenuCreate {
+	if b != nil {
+		smc.SetIsDel(*b)
+	}
+	return smc
+}
+
 // SetMemo sets the "memo" field.
 func (smc *SysMenuCreate) SetMemo(s string) *SysMenuCreate {
 	smc.mutation.SetMemo(s)
@@ -230,6 +244,10 @@ func (smc *SysMenuCreate) SaveX(ctx context.Context) *SysMenu {
 
 // defaults sets the default values of the builder before save.
 func (smc *SysMenuCreate) defaults() {
+	if _, ok := smc.mutation.IsDel(); !ok {
+		v := sysmenu.DefaultIsDel
+		smc.mutation.SetIsDel(v)
+	}
 	if _, ok := smc.mutation.Memo(); !ok {
 		v := sysmenu.DefaultMemo
 		smc.mutation.SetMemo(v)
@@ -262,6 +280,9 @@ func (smc *SysMenuCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (smc *SysMenuCreate) check() error {
+	if _, ok := smc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := smc.mutation.Memo(); !ok {
 		return &ValidationError{Name: "memo", err: errors.New("ent: missing required field \"memo\"")}
 	}
@@ -352,6 +373,14 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if id, ok := smc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := smc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysmenu.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := smc.mutation.Memo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

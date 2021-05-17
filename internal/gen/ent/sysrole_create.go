@@ -20,6 +20,20 @@ type SysRoleCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (src *SysRoleCreate) SetIsDel(b bool) *SysRoleCreate {
+	src.mutation.SetIsDel(b)
+	return src
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableIsDel(b *bool) *SysRoleCreate {
+	if b != nil {
+		src.SetIsDel(*b)
+	}
+	return src
+}
+
 // SetStatus sets the "status" field.
 func (src *SysRoleCreate) SetStatus(i int32) *SysRoleCreate {
 	src.mutation.SetStatus(i)
@@ -176,6 +190,10 @@ func (src *SysRoleCreate) SaveX(ctx context.Context) *SysRole {
 
 // defaults sets the default values of the builder before save.
 func (src *SysRoleCreate) defaults() {
+	if _, ok := src.mutation.IsDel(); !ok {
+		v := sysrole.DefaultIsDel
+		src.mutation.SetIsDel(v)
+	}
 	if _, ok := src.mutation.Status(); !ok {
 		v := sysrole.DefaultStatus
 		src.mutation.SetStatus(v)
@@ -204,6 +222,9 @@ func (src *SysRoleCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (src *SysRoleCreate) check() error {
+	if _, ok := src.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := src.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
 	}
@@ -265,6 +286,14 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 	if id, ok := src.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := src.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrole.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := src.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

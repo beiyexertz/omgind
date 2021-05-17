@@ -92,6 +92,13 @@ func IDLTE(id string) predicate.SysRole {
 	})
 }
 
+// IsDel applies equality check predicate on the "is_del" field. It's identical to IsDelEQ.
+func IsDel(v bool) predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v int32) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
@@ -138,6 +145,20 @@ func DeletedAt(v time.Time) predicate.SysRole {
 func Name(v string) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldName), v))
+	})
+}
+
+// IsDelEQ applies the EQ predicate on the "is_del" field.
+func IsDelEQ(v bool) predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
+// IsDelNEQ applies the NEQ predicate on the "is_del" field.
+func IsDelNEQ(v bool) predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIsDel), v))
 	})
 }
 

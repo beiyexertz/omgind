@@ -11,6 +11,8 @@ const (
 	Label = "sys_role_menu"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "crtd_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
@@ -30,6 +32,7 @@ const (
 // Columns holds all SQL columns for sysrolemenu fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
@@ -49,6 +52,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.

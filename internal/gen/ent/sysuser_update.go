@@ -27,6 +27,20 @@ func (suu *SysUserUpdate) Where(ps ...predicate.SysUser) *SysUserUpdate {
 	return suu
 }
 
+// SetIsDel sets the "is_del" field.
+func (suu *SysUserUpdate) SetIsDel(b bool) *SysUserUpdate {
+	suu.mutation.SetIsDel(b)
+	return suu
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableIsDel(b *bool) *SysUserUpdate {
+	if b != nil {
+		suu.SetIsDel(*b)
+	}
+	return suu
+}
+
 // SetSort sets the "sort" field.
 func (suu *SysUserUpdate) SetSort(i int32) *SysUserUpdate {
 	suu.mutation.ResetSort()
@@ -322,6 +336,13 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := suu.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuser.FieldIsDel,
+		})
+	}
 	if value, ok := suu.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt32,
@@ -461,6 +482,20 @@ type SysUserUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysUserMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (suuo *SysUserUpdateOne) SetIsDel(b bool) *SysUserUpdateOne {
+	suuo.mutation.SetIsDel(b)
+	return suuo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableIsDel(b *bool) *SysUserUpdateOne {
+	if b != nil {
+		suuo.SetIsDel(*b)
+	}
+	return suuo
 }
 
 // SetSort sets the "sort" field.
@@ -781,6 +816,13 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := suuo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysuser.FieldIsDel,
+		})
 	}
 	if value, ok := suuo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

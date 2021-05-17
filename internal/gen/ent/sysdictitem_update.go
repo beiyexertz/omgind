@@ -27,6 +27,20 @@ func (sdiu *SysDictItemUpdate) Where(ps ...predicate.SysDictItem) *SysDictItemUp
 	return sdiu
 }
 
+// SetIsDel sets the "is_del" field.
+func (sdiu *SysDictItemUpdate) SetIsDel(b bool) *SysDictItemUpdate {
+	sdiu.mutation.SetIsDel(b)
+	return sdiu
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sdiu *SysDictItemUpdate) SetNillableIsDel(b *bool) *SysDictItemUpdate {
+	if b != nil {
+		sdiu.SetIsDel(*b)
+	}
+	return sdiu
+}
+
 // SetMemo sets the "memo" field.
 func (sdiu *SysDictItemUpdate) SetMemo(s string) *SysDictItemUpdate {
 	sdiu.mutation.SetMemo(s)
@@ -228,6 +242,13 @@ func (sdiu *SysDictItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := sdiu.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysdictitem.FieldIsDel,
+		})
+	}
 	if value, ok := sdiu.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -321,6 +342,20 @@ type SysDictItemUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysDictItemMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (sdiuo *SysDictItemUpdateOne) SetIsDel(b bool) *SysDictItemUpdateOne {
+	sdiuo.mutation.SetIsDel(b)
+	return sdiuo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sdiuo *SysDictItemUpdateOne) SetNillableIsDel(b *bool) *SysDictItemUpdateOne {
+	if b != nil {
+		sdiuo.SetIsDel(*b)
+	}
+	return sdiuo
 }
 
 // SetMemo sets the "memo" field.
@@ -547,6 +582,13 @@ func (sdiuo *SysDictItemUpdateOne) sqlSave(ctx context.Context) (_node *SysDictI
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sdiuo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysdictitem.FieldIsDel,
+		})
 	}
 	if value, ok := sdiuo.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

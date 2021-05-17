@@ -17,6 +17,9 @@ type SysUserRole struct {
 	// ID of the ent.
 	// 主键
 	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -39,6 +42,8 @@ func (*SysUserRole) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case sysuserrole.FieldIsDel:
+			values[i] = new(sql.NullBool)
 		case sysuserrole.FieldID, sysuserrole.FieldUserID, sysuserrole.FieldRoleID:
 			values[i] = new(sql.NullString)
 		case sysuserrole.FieldCreatedAt, sysuserrole.FieldUpdatedAt, sysuserrole.FieldDeletedAt:
@@ -63,6 +68,12 @@ func (sur *SysUserRole) assignValues(columns []string, values []interface{}) err
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value.Valid {
 				sur.ID = value.String
+			}
+		case sysuserrole.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				sur.IsDel = value.Bool
 			}
 		case sysuserrole.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -123,6 +134,8 @@ func (sur *SysUserRole) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysUserRole(")
 	builder.WriteString(fmt.Sprintf("id=%v", sur.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", sur.IsDel))
 	builder.WriteString(", created_at=")
 	builder.WriteString(sur.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", updated_at=")

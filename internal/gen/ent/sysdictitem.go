@@ -17,6 +17,9 @@ type SysDictItem struct {
 	// ID of the ent.
 	// 主键
 	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -51,7 +54,7 @@ func (*SysDictItem) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdictitem.FieldStatus:
+		case sysdictitem.FieldIsDel, sysdictitem.FieldStatus:
 			values[i] = new(sql.NullBool)
 		case sysdictitem.FieldSort, sysdictitem.FieldValue:
 			values[i] = new(sql.NullInt64)
@@ -79,6 +82,12 @@ func (sdi *SysDictItem) assignValues(columns []string, values []interface{}) err
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value.Valid {
 				sdi.ID = value.String
+			}
+		case sysdictitem.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				sdi.IsDel = value.Bool
 			}
 		case sysdictitem.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -163,6 +172,8 @@ func (sdi *SysDictItem) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysDictItem(")
 	builder.WriteString(fmt.Sprintf("id=%v", sdi.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", sdi.IsDel))
 	builder.WriteString(", memo=")
 	builder.WriteString(sdi.Memo)
 	builder.WriteString(", sort=")

@@ -17,6 +17,9 @@ type SysMenu struct {
 	// ID of the ent.
 	// 主键
 	ID string `json:"id,omitempty"`
+	// IsDel holds the value of the "is_del" field.
+	// 是否删除
+	IsDel bool `json:"is_del,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -60,7 +63,7 @@ func (*SysMenu) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldIsShow:
+		case sysmenu.FieldIsDel, sysmenu.FieldIsShow:
 			values[i] = new(sql.NullBool)
 		case sysmenu.FieldSort, sysmenu.FieldStatus:
 			values[i] = new(sql.NullInt64)
@@ -88,6 +91,12 @@ func (sm *SysMenu) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value.Valid {
 				sm.ID = value.String
+			}
+		case sysmenu.FieldIsDel:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_del", values[i])
+			} else if value.Valid {
+				sm.IsDel = value.Bool
 			}
 		case sysmenu.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -192,6 +201,8 @@ func (sm *SysMenu) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysMenu(")
 	builder.WriteString(fmt.Sprintf("id=%v", sm.ID))
+	builder.WriteString(", is_del=")
+	builder.WriteString(fmt.Sprintf("%v", sm.IsDel))
 	builder.WriteString(", memo=")
 	builder.WriteString(sm.Memo)
 	builder.WriteString(", sort=")

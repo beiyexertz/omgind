@@ -11,6 +11,8 @@ const (
 	Label = "sys_role"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldIsDel holds the string denoting the is_del field in the database.
+	FieldIsDel = "is_del"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
 	// FieldSort holds the string denoting the sort field in the database.
@@ -32,6 +34,7 @@ const (
 // Columns holds all SQL columns for sysrole fields.
 var Columns = []string{
 	FieldID,
+	FieldIsDel,
 	FieldStatus,
 	FieldSort,
 	FieldMemo,
@@ -52,6 +55,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultIsDel holds the default value on creation for the "is_del" field.
+	DefaultIsDel bool
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int32
 	// DefaultSort holds the default value on creation for the "sort" field.

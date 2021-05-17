@@ -20,6 +20,20 @@ type SysRoleMenuCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (srmc *SysRoleMenuCreate) SetIsDel(b bool) *SysRoleMenuCreate {
+	srmc.mutation.SetIsDel(b)
+	return srmc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (srmc *SysRoleMenuCreate) SetNillableIsDel(b *bool) *SysRoleMenuCreate {
+	if b != nil {
+		srmc.SetIsDel(*b)
+	}
+	return srmc
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (srmc *SysRoleMenuCreate) SetCreatedAt(t time.Time) *SysRoleMenuCreate {
 	srmc.mutation.SetCreatedAt(t)
@@ -154,6 +168,10 @@ func (srmc *SysRoleMenuCreate) SaveX(ctx context.Context) *SysRoleMenu {
 
 // defaults sets the default values of the builder before save.
 func (srmc *SysRoleMenuCreate) defaults() {
+	if _, ok := srmc.mutation.IsDel(); !ok {
+		v := sysrolemenu.DefaultIsDel
+		srmc.mutation.SetIsDel(v)
+	}
 	if _, ok := srmc.mutation.CreatedAt(); !ok {
 		v := sysrolemenu.DefaultCreatedAt()
 		srmc.mutation.SetCreatedAt(v)
@@ -170,6 +188,9 @@ func (srmc *SysRoleMenuCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (srmc *SysRoleMenuCreate) check() error {
+	if _, ok := srmc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := srmc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New("ent: missing required field \"created_at\"")}
 	}
@@ -230,6 +251,14 @@ func (srmc *SysRoleMenuCreate) createSpec() (*SysRoleMenu, *sqlgraph.CreateSpec)
 	if id, ok := srmc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := srmc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrolemenu.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := srmc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

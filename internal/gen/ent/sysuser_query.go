@@ -253,12 +253,12 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 // Example:
 //
 //	var v []struct {
-//		Sort int32 `json:"sort,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysUser.Query().
-//		GroupBy(sysuser.FieldSort).
+//		GroupBy(sysuser.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (suq *SysUserQuery) GroupBy(field string, fields ...string) *SysUserGroupBy
 // Example:
 //
 //	var v []struct {
-//		Sort int32 `json:"sort,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysUser.Query().
-//		Select(sysuser.FieldSort).
+//		Select(sysuser.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (suq *SysUserQuery) Select(field string, fields ...string) *SysUserSelect {

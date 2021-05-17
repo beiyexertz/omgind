@@ -3,7 +3,6 @@ package entity
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
@@ -13,6 +12,7 @@ type XxxDemo struct {
 
 func (xd XxxDemo) Mixin() []ent.Mixin {
 	return []ent.Mixin{
+		mixin.IDMixin{},
 		mixin.MemoMixin{},
 		mixin.SortMixin{},
 		mixin.TimeMixin{},
@@ -31,7 +31,6 @@ func (xd XxxDemo) Mixin() []ent.Mixin {
 func (xd XxxDemo) Fields() []ent.Field {
 
 	return []ent.Field{
-		mixin.IdField(),
 
 		field.String("code").StorageKey("code").
 			MaxLen(128).StructTag(`json:"code,omitempty"`).Comment("编号"),
@@ -43,13 +42,20 @@ func (xd XxxDemo) Fields() []ent.Field {
 }
 
 func (xd XxxDemo) Edges() []ent.Edge {
-	return []ent.Edge{
-		//edge.To("SysDictItems", SysDictItem.Type),
-	}
+	return []ent.Edge{}
 }
 
 func (xd XxxDemo) Indexes() []ent.Index {
-	return []ent.Index{
-		index.Fields("id").Unique(),
+	return []ent.Index{}
+}
+
+func (xd XxxDemo) Hooks() []ent.Hook {
+	return []ent.Hook{
+		//hook.On(func(next ent.Mutator) ent.Mutator {
+		//	return hook.XxxDemoFunc(func(ctx context.Context, m *ent.XxxDemoMutation) (ent.Value, error) {
+		//
+		//		return next.Mutate(ctx, m)
+		//	})
+		//}, ent.OpCreate|ent.OpUpdate|ent.OpUpdateOne|ent.OpDelete|ent.OpDeleteOne),
 	}
 }

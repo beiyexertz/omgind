@@ -27,6 +27,20 @@ func (sru *SysRoleUpdate) Where(ps ...predicate.SysRole) *SysRoleUpdate {
 	return sru
 }
 
+// SetIsDel sets the "is_del" field.
+func (sru *SysRoleUpdate) SetIsDel(b bool) *SysRoleUpdate {
+	sru.mutation.SetIsDel(b)
+	return sru
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableIsDel(b *bool) *SysRoleUpdate {
+	if b != nil {
+		sru.SetIsDel(*b)
+	}
+	return sru
+}
+
 // SetStatus sets the "status" field.
 func (sru *SysRoleUpdate) SetStatus(i int32) *SysRoleUpdate {
 	sru.mutation.ResetStatus()
@@ -219,6 +233,13 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := sru.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrole.FieldIsDel,
+		})
+	}
 	if value, ok := sru.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt32,
@@ -298,6 +319,20 @@ type SysRoleUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysRoleMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (sruo *SysRoleUpdateOne) SetIsDel(b bool) *SysRoleUpdateOne {
+	sruo.mutation.SetIsDel(b)
+	return sruo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableIsDel(b *bool) *SysRoleUpdateOne {
+	if b != nil {
+		sruo.SetIsDel(*b)
+	}
+	return sruo
 }
 
 // SetStatus sets the "status" field.
@@ -515,6 +550,13 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sruo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysrole.FieldIsDel,
+		})
 	}
 	if value, ok := sruo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

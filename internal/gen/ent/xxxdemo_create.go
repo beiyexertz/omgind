@@ -20,6 +20,20 @@ type XxxDemoCreate struct {
 	hooks    []Hook
 }
 
+// SetIsDel sets the "is_del" field.
+func (xdc *XxxDemoCreate) SetIsDel(b bool) *XxxDemoCreate {
+	xdc.mutation.SetIsDel(b)
+	return xdc
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (xdc *XxxDemoCreate) SetNillableIsDel(b *bool) *XxxDemoCreate {
+	if b != nil {
+		xdc.SetIsDel(*b)
+	}
+	return xdc
+}
+
 // SetMemo sets the "memo" field.
 func (xdc *XxxDemoCreate) SetMemo(s string) *XxxDemoCreate {
 	xdc.mutation.SetMemo(s)
@@ -182,6 +196,10 @@ func (xdc *XxxDemoCreate) SaveX(ctx context.Context) *XxxDemo {
 
 // defaults sets the default values of the builder before save.
 func (xdc *XxxDemoCreate) defaults() {
+	if _, ok := xdc.mutation.IsDel(); !ok {
+		v := xxxdemo.DefaultIsDel
+		xdc.mutation.SetIsDel(v)
+	}
 	if _, ok := xdc.mutation.Memo(); !ok {
 		v := xxxdemo.DefaultMemo
 		xdc.mutation.SetMemo(v)
@@ -210,6 +228,9 @@ func (xdc *XxxDemoCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (xdc *XxxDemoCreate) check() error {
+	if _, ok := xdc.mutation.IsDel(); !ok {
+		return &ValidationError{Name: "is_del", err: errors.New("ent: missing required field \"is_del\"")}
+	}
 	if _, ok := xdc.mutation.Memo(); !ok {
 		return &ValidationError{Name: "memo", err: errors.New("ent: missing required field \"memo\"")}
 	}
@@ -279,6 +300,14 @@ func (xdc *XxxDemoCreate) createSpec() (*XxxDemo, *sqlgraph.CreateSpec) {
 	if id, ok := xdc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
+	}
+	if value, ok := xdc.mutation.IsDel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: xxxdemo.FieldIsDel,
+		})
+		_node.IsDel = value
 	}
 	if value, ok := xdc.mutation.Memo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

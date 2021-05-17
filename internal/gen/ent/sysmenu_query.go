@@ -253,12 +253,12 @@ func (smq *SysMenuQuery) Clone() *SysMenuQuery {
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysMenu.Query().
-//		GroupBy(sysmenu.FieldMemo).
+//		GroupBy(sysmenu.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (smq *SysMenuQuery) GroupBy(field string, fields ...string) *SysMenuGroupBy
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysMenu.Query().
-//		Select(sysmenu.FieldMemo).
+//		Select(sysmenu.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (smq *SysMenuQuery) Select(field string, fields ...string) *SysMenuSelect {

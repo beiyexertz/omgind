@@ -27,6 +27,20 @@ func (sdu *SysDictUpdate) Where(ps ...predicate.SysDict) *SysDictUpdate {
 	return sdu
 }
 
+// SetIsDel sets the "is_del" field.
+func (sdu *SysDictUpdate) SetIsDel(b bool) *SysDictUpdate {
+	sdu.mutation.SetIsDel(b)
+	return sdu
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sdu *SysDictUpdate) SetNillableIsDel(b *bool) *SysDictUpdate {
+	if b != nil {
+		sdu.SetIsDel(*b)
+	}
+	return sdu
+}
+
 // SetMemo sets the "memo" field.
 func (sdu *SysDictUpdate) SetMemo(s string) *SysDictUpdate {
 	sdu.mutation.SetMemo(s)
@@ -223,6 +237,13 @@ func (sdu *SysDictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := sdu.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysdict.FieldIsDel,
+		})
+	}
 	if value, ok := sdu.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -302,6 +323,20 @@ type SysDictUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysDictMutation
+}
+
+// SetIsDel sets the "is_del" field.
+func (sduo *SysDictUpdateOne) SetIsDel(b bool) *SysDictUpdateOne {
+	sduo.mutation.SetIsDel(b)
+	return sduo
+}
+
+// SetNillableIsDel sets the "is_del" field if the given value is not nil.
+func (sduo *SysDictUpdateOne) SetNillableIsDel(b *bool) *SysDictUpdateOne {
+	if b != nil {
+		sduo.SetIsDel(*b)
+	}
+	return sduo
 }
 
 // SetMemo sets the "memo" field.
@@ -523,6 +558,13 @@ func (sduo *SysDictUpdateOne) sqlSave(ctx context.Context) (_node *SysDict, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sduo.mutation.IsDel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: sysdict.FieldIsDel,
+		})
 	}
 	if value, ok := sduo.mutation.Memo(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

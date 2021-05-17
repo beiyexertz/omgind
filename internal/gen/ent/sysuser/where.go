@@ -92,6 +92,13 @@ func IDLTE(id string) predicate.SysUser {
 	})
 }
 
+// IsDel applies equality check predicate on the "is_del" field. It's identical to IsDelEQ.
+func IsDel(v bool) predicate.SysUser {
+	return predicate.SysUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
 // Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
 func Sort(v int32) predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
@@ -180,6 +187,20 @@ func Phone(v string) predicate.SysUser {
 func Salt(v string) predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldSalt), v))
+	})
+}
+
+// IsDelEQ applies the EQ predicate on the "is_del" field.
+func IsDelEQ(v bool) predicate.SysUser {
+	return predicate.SysUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIsDel), v))
+	})
+}
+
+// IsDelNEQ applies the NEQ predicate on the "is_del" field.
+func IsDelNEQ(v bool) predicate.SysUser {
+	return predicate.SysUser(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIsDel), v))
 	})
 }
 

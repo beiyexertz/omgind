@@ -253,12 +253,12 @@ func (sdiq *SysDictItemQuery) Clone() *SysDictItemQuery {
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysDictItem.Query().
-//		GroupBy(sysdictitem.FieldMemo).
+//		GroupBy(sysdictitem.FieldIsDel).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -280,11 +280,11 @@ func (sdiq *SysDictItemQuery) GroupBy(field string, fields ...string) *SysDictIt
 // Example:
 //
 //	var v []struct {
-//		Memo string `json:"memo,omitempty"`
+//		IsDel bool `json:"is_del,omitempty"`
 //	}
 //
 //	client.SysDictItem.Query().
-//		Select(sysdictitem.FieldMemo).
+//		Select(sysdictitem.FieldIsDel).
 //		Scan(ctx, &v)
 //
 func (sdiq *SysDictItemQuery) Select(field string, fields ...string) *SysDictItemSelect {
