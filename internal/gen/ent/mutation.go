@@ -61,7 +61,8 @@ type SysDictMutation struct {
 	deleted_at    *time.Time
 	name_cn       *string
 	name_en       *string
-	status        *bool
+	status        *int
+	addstatus     *int
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SysDict, error)
@@ -475,12 +476,13 @@ func (m *SysDictMutation) ResetNameEn() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysDictMutation) SetStatus(b bool) {
-	m.status = &b
+func (m *SysDictMutation) SetStatus(i int) {
+	m.status = &i
+	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysDictMutation) Status() (r bool, exists bool) {
+func (m *SysDictMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -491,7 +493,7 @@ func (m *SysDictMutation) Status() (r bool, exists bool) {
 // OldStatus returns the old "status" field's value of the SysDict entity.
 // If the SysDict object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictMutation) OldStatus(ctx context.Context) (v bool, err error) {
+func (m *SysDictMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -505,9 +507,28 @@ func (m *SysDictMutation) OldStatus(ctx context.Context) (v bool, err error) {
 	return oldValue.Status, nil
 }
 
+// AddStatus adds i to the "status" field.
+func (m *SysDictMutation) AddStatus(i int) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysDictMutation) AddedStatus() (r int, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
 // ResetStatus resets all changes to the "status" field.
 func (m *SysDictMutation) ResetStatus() {
 	m.status = nil
+	m.addstatus = nil
 }
 
 // Op returns the operation name.
@@ -671,7 +692,7 @@ func (m *SysDictMutation) SetField(name string, value ent.Value) error {
 		m.SetNameEn(v)
 		return nil
 	case sysdict.FieldStatus:
-		v, ok := value.(bool)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -688,6 +709,9 @@ func (m *SysDictMutation) AddedFields() []string {
 	if m.addsort != nil {
 		fields = append(fields, sysdict.FieldSort)
 	}
+	if m.addstatus != nil {
+		fields = append(fields, sysdict.FieldStatus)
+	}
 	return fields
 }
 
@@ -698,6 +722,8 @@ func (m *SysDictMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case sysdict.FieldSort:
 		return m.AddedSort()
+	case sysdict.FieldStatus:
+		return m.AddedStatus()
 	}
 	return nil, false
 }
@@ -713,6 +739,13 @@ func (m *SysDictMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
+		return nil
+	case sysdict.FieldStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SysDict numeric field %s", name)

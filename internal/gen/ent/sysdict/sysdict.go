@@ -77,7 +77,7 @@ var (
 	// NameEnValidator is a validator for the "name_en" field. It is called by the builders before save.
 	NameEnValidator func(string) error
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus bool
+	DefaultStatus int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID string
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.

@@ -69,7 +69,7 @@ func init() {
 	// sysdictDescStatus is the schema descriptor for status field.
 	sysdictDescStatus := sysdictFields[2].Descriptor()
 	// sysdict.DefaultStatus holds the default value on creation for the status field.
-	sysdict.DefaultStatus = sysdictDescStatus.Default.(bool)
+	sysdict.DefaultStatus = sysdictDescStatus.Default.(int)
 	// sysdictDescID is the schema descriptor for id field.
 	sysdictDescID := sysdictMixinFields0[0].Descriptor()
 	// sysdict.DefaultID holds the default value on creation for the id field.

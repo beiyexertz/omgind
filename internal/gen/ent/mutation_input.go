@@ -16,7 +16,7 @@ type CreateSysDictInput struct {
 	DeletedAt *time.Time
 	NameCn    string
 	NameEn    string
-	Status    *bool
+	Status    *int
 }
 
 // Mutate applies the CreateSysDictInput on the SysDictCreate builder.
@@ -62,7 +62,7 @@ type UpdateSysDictInput struct {
 	ClearDeletedAt bool
 	NameCn         *string
 	NameEn         *string
-	Status         *bool
+	Status         *int
 }
 
 // Mutate applies the UpdateSysDictInput on the SysDictMutation.

@@ -19,7 +19,7 @@ var (
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
 		{Name: "name_cn", Type: field.TypeString, Size: 128},
 		{Name: "name_en", Type: field.TypeString, Size: 128},
-		{Name: "status", Type: field.TypeBool, Default: true},
+		{Name: "status", Type: field.TypeInt, Default: 1},
 	}
 	// SysDictsTable holds the schema information for the "sys_dicts" table.
 	SysDictsTable = &schema.Table{

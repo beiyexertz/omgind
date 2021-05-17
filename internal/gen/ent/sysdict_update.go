@@ -115,16 +115,23 @@ func (sdu *SysDictUpdate) SetNameEn(s string) *SysDictUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (sdu *SysDictUpdate) SetStatus(b bool) *SysDictUpdate {
-	sdu.mutation.SetStatus(b)
+func (sdu *SysDictUpdate) SetStatus(i int) *SysDictUpdate {
+	sdu.mutation.ResetStatus()
+	sdu.mutation.SetStatus(i)
 	return sdu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sdu *SysDictUpdate) SetNillableStatus(b *bool) *SysDictUpdate {
-	if b != nil {
-		sdu.SetStatus(*b)
+func (sdu *SysDictUpdate) SetNillableStatus(i *int) *SysDictUpdate {
+	if i != nil {
+		sdu.SetStatus(*i)
 	}
+	return sdu
+}
+
+// AddStatus adds i to the "status" field.
+func (sdu *SysDictUpdate) AddStatus(i int) *SysDictUpdate {
+	sdu.mutation.AddStatus(i)
 	return sdu
 }
 
@@ -301,7 +308,14 @@ func (sdu *SysDictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sdu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: sysdict.FieldStatus,
+		})
+	}
+	if value, ok := sdu.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})
@@ -413,16 +427,23 @@ func (sduo *SysDictUpdateOne) SetNameEn(s string) *SysDictUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (sduo *SysDictUpdateOne) SetStatus(b bool) *SysDictUpdateOne {
-	sduo.mutation.SetStatus(b)
+func (sduo *SysDictUpdateOne) SetStatus(i int) *SysDictUpdateOne {
+	sduo.mutation.ResetStatus()
+	sduo.mutation.SetStatus(i)
 	return sduo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sduo *SysDictUpdateOne) SetNillableStatus(b *bool) *SysDictUpdateOne {
-	if b != nil {
-		sduo.SetStatus(*b)
+func (sduo *SysDictUpdateOne) SetNillableStatus(i *int) *SysDictUpdateOne {
+	if i != nil {
+		sduo.SetStatus(*i)
 	}
+	return sduo
+}
+
+// AddStatus adds i to the "status" field.
+func (sduo *SysDictUpdateOne) AddStatus(i int) *SysDictUpdateOne {
+	sduo.mutation.AddStatus(i)
 	return sduo
 }
 
@@ -623,7 +644,14 @@ func (sduo *SysDictUpdateOne) sqlSave(ctx context.Context) (_node *SysDict, err 
 	}
 	if value, ok := sduo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: sysdict.FieldStatus,
+		})
+	}
+	if value, ok := sduo.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})

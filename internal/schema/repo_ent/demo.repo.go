@@ -15,33 +15,32 @@ import (
 var DemoSet = wire.NewSet(wire.Struct(new(Demo), "*"))
 
 type Demo struct {
-	//DB     *gorm.DB
 	EntCli *ent.Client
 }
 
 // ToSchemaDemo 转换为
-func toSchemaDemo(a *ent.XxxDemo) *schema.Demo {
+func (a *Demo) toSchemaDemo(xd *ent.XxxDemo) *schema.Demo {
 	item := new(schema.Demo)
 	structure.Copy(a, item)
 	return item
 }
 
-func toSchemaDemos(us ent.XxxDemos) []*schema.Demo {
-	list := make([]*schema.Demo, len(us))
-	for i, item := range us {
-		list[i] = toSchemaDemo(item)
+func (a *Demo) toSchemaDemos(xds ent.XxxDemos) []*schema.Demo {
+	list := make([]*schema.Demo, len(xds))
+	for i, item := range xds {
+		list[i] = a.toSchemaDemo(item)
 	}
 	return list
 }
 
-func toEntCreateDemoInput(a *schema.Demo) *ent.CreateXxxDemoInput {
+func (a *Demo) toEntCreateDemoInput(sd *schema.Demo) *ent.CreateXxxDemoInput {
 	createinput := new(ent.CreateXxxDemoInput)
 	structure.Copy(a, &createinput)
 
 	return createinput
 }
 
-func toEntUpdateDemoInput(a *schema.Demo) *ent.UpdateXxxDemoInput {
+func (a *Demo) toEntUpdateDemoInput(sd *schema.Demo) *ent.UpdateXxxDemoInput {
 	updateinput := new(ent.UpdateXxxDemoInput)
 	structure.Copy(a, &updateinput)
 
@@ -76,16 +75,16 @@ func (a *Demo) Query(ctx context.Context, params schema.DemoQueryParam, opts ...
 		return nil, errors.WithStack(err)
 	}
 
-	// order field
-	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
-
-	query = query.Order(ParseOrder(opt.OrderFields)...)
-
 	// get total
 	pr := &schema.PaginationResult{Total: count}
 	if params.PaginationParam.OnlyCount {
 		return &schema.DemoQueryResult{PageResult: pr}, nil
 	}
+
+	// order field
+	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByDESC))
+
+	query = query.Order(ParseOrder(opt.OrderFields)...)
 
 	pr.Current = params.PaginationParam.GetCurrent()
 	pr.PageSize = params.PaginationParam.GetPageSize()
@@ -103,7 +102,7 @@ func (a *Demo) Query(ctx context.Context, params schema.DemoQueryParam, opts ...
 
 	qr := &schema.DemoQueryResult{
 		PageResult: pr,
-		Data:       toSchemaDemos(rlist),
+		Data:       a.toSchemaDemos(rlist),
 	}
 	return qr, nil
 }
@@ -116,7 +115,7 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 		return nil, err
 	}
 
-	return toSchemaDemo(xxxdemo), nil
+	return a.toSchemaDemo(xxxdemo), nil
 }
 
 // Create 创建数据
@@ -125,13 +124,13 @@ func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, erro
 	item.CreatedAt = time.Now()
 	item.UpdatedAt = time.Now()
 
-	iteminput := toEntCreateDemoInput(&item)
+	iteminput := a.toEntCreateDemoInput(&item)
 	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
 
 	if err != nil {
 		return nil, err
 	}
-	sch_demo := toSchemaDemo(xxxdemo)
+	sch_demo := a.toSchemaDemo(xxxdemo)
 	return sch_demo, nil
 }
 
@@ -144,9 +143,9 @@ func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema
 	}
 
 	item.UpdatedAt = time.Now()
-	iteminput := toEntUpdateDemoInput(&item)
+	iteminput := a.toEntUpdateDemoInput(&item)
 	xxxdemo, err := oitem.Update().SetInput(*iteminput).Save(ctx)
-	sch_demo := toSchemaDemo(xxxdemo)
+	sch_demo := a.toSchemaDemo(xxxdemo)
 
 	return sch_demo, nil
 }

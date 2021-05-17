@@ -43,7 +43,7 @@ type SysDict struct {
 	NameEn string `json:"name_en,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态
-	Status bool `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -51,9 +51,9 @@ func (*SysDict) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdict.FieldIsDel, sysdict.FieldStatus:
+		case sysdict.FieldIsDel:
 			values[i] = new(sql.NullBool)
-		case sysdict.FieldSort:
+		case sysdict.FieldSort, sysdict.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case sysdict.FieldID, sysdict.FieldMemo, sysdict.FieldNameCn, sysdict.FieldNameEn:
 			values[i] = new(sql.NullString)
@@ -130,10 +130,10 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 				sd.NameEn = value.String
 			}
 		case sysdict.FieldStatus:
-			if value, ok := values[i].(*sql.NullBool); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sd.Status = value.Bool
+				sd.Status = int(value.Int64)
 			}
 		}
 	}

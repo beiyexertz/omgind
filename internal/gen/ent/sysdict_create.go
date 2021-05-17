@@ -117,15 +117,15 @@ func (sdc *SysDictCreate) SetNameEn(s string) *SysDictCreate {
 }
 
 // SetStatus sets the "status" field.
-func (sdc *SysDictCreate) SetStatus(b bool) *SysDictCreate {
-	sdc.mutation.SetStatus(b)
+func (sdc *SysDictCreate) SetStatus(i int) *SysDictCreate {
+	sdc.mutation.SetStatus(i)
 	return sdc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sdc *SysDictCreate) SetNillableStatus(b *bool) *SysDictCreate {
-	if b != nil {
-		sdc.SetStatus(*b)
+func (sdc *SysDictCreate) SetNillableStatus(i *int) *SysDictCreate {
+	if i != nil {
+		sdc.SetStatus(*i)
 	}
 	return sdc
 }
@@ -367,7 +367,7 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := sdc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})

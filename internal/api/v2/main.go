@@ -5,4 +5,5 @@ import "github.com/google/wire"
 // APISet 注入api
 var APIV2Set = wire.NewSet(
 	DemoSet,
+	DictSet,
 )
