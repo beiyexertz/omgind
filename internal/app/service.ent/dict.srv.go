@@ -69,6 +69,13 @@ func (d *Dict) checkName(ctx context.Context, item schema.Dict) error {
 		},
 		NameEn: item.NameEn,
 	})
+
+	if err1 != nil {
+		return nil
+	} else if result1.PageResult.Total > 0 {
+		return errors.New400Response("字典名称" + item.NameEn + "已经存在")
+	}
+
 	result2, err2 := d.DictModel.Query(ctx, schema.DictQueryParam{
 		PaginationParam: schema.PaginationParam{
 			OnlyCount: true,
@@ -76,10 +83,8 @@ func (d *Dict) checkName(ctx context.Context, item schema.Dict) error {
 		NameCn: item.NameCn,
 	})
 
-	if err1 != nil && err2 != nil {
+	if err2 != nil {
 		return nil
-	} else if result1.PageResult.Total > 0 {
-		return errors.New400Response("字典名称" + item.NameEn + "已经存在")
 	} else if result2.PageResult.Total > 0 {
 		return errors.New400Response("字典名称" + item.NameCn + "已经存在")
 	}
