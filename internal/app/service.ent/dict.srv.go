@@ -2,7 +2,6 @@ package service_ent
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/google/wire"
@@ -177,8 +176,6 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 		for _, itm := range updateItems {
 
 			inpt := a.DictItemModel.ToEntUpdateSysDictItemInput(itm)
-			fmt.Println(" ----- ==  dict id 11 ", inpt.DictID)
-
 			_, err := tx.SysDictItem.UpdateOneID(itm.ID).SetInput(*inpt).Save(ctx)
 			if err != nil {
 				if err := tx.Rollback(); err != nil {
