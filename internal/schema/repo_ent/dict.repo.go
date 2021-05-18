@@ -68,7 +68,7 @@ func (a *Dict) Query(ctx context.Context, params schema.DictQueryParam, opts ...
 	}
 
 	if v := params.NameCn; v != "" {
-		query = query.Where(sysdict.NameCnNEQ(v))
+		query = query.Where(sysdict.NameCnEQ(v))
 	}
 
 	if v := params.NameEn; v != "" {
