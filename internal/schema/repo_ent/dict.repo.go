@@ -134,7 +134,7 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.Dict, erro
 	item.CreatedAt = time.Now()
 	item.UpdatedAt = time.Now()
 
-	iteminput := a.toEntCreateSysDictInput(&item)
+	iteminput := a.ToEntCreateSysDictInput(&item)
 	sysdict, err := a.EntCli.SysDict.Create().SetInput(*iteminput).Save(ctx)
 
 	if err != nil {
@@ -153,7 +153,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) (*schema
 	}
 
 	item.UpdatedAt = time.Now()
-	itemInput := a.toEntUpdateSysDictInput(&item)
+	itemInput := a.ToEntUpdateSysDictInput(&item)
 	dict, err := oitem.Update().SetInput(*itemInput).Save(ctx)
 	sch_dict := a.toSchemaDict(dict)
 

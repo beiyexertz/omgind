@@ -7,7 +7,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/internal/app/service_ent"
+	"github.com/wanhello/omgind/internal/app/service.ent"
 )
 
 // DictSet 注入Dict

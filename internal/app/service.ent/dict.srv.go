@@ -7,9 +7,9 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
+	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/errors"
-	"github.com/wanhello/omgind/pkg/helper/deepcopier"
 	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 )
 
@@ -98,7 +98,6 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, 
 			if err != nil {
 				return err
 			}
-
 		}
 		dictInput := a.DictModel.ToEntCreateSysDictInput(&item)
 		_, err := tx.SysDict.Create().SetInput(*dictInput).Save(ctx)
@@ -132,50 +131,61 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 	item.ID = oldItem.ID
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
-	return a.TransModel.Exec(ctx, func(ctx context.Context) error {
 
-		err := a.updateDictItems(ctx, id, oldItem.Items, item.Items)
-		if err != nil {
-			return err
-		}
-		return a.DictModel.Update(ctx, id, item)
-	})
-	//return a.DictModel.Update(ctx, id, item)
-}
+	addItems, delItems, updateItems := a.compareDictItems(ctx, oldItem.Items, item.Items)
 
-func (a *Dict) updateDictItems(ctx context.Context, dictID string, oldItems, newItems schema.DictItems) error {
+	err1 := repo_ent.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
 
-	addItems, delItems, updateItems := a.compareDictItems(ctx, oldItems, newItems)
+		// 添加
+		for _, itm := range addItems {
 
-	err := a.createDictItems(ctx, dictID, addItems)
-	if err != nil {
-		return err
-	}
-
-	for _, item := range delItems {
-		err := a.DictItemModel.Delete(ctx, item.ID)
-		if err != nil {
-			return err
-		}
-	}
-
-	mOldItems := oldItems.ToMap()
-	for _, item := range updateItems {
-		oitem := mOldItems[item.Label]
-
-		hasChange := oitem.Compare(item)
-		deepcopier.Copy(item).Include([]string{"Label", "Value", "Memo", "Status"}).Exclude([]string{"CreatedAt",
-			"UpdatedAt", "ID"}).To(oitem)
-
-		if !hasChange {
-			err := a.DictItemModel.Update(ctx, oitem.ID, *oitem)
+			inpt := a.DictItemModel.ToEntCreateSysDictItemInput(itm)
+			_, err := tx.SysDictItem.Create().SetInput(*inpt).Save(ctx)
 			if err != nil {
+				if err := tx.Rollback(); err != nil {
+					return err
+				}
 				return err
 			}
 		}
-	}
 
-	return nil
+		// 删除
+		for _, itm := range delItems {
+			_, err := tx.SysDictItem.Update().Where(sysdictitem.IDEQ(itm.ID)).Save(ctx)
+			if err != nil {
+				if err := tx.Rollback(); err != nil {
+					//
+					return err
+				}
+				return err
+			}
+		}
+
+		// 更新
+		for _, itm := range updateItems {
+
+			inpt := a.DictItemModel.ToEntUpdateSysDictItemInput(itm)
+			_, err := tx.SysDictItem.Update().SetInput(*inpt).Save(ctx)
+			if err != nil {
+				if err := tx.Rollback(); err != nil {
+					return err
+				}
+				return err
+			}
+		}
+
+		dict_input := a.DictModel.ToEntUpdateSysDictInput(&item)
+		_, err := tx.SysDict.Update().SetInput(*dict_input).Save(ctx)
+		if err != nil {
+			if err := tx.Rollback(); err != nil {
+				return err
+			}
+			return err
+		}
+		return nil
+	})
+
+	return err1
 }
 
 func (a *Dict) compareDictItems(ctx context.Context, oldItems, newItems schema.DictItems) (addList, delList, updateList schema.DictItems) {
@@ -198,6 +208,7 @@ func (a *Dict) compareDictItems(ctx context.Context, oldItems, newItems schema.D
 
 // Delete 删除数据
 func (a *Dict) Delete(ctx context.Context, id string) error {
+
 	oldItem, err := a.DictModel.Get(ctx, id)
 	if err != nil {
 		return err
@@ -215,12 +226,13 @@ func (a *Dict) DeleteS(ctx context.Context, id string) error {
 	} else if oldItem == nil {
 		return errors.ErrNotFound
 	}
-	return a.DictModel.Update(ctx, id, *oldItem)
+	_, err1 := a.DictModel.Update(ctx, id, *oldItem)
+	return err1
 }
 
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
 
-	fmt.Printf(" ---- ==== status = %d ", status)
+	fmt.Printf(" ---- 00000000 ==== status = %d ", status)
 
 	oldItem, err := a.DictModel.Get(ctx, id)
 	if err != nil {
