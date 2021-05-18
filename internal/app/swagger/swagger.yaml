@@ -20,6 +20,8 @@ definitions:
       name:
         description: 名称
         type: string
+      sort:
+        type: integer
       status:
         description: 状态(1:启用 2:停用)
         type: integer
@@ -734,396 +736,6 @@ paths:
       summary: 启用数据
       tags:
       - Demo
-  /api/v1/dict-items:
-    get:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - default: 1
-        description: 分页索引
-        in: query
-        name: current
-        required: true
-        type: integer
-      - default: 10
-        description: 分页大小
-        in: query
-        name: pageSize
-        required: true
-        type: integer
-      - description: 查询值
-        in: query
-        name: queryValue
-        type: string
-      responses:
-        "200":
-          description: 查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}
-          schema:
-            items:
-              $ref: '#/definitions/schema.DictItem'
-            type: array
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 查询数据
-      tags:
-      - 字典项
-    post:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 创建数据
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/schema.DictItem'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/schema.IDResult'
-        "400":
-          description: '{error:{code:0,message:无效的请求参数}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 创建数据
-      tags:
-      - 字典项
-  /api/v1/dict-items/{id}:
-    delete:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{status:OK}'
-          schema:
-            $ref: '#/definitions/schema.StatusResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 删除数据
-      tags:
-      - 字典项
-    get:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/schema.DictItem'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "404":
-          description: '{error:{code:0,message:资源不存在}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 查询指定数据
-      tags:
-      - 字典项
-    put:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 更新数据
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/schema.DictItem'
-      responses:
-        "200":
-          description: '{status:OK}'
-          schema:
-            $ref: '#/definitions/schema.StatusResult'
-        "400":
-          description: '{error:{code:0,message:无效的请求参数}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 更新数据
-      tags:
-      - 字典项
-  /api/v1/dicts:
-    get:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - default: 1
-        description: 分页索引
-        in: query
-        name: current
-        required: true
-        type: integer
-      - default: 10
-        description: 分页大小
-        in: query
-        name: pageSize
-        required: true
-        type: integer
-      - description: 查询值
-        in: query
-        name: queryValue
-        type: string
-      responses:
-        "200":
-          description: 查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}
-          schema:
-            items:
-              $ref: '#/definitions/schema.Dict'
-            type: array
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 查询数据
-      tags:
-      - 字典
-    post:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 创建数据
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/schema.Dict'
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/schema.IDResult'
-        "400":
-          description: '{error:{code:0,message:无效的请求参数}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 创建数据
-      tags:
-      - 字典
-  /api/v1/dicts/{id}:
-    delete:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{status:OK}'
-          schema:
-            $ref: '#/definitions/schema.StatusResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 删除数据
-      tags:
-      - 字典
-    get:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/schema.Dict'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "404":
-          description: '{error:{code:0,message:资源不存在}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 查询指定数据
-      tags:
-      - 字典
-    put:
-      parameters:
-      - description: Bearer 用户令牌
-        in: header
-        name: Authorization
-        type: string
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 更新数据
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/schema.Dict'
-      responses:
-        "200":
-          description: '{status:OK}'
-          schema:
-            $ref: '#/definitions/schema.StatusResult'
-        "400":
-          description: '{error:{code:0,message:无效的请求参数}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      summary: 更新数据
-      tags:
-      - 字典
-  /api/v1/dicts/{id}/disable:
-    patch:
-      parameters:
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{status:OK}'
-          schema:
-            $ref: '#/definitions/schema.StatusResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      security:
-      - ApiKeyAuth: []
-      summary: 禁用数据
-      tags:
-      - 字典
-  /api/v1/dicts/{id}/enable:
-    patch:
-      parameters:
-      - description: 唯一标识
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{status:OK}'
-          schema:
-            $ref: '#/definitions/schema.StatusResult'
-        "401":
-          description: '{error:{code:0,message:未授权}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-        "500":
-          description: '{error:{code:0,message:服务器错误}}'
-          schema:
-            $ref: '#/definitions/schema.ErrorResult'
-      security:
-      - ApiKeyAuth: []
-      summary: 启用数据
-      tags:
-      - 字典
   /api/v1/menus:
     get:
       parameters:
@@ -2259,6 +1871,227 @@ paths:
       summary: 启用数据
       tags:
       - Demo
+  /api/v2/dicts:
+    get:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - default: 1
+        description: 分页索引
+        in: query
+        name: current
+        required: true
+        type: integer
+      - default: 10
+        description: 分页大小
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      - description: 查询值
+        in: query
+        name: queryValue
+        type: string
+      responses:
+        "200":
+          description: 查询结果：{list:列表数据,pagination:{current:页索引,pageSize:页大小,total:总数量}}
+          schema:
+            items:
+              $ref: '#/definitions/schema.Dict'
+            type: array
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      summary: 查询数据
+      tags:
+      - 字典
+    post:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: 创建数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Dict'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.IDResult'
+        "400":
+          description: '{error:{code:0,message:无效的请求参数}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      summary: 创建数据
+      tags:
+      - 字典
+  /api/v2/dicts/{id}:
+    delete:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      summary: 删除数据
+      tags:
+      - 字典
+    get:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Dict'
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "404":
+          description: '{error:{code:0,message:资源不存在}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      summary: 查询指定数据
+      tags:
+      - 字典
+    put:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 更新数据
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Dict'
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "400":
+          description: '{error:{code:0,message:无效的请求参数}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      summary: 更新数据
+      tags:
+      - 字典
+  /api/v2/dicts/{id}/disable:
+    patch:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 禁用数据
+      tags:
+      - 字典
+  /api/v2/dicts/{id}/enable:
+    patch:
+      parameters:
+      - description: 唯一标识
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{status:OK}'
+          schema:
+            $ref: '#/definitions/schema.StatusResult'
+        "401":
+          description: '{error:{code:0,message:未授权}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+        "500":
+          description: '{error:{code:0,message:服务器错误}}'
+          schema:
+            $ref: '#/definitions/schema.ErrorResult'
+      security:
+      - ApiKeyAuth: []
+      summary: 启用数据
+      tags:
+      - 字典
 schemes:
 - http
 - https

@@ -9,6 +9,4 @@ var APIV1Set = wire.NewSet(
 	MenuSet,
 	RoleSet,
 	UserSet,
-	DictSet,
-	//DictItemSet,
 )

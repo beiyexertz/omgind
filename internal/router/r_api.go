@@ -51,8 +51,6 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 
 		a.initUserRouterV1(v1, a.UserAPI, "users")
 
-		a.initDictRouterV1(v1, a.DictAPI, "dicts")
-
 		//gDictItem := v1.Group("dict-items")
 		//{
 		//	gDictItem.GET("", a.DictItemAPI.Query)
@@ -66,8 +64,9 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 
 	v2 := g.Group("/v2")
 	{
-		//router_v2.InitDemoRouter(v2, a.DemoAPIV2, "demos")
+		a.initDictRouterV2(v2, a.DictAPI, "dicts")
 		a.initDemoRouterV2(v2, a.DemoAPIV2, "demos")
+
 	}
 
 }

@@ -7,4 +7,5 @@ import (
 // MockSet 注入mock
 var MockSet = wire.NewSet(
 	DemoSet,
+	DictSet,
 )
