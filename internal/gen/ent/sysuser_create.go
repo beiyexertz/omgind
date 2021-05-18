@@ -275,7 +275,7 @@ func (suc *SysUserCreate) defaults() {
 		suc.mutation.SetSalt(v)
 	}
 	if _, ok := suc.mutation.ID(); !ok {
-		v := sysuser.DefaultID
+		v := sysuser.DefaultID()
 		suc.mutation.SetID(v)
 	}
 }

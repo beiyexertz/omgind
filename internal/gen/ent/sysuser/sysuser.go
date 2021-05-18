@@ -102,7 +102,7 @@ var (
 	// DefaultSalt holds the default value on creation for the "salt" field.
 	DefaultSalt func() string
 	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID string
+	DefaultID func() string
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.
 	IDValidator func(string) error
 )

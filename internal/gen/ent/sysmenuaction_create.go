@@ -227,7 +227,7 @@ func (smac *SysMenuActionCreate) defaults() {
 		smac.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := smac.mutation.ID(); !ok {
-		v := sysmenuaction.DefaultID
+		v := sysmenuaction.DefaultID()
 		smac.mutation.SetID(v)
 	}
 }

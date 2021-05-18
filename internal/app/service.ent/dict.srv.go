@@ -141,7 +141,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 
 		// 添加
 		for _, itm := range addItems {
-
+			itm.DictID = id
 			inpt := a.DictItemModel.ToEntCreateSysDictItemInput(itm)
 			_, err := tx.SysDictItem.Create().SetInput(*inpt).Save(ctx)
 			if err != nil {

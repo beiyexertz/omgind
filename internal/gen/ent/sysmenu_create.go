@@ -273,7 +273,7 @@ func (smc *SysMenuCreate) defaults() {
 		smc.mutation.SetIsShow(v)
 	}
 	if _, ok := smc.mutation.ID(); !ok {
-		v := sysmenu.DefaultID
+		v := sysmenu.DefaultID()
 		smc.mutation.SetID(v)
 	}
 }

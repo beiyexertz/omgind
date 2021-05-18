@@ -73,7 +73,7 @@ func init() {
 	// sysdictDescID is the schema descriptor for id field.
 	sysdictDescID := sysdictMixinFields0[0].Descriptor()
 	// sysdict.DefaultID holds the default value on creation for the id field.
-	sysdict.DefaultID = sysdictDescID.Default.(string)
+	sysdict.DefaultID = sysdictDescID.Default.(func() string)
 	// sysdict.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysdict.IDValidator = func() func(string) error {
 		validators := sysdictDescID.Validators
@@ -150,7 +150,7 @@ func init() {
 	// sysdictitemDescID is the schema descriptor for id field.
 	sysdictitemDescID := sysdictitemMixinFields0[0].Descriptor()
 	// sysdictitem.DefaultID holds the default value on creation for the id field.
-	sysdictitem.DefaultID = sysdictitemDescID.Default.(string)
+	sysdictitem.DefaultID = sysdictitemDescID.Default.(func() string)
 	// sysdictitem.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysdictitem.IDValidator = func() func(string) error {
 		validators := sysdictitemDescID.Validators
@@ -209,7 +209,7 @@ func init() {
 	// sysjwtblockDescID is the schema descriptor for id field.
 	sysjwtblockDescID := sysjwtblockMixinFields0[0].Descriptor()
 	// sysjwtblock.DefaultID holds the default value on creation for the id field.
-	sysjwtblock.DefaultID = sysjwtblockDescID.Default.(string)
+	sysjwtblock.DefaultID = sysjwtblockDescID.Default.(func() string)
 	// sysjwtblock.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysjwtblock.IDValidator = func() func(string) error {
 		validators := sysjwtblockDescID.Validators
@@ -322,7 +322,7 @@ func init() {
 	// sysmenuDescID is the schema descriptor for id field.
 	sysmenuDescID := sysmenuMixinFields0[0].Descriptor()
 	// sysmenu.DefaultID holds the default value on creation for the id field.
-	sysmenu.DefaultID = sysmenuDescID.Default.(string)
+	sysmenu.DefaultID = sysmenuDescID.Default.(func() string)
 	// sysmenu.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysmenu.IDValidator = func() func(string) error {
 		validators := sysmenuDescID.Validators
@@ -437,7 +437,7 @@ func init() {
 	// sysmenuactionDescID is the schema descriptor for id field.
 	sysmenuactionDescID := sysmenuactionMixinFields0[0].Descriptor()
 	// sysmenuaction.DefaultID holds the default value on creation for the id field.
-	sysmenuaction.DefaultID = sysmenuactionDescID.Default.(string)
+	sysmenuaction.DefaultID = sysmenuactionDescID.Default.(func() string)
 	// sysmenuaction.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysmenuaction.IDValidator = func() func(string) error {
 		validators := sysmenuactionDescID.Validators
@@ -552,7 +552,7 @@ func init() {
 	// sysmenuactionresourceDescID is the schema descriptor for id field.
 	sysmenuactionresourceDescID := sysmenuactionresourceMixinFields0[0].Descriptor()
 	// sysmenuactionresource.DefaultID holds the default value on creation for the id field.
-	sysmenuactionresource.DefaultID = sysmenuactionresourceDescID.Default.(string)
+	sysmenuactionresource.DefaultID = sysmenuactionresourceDescID.Default.(func() string)
 	// sysmenuactionresource.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysmenuactionresource.IDValidator = func() func(string) error {
 		validators := sysmenuactionresourceDescID.Validators
@@ -632,7 +632,7 @@ func init() {
 	// sysroleDescID is the schema descriptor for id field.
 	sysroleDescID := sysroleMixinFields0[0].Descriptor()
 	// sysrole.DefaultID holds the default value on creation for the id field.
-	sysrole.DefaultID = sysroleDescID.Default.(string)
+	sysrole.DefaultID = sysroleDescID.Default.(func() string)
 	// sysrole.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysrole.IDValidator = func() func(string) error {
 		validators := sysroleDescID.Validators
@@ -713,7 +713,7 @@ func init() {
 	// sysrolemenuDescID is the schema descriptor for id field.
 	sysrolemenuDescID := sysrolemenuMixinFields0[0].Descriptor()
 	// sysrolemenu.DefaultID holds the default value on creation for the id field.
-	sysrolemenu.DefaultID = sysrolemenuDescID.Default.(string)
+	sysrolemenu.DefaultID = sysrolemenuDescID.Default.(func() string)
 	// sysrolemenu.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysrolemenu.IDValidator = func() func(string) error {
 		validators := sysrolemenuDescID.Validators
@@ -813,7 +813,7 @@ func init() {
 	// sysuserDescID is the schema descriptor for id field.
 	sysuserDescID := sysuserMixinFields0[0].Descriptor()
 	// sysuser.DefaultID holds the default value on creation for the id field.
-	sysuser.DefaultID = sysuserDescID.Default.(string)
+	sysuser.DefaultID = sysuserDescID.Default.(func() string)
 	// sysuser.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysuser.IDValidator = func() func(string) error {
 		validators := sysuserDescID.Validators
@@ -890,7 +890,7 @@ func init() {
 	// sysuserroleDescID is the schema descriptor for id field.
 	sysuserroleDescID := sysuserroleMixinFields0[0].Descriptor()
 	// sysuserrole.DefaultID holds the default value on creation for the id field.
-	sysuserrole.DefaultID = sysuserroleDescID.Default.(string)
+	sysuserrole.DefaultID = sysuserroleDescID.Default.(func() string)
 	// sysuserrole.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	sysuserrole.IDValidator = func() func(string) error {
 		validators := sysuserroleDescID.Validators
@@ -957,7 +957,7 @@ func init() {
 	// xxxdemoDescID is the schema descriptor for id field.
 	xxxdemoDescID := xxxdemoMixinFields0[0].Descriptor()
 	// xxxdemo.DefaultID holds the default value on creation for the id field.
-	xxxdemo.DefaultID = xxxdemoDescID.Default.(string)
+	xxxdemo.DefaultID = xxxdemoDescID.Default.(func() string)
 	// xxxdemo.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	xxxdemo.IDValidator = func() func(string) error {
 		validators := xxxdemoDescID.Validators

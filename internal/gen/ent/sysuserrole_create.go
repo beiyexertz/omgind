@@ -167,7 +167,7 @@ func (surc *SysUserRoleCreate) defaults() {
 		surc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := surc.mutation.ID(); !ok {
-		v := sysuserrole.DefaultID
+		v := sysuserrole.DefaultID()
 		surc.mutation.SetID(v)
 	}
 }

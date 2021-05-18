@@ -15,7 +15,6 @@ import (
 type SysUserRole struct {
 	config `json:"-"`
 	// ID of the ent.
-	// 主键
 	ID string `json:"id,omitempty"`
 	// IsDel holds the value of the "is_del" field.
 	// 是否删除

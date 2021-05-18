@@ -10,8 +10,6 @@ import (
 	"entgo.io/ent/schema/index"
 	"entgo.io/ent/schema/mixin"
 	"github.com/oklog/ulid/v2"
-	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
-
 	"github.com/wanhello/omgind/pkg/helper/pulid"
 )
 
@@ -33,8 +31,9 @@ func (i IDMixin) Fields() []ent.Field {
 		//	return uid
 		//}).MaxLen(36).Unique().Immutable().NotEmpty().Comment("主键"),
 
-		field.String("id").DefaultFunc(uid.MustString()).MaxLen(36).Immutable().NotEmpty().Comment("主键"),
-		//idField("01"),
+		// Fixme:: make duplicate primary key
+		//field.String("id").DefaultFunc(uid.MustString()).MaxLen(36).Immutable().NotEmpty().Comment("主键"),
+		IdField(),
 		field.Bool("is_del").Default(false).StructTag(`json:"is_del,omitempty"`).Comment("是否删除"),
 	}
 }
@@ -83,15 +82,15 @@ func IdField() ent.Field {
 	// return field.UUID("id", uuid.UUID{}).Unique().Default(uuid.New)
 	// return field.UUID("id", uuid.UUID{}).Default(uuid.New)
 
-	return field.String("id").DefaultFunc(uid.MustString()).MaxLen(36).Immutable().NotEmpty().Comment("主键")
+	//return field.String("id").DefaultFunc(uid.MustString()).MaxLen(36).Immutable().NotEmpty().Comment("主键")
 
-	//return field.String("id").MaxLen(26).NotEmpty().Immutable().DefaultFunc(func() string {
-	//
-	//	seed := time.Now().UnixNano()
-	//	source := rand.NewSource(seed)
-	//	entropy := rand.New(source)
-	//
-	//	return ulid.MustNew(ulid.Timestamp(time.Now()), entropy).String()
-	//})
+	return field.String("id").MaxLen(36).NotEmpty().Immutable().DefaultFunc(func() string {
+
+		seed := time.Now().UnixNano()
+		source := rand.NewSource(seed)
+		entropy := rand.New(source)
+
+		return ulid.MustNew(ulid.Timestamp(time.Now()), entropy).String()
+	})
 
 }

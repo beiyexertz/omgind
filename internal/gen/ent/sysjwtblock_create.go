@@ -197,7 +197,7 @@ func (sjbc *SysJwtBlockCreate) defaults() {
 		sjbc.mutation.SetStatus(v)
 	}
 	if _, ok := sjbc.mutation.ID(); !ok {
-		v := sysjwtblock.DefaultID
+		v := sysjwtblock.DefaultID()
 		sjbc.mutation.SetID(v)
 	}
 }
