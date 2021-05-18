@@ -131,20 +131,6 @@ func BuildInjector() (*Injector, func(), error) {
 	api_v1User := &api_v1.User{
 		UserSrv: serviceUser,
 	}
-	dict := &repo.Dict{
-		DB: db,
-	}
-	dictItem := &repo.DictItem{
-		DB: db,
-	}
-	serviceDict := &service.Dict{
-		TransModel:    trans,
-		DictModel:     dict,
-		DictItemModel: dictItem,
-	}
-	api_v1Dict := &api_v1.Dict{
-		DictSrv: serviceDict,
-	}
 	client, cleanup5, err := InitEntClient()
 	if err != nil {
 		cleanup4()
@@ -152,6 +138,19 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup2()
 		cleanup()
 		return nil, nil, err
+	}
+	dict := &repo_ent.Dict{
+		EntCli: client,
+	}
+	dictItem := &repo_ent.DictItem{
+		EntCli: client,
+	}
+	service_entDict := &service_ent.Dict{
+		DictModel:     dict,
+		DictItemModel: dictItem,
+	}
+	api_v2Dict := &api_v2.Dict{
+		DictSrv: service_entDict,
 	}
 	repo_entDemo := &repo_ent.Demo{
 		EntCli: client,
@@ -170,7 +169,7 @@ func BuildInjector() (*Injector, func(), error) {
 		MenuAPI:        api_v1Menu,
 		RoleAPI:        api_v1Role,
 		UserAPI:        api_v1User,
-		DictAPI:        api_v1Dict,
+		DictApiV2:      api_v2Dict,
 		DemoAPIV2:      api_v2Demo,
 	}
 	engine := InitGinEngine(routerRouter)

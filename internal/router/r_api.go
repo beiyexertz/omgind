@@ -64,7 +64,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 
 	v2 := g.Group("/v2")
 	{
-		a.initDictRouterV2(v2, a.DictAPI, "dicts")
+		a.initDictRouterV2(v2, a.DictApiV2, "dicts")
 		a.initDemoRouterV2(v2, a.DemoAPIV2, "demos")
 
 	}

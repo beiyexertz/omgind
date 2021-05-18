@@ -29,11 +29,9 @@ type Router struct {
 	MenuAPI        *api_v1.Menu
 	RoleAPI        *api_v1.Role
 	UserAPI        *api_v1.User
-	DictAPI        *api_v1.Dict
-	//DictItemAPI    *api_v1.DictItem
 
-	DemoAPIV2      *api_v2.Demo
-
+	DictApiV2 *api_v2.Dict
+	DemoAPIV2 *api_v2.Demo
 }
 
 // Register 注册路由
