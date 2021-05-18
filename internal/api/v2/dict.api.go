@@ -58,8 +58,6 @@ func (a *Dict) Create(c *gin.Context) {
 		return
 	}
 
-	fmt.Printf(" 00000 ---- ====== creating %+v", item)
-
 	item.Creator = ginx.GetUserID(c)
 	result, err := a.DictSrv.Create(ctx, item)
 	if err != nil {
