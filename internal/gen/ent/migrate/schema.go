@@ -72,7 +72,7 @@ var (
 		{Name: "label", Type: field.TypeString, Size: 128},
 		{Name: "val", Type: field.TypeInt},
 		{Name: "status", Type: field.TypeBool},
-		{Name: "dict_id", Type: field.TypeString, Size: 26},
+		{Name: "dict_id", Type: field.TypeString, Size: 36},
 	}
 	// SysDictItemsTable holds the schema information for the "sys_dict_items" table.
 	SysDictItemsTable = &schema.Table{

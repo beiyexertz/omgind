@@ -50,7 +50,7 @@ func (a *Dict) Get(ctx context.Context, id string, opts ...schema.DictQueryOptio
 
 func (d Dict) QueryItems(ctx context.Context, id string) (schema.DictItems, error) {
 	result, err := d.DictItemModel.Query(ctx, schema.DictItemQueryParam{
-		DictId: id,
+		DictID: id,
 	})
 	if err != nil {
 		return nil, err
@@ -111,7 +111,7 @@ func (a *Dict) createDictItems(ctx context.Context, dictID string, items schema.
 
 	for _, item := range items {
 		item.ID = uid.MustString()
-		item.DictId = dictID
+		item.DictID = dictID
 		err := a.DictItemModel.Create(ctx, *item)
 		if err != nil {
 			return nil

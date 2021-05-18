@@ -2,7 +2,6 @@ package service_ent
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -45,7 +44,7 @@ func (a *Dict) Get(ctx context.Context, id string, opts ...schema.DictQueryOptio
 
 func (d Dict) QueryItems(ctx context.Context, id string) (schema.DictItems, error) {
 	result, err := d.DictItemModel.Query(ctx, schema.DictItemQueryParam{
-		DictId: id,
+		DictID: id,
 	})
 	if err != nil {
 		return nil, err
@@ -91,19 +90,23 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, 
 
 	err := repo_ent.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
 
+		dictInput := a.DictModel.ToEntCreateSysDictInput(&item)
+		adict, err := tx.SysDict.Create().SetInput(*dictInput).Save(ctx)
+
+		if err != nil {
+			return err
+		}
+
 		for _, itm := range item.Items {
-			itm.DictId = itm.ID
+			itm.DictID = adict.ID
 			ipt := a.DictItemModel.ToEntCreateSysDictItemInput(itm)
+
 			_, err := tx.SysDictItem.Create().SetInput(*ipt).Save(ctx)
 			if err != nil {
 				return err
 			}
 		}
-		dictInput := a.DictModel.ToEntCreateSysDictInput(&item)
-		_, err := tx.SysDict.Create().SetInput(*dictInput).Save(ctx)
-		if err != nil {
-			return err
-		}
+
 		return nil
 	})
 
@@ -231,8 +234,6 @@ func (a *Dict) DeleteS(ctx context.Context, id string) error {
 }
 
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
-
-	fmt.Printf(" ---- 00000000 ==== status = %d ", status)
 
 	oldItem, err := a.DictModel.Get(ctx, id)
 	if err != nil {

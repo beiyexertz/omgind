@@ -11,7 +11,7 @@ type DictItem struct {
 	Label  string `json:"label" binding:"required"`   // 显示值
 	Value  int    `json:"value" binding:"required"`   // 字典值
 	Status int    `json:"status" binding:"required"`  // 状态(1:启用 2:禁用)
-	DictId string `json:"dict_id" binding:"required"` // dict.id
+	DictID string `json:"dict_id" binding:"required"` // dict.id
 	Memo   string `json:"memo"`                       // 备注
 	Sort   int    `json:"sort"`                       // 排序
 
@@ -28,7 +28,7 @@ func (di *DictItem) Compare(target *DictItem) bool {
 	} else if di.Value != target.Value {
 		return false
 	}
-	if di.DictId != target.DictId {
+	if di.DictID != target.DictID {
 		return false
 	}
 	if di.Sort != target.Sort {
@@ -44,7 +44,7 @@ func (di *DictItem) Compare(target *DictItem) bool {
 // DictItemQueryParam 查询条件
 type DictItemQueryParam struct {
 	PaginationParam
-	DictId string //字典id
+	DictID string //字典id
 	IDs    []string
 }
 

@@ -27,7 +27,7 @@ func (sdd SysDictItem) Fields() []ent.Field {
 		field.Int("value").StorageKey("val").StructTag(`json:"value,omitempty"`).Comment("字典值"),
 		field.Bool("status").StorageKey("status").StructTag(`json:"status,omitempty"`).Comment("启用状态"),
 
-		field.String("dict_id").MaxLen(26).NotEmpty().Comment("sys_dict.id"),
+		field.String("dict_id").MaxLen(36).NotEmpty().Comment("sys_dict.id"),
 	}
 }
 

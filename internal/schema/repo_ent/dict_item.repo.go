@@ -72,7 +72,7 @@ func (a *DictItem) Query(ctx context.Context, params schema.DictItemQueryParam, 
 		query = query.Where(sysdictitem.IDIn(v...))
 	}
 
-	if v := params.DictId; v != "" {
+	if v := params.DictID; v != "" {
 		query = query.Where(sysdictitem.DictIDEQ(v))
 	}
 

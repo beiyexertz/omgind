@@ -39,7 +39,7 @@ func (a *DictItem) Query(ctx context.Context, params schema.DictItemQueryParam, 
 		db = db.Where("id IN (?)", v)
 	}
 
-	if v := params.DictId; v != "" {
+	if v := params.DictID; v != "" {
 		db = db.Where("dict_id=?", v)
 	}
 
