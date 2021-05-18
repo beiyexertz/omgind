@@ -66,7 +66,7 @@ type DictItems []*DictItem
 func (a DictItems) ToMap() map[string]*DictItem {
 	m := make(map[string]*DictItem)
 	for _, item := range a {
-		m[item.Label] = item
+		m[item.ID] = item
 	}
 	return m
 }
