@@ -175,8 +175,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 
 		// 更新
 		for _, itm := range updateItems {
-			fmt.Println(" ----- == dict id 00 ", itm.DictID)
-			itm.DictID = id
+
 			inpt := a.DictItemModel.ToEntUpdateSysDictItemInput(itm)
 			fmt.Println(" ----- ==  dict id 11 ", inpt.DictID)
 
