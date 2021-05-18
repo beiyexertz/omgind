@@ -41,8 +41,6 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 			pub.POST("/refresh-token", a.SignInAPI.RefreshToken)
 		}
 
-		a.initDemoRouterV1(v1, a.DemoAPI, "demos")
-
 		a.initMenuRouterV1(v1, a.MenuAPI, "menus")
 		v1.GET("/menus.tree", a.MenuAPI.QueryTree)
 
