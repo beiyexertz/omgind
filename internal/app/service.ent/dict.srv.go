@@ -2,6 +2,7 @@ package service_ent
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -161,7 +162,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 
 		// 删除
 		for _, itm := range delItems {
-			_, err := tx.SysDictItem.Update().Where(sysdictitem.IDEQ(itm.ID)).Save(ctx)
+			_, err := tx.SysDictItem.Update().Where(sysdictitem.IDEQ(itm.ID)).SetDeletedAt(time.Now()).Save(ctx)
 			if err != nil {
 				if err := tx.Rollback(); err != nil {
 					//
@@ -175,7 +176,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 		for _, itm := range updateItems {
 
 			inpt := a.DictItemModel.ToEntUpdateSysDictItemInput(itm)
-			_, err := tx.SysDictItem.Update().SetInput(*inpt).Save(ctx)
+			_, err := tx.SysDictItem.UpdateOneID(itm.ID).SetInput(*inpt).Save(ctx)
 			if err != nil {
 				if err := tx.Rollback(); err != nil {
 					return err
@@ -185,7 +186,9 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 		}
 
 		dict_input := a.DictModel.ToEntUpdateSysDictInput(&item)
-		_, err := tx.SysDict.Update().SetInput(*dict_input).Save(ctx)
+
+		_, err := tx.SysDict.UpdateOneID(id).SetInput(*dict_input).Save(ctx)
+
 		if err != nil {
 			if err := tx.Rollback(); err != nil {
 				return err

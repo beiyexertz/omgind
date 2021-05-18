@@ -1,8 +1,6 @@
 package api_v2
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
@@ -76,8 +74,6 @@ func (a *Dict) Update(c *gin.Context) {
 		ginx.ResError(c, err)
 		return
 	}
-	fmt.Printf(" 00000 ---- ====== editing %+v\n", item)
-	fmt.Printf(" 00000 ---- ====== editing %+v\n", item.Items)
 
 	err := a.DictSrv.Update(ctx, c.Param("id"), item)
 	if err != nil {
