@@ -878,7 +878,8 @@ type SysDictItemMutation struct {
 	label         *string
 	value         *int
 	addvalue      *int
-	status        *bool
+	status        *int
+	addstatus     *int
 	dict_id       *string
 	clearedFields map[string]struct{}
 	done          bool
@@ -1313,12 +1314,13 @@ func (m *SysDictItemMutation) ResetValue() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysDictItemMutation) SetStatus(b bool) {
-	m.status = &b
+func (m *SysDictItemMutation) SetStatus(i int) {
+	m.status = &i
+	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysDictItemMutation) Status() (r bool, exists bool) {
+func (m *SysDictItemMutation) Status() (r int, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -1329,7 +1331,7 @@ func (m *SysDictItemMutation) Status() (r bool, exists bool) {
 // OldStatus returns the old "status" field's value of the SysDictItem entity.
 // If the SysDictItem object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictItemMutation) OldStatus(ctx context.Context) (v bool, err error) {
+func (m *SysDictItemMutation) OldStatus(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -1343,9 +1345,28 @@ func (m *SysDictItemMutation) OldStatus(ctx context.Context) (v bool, err error)
 	return oldValue.Status, nil
 }
 
+// AddStatus adds i to the "status" field.
+func (m *SysDictItemMutation) AddStatus(i int) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysDictItemMutation) AddedStatus() (r int, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
 // ResetStatus resets all changes to the "status" field.
 func (m *SysDictItemMutation) ResetStatus() {
 	m.status = nil
+	m.addstatus = nil
 }
 
 // SetDictID sets the "dict_id" field.
@@ -1552,7 +1573,7 @@ func (m *SysDictItemMutation) SetField(name string, value ent.Value) error {
 		m.SetValue(v)
 		return nil
 	case sysdictitem.FieldStatus:
-		v, ok := value.(bool)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1579,6 +1600,9 @@ func (m *SysDictItemMutation) AddedFields() []string {
 	if m.addvalue != nil {
 		fields = append(fields, sysdictitem.FieldValue)
 	}
+	if m.addstatus != nil {
+		fields = append(fields, sysdictitem.FieldStatus)
+	}
 	return fields
 }
 
@@ -1591,6 +1615,8 @@ func (m *SysDictItemMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedSort()
 	case sysdictitem.FieldValue:
 		return m.AddedValue()
+	case sysdictitem.FieldStatus:
+		return m.AddedStatus()
 	}
 	return nil, false
 }
@@ -1613,6 +1639,13 @@ func (m *SysDictItemMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddValue(v)
+		return nil
+	case sysdictitem.FieldStatus:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SysDictItem numeric field %s", name)

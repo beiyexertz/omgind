@@ -42,7 +42,7 @@ type SysDictItem struct {
 	Value int `json:"value,omitempty"`
 	// Status holds the value of the "status" field.
 	// 启用状态
-	Status bool `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// DictID holds the value of the "dict_id" field.
 	// sys_dict.id
 	DictID string `json:"dict_id,omitempty"`
@@ -53,9 +53,9 @@ func (*SysDictItem) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdictitem.FieldIsDel, sysdictitem.FieldStatus:
+		case sysdictitem.FieldIsDel:
 			values[i] = new(sql.NullBool)
-		case sysdictitem.FieldSort, sysdictitem.FieldValue:
+		case sysdictitem.FieldSort, sysdictitem.FieldValue, sysdictitem.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case sysdictitem.FieldID, sysdictitem.FieldMemo, sysdictitem.FieldLabel, sysdictitem.FieldDictID:
 			values[i] = new(sql.NullString)
@@ -132,10 +132,10 @@ func (sdi *SysDictItem) assignValues(columns []string, values []interface{}) err
 				sdi.Value = int(value.Int64)
 			}
 		case sysdictitem.FieldStatus:
-			if value, ok := values[i].(*sql.NullBool); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sdi.Status = value.Bool
+				sdi.Status = int(value.Int64)
 			}
 		case sysdictitem.FieldDictID:
 			if value, ok := values[i].(*sql.NullString); !ok {

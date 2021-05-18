@@ -2,6 +2,7 @@ package service_ent
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -43,9 +44,14 @@ func (a *Dict) Get(ctx context.Context, id string, opts ...schema.DictQueryOptio
 }
 
 func (d Dict) QueryItems(ctx context.Context, id string) (schema.DictItems, error) {
+
 	result, err := d.DictItemModel.Query(ctx, schema.DictItemQueryParam{
 		DictID: id,
 	})
+
+	fmt.Printf(" --- ===== - 0000000 %+v \n ", result.Data)
+	fmt.Printf(" --- ===== - 0000000 %+v \n ", result.PageResult)
+
 	if err != nil {
 		return nil, err
 	} else if len(result.Data) == 0 {

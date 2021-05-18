@@ -122,8 +122,15 @@ func (sdiu *SysDictItemUpdate) AddValue(i int) *SysDictItemUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (sdiu *SysDictItemUpdate) SetStatus(b bool) *SysDictItemUpdate {
-	sdiu.mutation.SetStatus(b)
+func (sdiu *SysDictItemUpdate) SetStatus(i int) *SysDictItemUpdate {
+	sdiu.mutation.ResetStatus()
+	sdiu.mutation.SetStatus(i)
+	return sdiu
+}
+
+// AddStatus adds i to the "status" field.
+func (sdiu *SysDictItemUpdate) AddStatus(i int) *SysDictItemUpdate {
+	sdiu.mutation.AddStatus(i)
 	return sdiu
 }
 
@@ -313,7 +320,14 @@ func (sdiu *SysDictItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sdiu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: sysdictitem.FieldStatus,
+		})
+	}
+	if value, ok := sdiu.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdictitem.FieldStatus,
 		})
@@ -439,8 +453,15 @@ func (sdiuo *SysDictItemUpdateOne) AddValue(i int) *SysDictItemUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (sdiuo *SysDictItemUpdateOne) SetStatus(b bool) *SysDictItemUpdateOne {
-	sdiuo.mutation.SetStatus(b)
+func (sdiuo *SysDictItemUpdateOne) SetStatus(i int) *SysDictItemUpdateOne {
+	sdiuo.mutation.ResetStatus()
+	sdiuo.mutation.SetStatus(i)
+	return sdiuo
+}
+
+// AddStatus adds i to the "status" field.
+func (sdiuo *SysDictItemUpdateOne) AddStatus(i int) *SysDictItemUpdateOne {
+	sdiuo.mutation.AddStatus(i)
 	return sdiuo
 }
 
@@ -654,7 +675,14 @@ func (sdiuo *SysDictItemUpdateOne) sqlSave(ctx context.Context) (_node *SysDictI
 	}
 	if value, ok := sdiuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: sysdictitem.FieldStatus,
+		})
+	}
+	if value, ok := sdiuo.mutation.AddedStatus(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdictitem.FieldStatus,
 		})

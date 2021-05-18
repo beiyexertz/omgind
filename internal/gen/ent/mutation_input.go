@@ -118,7 +118,7 @@ type CreateSysDictItemInput struct {
 	DeletedAt *time.Time
 	Label     string
 	Value     int
-	Status    bool
+	Status    int
 	DictID    string
 }
 
@@ -164,7 +164,7 @@ type UpdateSysDictItemInput struct {
 	ClearDeletedAt bool
 	Label          *string
 	Value          *int
-	Status         *bool
+	Status         *int
 	DictID         *string
 }
 

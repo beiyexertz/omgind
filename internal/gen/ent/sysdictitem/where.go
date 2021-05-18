@@ -142,7 +142,7 @@ func Value(v int) predicate.SysDictItem {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v bool) predicate.SysDictItem {
+func Status(v int) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
@@ -786,16 +786,78 @@ func ValueLTE(v int) predicate.SysDictItem {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v bool) predicate.SysDictItem {
+func StatusEQ(v int) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v bool) predicate.SysDictItem {
+func StatusNEQ(v int) predicate.SysDictItem {
 	return predicate.SysDictItem(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))
+	})
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...int) predicate.SysDictItem {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldStatus), v...))
+	})
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...int) predicate.SysDictItem {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldStatus), v...))
+	})
+}
+
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v int) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldStatus), v))
+	})
+}
+
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v int) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldStatus), v))
+	})
+}
+
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v int) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldStatus), v))
+	})
+}
+
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v int) predicate.SysDictItem {
+	return predicate.SysDictItem(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldStatus), v))
 	})
 }
 
