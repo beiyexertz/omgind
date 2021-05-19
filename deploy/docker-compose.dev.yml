@@ -38,7 +38,7 @@ services:
     image: "redis:alpine"
     restart: always
     ports:
-      - "6739:6739"
+      - "16739:6739"
 
     networks:
       - omgind
@@ -48,11 +48,13 @@ services:
     image: "mysql:5.7"
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
-
+      MYSQL_DATABASE: omgind
+      MYSQL_ROOT_PASSWORD: 123456
+    
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci #设置utf8字符集
     ports:
-      - "3306:3306"
-
+      - "13306:3306"
+    
     networks:
       - omgind
 
