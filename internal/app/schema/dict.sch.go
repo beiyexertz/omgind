@@ -34,6 +34,7 @@ type DictQueryParam struct {
 // DictQueryOptions 查询可选参数项
 type DictQueryOptions struct {
 	OrderFields []*OrderField // 排序字段
+
 }
 
 // DictQueryResult 查询结果

@@ -1,8 +1,6 @@
 package api_v2
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
@@ -33,8 +31,6 @@ func (a *Demo) Query(c *gin.Context) {
 		ginx.ResError(c, err)
 		return
 	}
-	fmt.Printf(" ------- ===== %+v \n", result.PageResult)
-	fmt.Printf(" ------- ===== %+v \n", result.Data)
 
 	ginx.ResPage(c, result.Data, result.PageResult)
 }

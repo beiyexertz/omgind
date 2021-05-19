@@ -58,6 +58,7 @@ func (a *Dict) getQueryOption(opts ...schema.DictQueryOptions) schema.DictQueryO
 
 // Query 查询数据
 func (a *Dict) Query(ctx context.Context, params schema.DictQueryParam, opts ...schema.DictQueryOptions) (*schema.DictQueryResult, error) {
+
 	opt := a.getQueryOption(opts...)
 
 	query := a.EntCli.SysDict.Query()

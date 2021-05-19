@@ -61,7 +61,7 @@ func (a *DictItem) getQueryOption(opts ...schema.DictItemQueryOptions) schema.Di
 func (a *DictItem) Query(ctx context.Context, params schema.DictItemQueryParam, opts ...schema.DictItemQueryOptions) (*schema.DictItemQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysDictItem.Query()
+	query := a.EntCli.SysDictItem.Query().Where(sysdictitem.DeletedAtIsNil())
 
 	count, err := query.Count(ctx)
 	if err != nil {
