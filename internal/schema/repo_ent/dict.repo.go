@@ -2,7 +2,6 @@ package repo_ent
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/google/wire"
@@ -176,7 +175,6 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 // UpdateStatus 更新状态
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
 
-	fmt.Println(" ---- ===== ", id, " --== ", status)
 	_, err1 := a.EntCli.SysDict.Update().Where(sysdict.IDEQ(id)).SetStatus(status).Save(ctx)
 
 	return errors.WithStack(err1)
