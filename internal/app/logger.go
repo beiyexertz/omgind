@@ -65,7 +65,7 @@ func InitLogger() (func(), error) {
 			case "postgres":
 				dsn = global.CFG.Postgres.DSN()
 			default:
-				return nil, errors.New("unknown db")
+				return nil, errors.New("unknown logger db")
 			}
 
 			h := loggerhook.New(loggergormhook.New(&loggergormhook.Config{

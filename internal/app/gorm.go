@@ -42,7 +42,7 @@ func NewGormDB() (*gorm.DB, func(), error) {
 	case "postgres":
 		dsn = cfg.Postgres.DSN()
 	default:
-		return nil, nil, errors.New("unknown db")
+		return nil, nil, errors.New("unknown gorm db")
 	}
 
 	return gormx.NewDB(&gormx.Config{

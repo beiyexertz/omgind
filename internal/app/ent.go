@@ -62,7 +62,7 @@ func NewEntClient() (*ent.Client, func(), error) {
 	case "postgres":
 		dsn = cfg.Postgres.DSN()
 	default:
-		return nil, nil, errors.New("unknown db")
+		return nil, nil, errors.New("unknown ent db")
 	}
 
 	db, err := sql.Open(cfg.Ent.DBType, dsn)
