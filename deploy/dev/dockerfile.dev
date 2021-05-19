@@ -1,0 +1,13 @@
+FROM golang:1.16
+
+ENV GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct
+
+# WORKDIR $GOPATH/src
+WORKDIR /app
+
+COPY ./run.sh .
+
+EXPOSE 10088
+
+ENTRYPOINT ["/app/run.sh"]

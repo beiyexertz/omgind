@@ -182,6 +182,7 @@ func InitHTTPServer(ctx context.Context, handler http.Handler) func() {
 			logger.WithContext(ctx).Errorf(err.Error())
 		}
 	}
+
 }
 
 // Run 运行服务

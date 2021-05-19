@@ -223,7 +223,7 @@
     # 连接端口
     Port= 3306
     # 用户名
-    User = "omgind"
+    User = "root"
     # 密码
     Password = "123456"
     # 数据库

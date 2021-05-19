@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+  go:
+    # container_name: omgind-server
+    build: 
+      context: ./
+      dockerfile: ./dev/Dockerfile.dev
+
+    # image: golang:latest
+    restart: always
+    environment:
+      - GOPROXY=https://goproxy.cn,direct
+
+    ports:
+      - "10088:10088"
+    volumes:
+#      - $PWD:/go/src/github.com/wahello/omgind
+      - .:/go/omgind
+    
+    working_dir: /go/omgind
+    # command: 
+    #   - "go run /go/omgind/cmd/omgind/main.go web -c /go/omgind/configs/config.toml -m /go/omgind/configs/model.conf --menu /go/omgind/configs/menu.yaml"
+    #   - /bin/bash
+
+    depends_on:
+      - redis
+      - db
+
+    networks:
+      - omgind
+
+  redis:
+    container_name: omgind-redis
+    image: "redis:alpine"
+    restart: always
+    ports:
+      - "6739:6739"
+
+    networks:
+      - omgind
+
+  db:
+    container_name: omgind-mysql
+    image: "mysql:5.7"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+
+    ports:
+      - "3306:3306"
+
+    networks:
+      - omgind
+
+networks:
+  omgind:
+    driver: bridge
+    name: omgind
