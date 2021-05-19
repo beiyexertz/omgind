@@ -4,12 +4,11 @@ FROM cosmtrek/air
 ENV GO111MODULE=on \
     GOPROXY=https://goproxy.cn,direct
 
+RUN mkdir -p /app
 
-# WORKDIR $GOPATH/src
 WORKDIR /app
 
 #COPY ./deploy/dev/run.sh /app
-
 
 EXPOSE 10088
 
