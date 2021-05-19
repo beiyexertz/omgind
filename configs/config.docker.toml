@@ -160,7 +160,7 @@
     Duration = 10
 
     # redis数据库(如果存储方式是redis，则指定存储的数据库)
-    RedisDB = 10
+    RedisDB = 0
     # 存储到redis数据库中的键名前缀
     RedisPrefix = "captcha_"
 
@@ -224,7 +224,7 @@
     # 连接端口
     Port= 3306
     # 用户名
-    User = "root"
+    User = "omgind"
     # 密码
     Password = "123456"
     # 数据库

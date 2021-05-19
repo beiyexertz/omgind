@@ -27,7 +27,9 @@ type Vcode struct {
 }
 
 func New(cli redis.Cmdable, cfg config.CaptchaConfig) *Vcode {
-	fmt.Printf(" captach config %+v", cfg)
+
+	fmt.Printf(" === captach config %+v \n", cfg)
+
 	driver := base64Captcha.NewDriverString(cfg.Height, cfg.Width, cfg.NoiseCount, cfg.ShowLineOptions, cfg.Length, cfg.Source, cfg.BgColor, cfg.Fonts)
 
 	if cfg.Store == "redis" {
