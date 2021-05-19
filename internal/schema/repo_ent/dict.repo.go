@@ -2,13 +2,13 @@ package repo_ent
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdict"
-	"github.com/wanhello/omgind/internal/gen/ent/xxxdemo"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 )
@@ -175,7 +175,9 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 
 // UpdateStatus 更新状态
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
-	_, err1 := a.EntCli.XxxDemo.Update().Where(xxxdemo.IDEQ(id)).SetStatus(status).Save(ctx)
+
+	fmt.Println(" ---- ===== ", id, " --== ", status)
+	_, err1 := a.EntCli.SysDict.Update().Where(sysdict.IDEQ(id)).SetStatus(status).Save(ctx)
 
 	return errors.WithStack(err1)
 }
