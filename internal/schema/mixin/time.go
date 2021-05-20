@@ -15,6 +15,7 @@ type TimeMixin struct {
 
 func (TimeMixin) Fields() []ent.Field {
 	return []ent.Field{
+
 		field.Time("created_at").
 			StorageKey("crtd_at").
 			//StructTag(`json:"created_at,omitempty" sql:"crtd_at"`).
