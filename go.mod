@@ -7,7 +7,6 @@ require (
 	github.com/LyricTian/queue v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.11.3
-	github.com/chenhg5/collection v0.0.0-20200925143926-f403b87088f9 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/camelcase v1.0.0 // indirect
@@ -21,7 +20,7 @@ require (
 	github.com/google/gops v0.3.12
 	github.com/google/uuid v1.1.2
 	github.com/google/wire v0.5.0
-	github.com/influxdata/influxdb-client-go/v2 v2.3.0 // indirect
+	github.com/influxdata/influxdb-client-go/v2 v2.3.0
 	github.com/jinzhu/copier v0.3.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10
@@ -38,12 +37,11 @@ require (
 	github.com/psampaz/slice v0.2.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
-	github.com/streadway/amqp v1.0.0 // indirect
+	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.7.0
 	github.com/tidwall/buntdb v1.1.2
-	github.com/ulule/deepcopier v0.0.0-20200430083143-45decc6639b6 // indirect
 	github.com/urfave/cli/v2 v2.3.0
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/net v0.0.0-20210326220855-61e056675ecf // indirect
