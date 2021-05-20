@@ -111,6 +111,9 @@ services:
       RABBITMQ_DEFAULT_USER: omgind
       RABBITMQ_DEFAULT_PASS: 123456
 
+    volumes:
+      - $PWD/data/rabbitmq:/var/lib/rabbitmq
+
     ports:
       - 15691:15691
       - 15692:15692
@@ -119,7 +122,6 @@ services:
       - 5671:5671
       - 5672:5672
 
-    
     networks:
       - omgind
 
