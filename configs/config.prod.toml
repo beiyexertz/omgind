@@ -264,6 +264,10 @@
     # SSL模式
     SSLMode = "disable"
 
+[Sqlite3]
+    # 数据库路径
+    Path = "data/omgind.db"
+
 [InfluxDB]
     # 协议 http/https
     Schema = "http"
@@ -286,8 +290,4 @@
     # 用户名
     User  = "omgind"
     # 密码
-    Password  = ""
-
-[Sqlite3]
-    # 数据库路径
-    Path = "data/omgind.db"
+    Password  = "123456"
