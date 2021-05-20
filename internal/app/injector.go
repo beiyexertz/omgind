@@ -2,6 +2,8 @@ package app
 
 import (
 	"github.com/go-redis/redis"
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"github.com/streadway/amqp"
 	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/pkg/auth"
@@ -22,4 +24,6 @@ type Injector struct {
 	MenuSrv        *service.Menu
 	RedisCli       redis.Cmdable
 	EntCli         *ent.Client
+	InfluxDb       influxdb2.Client
+	RabbitMq       *amqp.Connection
 }

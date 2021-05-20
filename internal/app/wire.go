@@ -9,6 +9,7 @@ import (
 	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 
+	api_v1 "github.com/wanhello/omgind/internal/api/v1"
 	// "github.com/wanhello/omgind/internal/app/api_v1/mock"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
@@ -26,6 +27,8 @@ func BuildInjector() (*Injector, func(), error) {
 		InitEntClient,
 		InitRedisCli,
 		InitVcode,
+		InitInfluxDB,
+		InitRabbitMQ,
 		repo.RepoSet,
 		repo_ent.RepoSet,
 		InitAuth,
