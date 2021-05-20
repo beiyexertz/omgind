@@ -99,6 +99,9 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, 
 	err := repo_ent.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
 
 		dictInput := a.DictModel.ToEntCreateSysDictInput(&item)
+		dictInput.CreatedAt = nil
+		dictInput.UpdatedAt = nil
+
 		adict, err := tx.SysDict.Create().SetInput(*dictInput).Save(ctx)
 
 		if err != nil {
@@ -108,6 +111,8 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, 
 		for _, itm := range item.Items {
 			itm.DictID = adict.ID
 			ipt := a.DictItemModel.ToEntCreateSysDictItemInput(itm)
+			ipt.CreatedAt = nil
+			ipt.UpdatedAt = nil
 
 			_, err := tx.SysDictItem.Create().SetInput(*ipt).Save(ctx)
 			if err != nil {
@@ -151,6 +156,8 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 		for _, itm := range addItems {
 			itm.DictID = id
 			inpt := a.DictItemModel.ToEntCreateSysDictItemInput(itm)
+			inpt.CreatedAt = nil
+			inpt.UpdatedAt = nil
 			_, err := tx.SysDictItem.Create().SetInput(*inpt).Save(ctx)
 			if err != nil {
 				if err := tx.Rollback(); err != nil {
@@ -176,6 +183,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 		for _, itm := range updateItems {
 
 			inpt := a.DictItemModel.ToEntUpdateSysDictItemInput(itm)
+			inpt.UpdatedAt = nil
 			_, err := tx.SysDictItem.UpdateOneID(itm.ID).SetInput(*inpt).Save(ctx)
 			if err != nil {
 				if err := tx.Rollback(); err != nil {
@@ -186,7 +194,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 		}
 
 		dict_input := a.DictModel.ToEntUpdateSysDictInput(&item)
-
+		dict_input.UpdatedAt = nil
 		_, err := tx.SysDict.UpdateOneID(id).SetInput(*dict_input).Save(ctx)
 
 		if err != nil {
