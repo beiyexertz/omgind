@@ -125,6 +125,8 @@ func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, erro
 	item.UpdatedAt = time.Now()
 
 	iteminput := a.toEntCreateDemoInput(&item)
+	iteminput.CreatedAt = nil
+	iteminput.UpdatedAt = nil
 	xxxdemo, err := a.EntCli.XxxDemo.Create().SetInput(*iteminput).Save(ctx)
 
 	if err != nil {
@@ -144,6 +146,8 @@ func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema
 
 	item.UpdatedAt = time.Now()
 	iteminput := a.toEntUpdateDemoInput(&item)
+	iteminput.UpdatedAt = nil
+	
 	xxxdemo, err := oitem.Update().SetInput(*iteminput).Save(ctx)
 	sch_demo := a.toSchemaDemo(xxxdemo)
 
