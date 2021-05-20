@@ -270,7 +270,7 @@
     # 协议 http/https
     Schema = "http"
     # 连接地址
-    host = "0.0.0.0"
+    host = "influxdb"
     # 连接端口
     Port= 5432
 
@@ -282,7 +282,7 @@
 
 [RabbitMQ]
     # 连接地址
-    Host  =  "0.0.0.0"
+    Host  =  "rabbitmq"
 
     Port  = 5672
     # 用户名

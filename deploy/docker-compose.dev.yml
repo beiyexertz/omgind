@@ -30,6 +30,9 @@ services:
     depends_on:
       - redis
       - mysql
+      - postgres
+      - influxdb
+      - rabbitmq
 
     networks:
       - omgind
@@ -73,8 +76,10 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: omgind
       PGDATA: /var/lib/postgresql/data/pgdata
+
     volumes:
       - $PWD/data/pgsql:/var/lib/postgresql/data/pgdata
+
     ports:
       - 15432:5432
 
@@ -95,7 +100,7 @@ services:
 
     volumes:
       - $PWD/data/influxdb:/var/lib/influxdb2
-      - $PWD/data/config/influx:/etc/influxdb2
+#      - $PWD/data/config/influx:/etc/influxdb2
 
     ports:
       - 8086:8086
