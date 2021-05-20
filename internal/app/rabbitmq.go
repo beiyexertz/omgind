@@ -12,7 +12,7 @@ func InitRabbitMQ() (*amqp.Connection, func(), error) {
 	cfg := global.CFG.RabbitMQ
 
 	conn, err := amqp.Dial(cfg.DSN())
-	fmt.Println(" ------- influx db dsn ", cfg.DSN())
+	fmt.Println(" ------- rabbit mq dsn ", cfg.DSN())
 	if err != nil {
 		return nil, nil, err
 	}
