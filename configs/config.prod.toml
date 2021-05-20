@@ -284,10 +284,11 @@
 
 [RabbitMQ]
     # 连接地址
-    Host  =  "0.0.0.0"
+    Host = "0.0.0.0"
 
-    Port  = 5672
+    Port = 5672
     # 用户名
-    User  = "omgind"
+    User = "omgind"
     # 密码
-    Password  = "123456"
+    Password = "123456"
+

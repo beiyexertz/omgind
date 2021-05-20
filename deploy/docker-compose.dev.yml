@@ -30,6 +30,9 @@ services:
     depends_on:
       - redis
       - mysql
+      - postgres
+      - influxdb
+      - rabbitmq
 
     networks:
       - omgind
@@ -73,8 +76,10 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: omgind
       PGDATA: /var/lib/postgresql/data/pgdata
+
     volumes:
       - $PWD/data/pgsql:/var/lib/postgresql/data/pgdata
+
     ports:
       - 15432:5432
 
@@ -86,8 +91,44 @@ services:
     image: "influxdb:2.0-alpine"
     restart: always
     environment:
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "123456"
-      
+      DOCKER_INFLUXDB_INIT_USERNAME: omgind
+      DOCKER_INFLUXDB_INIT_PASSWORD: "123456"
+      DOCKER_INFLUXDB_INIT_ORG: "omgind"
+      DOCKER_INFLUXDB_INIT_BUCKET: "omgind"
+      DOCKER_INFLUXDB_INIT_RETENTION: 1w
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 123456
+
+    volumes:
+      - $PWD/data/influxdb:/var/lib/influxdb2
+#      - $PWD/data/config/influx:/etc/influxdb2
+
+    ports:
+      - 8086:8086
+
+    networks:
+      - omgind
+
+  rabbitmq:
+    container_name: omgind-mq
+    image: "rabbitmq:alpine"
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: omgind
+      RABBITMQ_DEFAULT_PASS: 123456
+
+    volumes:
+      - $PWD/data/rabbitmq:/var/lib/rabbitmq
+
+    ports:
+      - 15691:15691
+      - 15692:15692
+      - 25672:25672
+      - 4369:4369
+      - 5671:5671
+      - 5672:5672
+
+    networks:
+      - omgind
 
 networks:
   omgind:
