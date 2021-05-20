@@ -1,6 +1,9 @@
 #!/bin/bash
 
 go get github.com/google/wire/cmd/wire
+go get entgo.io/ent/cmd/ent
+go get -u github.com/swaggo/swag/cmd/swag
+
 
 go mod vendor
 

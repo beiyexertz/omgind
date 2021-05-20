@@ -4,6 +4,7 @@ FROM cosmtrek/air
 ENV GO111MODULE=on \
     GOPROXY=https://goproxy.cn,direct
 
+
 RUN mkdir -p /app
 
 WORKDIR /app
