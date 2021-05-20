@@ -13,7 +13,8 @@ services:
     image: omgind:latest
     restart: always
     environment:
-      - GOPROXY=https://goproxy.cn,direct
+      GOPROXY: https://goproxy.cn,direct
+      profile: prod
 
     ports:
       - "10088:10088"
@@ -79,6 +80,14 @@ services:
 
     networks:
       - omgind
+  
+  influxdb:
+    container_name: omgind-influxdb
+    image: "influxdb:2.0-alpine"
+    restart: always
+    environment:
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: "123456"
+      
 
 networks:
   omgind:

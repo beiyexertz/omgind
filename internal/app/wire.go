@@ -4,7 +4,7 @@
 package app
 
 import (
-	"github.com/wanhello/omgind/internal/api/v1"
+	api_v1 "github.com/wanhello/omgind/internal/api/v1"
 	// "github.com/wanhello/omgind/internal/app/api_v1/mock"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
@@ -21,6 +21,8 @@ func BuildInjector() (*Injector, func(), error) {
 		InitGormDB,
 		InitRedisCli,
 		InitVcode,
+		InitInfluxDB,
+		InitRabbitMQ,
 		repo.RepoSet,
 		InitAuth,
 		InitCasbin,

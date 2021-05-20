@@ -23,6 +23,8 @@ type Config struct {
 	MySQL        MySQLConfig       `mapstructure:"MySQL" json:"mysql"`
 	Postgres     PostgresConfig    `mapstructure:"Postgres" json:"postgres"`
 	Sqlite3      Sqlite3Config     `mapstructure:"Sqlite3" json:"sqlite3"`
+	RabbitMQ     RabbitMQConfig    `mapstructure:"RabbitMQ" json:"rabbitmq"`
+	InfluxDB     InfluxDBConfig    `mapstructure:"InfluxDB" json:"influxdb"`
 }
 
 // IsDebugMode 是否是debug模式

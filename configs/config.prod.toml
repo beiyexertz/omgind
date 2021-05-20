@@ -245,6 +245,30 @@
     # SSL模式
     SSLMode = "disable"
 
+[InfluxDB]
+    # 协议 http/https
+    Schema = "http"
+    # 连接地址
+    host = "0.0.0.0"
+    # 连接端口
+    Port= 8086
+
+    Token = ""
+
+    Bucket = ""
+
+    Org = ""
+
+[RabbitMQ]
+    # 连接地址
+    Host  =  "0.0.0.0"
+
+    Port  = 5672
+    # 用户名
+    User  = "omgind"
+    # 密码
+    Password  = ""
+
 [Sqlite3]
     # 数据库路径
     Path = "data/omgind.db"

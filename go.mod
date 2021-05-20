@@ -21,6 +21,7 @@ require (
 	github.com/google/gops v0.3.12
 	github.com/google/uuid v1.1.2
 	github.com/google/wire v0.5.0
+	github.com/influxdata/influxdb-client-go/v2 v2.3.0 // indirect
 	github.com/jinzhu/copier v0.3.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10
@@ -37,6 +38,7 @@ require (
 	github.com/psampaz/slice v0.2.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.6.0
+	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.7.0
@@ -46,7 +48,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/net v0.0.0-20210326220855-61e056675ecf // indirect
 	golang.org/x/sys v0.0.0-20210326220804-49726bf1d181 // indirect
-	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e
+	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	golang.org/x/tools v0.1.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
