@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -f ./deploy/dev/Dockerfile.dev -t omgind:latest .
+docker build -f ./deploy/dev/dockerfile.dev -t omgind:latest .

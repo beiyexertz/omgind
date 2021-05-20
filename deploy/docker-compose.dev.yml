@@ -18,10 +18,10 @@ services:
     ports:
       - "10088:10088"
     volumes:
-      - $PWD:/go/omgind
+      - $PWD:/app/omgind
       - $PWD/deploy/dev/run.sh:/app/run.sh
 
-    working_dir: /go/omgind
+    working_dir: /app/omgind
     # command: 
     #   - "go run /go/omgind/cmd/omgind/main.go web -c /go/omgind/configs/config.toml -m /go/omgind/configs/model.conf --menu /go/omgind/configs/menu.yaml"
     #   - /bin/bash
@@ -45,16 +45,38 @@ services:
 
   mysql:
     container_name: omgind-mysql
-    image: "mysql:5.7"
+    image: "mysql:8"
     restart: always
     environment:
-      MYSQL_DATABASE: omgind
+      MYSQL_USER: omgind
       MYSQL_ROOT_PASSWORD: 123456
-    
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: omgind
+    volumes:
+      - $PWD/data/mysql:/var/lib/mysql
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci #设置utf8字符集
     ports:
       - "13306:3306"
     
+    networks:
+      - omgind
+
+
+  postgres:
+    container_name: omgind-pgsql
+    image: "postgres:12-alpine"
+    privileged: true
+    restart: always
+    environment:
+      POSTGRES_USER: omgind
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: omgind
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - $PWD/data/pgsql:/var/lib/postgresql/data/pgdata
+    ports:
+      - 15432:5432
+
     networks:
       - omgind
 
