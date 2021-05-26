@@ -4,11 +4,11 @@ services:
   go:
     container_name: omgind-server
 
-#    build:
-#      context: ./
-#      dockerfile: ./dev/Dockerfile.dev
+    build:
+      context: ../
+      dockerfile: ./deploy/dev/Dockerfile.dev
 
-#    entrypoint: /app/run.sh
+    entrypoint: /app/run.sh
 
     image: omgind:latest
     restart: always
@@ -27,12 +27,12 @@ services:
     depends_on:
       - redis
       - mysql
-      - postgres
       - influxdb
       - rabbitmq
 
     networks:
-      - omgind
+      - omgind-be
+      - omgind-fe
 
   redis:
     container_name: omgind-redis
@@ -42,7 +42,7 @@ services:
       - "16739:6739"
 
     networks:
-      - omgind
+      - omgind-be
 
   mysql:
     container_name: omgind-mysql
@@ -60,28 +60,28 @@ services:
       - "13306:3306"
     
     networks:
-      - omgind
+      - omgind-be
 
 
-  postgres:
-    container_name: omgind-pgsql
-    image: "postgres:12-alpine"
-    privileged: true
-    restart: always
-    environment:
-      POSTGRES_USER: omgind
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: omgind
-      PGDATA: /var/lib/postgresql/data/pgdata
-
-    volumes:
-      - $PWD/data/pgsql:/var/lib/postgresql/data/pgdata
-
-    ports:
-      - 15432:5432
-
-    networks:
-      - omgind
+#  postgres:
+#    container_name: omgind-pgsql
+#    image: "postgres:12-alpine"
+#    privileged: true
+#    restart: always
+#    environment:
+#      POSTGRES_USER: omgind
+#      POSTGRES_PASSWORD: 123456
+#      POSTGRES_DB: omgind
+#      PGDATA: /var/lib/postgresql/data/pgdata
+#
+#    volumes:
+#      - $PWD/data/pgsql:/var/lib/postgresql/data/pgdata
+#
+#    ports:
+#      - 15432:5432
+#
+#    networks:
+#      - omgind
   
   influxdb:
     container_name: omgind-influxdb
@@ -103,7 +103,7 @@ services:
       - 8086:8086
 
     networks:
-      - omgind
+      - omgind-be
 
   rabbitmq:
     container_name: omgind-mq
@@ -125,9 +125,12 @@ services:
       - 5672:5672
 
     networks:
-      - omgind
+      - omgind-be
 
 networks:
-  omgind:
+  omgind-be:
     driver: bridge
-    name: omgind
+    name: omgind-be
+  omgind-fe:
+    driver: bridge
+    name: omgind-fe
