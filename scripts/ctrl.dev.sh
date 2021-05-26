@@ -4,6 +4,8 @@ CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 PROJECT_DIR=$(dirname "${CURRENT_DIR}")
 
+export CMODE="dev"
+
 echo "current project dir: ${PROJECT_DIR}"
 
 # 倒入文件
@@ -21,6 +23,13 @@ args=("$@")
 
 EXECUTOR=""
 
+function check_config_file() {
+#  echo "config: ${CONFIG_FILE}"
+  if [[ ! -f "${CONFIG_FILE}" ]]; then
+    echo "$(gettext 'Configuration file not found'): ${CONFIG_FILE}"
+    return 3
+  fi
+}
 
 function pre_check() {
   check_config_file || return 3
@@ -34,6 +43,7 @@ function main() {
     else
       pre_check || return 3
       EXECUTOR=$(get_docker_compose_cmd_line)
+      echo "EXECUTOR: ${EXECUTOR}"
     fi
   
   case "${action}" in
