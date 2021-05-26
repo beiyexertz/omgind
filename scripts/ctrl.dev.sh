@@ -23,6 +23,44 @@ args=("$@")
 
 EXECUTOR=""
 
+function start() {
+#  check_ipv6_iptables_if_need
+  ${EXECUTOR} up -d
+}
+
+function stop() {
+  if [[ -n "${target}" ]]; then
+    ${EXECUTOR} stop "${target}" && ${EXECUTOR} rm -f "${target}"
+    return
+  fi
+  services=$(get_docker_compose_services ignore_db)
+  for i in ${services}; do
+    ${EXECUTOR} stop "${i}"
+  done
+  for i in ${services}; do
+    ${EXECUTOR} rm -f "${i}" >/dev/null
+  done
+
+}
+
+function close() {
+  if [[ -n "${target}" ]]; then
+    ${EXECUTOR} stop "${target}"
+    return
+  fi
+  services=$(get_docker_compose_services ignore_db)
+  for i in ${services}; do
+    ${EXECUTOR} stop "${i}"
+  done
+}
+
+function restart() {
+  stop
+  echo -e "\n"
+  start
+}
+
+
 function check_config_file() {
 #  echo "config: ${CONFIG_FILE}"
   if [[ ! -f "${CONFIG_FILE}" ]]; then
@@ -48,32 +86,30 @@ function main() {
   
   case "${action}" in
   start)
-    echo ""
-
+    start
     ;;
   stop)
-    echo ""
-
+    stop
     ;;
   close)
-    echo ""
-
+    close
     ;;
   restart)
-    echo ""
-
+    restart
     ;;
   status)
-    echo ""
-
+    ${EXECUTOR} ps
     ;;
   down)
-    echo ""
-
+    if [[ -z "${target}" ]]; then
+      ${EXECUTOR} down -v
+    else
+      ${EXECUTOR} stop "${target}" && ${EXECUTOR} rm -f "${target}"
+    fi
     ;;
   uninstall)
     echo ""
-
+      
     ;;
 
   help)
