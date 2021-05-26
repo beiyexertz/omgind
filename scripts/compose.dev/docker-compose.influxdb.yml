@@ -8,8 +8,8 @@ services:
         condition: service_healthy
 
   influxdb:
-    container_name: omgind_influxdb
     image: "influxdb:2.0-alpine"
+    container_name: omgind_influxdb
     restart: always
     env_file:
       - ${CONFIG_FILE}
@@ -28,6 +28,7 @@ services:
 
     ports:
       - 8086:8086
+
     healthcheck:
       interval: 15s
       timeout: 5s

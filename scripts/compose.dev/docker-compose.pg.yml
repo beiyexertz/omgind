@@ -2,9 +2,14 @@ version: "3.7"
 
 services:
 
+  core:
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
-    container_name: omgind_pgsql
     image: "postgres:12-alpine"
+    container_name: omgind_pgsql
     privileged: true
     restart: always
     env_file:
@@ -20,6 +25,12 @@ services:
 
     ports:
       - 15432:5432
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
     networks:
       - net
