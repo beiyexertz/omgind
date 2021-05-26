@@ -7,8 +7,6 @@ echo "mode: ${CMODE}"
 
 . "${BASE_DIR}/const.${CMODE}.sh"
 
-
-
 function get_config() {
   cwd=$(pwd)
   key=$1
@@ -58,6 +56,12 @@ function get_docker_compose_cmd_line() {
   if [[ "${services}" =~ redis ]]; then
     cmd="${cmd} -f ${compose_dir}/docker-compose.redis.yml"
   fi
+  if [[ "${services}" =~ rabbitmq ]]; then
+    cmd="${cmd} -f ${compose_dir}/docker-compose.rabbitmq.yml"
+  fi
+  if [[ "${services}" =~ influxdb ]]; then
+    cmd="${cmd} -f ${compose_dir}/docker-compose.influxdb.yml"
+  fi
   if [[ "${services}" =~ lb ]]; then
     cmd="${cmd} -f ${compose_dir}/docker-compose.internal.yml -f ./compose/docker-compose-lb.yml"
   else
@@ -66,6 +70,19 @@ function get_docker_compose_cmd_line() {
   fi
 
   echo "${cmd}"
+}
+
+function prepare_config() {
+
+  compose_dir="./scripts/compose.${CMODE}"
+
+  if [[ ! -f .env ]]; then
+    ln -s "${CONFIG_FILE}" .env
+  fi
+  if [[ ! -f "${compose_dir}/.env" ]]; then
+    ln -s "${CONFIG_FILE}" "${compose_dir}/.env"
+  fi
+
 }
 
 function check_ipv6_iptables_if_need() {

@@ -11,5 +11,6 @@ export VOLUME_DIR=${PROJECT_DIR}/data
 export CONFIG_DIR=${PROJECT_DIR}/data/config
 
 #export CONFIG_FILE=${CONFIG_DIR}/config.dev.txt
-export CONFIG_FILE=${DEPLOY_DIR}/config.${CMODE}.txt
+#export CONFIG_FILE=${DEPLOY_DIR}/config.${CMODE}.txt
+export CONFIG_FILE=${PROJECT_DIR}/scripts/config.${CMODE}.txt
 

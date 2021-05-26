@@ -2,6 +2,11 @@ version: "3.7"
 
 services:
 
+  core:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   rabbitmq:
     container_name: omgind_mq
     image: "rabbitmq:alpine"
@@ -24,5 +29,16 @@ services:
       - 5671:5671
       - 5672:5672
 
+    healthcheck:
+      timeout: 5s
+      interval: 15s
+      retries: 5
+      test:
+        - CMD
+        - rabbitmqctl
+        - status
+
     networks:
       - net
+
+

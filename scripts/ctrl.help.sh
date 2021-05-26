@@ -16,5 +16,9 @@ function usage() {
   echo "  down              $(gettext 'Offline JumpServer')"
   echo "  uninstall         $(gettext 'Uninstall JumpServer')"
   echo
+  echo "More Commands: "
+  echo "  show_services     $(gettext 'show all services')"
+  echo "  raw               $(gettext 'Execute the original docker-compose command')"
+  echo "  tail [service]    $(gettext 'View log')"
 
 }

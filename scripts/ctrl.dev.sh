@@ -67,6 +67,18 @@ function check_config_file() {
     echo "$(gettext 'Configuration file not found'): ${CONFIG_FILE}"
     return 3
   fi
+  if [[ -f .env ]]; then
+    ls -l .env | grep "${CONFIG_FILE}" &>/dev/null
+    code="$?"
+    if [[ "$code" != "0" ]]; then
+      echo ".env $(gettext 'There is a problem with the soft connection, Please update it again')"
+      rm -f .env
+    fi
+  fi
+
+  if [[ ! -f .env ]]; then
+    ln -s "${CONFIG_FILE}" .env
+  fi
 }
 
 function pre_check() {
@@ -74,16 +86,18 @@ function pre_check() {
 }
 
 function main() {
-    if [[ "${action}" == "help" || "${action}" == "h" || "${action}" == "-h" || "${action}" == "--help" ]]; then
-      echo ""
-    elif [[ "${action}" == "" ]]; then
-      echo ""
-    else
-      pre_check || return 3
-      EXECUTOR=$(get_docker_compose_cmd_line)
-      echo "EXECUTOR: ${EXECUTOR}"
-    fi
-  
+  if [[ "${action}" == "help" || "${action}" == "h" || "${action}" == "-h" || "${action}" == "--help" ]]; then
+    echo ""
+  elif [[ "${action}" == "" ]]; then
+    echo ""
+  else
+    pre_check || return 3
+    EXECUTOR=$(get_docker_compose_cmd_line)
+    echo "EXECUTOR: ${EXECUTOR}"
+  fi
+
+  prepare_config
+
   case "${action}" in
   start)
     start
@@ -107,9 +121,11 @@ function main() {
       ${EXECUTOR} stop "${target}" && ${EXECUTOR} rm -f "${target}"
     fi
     ;;
-  uninstall)
-    echo ""
-      
+  show_services)
+    get_docker_compose_services
+    ;;
+  raw)
+    ${EXE} "${args[@]:1}"
     ;;
 
   help)
