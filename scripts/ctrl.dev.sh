@@ -1,24 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+PROJECT_DIR=$(dirname "${CURRENT_DIR}")
+
+echo "current project dir: ${PROJECT_DIR}"
+
+# 倒入文件
+. "${PROJECT_DIR}/scripts/ctrl.help.sh"
+. "${PROJECT_DIR}/scripts/utils.sh"
+
 
 action=${1-}
 target=${2-}
 args=("$@")
 
-echo "${args}"
-echo "${action}"
-echo "${target}"
+#echo "${args}"
+#echo "${action}"
+#echo "${target}"
 
 EXECUTOR=""
 
-# 倒入文件
-. ./scripts/ctrl.help.sh
 
 function pre_check() {
   check_config_file || return 3
 }
 
 function main() {
-    echo " ------- main "
     if [[ "${action}" == "help" || "${action}" == "h" || "${action}" == "-h" || "${action}" == "--help" ]]; then
       echo ""
     elif [[ "${action}" == "" ]]; then
@@ -29,7 +37,34 @@ function main() {
     fi
   
   case "${action}" in
+  start)
+    echo ""
 
+    ;;
+  stop)
+    echo ""
+
+    ;;
+  close)
+    echo ""
+
+    ;;
+  restart)
+    echo ""
+
+    ;;
+  status)
+    echo ""
+
+    ;;
+  down)
+    echo ""
+
+    ;;
+  uninstall)
+    echo ""
+
+    ;;
 
   help)
     usage
