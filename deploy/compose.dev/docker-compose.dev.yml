@@ -1,12 +1,13 @@
 version: "3.7"
 
 services:
+
   go:
     container_name: omgind-server
 
     build:
-      context: ../
-      dockerfile: ./deploy/dev/Dockerfile.dev
+      context: ../..
+      dockerfile: ./deploy/dockerfile/Dockerfile.dev
 
     entrypoint: /app/run.sh
 
@@ -89,11 +90,11 @@ services:
     restart: always
     environment:
       DOCKER_INFLUXDB_INIT_USERNAME: omgind
-      DOCKER_INFLUXDB_INIT_PASSWORD: "123456"
+      DOCKER_INFLUXDB_INIT_PASSWORD: "12345678"
       DOCKER_INFLUXDB_INIT_ORG: "omgind"
       DOCKER_INFLUXDB_INIT_BUCKET: "omgind"
       DOCKER_INFLUXDB_INIT_RETENTION: 1w
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 123456
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 12345678
 
     volumes:
       - $PWD/data/influxdb:/var/lib/influxdb2
