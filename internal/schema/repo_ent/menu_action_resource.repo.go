@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/google/wire"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
+	"github.com/wanhello/omgind/pkg/helper/structure"
 
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/internal/app/model/gormx/entity"
@@ -21,6 +23,38 @@ type MenuActionResource struct {
 	TxCli *ent.Tx
 }
 
+
+func (a *MenuActionResource) toSchemaSysMenuActionResource(ma *ent.SysMenuActionResource) *schema.MenuActionResource {
+	item := new(schema.MenuActionResource)
+	structure.Copy(ma, item)
+	return item
+}
+
+func (a *MenuActionResource) toSchemaSysMenuActionResources(mas ent.SysMenuActionResources) []*schema.
+	MenuActionResource {
+	list := make([]*schema.MenuActionResource, len(mas))
+	for i, item := range mas {
+		list[i] = a.toSchemaSysMenuActionResource(item)
+	}
+	return list
+}
+
+
+func (a *MenuActionResource) ToEntCreateSysMenuActionInput(ma *schema.MenuActionResource) *ent.CreateSysMenuActionResourceInput {
+	createinput := new(ent.CreateSysMenuActionResourceInput)
+	structure.Copy(ma, &createinput)
+
+	return createinput
+}
+
+func (a *MenuActionResource) ToEntUpdateSysMenuActionInput(ma *schema.MenuActionResource) *ent.UpdateSysMenuActionResourceInput {
+	updateinput := new(ent.UpdateSysMenuActionResourceInput)
+	structure.Copy(ma, &updateinput)
+
+	return updateinput
+}
+
+
 func (a *MenuActionResource) getQueryOption(opts ...schema.MenuActionResourceQueryOptions) schema.MenuActionResourceQueryOptions {
 	var opt schema.MenuActionResourceQueryOptions
 	if len(opts) > 0 {
@@ -33,29 +67,53 @@ func (a *MenuActionResource) getQueryOption(opts ...schema.MenuActionResourceQue
 func (a *MenuActionResource) Query(ctx context.Context, params schema.MenuActionResourceQueryParam, opts ...schema.MenuActionResourceQueryOptions) (*schema.MenuActionResourceQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	db := entity.GetMenuActionResourceDB(ctx, a.DB)
+	query := a.EntCli.SysMenuActionResource.Query()
+
 	if v := params.MenuID; v != "" {
-		subQuery := entity.GetMenuActionDB(ctx, a.DB).
-			Where("menu_id=?", v).
-			Select("id").SubQuery()
-		db = db.Where("action_id IN ?", subQuery)
+		// TODO::
+
+		//subQuery := entity.GetMenuActionDB(ctx, a.DB).
+		//	Where("menu_id=?", v).
+		//	Select("id").SubQuery()
+		//db = db.Where("action_id IN ?", subQuery)
+
 	}
 	if v := params.MenuIDs; len(v) > 0 {
-		subQuery := entity.GetMenuActionDB(ctx, a.DB).Where("menu_id IN (?)", v).Select("id").SubQuery()
-		db = db.Where("action_id IN ?", subQuery)
+		// TODO::
+		//subQuery := entity.GetMenuActionDB(ctx, a.DB).Where("menu_id IN (?)", v).Select("id").SubQuery()
+		//db = db.Where("action_id IN ?", subQuery)
 	}
 
-	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByASC))
-	db = db.Order(ParseOrder(opt.OrderFields))
-
-	var list entity.MenuActionResources
-	pr, err := WrapPageQuery(ctx, db, params.PaginationParam, &list)
+	count, err := query.Count(ctx)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
+
+	// get total
+	pr := &schema.PaginationResult{Total: count}
+	if params.PaginationParam.OnlyCount {
+		return &schema.MenuActionResourceQueryResult{PageResult: pr}, nil
+	}
+
+	opt.OrderFields = append(opt.OrderFields, schema.NewOrderField("id", schema.OrderByASC))
+	query = query.Order(ParseOrder(opt.OrderFields)...)
+
+	pr.Current = params.PaginationParam.GetCurrent()
+	pr.PageSize = params.PaginationParam.GetPageSize()
+	if params.Offset() > count {
+		return &schema.MenuActionResourceQueryResult{PageResult: pr}, nil
+	}
+	query = query.Limit(params.Limit()).Offset(params.Offset())
+
+	list, err := query.All(ctx)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	rlist := ent.SysMenuActionResources(list)
+
 	qr := &schema.MenuActionResourceQueryResult{
 		PageResult: pr,
-		Data:       list.ToSchemaMenuActionResources(),
+		Data:       a.toSchemaSysMenuActionResources(rlist),
 	}
 
 	return qr, nil
@@ -63,16 +121,12 @@ func (a *MenuActionResource) Query(ctx context.Context, params schema.MenuAction
 
 // Get 查询指定数据
 func (a *MenuActionResource) Get(ctx context.Context, id string, opts ...schema.MenuActionResourceQueryOptions) (*schema.MenuActionResource, error) {
-	db := entity.GetMenuActionResourceDB(ctx, a.DB).Where("id=?", id)
-	var item entity.MenuActionResource
-	ok, err := FindOne(ctx, db, &item)
+	
+	sys_mar, err := a.EntCli.SysMenuActionResource.Query().Where(sysmenuactionresource.IDEQ(id)).Only(ctx)
 	if err != nil {
-		return nil, errors.WithStack(err)
-	} else if !ok {
-		return nil, nil
+		return nil, err
 	}
-
-	return item.ToSchemaMenuActionResource(), nil
+	return a.toSchemaSysMenuActionResource(sys_mar), nil
 }
 
 // Create 创建数据
