@@ -99,6 +99,13 @@ function main() {
   prepare_config
 
   case "${action}" in
+  up)
+    if [[ -z "${target}" ]]; then
+      start
+    else
+      ${EXECUTOR} up "${target}"
+    fi
+    ;;
   start)
     start
     ;;
@@ -125,7 +132,7 @@ function main() {
     get_docker_compose_services
     ;;
   raw)
-    ${EXE} "${args[@]:1}"
+    ${EXECUTOR} "${args[@]:1}"
     ;;
 
   help)
