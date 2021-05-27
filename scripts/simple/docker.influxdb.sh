@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 docker run -d -p 8086:8086 \
       -v $PWD/docker/data/influxdb:/var/lib/influxdb2 \
