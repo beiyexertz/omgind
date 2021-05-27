@@ -44,6 +44,7 @@ type User struct {
 
 	Creator   string    `json:"creator" `                           // 创建者
 	CreatedAt time.Time `json:"created_at" `                        // 创建时间
+	UpdatedAt time.Time `json:"updated_at" `                        // 创建时间
 	UserRoles UserRoles `json:"user_roles" binding:"required,gt=0"` // 角色授权
 }
 

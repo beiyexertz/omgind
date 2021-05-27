@@ -80,7 +80,7 @@ func (a *Dict) Query(ctx context.Context, params schema.DictQueryParam, opts ...
 	}
 
 	if v := params.QueryValue; v != "" {
-		query = query.Where(sysdict.Or(sysdict.NameCnContains(v), sysdict.NameEnEQ(v), sysdict.MemoContains(v)))
+		query = query.Where(sysdict.Or(sysdict.NameCnContains(v), sysdict.NameEnContains(v), sysdict.MemoContains(v)))
 	}
 
 	count, err := query.Count(ctx)
@@ -153,8 +153,8 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) (*schema
 	}
 
 	item.UpdatedAt = time.Now()
-	itemInput := a.ToEntUpdateSysDictInput(&item)
-	dict, err := oitem.Update().SetInput(*itemInput).Save(ctx)
+	iteminput := a.ToEntUpdateSysDictInput(&item)
+	dict, err := oitem.Update().SetInput(*iteminput).Save(ctx)
 	sch_dict := a.toSchemaDict(dict)
 
 	return sch_dict, nil

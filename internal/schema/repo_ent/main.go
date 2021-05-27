@@ -5,6 +5,9 @@ import (
 )
 
 var RepoSet = wire.NewSet(
+	UserSet,
+	RoleSet,
+	UserRoleSet,
 	DemoSet,
 	DictSet,
 	DictItemSet,
