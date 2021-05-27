@@ -18,11 +18,11 @@ services:
       - "13306:3306"
 
     volumes:
-      - ${CONFIG_DIR}/mysql/my.cnf:/etc/mysql/my.cnf
+      - ${CONFIG_DIR}/mysql/conf.d:/etc/mysql/conf.d
       - ${VOLUME_DIR}/mysql/data:/var/lib/mysql
 
     healthcheck:
-      test: "mysql -h127.0.0.1 -P$$DB_PORT -uroot -p$$MYSQL_ROOT_PASSWORD -e 'SHOW DATABASES;'"
+      test: "mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"
       interval: 15s
       timeout: 5s
       retries: 3
