@@ -103,7 +103,7 @@ function main() {
     if [[ -z "${target}" ]]; then
       start
     else
-      ${EXECUTOR} up "${target}"
+      ${EXECUTOR} up "${target}" -d
     fi
     ;;
   start)
