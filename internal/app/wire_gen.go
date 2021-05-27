@@ -173,38 +173,14 @@ func BuildInjector() (*Injector, func(), error) {
 		DemoAPIV2:      api_v2Demo,
 	}
 	engine := InitGinEngine(routerRouter)
-	influxdb2Client, cleanup6, err := InitInfluxDB()
-	if err != nil {
-		cleanup5()
-		cleanup4()
-		cleanup3()
-		cleanup2()
-		cleanup()
-		return nil, nil, err
-	}
-	connection, cleanup7, err := InitRabbitMQ()
-	if err != nil {
-		cleanup6()
-		cleanup5()
-		cleanup4()
-		cleanup3()
-		cleanup2()
-		cleanup()
-		return nil, nil, err
-	}
 	injector := &Injector{
 		Engine:         engine,
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
 		MenuSrv:        serviceMenu,
 		RedisCli:       cmdable,
-		EntCli:         client,
-		InfluxDb:       influxdb2Client,
-		RabbitMq:       connection,
 	}
 	return injector, func() {
-		cleanup7()
-		cleanup6()
 		cleanup5()
 		cleanup4()
 		cleanup3()

@@ -168,7 +168,7 @@
 
 - name: 开发状态
   icon: setting
-  sort: 9
+  sort: 999
   children:
     - name: 菜单管理
       icon: solution
@@ -209,5 +209,3 @@
           resources:
             - method: PATCH
               path: "/api/v1/menus/:id/enable"
-
-
