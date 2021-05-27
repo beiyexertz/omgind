@@ -49,13 +49,13 @@ func (smc *SysMenuCreate) SetNillableMemo(s *string) *SysMenuCreate {
 }
 
 // SetSort sets the "sort" field.
-func (smc *SysMenuCreate) SetSort(i int32) *SysMenuCreate {
+func (smc *SysMenuCreate) SetSort(i int) *SysMenuCreate {
 	smc.mutation.SetSort(i)
 	return smc
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableSort(i *int32) *SysMenuCreate {
+func (smc *SysMenuCreate) SetNillableSort(i *int) *SysMenuCreate {
 	if i != nil {
 		smc.SetSort(*i)
 	}
@@ -105,13 +105,13 @@ func (smc *SysMenuCreate) SetNillableDeletedAt(t *time.Time) *SysMenuCreate {
 }
 
 // SetStatus sets the "status" field.
-func (smc *SysMenuCreate) SetStatus(i int32) *SysMenuCreate {
+func (smc *SysMenuCreate) SetStatus(i int) *SysMenuCreate {
 	smc.mutation.SetStatus(i)
 	return smc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableStatus(i *int32) *SysMenuCreate {
+func (smc *SysMenuCreate) SetNillableStatus(i *int) *SysMenuCreate {
 	if i != nil {
 		smc.SetStatus(*i)
 	}
@@ -392,7 +392,7 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := smc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenu.FieldSort,
 		})
@@ -424,7 +424,7 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := smc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenu.FieldStatus,
 		})

@@ -24,7 +24,7 @@ type SysDict struct {
 	Memo string `json:"memo,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int32 `json:"sort,omitempty"`
+	Sort int `json:"sort,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -34,15 +34,15 @@ type SysDict struct {
 	// DeletedAt holds the value of the "deleted_at" field.
 	// 删除时间,
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
+	// Status holds the value of the "status" field.
+	// 状态,
+	Status int `json:"status,omitempty"`
 	// NameCn holds the value of the "name_cn" field.
 	// 字典名（中）
 	NameCn string `json:"name_cn,omitempty"`
 	// NameEn holds the value of the "name_en" field.
 	// 字典名（英）
 	NameEn string `json:"name_en,omitempty"`
-	// Status holds the value of the "status" field.
-	// 状态
-	Status int `json:"status,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -95,7 +95,7 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				sd.Sort = int32(value.Int64)
+				sd.Sort = int(value.Int64)
 			}
 		case sysdict.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -116,6 +116,12 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 				sd.DeletedAt = new(time.Time)
 				*sd.DeletedAt = value.Time
 			}
+		case sysdict.FieldStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				sd.Status = int(value.Int64)
+			}
 		case sysdict.FieldNameCn:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name_cn", values[i])
@@ -127,12 +133,6 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field name_en", values[i])
 			} else if value.Valid {
 				sd.NameEn = value.String
-			}
-		case sysdict.FieldStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
-			} else if value.Valid {
-				sd.Status = int(value.Int64)
 			}
 		}
 	}
@@ -176,12 +176,12 @@ func (sd *SysDict) String() string {
 		builder.WriteString(", deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
+	builder.WriteString(", status=")
+	builder.WriteString(fmt.Sprintf("%v", sd.Status))
 	builder.WriteString(", name_cn=")
 	builder.WriteString(sd.NameCn)
 	builder.WriteString(", name_en=")
 	builder.WriteString(sd.NameEn)
-	builder.WriteString(", status=")
-	builder.WriteString(fmt.Sprintf("%v", sd.Status))
 	builder.WriteByte(')')
 	return builder.String()
 }

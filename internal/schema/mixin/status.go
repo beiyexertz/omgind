@@ -15,8 +15,8 @@ type StatusMixin struct {
 
 func (s StatusMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int32("status").StorageKey("status").
-			Default(0).
+		field.Int("status").StorageKey("status").
+			Default(1).
 			StructTag(`json:"status,omitempty"`).
 			Comment("状态, "),
 	}

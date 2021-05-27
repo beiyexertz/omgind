@@ -24,7 +24,7 @@ type SysDictItem struct {
 	Memo string `json:"memo,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int32 `json:"sort,omitempty"`
+	Sort int `json:"sort,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -98,7 +98,7 @@ func (sdi *SysDictItem) assignValues(columns []string, values []interface{}) err
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				sdi.Sort = int32(value.Int64)
+				sdi.Sort = int(value.Int64)
 			}
 		case sysdictitem.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {

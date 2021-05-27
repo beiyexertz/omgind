@@ -20,16 +20,16 @@ type Dict struct {
 	EntCli *ent.Client
 }
 
-func (a *Dict) toSchemaDict(dit *ent.SysDict) *schema.Dict {
+func (a *Dict) toSchemaSysDict(dit *ent.SysDict) *schema.Dict {
 	item := new(schema.Dict)
 	structure.Copy(dit, item)
 	return item
 }
 
-func (a *Dict) toSchemaDicts(dits ent.SysDicts) []*schema.Dict {
+func (a *Dict) toSchemaSysDicts(dits ent.SysDicts) []*schema.Dict {
 	list := make([]*schema.Dict, len(dits))
 	for i, item := range dits {
-		list[i] = a.toSchemaDict(item)
+		list[i] = a.toSchemaSysDict(item)
 	}
 	return list
 }
@@ -105,15 +105,15 @@ func (a *Dict) Query(ctx context.Context, params schema.DictQueryParam, opts ...
 
 	query = query.Limit(params.Limit()).Offset(params.Offset())
 
-	list, err1 := query.All(ctx)
-	if err1 != nil {
+	list, err := query.All(ctx)
+	if err != nil {
 		return nil, errors.WithStack(err)
 	}
 	rlist := ent.SysDicts(list)
 
 	qr := &schema.DictQueryResult{
 		PageResult: pr,
-		Data:       a.toSchemaDicts(rlist),
+		Data:       a.toSchemaSysDicts(rlist),
 	}
 
 	return qr, nil
@@ -126,7 +126,7 @@ func (a *Dict) Get(ctx context.Context, id string, opts ...schema.DictQueryOptio
 	if err != nil {
 		return nil, err
 	}
-	return a.toSchemaDict(dict), nil
+	return a.toSchemaSysDict(dict), nil
 }
 
 // Create 创建数据
@@ -140,7 +140,7 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.Dict, erro
 	if err != nil {
 		return nil, err
 	}
-	sch_dict := a.toSchemaDict(sysdict)
+	sch_dict := a.toSchemaSysDict(sysdict)
 	return sch_dict, nil
 }
 
@@ -155,7 +155,11 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) (*schema
 	item.UpdatedAt = time.Now()
 	iteminput := a.ToEntUpdateSysDictInput(&item)
 	dict, err := oitem.Update().SetInput(*iteminput).Save(ctx)
-	sch_dict := a.toSchemaDict(dict)
+	if err != nil {
+		return nil, err
+	}
+	
+	sch_dict := a.toSchemaSysDict(dict)
 
 	return sch_dict, nil
 }
@@ -176,7 +180,7 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 // UpdateStatus 更新状态
 func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
 
-	_, err1 := a.EntCli.SysDict.Update().Where(sysdict.IDEQ(id)).SetStatus(status).Save(ctx)
+	_, err1 := a.EntCli.SysDict.UpdateOneID(id).SetStatus(status).Save(ctx)
 
 	return errors.WithStack(err1)
 }

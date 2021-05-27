@@ -58,9 +58,9 @@ var (
 	// DefaultIsDel holds the default value on creation for the "is_del" field.
 	DefaultIsDel bool
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int32
+	DefaultStatus int
 	// DefaultSort holds the default value on creation for the "sort" field.
-	DefaultSort int32
+	DefaultSort int
 	// DefaultMemo holds the default value on creation for the "memo" field.
 	DefaultMemo string
 	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.

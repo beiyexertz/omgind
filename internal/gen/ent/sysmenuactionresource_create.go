@@ -35,13 +35,13 @@ func (smarc *SysMenuActionResourceCreate) SetNillableIsDel(b *bool) *SysMenuActi
 }
 
 // SetSort sets the "sort" field.
-func (smarc *SysMenuActionResourceCreate) SetSort(i int32) *SysMenuActionResourceCreate {
+func (smarc *SysMenuActionResourceCreate) SetSort(i int) *SysMenuActionResourceCreate {
 	smarc.mutation.SetSort(i)
 	return smarc
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smarc *SysMenuActionResourceCreate) SetNillableSort(i *int32) *SysMenuActionResourceCreate {
+func (smarc *SysMenuActionResourceCreate) SetNillableSort(i *int) *SysMenuActionResourceCreate {
 	if i != nil {
 		smarc.SetSort(*i)
 	}
@@ -105,13 +105,13 @@ func (smarc *SysMenuActionResourceCreate) SetNillableDeletedAt(t *time.Time) *Sy
 }
 
 // SetStatus sets the "status" field.
-func (smarc *SysMenuActionResourceCreate) SetStatus(i int32) *SysMenuActionResourceCreate {
+func (smarc *SysMenuActionResourceCreate) SetStatus(i int) *SysMenuActionResourceCreate {
 	smarc.mutation.SetStatus(i)
 	return smarc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smarc *SysMenuActionResourceCreate) SetNillableStatus(i *int32) *SysMenuActionResourceCreate {
+func (smarc *SysMenuActionResourceCreate) SetNillableStatus(i *int) *SysMenuActionResourceCreate {
 	if i != nil {
 		smarc.SetStatus(*i)
 	}
@@ -325,7 +325,7 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 	}
 	if value, ok := smarc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldSort,
 		})
@@ -365,7 +365,7 @@ func (smarc *SysMenuActionResourceCreate) createSpec() (*SysMenuActionResource, 
 	}
 	if value, ok := smarc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldStatus,
 		})

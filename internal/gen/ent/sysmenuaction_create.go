@@ -35,13 +35,13 @@ func (smac *SysMenuActionCreate) SetNillableIsDel(b *bool) *SysMenuActionCreate 
 }
 
 // SetSort sets the "sort" field.
-func (smac *SysMenuActionCreate) SetSort(i int32) *SysMenuActionCreate {
+func (smac *SysMenuActionCreate) SetSort(i int) *SysMenuActionCreate {
 	smac.mutation.SetSort(i)
 	return smac
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smac *SysMenuActionCreate) SetNillableSort(i *int32) *SysMenuActionCreate {
+func (smac *SysMenuActionCreate) SetNillableSort(i *int) *SysMenuActionCreate {
 	if i != nil {
 		smac.SetSort(*i)
 	}
@@ -49,13 +49,13 @@ func (smac *SysMenuActionCreate) SetNillableSort(i *int32) *SysMenuActionCreate 
 }
 
 // SetStatus sets the "status" field.
-func (smac *SysMenuActionCreate) SetStatus(i int32) *SysMenuActionCreate {
+func (smac *SysMenuActionCreate) SetStatus(i int) *SysMenuActionCreate {
 	smac.mutation.SetStatus(i)
 	return smac
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smac *SysMenuActionCreate) SetNillableStatus(i *int32) *SysMenuActionCreate {
+func (smac *SysMenuActionCreate) SetNillableStatus(i *int) *SysMenuActionCreate {
 	if i != nil {
 		smac.SetStatus(*i)
 	}
@@ -325,7 +325,7 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 	}
 	if value, ok := smac.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuaction.FieldSort,
 		})
@@ -333,7 +333,7 @@ func (smac *SysMenuActionCreate) createSpec() (*SysMenuAction, *sqlgraph.CreateS
 	}
 	if value, ok := smac.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuaction.FieldStatus,
 		})

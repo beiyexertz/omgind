@@ -49,13 +49,13 @@ func (sdic *SysDictItemCreate) SetNillableMemo(s *string) *SysDictItemCreate {
 }
 
 // SetSort sets the "sort" field.
-func (sdic *SysDictItemCreate) SetSort(i int32) *SysDictItemCreate {
+func (sdic *SysDictItemCreate) SetSort(i int) *SysDictItemCreate {
 	sdic.mutation.SetSort(i)
 	return sdic
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sdic *SysDictItemCreate) SetNillableSort(i *int32) *SysDictItemCreate {
+func (sdic *SysDictItemCreate) SetNillableSort(i *int) *SysDictItemCreate {
 	if i != nil {
 		sdic.SetSort(*i)
 	}
@@ -316,7 +316,7 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 	}
 	if value, ok := sdic.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdictitem.FieldSort,
 		})

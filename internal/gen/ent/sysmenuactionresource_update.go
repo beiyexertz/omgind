@@ -42,14 +42,14 @@ func (smaru *SysMenuActionResourceUpdate) SetNillableIsDel(b *bool) *SysMenuActi
 }
 
 // SetSort sets the "sort" field.
-func (smaru *SysMenuActionResourceUpdate) SetSort(i int32) *SysMenuActionResourceUpdate {
+func (smaru *SysMenuActionResourceUpdate) SetSort(i int) *SysMenuActionResourceUpdate {
 	smaru.mutation.ResetSort()
 	smaru.mutation.SetSort(i)
 	return smaru
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smaru *SysMenuActionResourceUpdate) SetNillableSort(i *int32) *SysMenuActionResourceUpdate {
+func (smaru *SysMenuActionResourceUpdate) SetNillableSort(i *int) *SysMenuActionResourceUpdate {
 	if i != nil {
 		smaru.SetSort(*i)
 	}
@@ -57,7 +57,7 @@ func (smaru *SysMenuActionResourceUpdate) SetNillableSort(i *int32) *SysMenuActi
 }
 
 // AddSort adds i to the "sort" field.
-func (smaru *SysMenuActionResourceUpdate) AddSort(i int32) *SysMenuActionResourceUpdate {
+func (smaru *SysMenuActionResourceUpdate) AddSort(i int) *SysMenuActionResourceUpdate {
 	smaru.mutation.AddSort(i)
 	return smaru
 }
@@ -103,14 +103,14 @@ func (smaru *SysMenuActionResourceUpdate) ClearDeletedAt() *SysMenuActionResourc
 }
 
 // SetStatus sets the "status" field.
-func (smaru *SysMenuActionResourceUpdate) SetStatus(i int32) *SysMenuActionResourceUpdate {
+func (smaru *SysMenuActionResourceUpdate) SetStatus(i int) *SysMenuActionResourceUpdate {
 	smaru.mutation.ResetStatus()
 	smaru.mutation.SetStatus(i)
 	return smaru
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smaru *SysMenuActionResourceUpdate) SetNillableStatus(i *int32) *SysMenuActionResourceUpdate {
+func (smaru *SysMenuActionResourceUpdate) SetNillableStatus(i *int) *SysMenuActionResourceUpdate {
 	if i != nil {
 		smaru.SetStatus(*i)
 	}
@@ -118,7 +118,7 @@ func (smaru *SysMenuActionResourceUpdate) SetNillableStatus(i *int32) *SysMenuAc
 }
 
 // AddStatus adds i to the "status" field.
-func (smaru *SysMenuActionResourceUpdate) AddStatus(i int32) *SysMenuActionResourceUpdate {
+func (smaru *SysMenuActionResourceUpdate) AddStatus(i int) *SysMenuActionResourceUpdate {
 	smaru.mutation.AddStatus(i)
 	return smaru
 }
@@ -264,14 +264,14 @@ func (smaru *SysMenuActionResourceUpdate) sqlSave(ctx context.Context) (n int, e
 	}
 	if value, ok := smaru.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldSort,
 		})
 	}
 	if value, ok := smaru.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldSort,
 		})
@@ -305,14 +305,14 @@ func (smaru *SysMenuActionResourceUpdate) sqlSave(ctx context.Context) (n int, e
 	}
 	if value, ok := smaru.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldStatus,
 		})
 	}
 	if value, ok := smaru.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldStatus,
 		})
@@ -372,14 +372,14 @@ func (smaruo *SysMenuActionResourceUpdateOne) SetNillableIsDel(b *bool) *SysMenu
 }
 
 // SetSort sets the "sort" field.
-func (smaruo *SysMenuActionResourceUpdateOne) SetSort(i int32) *SysMenuActionResourceUpdateOne {
+func (smaruo *SysMenuActionResourceUpdateOne) SetSort(i int) *SysMenuActionResourceUpdateOne {
 	smaruo.mutation.ResetSort()
 	smaruo.mutation.SetSort(i)
 	return smaruo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smaruo *SysMenuActionResourceUpdateOne) SetNillableSort(i *int32) *SysMenuActionResourceUpdateOne {
+func (smaruo *SysMenuActionResourceUpdateOne) SetNillableSort(i *int) *SysMenuActionResourceUpdateOne {
 	if i != nil {
 		smaruo.SetSort(*i)
 	}
@@ -387,7 +387,7 @@ func (smaruo *SysMenuActionResourceUpdateOne) SetNillableSort(i *int32) *SysMenu
 }
 
 // AddSort adds i to the "sort" field.
-func (smaruo *SysMenuActionResourceUpdateOne) AddSort(i int32) *SysMenuActionResourceUpdateOne {
+func (smaruo *SysMenuActionResourceUpdateOne) AddSort(i int) *SysMenuActionResourceUpdateOne {
 	smaruo.mutation.AddSort(i)
 	return smaruo
 }
@@ -433,14 +433,14 @@ func (smaruo *SysMenuActionResourceUpdateOne) ClearDeletedAt() *SysMenuActionRes
 }
 
 // SetStatus sets the "status" field.
-func (smaruo *SysMenuActionResourceUpdateOne) SetStatus(i int32) *SysMenuActionResourceUpdateOne {
+func (smaruo *SysMenuActionResourceUpdateOne) SetStatus(i int) *SysMenuActionResourceUpdateOne {
 	smaruo.mutation.ResetStatus()
 	smaruo.mutation.SetStatus(i)
 	return smaruo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smaruo *SysMenuActionResourceUpdateOne) SetNillableStatus(i *int32) *SysMenuActionResourceUpdateOne {
+func (smaruo *SysMenuActionResourceUpdateOne) SetNillableStatus(i *int) *SysMenuActionResourceUpdateOne {
 	if i != nil {
 		smaruo.SetStatus(*i)
 	}
@@ -448,7 +448,7 @@ func (smaruo *SysMenuActionResourceUpdateOne) SetNillableStatus(i *int32) *SysMe
 }
 
 // AddStatus adds i to the "status" field.
-func (smaruo *SysMenuActionResourceUpdateOne) AddStatus(i int32) *SysMenuActionResourceUpdateOne {
+func (smaruo *SysMenuActionResourceUpdateOne) AddStatus(i int) *SysMenuActionResourceUpdateOne {
 	smaruo.mutation.AddStatus(i)
 	return smaruo
 }
@@ -618,14 +618,14 @@ func (smaruo *SysMenuActionResourceUpdateOne) sqlSave(ctx context.Context) (_nod
 	}
 	if value, ok := smaruo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldSort,
 		})
 	}
 	if value, ok := smaruo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldSort,
 		})
@@ -659,14 +659,14 @@ func (smaruo *SysMenuActionResourceUpdateOne) sqlSave(ctx context.Context) (_nod
 	}
 	if value, ok := smaruo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldStatus,
 		})
 	}
 	if value, ok := smaruo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysmenuactionresource.FieldStatus,
 		})

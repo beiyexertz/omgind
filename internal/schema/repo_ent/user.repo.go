@@ -69,7 +69,7 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 		query = query.Where(sysuser.UserNameEQ(v))
 	}
 	if v := params.Status; v > 0 {
-		query = query.Where(sysuser.StatusEQ(int32(v)))
+		query = query.Where(sysuser.StatusEQ(v))
 	}
 	if v := params.RoleIDs; len(v) > 0 {
 		// TODO::  subquery  子查询
@@ -179,7 +179,7 @@ func (a *User) Delete(ctx context.Context, id string) error {
 
 // UpdateStatus 更新状态
 func (a *User) UpdateStatus(ctx context.Context, id string, status int) error {
-	_, err := a.EntCli.SysUser.UpdateOneID(id).SetStatus(int32(status)).Save(ctx)
+	_, err := a.EntCli.SysUser.UpdateOneID(id).SetStatus(status).Save(ctx)
 	return errors.WithStack(err)
 }
 

@@ -21,7 +21,7 @@ type SysUser struct {
 	IsDel bool `json:"is_del,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int32 `json:"sort,omitempty"`
+	Sort int `json:"sort,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -33,7 +33,7 @@ type SysUser struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int32 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// UserName holds the value of the "user_name" field.
 	// 用户名
 	UserName string `json:"user_name,omitempty"`
@@ -103,7 +103,7 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				su.Sort = int32(value.Int64)
+				su.Sort = int(value.Int64)
 			}
 		case sysuser.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -128,7 +128,7 @@ func (su *SysUser) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				su.Status = int32(value.Int64)
+				su.Status = int(value.Int64)
 			}
 		case sysuser.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {

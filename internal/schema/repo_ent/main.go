@@ -8,6 +8,8 @@ var RepoSet = wire.NewSet(
 	UserSet,
 	RoleSet,
 	UserRoleSet,
+	MenuSet,
+
 	DemoSet,
 	DictSet,
 	DictItemSet,

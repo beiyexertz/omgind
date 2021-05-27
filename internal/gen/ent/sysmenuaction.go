@@ -21,10 +21,10 @@ type SysMenuAction struct {
 	IsDel bool `json:"is_del,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int32 `json:"sort,omitempty"`
+	Sort int `json:"sort,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int32 `json:"status,omitempty"`
+	Status int `json:"status,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -92,13 +92,13 @@ func (sma *SysMenuAction) assignValues(columns []string, values []interface{}) e
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				sma.Sort = int32(value.Int64)
+				sma.Sort = int(value.Int64)
 			}
 		case sysmenuaction.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sma.Status = int32(value.Int64)
+				sma.Status = int(value.Int64)
 			}
 		case sysmenuaction.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {

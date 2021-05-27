@@ -107,7 +107,7 @@ func Memo(v string) predicate.XxxDemo {
 }
 
 // Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
-func Sort(v int32) predicate.XxxDemo {
+func Sort(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldSort), v))
 	})
@@ -281,21 +281,21 @@ func MemoContainsFold(v string) predicate.XxxDemo {
 }
 
 // SortEQ applies the EQ predicate on the "sort" field.
-func SortEQ(v int32) predicate.XxxDemo {
+func SortEQ(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldSort), v))
 	})
 }
 
 // SortNEQ applies the NEQ predicate on the "sort" field.
-func SortNEQ(v int32) predicate.XxxDemo {
+func SortNEQ(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldSort), v))
 	})
 }
 
 // SortIn applies the In predicate on the "sort" field.
-func SortIn(vs ...int32) predicate.XxxDemo {
+func SortIn(vs ...int) predicate.XxxDemo {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -312,7 +312,7 @@ func SortIn(vs ...int32) predicate.XxxDemo {
 }
 
 // SortNotIn applies the NotIn predicate on the "sort" field.
-func SortNotIn(vs ...int32) predicate.XxxDemo {
+func SortNotIn(vs ...int) predicate.XxxDemo {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -329,28 +329,28 @@ func SortNotIn(vs ...int32) predicate.XxxDemo {
 }
 
 // SortGT applies the GT predicate on the "sort" field.
-func SortGT(v int32) predicate.XxxDemo {
+func SortGT(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldSort), v))
 	})
 }
 
 // SortGTE applies the GTE predicate on the "sort" field.
-func SortGTE(v int32) predicate.XxxDemo {
+func SortGTE(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldSort), v))
 	})
 }
 
 // SortLT applies the LT predicate on the "sort" field.
-func SortLT(v int32) predicate.XxxDemo {
+func SortLT(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldSort), v))
 	})
 }
 
 // SortLTE applies the LTE predicate on the "sort" field.
-func SortLTE(v int32) predicate.XxxDemo {
+func SortLTE(v int) predicate.XxxDemo {
 	return predicate.XxxDemo(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldSort), v))
 	})

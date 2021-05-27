@@ -91,13 +91,13 @@ func (sjbc *SysJwtBlockCreate) SetNillableDeletedAt(t *time.Time) *SysJwtBlockCr
 }
 
 // SetStatus sets the "status" field.
-func (sjbc *SysJwtBlockCreate) SetStatus(i int32) *SysJwtBlockCreate {
+func (sjbc *SysJwtBlockCreate) SetStatus(i int) *SysJwtBlockCreate {
 	sjbc.mutation.SetStatus(i)
 	return sjbc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sjbc *SysJwtBlockCreate) SetNillableStatus(i *int32) *SysJwtBlockCreate {
+func (sjbc *SysJwtBlockCreate) SetNillableStatus(i *int) *SysJwtBlockCreate {
 	if i != nil {
 		sjbc.SetStatus(*i)
 	}
@@ -308,7 +308,7 @@ func (sjbc *SysJwtBlockCreate) createSpec() (*SysJwtBlock, *sqlgraph.CreateSpec)
 	}
 	if value, ok := sjbc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysjwtblock.FieldStatus,
 		})

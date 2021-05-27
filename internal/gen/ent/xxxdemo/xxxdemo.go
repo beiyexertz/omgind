@@ -65,7 +65,7 @@ var (
 	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.
 	MemoValidator func(string) error
 	// DefaultSort holds the default value on creation for the "sort" field.
-	DefaultSort int32
+	DefaultSort int
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.

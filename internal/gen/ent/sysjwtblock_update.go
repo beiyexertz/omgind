@@ -82,14 +82,14 @@ func (sjbu *SysJwtBlockUpdate) ClearDeletedAt() *SysJwtBlockUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (sjbu *SysJwtBlockUpdate) SetStatus(i int32) *SysJwtBlockUpdate {
+func (sjbu *SysJwtBlockUpdate) SetStatus(i int) *SysJwtBlockUpdate {
 	sjbu.mutation.ResetStatus()
 	sjbu.mutation.SetStatus(i)
 	return sjbu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sjbu *SysJwtBlockUpdate) SetNillableStatus(i *int32) *SysJwtBlockUpdate {
+func (sjbu *SysJwtBlockUpdate) SetNillableStatus(i *int) *SysJwtBlockUpdate {
 	if i != nil {
 		sjbu.SetStatus(*i)
 	}
@@ -97,7 +97,7 @@ func (sjbu *SysJwtBlockUpdate) SetNillableStatus(i *int32) *SysJwtBlockUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (sjbu *SysJwtBlockUpdate) AddStatus(i int32) *SysJwtBlockUpdate {
+func (sjbu *SysJwtBlockUpdate) AddStatus(i int) *SysJwtBlockUpdate {
 	sjbu.mutation.AddStatus(i)
 	return sjbu
 }
@@ -248,14 +248,14 @@ func (sjbu *SysJwtBlockUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sjbu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysjwtblock.FieldStatus,
 		})
 	}
 	if value, ok := sjbu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysjwtblock.FieldStatus,
 		})
@@ -341,14 +341,14 @@ func (sjbuo *SysJwtBlockUpdateOne) ClearDeletedAt() *SysJwtBlockUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (sjbuo *SysJwtBlockUpdateOne) SetStatus(i int32) *SysJwtBlockUpdateOne {
+func (sjbuo *SysJwtBlockUpdateOne) SetStatus(i int) *SysJwtBlockUpdateOne {
 	sjbuo.mutation.ResetStatus()
 	sjbuo.mutation.SetStatus(i)
 	return sjbuo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sjbuo *SysJwtBlockUpdateOne) SetNillableStatus(i *int32) *SysJwtBlockUpdateOne {
+func (sjbuo *SysJwtBlockUpdateOne) SetNillableStatus(i *int) *SysJwtBlockUpdateOne {
 	if i != nil {
 		sjbuo.SetStatus(*i)
 	}
@@ -356,7 +356,7 @@ func (sjbuo *SysJwtBlockUpdateOne) SetNillableStatus(i *int32) *SysJwtBlockUpdat
 }
 
 // AddStatus adds i to the "status" field.
-func (sjbuo *SysJwtBlockUpdateOne) AddStatus(i int32) *SysJwtBlockUpdateOne {
+func (sjbuo *SysJwtBlockUpdateOne) AddStatus(i int) *SysJwtBlockUpdateOne {
 	sjbuo.mutation.AddStatus(i)
 	return sjbuo
 }
@@ -531,14 +531,14 @@ func (sjbuo *SysJwtBlockUpdateOne) sqlSave(ctx context.Context) (_node *SysJwtBl
 	}
 	if value, ok := sjbuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysjwtblock.FieldStatus,
 		})
 	}
 	if value, ok := sjbuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysjwtblock.FieldStatus,
 		})

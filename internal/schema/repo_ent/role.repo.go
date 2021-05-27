@@ -192,6 +192,6 @@ func (a *Role) Delete(ctx context.Context, id string) error {
 
 // UpdateStatus 更新状态
 func (a *Role) UpdateStatus(ctx context.Context, id string, status int) error {
-	_, err1 := a.EntCli.SysRole.UpdateOneID(id).SetStatus(int32(status)).Save(ctx)
+	_, err1 := a.EntCli.SysRole.UpdateOneID(id).SetStatus(status).Save(ctx)
 	return errors.WithStack(err1)
 }

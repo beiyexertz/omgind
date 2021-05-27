@@ -42,14 +42,14 @@ func (suu *SysUserUpdate) SetNillableIsDel(b *bool) *SysUserUpdate {
 }
 
 // SetSort sets the "sort" field.
-func (suu *SysUserUpdate) SetSort(i int32) *SysUserUpdate {
+func (suu *SysUserUpdate) SetSort(i int) *SysUserUpdate {
 	suu.mutation.ResetSort()
 	suu.mutation.SetSort(i)
 	return suu
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableSort(i *int32) *SysUserUpdate {
+func (suu *SysUserUpdate) SetNillableSort(i *int) *SysUserUpdate {
 	if i != nil {
 		suu.SetSort(*i)
 	}
@@ -57,7 +57,7 @@ func (suu *SysUserUpdate) SetNillableSort(i *int32) *SysUserUpdate {
 }
 
 // AddSort adds i to the "sort" field.
-func (suu *SysUserUpdate) AddSort(i int32) *SysUserUpdate {
+func (suu *SysUserUpdate) AddSort(i int) *SysUserUpdate {
 	suu.mutation.AddSort(i)
 	return suu
 }
@@ -89,14 +89,14 @@ func (suu *SysUserUpdate) ClearDeletedAt() *SysUserUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (suu *SysUserUpdate) SetStatus(i int32) *SysUserUpdate {
+func (suu *SysUserUpdate) SetStatus(i int) *SysUserUpdate {
 	suu.mutation.ResetStatus()
 	suu.mutation.SetStatus(i)
 	return suu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableStatus(i *int32) *SysUserUpdate {
+func (suu *SysUserUpdate) SetNillableStatus(i *int) *SysUserUpdate {
 	if i != nil {
 		suu.SetStatus(*i)
 	}
@@ -104,7 +104,7 @@ func (suu *SysUserUpdate) SetNillableStatus(i *int32) *SysUserUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (suu *SysUserUpdate) AddStatus(i int32) *SysUserUpdate {
+func (suu *SysUserUpdate) AddStatus(i int) *SysUserUpdate {
 	suu.mutation.AddStatus(i)
 	return suu
 }
@@ -345,14 +345,14 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := suu.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldSort,
 		})
 	}
 	if value, ok := suu.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldSort,
 		})
@@ -379,14 +379,14 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := suu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldStatus,
 		})
 	}
 	if value, ok := suu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldStatus,
 		})
@@ -499,14 +499,14 @@ func (suuo *SysUserUpdateOne) SetNillableIsDel(b *bool) *SysUserUpdateOne {
 }
 
 // SetSort sets the "sort" field.
-func (suuo *SysUserUpdateOne) SetSort(i int32) *SysUserUpdateOne {
+func (suuo *SysUserUpdateOne) SetSort(i int) *SysUserUpdateOne {
 	suuo.mutation.ResetSort()
 	suuo.mutation.SetSort(i)
 	return suuo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableSort(i *int32) *SysUserUpdateOne {
+func (suuo *SysUserUpdateOne) SetNillableSort(i *int) *SysUserUpdateOne {
 	if i != nil {
 		suuo.SetSort(*i)
 	}
@@ -514,7 +514,7 @@ func (suuo *SysUserUpdateOne) SetNillableSort(i *int32) *SysUserUpdateOne {
 }
 
 // AddSort adds i to the "sort" field.
-func (suuo *SysUserUpdateOne) AddSort(i int32) *SysUserUpdateOne {
+func (suuo *SysUserUpdateOne) AddSort(i int) *SysUserUpdateOne {
 	suuo.mutation.AddSort(i)
 	return suuo
 }
@@ -546,14 +546,14 @@ func (suuo *SysUserUpdateOne) ClearDeletedAt() *SysUserUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (suuo *SysUserUpdateOne) SetStatus(i int32) *SysUserUpdateOne {
+func (suuo *SysUserUpdateOne) SetStatus(i int) *SysUserUpdateOne {
 	suuo.mutation.ResetStatus()
 	suuo.mutation.SetStatus(i)
 	return suuo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableStatus(i *int32) *SysUserUpdateOne {
+func (suuo *SysUserUpdateOne) SetNillableStatus(i *int) *SysUserUpdateOne {
 	if i != nil {
 		suuo.SetStatus(*i)
 	}
@@ -561,7 +561,7 @@ func (suuo *SysUserUpdateOne) SetNillableStatus(i *int32) *SysUserUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (suuo *SysUserUpdateOne) AddStatus(i int32) *SysUserUpdateOne {
+func (suuo *SysUserUpdateOne) AddStatus(i int) *SysUserUpdateOne {
 	suuo.mutation.AddStatus(i)
 	return suuo
 }
@@ -826,14 +826,14 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if value, ok := suuo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldSort,
 		})
 	}
 	if value, ok := suuo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldSort,
 		})
@@ -860,14 +860,14 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if value, ok := suuo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldStatus,
 		})
 	}
 	if value, ok := suuo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldStatus,
 		})

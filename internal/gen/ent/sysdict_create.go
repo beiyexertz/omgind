@@ -49,13 +49,13 @@ func (sdc *SysDictCreate) SetNillableMemo(s *string) *SysDictCreate {
 }
 
 // SetSort sets the "sort" field.
-func (sdc *SysDictCreate) SetSort(i int32) *SysDictCreate {
+func (sdc *SysDictCreate) SetSort(i int) *SysDictCreate {
 	sdc.mutation.SetSort(i)
 	return sdc
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sdc *SysDictCreate) SetNillableSort(i *int32) *SysDictCreate {
+func (sdc *SysDictCreate) SetNillableSort(i *int) *SysDictCreate {
 	if i != nil {
 		sdc.SetSort(*i)
 	}
@@ -104,18 +104,6 @@ func (sdc *SysDictCreate) SetNillableDeletedAt(t *time.Time) *SysDictCreate {
 	return sdc
 }
 
-// SetNameCn sets the "name_cn" field.
-func (sdc *SysDictCreate) SetNameCn(s string) *SysDictCreate {
-	sdc.mutation.SetNameCn(s)
-	return sdc
-}
-
-// SetNameEn sets the "name_en" field.
-func (sdc *SysDictCreate) SetNameEn(s string) *SysDictCreate {
-	sdc.mutation.SetNameEn(s)
-	return sdc
-}
-
 // SetStatus sets the "status" field.
 func (sdc *SysDictCreate) SetStatus(i int) *SysDictCreate {
 	sdc.mutation.SetStatus(i)
@@ -127,6 +115,18 @@ func (sdc *SysDictCreate) SetNillableStatus(i *int) *SysDictCreate {
 	if i != nil {
 		sdc.SetStatus(*i)
 	}
+	return sdc
+}
+
+// SetNameCn sets the "name_cn" field.
+func (sdc *SysDictCreate) SetNameCn(s string) *SysDictCreate {
+	sdc.mutation.SetNameCn(s)
+	return sdc
+}
+
+// SetNameEn sets the "name_en" field.
+func (sdc *SysDictCreate) SetNameEn(s string) *SysDictCreate {
+	sdc.mutation.SetNameEn(s)
 	return sdc
 }
 
@@ -248,6 +248,9 @@ func (sdc *SysDictCreate) check() error {
 	if _, ok := sdc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New("ent: missing required field \"updated_at\"")}
 	}
+	if _, ok := sdc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
+	}
 	if _, ok := sdc.mutation.NameCn(); !ok {
 		return &ValidationError{Name: "name_cn", err: errors.New("ent: missing required field \"name_cn\"")}
 	}
@@ -263,9 +266,6 @@ func (sdc *SysDictCreate) check() error {
 		if err := sysdict.NameEnValidator(v); err != nil {
 			return &ValidationError{Name: "name_en", err: fmt.Errorf("ent: validator failed for field \"name_en\": %w", err)}
 		}
-	}
-	if _, ok := sdc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New("ent: missing required field \"status\"")}
 	}
 	if v, ok := sdc.mutation.ID(); ok {
 		if err := sysdict.IDValidator(v); err != nil {
@@ -319,7 +319,7 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := sdc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysdict.FieldSort,
 		})
@@ -349,6 +349,14 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 		})
 		_node.DeletedAt = &value
 	}
+	if value, ok := sdc.mutation.Status(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: sysdict.FieldStatus,
+		})
+		_node.Status = value
+	}
 	if value, ok := sdc.mutation.NameCn(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -364,14 +372,6 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 			Column: sysdict.FieldNameEn,
 		})
 		_node.NameEn = value
-	}
-	if value, ok := sdc.mutation.Status(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
-			Value:  value,
-			Column: sysdict.FieldStatus,
-		})
-		_node.Status = value
 	}
 	return _node, _spec
 }

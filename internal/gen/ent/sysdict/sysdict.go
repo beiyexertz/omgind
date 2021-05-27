@@ -23,12 +23,12 @@ const (
 	FieldUpdatedAt = "uptd_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "dltd_at"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
 	// FieldNameCn holds the string denoting the name_cn field in the database.
 	FieldNameCn = "name_cn"
 	// FieldNameEn holds the string denoting the name_en field in the database.
 	FieldNameEn = "name_en"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
 	// Table holds the table name of the sysdict in the database.
 	Table = "sys_dicts"
 )
@@ -42,9 +42,9 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
+	FieldStatus,
 	FieldNameCn,
 	FieldNameEn,
-	FieldStatus,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -65,19 +65,19 @@ var (
 	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.
 	MemoValidator func(string) error
 	// DefaultSort holds the default value on creation for the "sort" field.
-	DefaultSort int32
+	DefaultSort int
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// DefaultStatus holds the default value on creation for the "status" field.
+	DefaultStatus int
 	// NameCnValidator is a validator for the "name_cn" field. It is called by the builders before save.
 	NameCnValidator func(string) error
 	// NameEnValidator is a validator for the "name_en" field. It is called by the builders before save.
 	NameEnValidator func(string) error
-	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() string
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.
