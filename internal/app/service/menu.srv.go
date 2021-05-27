@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/wanhello/omgind/internal/app/contextx"
@@ -40,6 +41,7 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 
 	data, err := a.readData(dataFile)
 	if err != nil {
+		fmt.Println(" ----- ===== err ", err )
 		return err
 	}
 

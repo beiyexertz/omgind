@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+echo "${BASE_DIR}"
+SCRIPT_DIR=$(dirname "${BASE_DIR}")
+PROJECT_DIR=$(dirname "${SCRIPT_DIR}")
+
 docker run -d -p 8086:8086 \
-      -v $PWD/docker/data/influxdb:/var/lib/influxdb2 \
-      -v $PWD/docker/config/influx:/etc/influxdb2 \
+      -v ${PROJECT_DIR}/data/influxdb/data:/var/lib/influxdb2 \
+      -v ${PROJECT_DIR}/data/influxdb/config:/etc/influxdb2 \
       -e DOCKER_INFLUXDB_INIT_MODE=setup \
       -e DOCKER_INFLUXDB_INIT_USERNAME="omgind" \
       -e DOCKER_INFLUXDB_INIT_PASSWORD="123456" \

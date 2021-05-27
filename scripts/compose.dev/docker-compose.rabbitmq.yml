@@ -19,7 +19,7 @@ services:
 #      RABBITMQ_DEFAULT_PASS: 123456
 
     volumes:
-      - ${PROJECT_DIR}/data/rabbitmq:/var/lib/rabbitmq
+      - ${VOLUME_DIR}/rabbitmq/data:/var/lib/rabbitmq
 
     ports:
       - 15691:15691
