@@ -22,6 +22,7 @@ require (
 	github.com/google/gops v0.3.12
 	github.com/google/uuid v1.2.0
 	github.com/google/wire v0.5.0
+	github.com/gotidy/ptr v1.3.0 // indirect
 	github.com/influxdata/influxdb-client-go/v2 v2.3.0
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/jinzhu/copier v0.3.0
