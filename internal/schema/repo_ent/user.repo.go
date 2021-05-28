@@ -62,8 +62,7 @@ func (a *User) getQueryOption(opts ...schema.UserQueryOptions) schema.UserQueryO
 func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...schema.UserQueryOptions) (*schema.UserQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysUser.Query()
-
+	query := a.EntCli.SysUser.Query().Where(sysuser.DeletedAtIsNil() )
 
 	if v := params.UserName; v != "" {
 		query = query.Where(sysuser.UserNameEQ(v))

@@ -220,21 +220,17 @@ func (a *User) compareUserRoles(ctx context.Context, oldUserRoles, newUserRoles 
 
 // Delete 删除数据
 func (a *User) Delete(ctx context.Context, id string) error {
+
 	oldItem, err := a.UserModel.Get(ctx, id)
+
 	if err != nil {
 		return err
 	} else if oldItem == nil {
 		return errors.ErrNotFound
 	}
 
-	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
-		err := a.UserRoleModel.DeleteByUserID(ctx, id)
-		if err != nil {
-			return err
-		}
+	err = a.UserModel.Delete(ctx, id)
 
-		return a.UserModel.Delete(ctx, id)
-	})
 	if err != nil {
 		return err
 	}

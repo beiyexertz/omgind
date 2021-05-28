@@ -6,6 +6,7 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
+	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/errors"
 	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
@@ -65,16 +66,26 @@ func (a *Role) Create(ctx context.Context, item schema.Role) (*schema.IDResult, 
 		return nil, err
 	}
 
-	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
-		for _, rmItem := range item.RoleMenus {
-			rmItem.ID = uid.MustString()
-			rmItem.RoleID = item.ID
-			err := a.RoleMenuModel.Create(ctx, *rmItem)
+	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
+		role_input := a.RoleModel.ToEntCreateSysRoleInput(&item)
+		role_input.CreatedAt = nil
+		role_input.UpdatedAt = nil
+
+		arole, err := tx.SysRole.Create().SetInput(*role_input).Save(ctx)
+		if err != nil {
+			return err
+		}
+		for _, rmitem := range item.RoleMenus {
+			rminput := a.RoleMenuModel.ToEntCreateSysRoleMenuInput(rmitem)
+			rminput.CreatedAt = nil
+			rminput.UpdatedAt = nil
+			rminput.RoleID = arole.ID
+			_, err := tx.SysRoleMenu.Create().SetInput(*rminput).Save(ctx)
 			if err != nil {
 				return err
 			}
 		}
-		return a.RoleModel.Create(ctx, item)
+		return nil
 	})
 	if err != nil {
 		return nil, err
