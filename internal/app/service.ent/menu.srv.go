@@ -72,7 +72,7 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 				ParentID:   parentID,
 				Status:     1,
 				ShowStatus: 1,
-				//IsShow:  ,
+				IsShow:     &[]bool{true}[0],
 				Actions:    item.Actions,
 			}
 			if v := item.ShowStatus; v > 0 {
