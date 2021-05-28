@@ -6,6 +6,8 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
+	"github.com/wanhello/omgind/internal/gen/ent"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/hash"
@@ -77,7 +79,9 @@ func (a *User) Get(ctx context.Context, id string, opts ...schema.UserQueryOptio
 
 // Create 创建数据
 func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, error) {
+
 	err := a.checkUserName(ctx, item)
+
 	if err != nil {
 		return nil, err
 	}
@@ -86,18 +90,27 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 	item.Password = pword
 
 	item.ID = uid.MustString()
-	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
+	err = repo_ent.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
+
+		userInput := a.UserModel.ToEntCreateSysUserInput(&item)
+		userInput.CreatedAt = nil
+		userInput.UpdatedAt = nil
+
+		auser, err := tx.SysUser.Create().SetInput(*userInput).Save(ctx)
+		if err != nil {
+			return err
+		}
 		for _, urItem := range item.UserRoles {
-			urItem.ID = uid.MustString()
-			urItem.UserID = item.ID
-			err := a.UserRoleModel.Create(ctx, *urItem)
+			urItem.UserID = auser.ID
+
+			_, err := tx.SysUserRole.Create().SetUserID(urItem.UserID).SetRoleID(urItem.RoleID).Save(ctx)
 			if err != nil {
 				return err
 			}
 		}
-
-		return a.UserModel.Create(ctx, item)
+		return nil
 	})
+
 	if err != nil {
 		return nil, err
 	}
@@ -107,10 +120,13 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 }
 
 func (a *User) checkUserName(ctx context.Context, item schema.User) error {
+
 	if item.UserName == schema.GetRootUser().UserName {
 		return errors.New400Response("用户名不合法")
 	}
-
+	if len(item.UserName) < 6 {
+		return errors.New400Response("用户名不合法")
+	}
 	result, err := a.UserModel.Query(ctx, schema.UserQueryParam{
 		PaginationParam: schema.PaginationParam{OnlyCount: true},
 		UserName:        item.UserName,
@@ -126,6 +142,7 @@ func (a *User) checkUserName(ctx context.Context, item schema.User) error {
 // Update 更新数据
 func (a *User) Update(ctx context.Context, id string, item schema.User) error {
 	oldItem, err := a.Get(ctx, id)
+
 	if err != nil {
 		return err
 	} else if oldItem == nil {
@@ -147,26 +164,34 @@ func (a *User) Update(ctx context.Context, id string, item schema.User) error {
 	item.ID = oldItem.ID
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
-	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
+	err = repo_ent.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
 		addUserRoles, delUserRoles := a.compareUserRoles(ctx, oldItem.UserRoles, item.UserRoles)
-		for _, rmitem := range addUserRoles {
-			rmitem.ID = uid.MustString()
-			rmitem.UserID = id
-			err := a.UserRoleModel.Create(ctx, *rmitem)
+
+		// 添加的
+		for _, uritem := range addUserRoles {
+			_, err := tx.SysUserRole.Create().SetUserID(id).SetRoleID(uritem.RoleID).Save(ctx)
+			if err != nil {
+				return err
+			}
+		}
+		// 删除的
+		for _, uritem := range delUserRoles {
+			_, err := tx.SysUserRole.Delete().Where(sysuserrole.UserIDEQ(id)).Where(sysuserrole.RoleIDEQ(uritem.
+				RoleID)).Exec(ctx)
 			if err != nil {
 				return err
 			}
 		}
 
-		for _, rmitem := range delUserRoles {
-			err := a.UserRoleModel.Delete(ctx, rmitem.ID)
-			if err != nil {
-				return err
-			}
+		user_input := a.UserModel.ToEntUpdateSysUserInput(&item)
+		user_input.UpdatedAt = nil
+		_, err := tx.SysUser.UpdateOneID(id).SetInput(*user_input).Save(ctx)
+		if err != nil {
+			return err
 		}
-
-		return a.UserModel.Update(ctx, id, item)
+		return nil
 	})
+
 	if err != nil {
 		return err
 	}

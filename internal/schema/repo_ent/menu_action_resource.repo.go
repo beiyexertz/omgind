@@ -2,16 +2,15 @@ package repo_ent
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 
-	"github.com/wanhello/omgind/pkg/errors"
-	"github.com/wanhello/omgind/internal/app/model/gormx/entity"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
-
+	"github.com/wanhello/omgind/pkg/errors"
 )
 
 // MenuActionResourceSet 注入MenuActionResource
@@ -67,7 +66,7 @@ func (a *MenuActionResource) getQueryOption(opts ...schema.MenuActionResourceQue
 func (a *MenuActionResource) Query(ctx context.Context, params schema.MenuActionResourceQueryParam, opts ...schema.MenuActionResourceQueryOptions) (*schema.MenuActionResourceQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysMenuActionResource.Query()
+	query := a.EntCli.SysMenuActionResource.Query().Where(sysmenuactionresource.DeletedAtIsNil())
 
 	if v := params.MenuID; v != "" {
 		// TODO::
@@ -121,7 +120,7 @@ func (a *MenuActionResource) Query(ctx context.Context, params schema.MenuAction
 
 // Get 查询指定数据
 func (a *MenuActionResource) Get(ctx context.Context, id string, opts ...schema.MenuActionResourceQueryOptions) (*schema.MenuActionResource, error) {
-	
+
 	sys_mar, err := a.EntCli.SysMenuActionResource.Query().Where(sysmenuactionresource.IDEQ(id)).Only(ctx)
 	if err != nil {
 		return nil, err
@@ -130,34 +129,57 @@ func (a *MenuActionResource) Get(ctx context.Context, id string, opts ...schema.
 }
 
 // Create 创建数据
-func (a *MenuActionResource) Create(ctx context.Context, item schema.MenuActionResource) error {
-	eitem := entity.SchemaMenuActionResource(item).ToMenuActionResource()
-	result := entity.GetMenuActionResourceDB(ctx, a.DB).Create(eitem)
-	return errors.WithStack(result.Error)
+func (a *MenuActionResource) Create(ctx context.Context, item schema.MenuActionResource) (*schema.MenuActionResource, error) {
+
+	iteminput := a.ToEntCreateSysMenuActionInput(&item)
+	sys_mar, err := a.EntCli.SysMenuActionResource.Create().SetInput(*iteminput).Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+	sch_mar := a.toSchemaSysMenuActionResource(sys_mar)
+	return sch_mar, nil
 }
 
 // Update 更新数据
-func (a *MenuActionResource) Update(ctx context.Context, id string, item schema.MenuActionResource) error {
-	eitem := entity.SchemaMenuActionResource(item).ToMenuActionResource()
-	result := entity.GetMenuActionResourceDB(ctx, a.DB).Where("id=?", id).Updates(eitem)
-	return errors.WithStack(result.Error)
+func (a *MenuActionResource) Update(ctx context.Context, id string, item schema.MenuActionResource) (*schema.MenuActionResource, error) {
+	oitem, err := a.EntCli.SysMenuActionResource.Query().Where(sysmenuactionresource.IDEQ(id)).Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+	iteminput := a.ToEntUpdateSysMenuActionInput(&item)
+	sys_mar, err := oitem.Update().SetInput(*iteminput).Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+	sch_mar := a.toSchemaSysMenuActionResource(sys_mar)
+
+	return sch_mar, nil
 }
 
 // Delete 删除数据
 func (a *MenuActionResource) Delete(ctx context.Context, id string) error {
-	result := entity.GetMenuActionResourceDB(ctx, a.DB).Where("id=?", id).Delete(entity.MenuActionResource{})
-	return errors.WithStack(result.Error)
+	_, err := a.EntCli.SysMenuActionResource.UpdateOneID(id).SetDeletedAt(time.Now()).Save(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // DeleteByActionID 根据动作ID删除数据
 func (a *MenuActionResource) DeleteByActionID(ctx context.Context, actionID string) error {
-	result := entity.GetMenuActionResourceDB(ctx, a.DB).Where("action_id =?", actionID).Delete(entity.MenuActionResource{})
-	return errors.WithStack(result.Error)
+	_, err := a.EntCli.SysMenuActionResource.Update().Where(sysmenuactionresource.ActionIDEQ(actionID)).SetDeletedAt(time.Now()).Save(ctx)
+	return errors.WithStack(err)
 }
 
 // DeleteByMenuID 根据菜单ID删除数据
 func (a *MenuActionResource) DeleteByMenuID(ctx context.Context, menuID string) error {
-	subQuery := entity.GetMenuActionDB(ctx, a.DB).Where("menu_id=?", menuID).Select("id").SubQuery()
-	result := entity.GetMenuActionResourceDB(ctx, a.DB).Where("action_id IN ?", subQuery).Delete(entity.MenuActionResource{})
-	return errors.WithStack(result.Error)
+	// TODO:: subquery
+	a.EntCli.SysMenuActionResource.Query().Where(
+
+		)
+
+	//subQuery := entity.GetMenuActionDB(ctx, a.DB).Where("menu_id=?", menuID).Select("id").SubQuery()
+	//result := entity.GetMenuActionResourceDB(ctx, a.DB).Where("action_id IN ?", subQuery).Delete(entity.MenuActionResource{})
+	//return errors.WithStack(result.Error)
+	return nil
 }

@@ -27,7 +27,7 @@ func (SysUser) Fields() []ent.Field {
 	return []ent.Field{
 
 		field.String("user_name").StorageKey("user_name").
-			MinLen(5).MaxLen(128).NotEmpty().Comment("用户名"),
+			MinLen(5).MaxLen(128).NotEmpty().Immutable().Comment("用户名"),
 		field.String("real_name").StorageKey("real_name").
 			MaxLen(64).Nillable().Optional().Comment(""),
 		field.String("first_name").StorageKey("first_name").

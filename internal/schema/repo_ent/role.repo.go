@@ -87,6 +87,7 @@ func (a *Role) Query(ctx context.Context, params schema.RoleQueryParam, opts ...
 		//	Select("role_id").SubQuery()
 		//db = db.Where("id IN ?", subQuery)
 	}
+	
 	if v := params.QueryValue; v != "" {
 		query = query.Where(sysrole.Or(sysrole.NameContains(v), sysrole.MemoContains(v)))
 	}

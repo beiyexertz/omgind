@@ -37,6 +37,7 @@ func CheckPassword(cleartext, encoded string) (bool, error) {
 	return ok, err
 }
 
+// django like password
 func MakePassword(cleartext string) (string, error) {
 	encoded, err := hashers.MakePassword(cleartext)
 	return encoded, err
