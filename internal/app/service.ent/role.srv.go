@@ -20,7 +20,8 @@ var RoleSet = wire.NewSet(wire.Struct(new(Role), "*"))
 type Role struct {
 	Enforcer      *casbin.SyncedEnforcer
 
-	TransModel    *repo_ent.Trans
+	//TransModel    *repo_ent.Trans
+
 	RoleModel     *repo_ent.Role
 	RoleMenuModel *repo_ent.RoleMenu
 	UserModel     *repo_ent.User

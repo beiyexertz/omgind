@@ -19,7 +19,7 @@ var MenuActionResourceSet = wire.NewSet(wire.Struct(new(MenuActionResource), "*"
 // MenuActionResource 菜单动作关联资源存储
 type MenuActionResource struct {
 	EntCli *ent.Client
-	TxCli *ent.Tx
+	//TxCli *ent.Tx
 }
 
 

@@ -19,7 +19,7 @@ var MenuSet = wire.NewSet(wire.Struct(new(Menu), "*"))
 
 // Menu 菜单管理
 type Menu struct {
-	TransModel              *repo_ent.Trans
+	//TransModel              *repo_ent.Trans
 
 	MenuModel               *repo_ent.Menu
 	MenuActionModel         *repo_ent.MenuAction

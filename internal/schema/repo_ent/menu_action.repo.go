@@ -19,7 +19,7 @@ var MenuActionSet = wire.NewSet(wire.Struct(new(MenuAction), "*"))
 // MenuAction 菜单动作存储
 type MenuAction struct {
 	EntCli *ent.Client
-	TxCli *ent.Tx
+	//TxCli *ent.Tx
 }
 
 func (a *MenuAction) toSchemaSysMenuAction(ma *ent.SysMenuAction) *schema.MenuAction {

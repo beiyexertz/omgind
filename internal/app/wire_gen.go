@@ -173,11 +173,25 @@ func BuildInjector() (*Injector, func(), error) {
 		DemoAPIV2:      api_v2Demo,
 	}
 	engine := InitGinEngine(routerRouter)
+	repo_entMenu := &repo_ent.Menu{
+		EntCli: client,
+	}
+	repo_entMenuAction := &repo_ent.MenuAction{
+		EntCli: client,
+	}
+	repo_entMenuActionResource := &repo_ent.MenuActionResource{
+		EntCli: client,
+	}
+	service_entMenu := &service_ent.Menu{
+		MenuModel:               repo_entMenu,
+		MenuActionModel:         repo_entMenuAction,
+		MenuActionResourceModel: repo_entMenuActionResource,
+	}
 	injector := &Injector{
 		Engine:         engine,
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
-		MenuSrv:        serviceMenu,
+		MenuSrv:        service_entMenu,
 		RedisCli:       cmdable,
 	}
 	return injector, func() {

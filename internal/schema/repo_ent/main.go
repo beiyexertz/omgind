@@ -9,6 +9,8 @@ var RepoSet = wire.NewSet(
 	RoleSet,
 	UserRoleSet,
 	MenuSet,
+	MenuActionSet,
+	MenuActionResourceSet,
 	RoleMenuSet,
 
 	DemoSet,
