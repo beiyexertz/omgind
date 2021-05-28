@@ -8,7 +8,6 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
-	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/errors"
@@ -21,9 +20,11 @@ var MenuSet = wire.NewSet(wire.Struct(new(Menu), "*"))
 // Menu 菜单管理
 type Menu struct {
 	TransModel              *repo_ent.Trans
+
 	MenuModel               *repo_ent.Menu
 	MenuActionModel         *repo_ent.MenuAction
 	MenuActionResourceModel *repo_ent.MenuActionResource
+
 }
 
 // InitData 初始化菜单数据
@@ -43,8 +44,14 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 	if err != nil {
 		return err
 	}
-
-	return a.createMenus(ctx, "", data)
+	err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
+		err = a.createMenus(ctx, tx, "", data)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
 }
 
 func (a *Menu) readData(name string) (schema.MenuTrees, error) {
@@ -61,59 +68,55 @@ func (a *Menu) readData(name string) (schema.MenuTrees, error) {
 	return data, err
 }
 
-func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.MenuTrees) error {
-	return repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
-		for _, item := range list {
-			sitem := schema.Menu{
-				Name:       item.Name,
-				Sort:       item.Sort,
-				Icon:       item.Icon,
-				Router:     item.Router,
-				ParentID:   parentID,
-				Status:     1,
-				ShowStatus: 1,
-				IsShow:     &[]bool{true}[0],
-				Actions:    item.Actions,
-			}
-			if v := item.ShowStatus; v > 0 {
+func (a *Menu) createMenus(ctx context.Context, tx *ent.Tx, parentID string, list schema.MenuTrees) error {
 
-			}
+	for _, tritem := range list {
+		sitem := schema.Menu{
+			Name:       tritem.Name,
+			Sort:       tritem.Sort,
+			Icon:       tritem.Icon,
+			Router:     tritem.Router,
+			ParentID:   parentID,
+			Status:     1,
+			ShowStatus: 1,
+			IsShow:     tritem.IsShow,
+			Actions:    tritem.Actions,
+		}
+		if v := tritem.ShowStatus; v > 0 {
+			sitem.ShowStatus = v
 		}
 
-		return nil
-	})
-	/*
-	return a.TransModel.Exec(ctx, func(ctx context.Context) error {
-		for _, item := range list {
-			sitem := schema.Menu{
-				Name:       item.Name,
-				Sort:       item.Sort,
-				Icon:       item.Icon,
-				Router:     item.Router,
-				ParentID:   parentID,
-				Status:     1,
-				ShowStatus: 1,
-				Actions:    item.Actions,
-			}
-			if v := item.ShowStatus; v > 0 {
-				sitem.ShowStatus = v
-			}
+		if err := a.checkName(ctx, sitem); err != nil {
+			return err
+		}
 
-			nsitem, err := a.Create(ctx, sitem)
+		parentPath, err := a.getParentPath(ctx, sitem.ParentID)
+		if err != nil {
+			return err
+		}
+		sitem.ParentPath = parentPath
+
+		menuinput := a.MenuModel.ToEntCreateSysMenuInput(&sitem)
+		amenu, err := tx.SysMenu.Create().SetInput(*menuinput).Save(ctx)
+		if err != nil {
+			return err
+		}
+		// 保存actions
+		err = a.createActions(ctx, tx, amenu.ID, sitem.Actions)
+		if err != nil {
+			return err
+		}
+
+		if tritem.Children != nil && len(*tritem.Children) > 0 {
+			err := a.createMenus(ctx, tx, amenu.ID, *tritem.Children)
 			if err != nil {
 				return err
 			}
-
-			if item.Children != nil && len(*item.Children) > 0 {
-				err := a.createMenus(ctx, nsitem.ID, *item.Children)
-				if err != nil {
-					return err
-				}
-			}
 		}
 
-		return nil
-	})*/
+	}
+
+	return nil
 }
 
 // Query 查询数据
@@ -190,6 +193,7 @@ func (a *Menu) checkName(ctx context.Context, item schema.Menu) error {
 
 // Create 创建数据
 func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, error) {
+
 	if err := a.checkName(ctx, item); err != nil {
 		return nil, err
 	}
