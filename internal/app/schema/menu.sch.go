@@ -19,6 +19,7 @@ type Menu struct {
 	ShowStatus int         `json:"show_status" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
 	Status     int         `json:"status" binding:"required,max=2,min=1"`      // 状态(1:启用 2:禁用)
 	Memo       string      `json:"memo"`                                       // 备注
+	IsShow 	   *bool       `json:"is_show"`
 	Creator    string      `json:"creator" `                                   // 创建者
 	CreatedAt  time.Time   `json:"created_at" `                                // 创建时间
 	UpdatedAt  time.Time   `json:"updated_at" `                                // 更新时间
@@ -141,6 +142,7 @@ type MenuTree struct {
 	ParentPath string      `yaml:"-" json:"parent_path"`                         // 父级路径
 	Sort       int         `yaml:"sort" json:"sort"`                             // 排序值
 	ShowStatus int         `yaml:"-" json:"show_status"`                         // 显示状态(1:显示 2:隐藏)
+	IsShow 	   *bool       `json:"is_show"`
 	Status     int         `yaml:"-" json:"status"`                              // 状态(1:启用 2:禁用)
 	Actions    MenuActions `yaml:"actions,omitempty" json:"actions"`             // 动作列表
 	Children   *MenuTrees  `yaml:"children,omitempty" json:"children,omitempty"` // 子级树

@@ -39,14 +39,14 @@ func (a *MenuActionResource) toSchemaSysMenuActionResources(mas ent.SysMenuActio
 }
 
 
-func (a *MenuActionResource) ToEntCreateSysMenuActionInput(ma *schema.MenuActionResource) *ent.CreateSysMenuActionResourceInput {
+func (a *MenuActionResource) ToEntCreateSysMenuActionResourceInput(ma *schema.MenuActionResource) *ent.CreateSysMenuActionResourceInput {
 	createinput := new(ent.CreateSysMenuActionResourceInput)
 	structure.Copy(ma, &createinput)
 
 	return createinput
 }
 
-func (a *MenuActionResource) ToEntUpdateSysMenuActionInput(ma *schema.MenuActionResource) *ent.UpdateSysMenuActionResourceInput {
+func (a *MenuActionResource) ToEntUpdateSysMenuActionResourceInput(ma *schema.MenuActionResource) *ent.UpdateSysMenuActionResourceInput {
 	updateinput := new(ent.UpdateSysMenuActionResourceInput)
 	structure.Copy(ma, &updateinput)
 
@@ -131,7 +131,7 @@ func (a *MenuActionResource) Get(ctx context.Context, id string, opts ...schema.
 // Create 创建数据
 func (a *MenuActionResource) Create(ctx context.Context, item schema.MenuActionResource) (*schema.MenuActionResource, error) {
 
-	iteminput := a.ToEntCreateSysMenuActionInput(&item)
+	iteminput := a.ToEntCreateSysMenuActionResourceInput(&item)
 	sys_mar, err := a.EntCli.SysMenuActionResource.Create().SetInput(*iteminput).Save(ctx)
 	if err != nil {
 		return nil, err
@@ -146,7 +146,7 @@ func (a *MenuActionResource) Update(ctx context.Context, id string, item schema.
 	if err != nil {
 		return nil, err
 	}
-	iteminput := a.ToEntUpdateSysMenuActionInput(&item)
+	iteminput := a.ToEntUpdateSysMenuActionResourceInput(&item)
 	sys_mar, err := oitem.Update().SetInput(*iteminput).Save(ctx)
 	if err != nil {
 		return nil, err

@@ -2,14 +2,15 @@ package service_ent
 
 import (
 	"context"
+	"time"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
+	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/errors"
-	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 )
 
 // RoleSet 注入Role
@@ -121,9 +122,38 @@ func (a *Role) Update(ctx context.Context, id string, item schema.Role) error {
 		}
 	}
 
-	item.ID = oldItem.ID
 	item.Creator = oldItem.Creator
-	item.CreatedAt = oldItem.CreatedAt
+
+	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
+		addRoleMenus, delRoleMenus := a.compareRoleMenus(ctx, oldItem.RoleMenus, item.RoleMenus)
+		for _, rmitem := range addRoleMenus {
+			rmitem.RoleID = id
+			rolemenu := a.RoleMenuModel.ToEntCreateSysRoleMenuInput(rmitem)
+
+			_, err := tx.SysRoleMenu.Create().SetInput(*rolemenu).Save(ctx)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, rmitem := range delRoleMenus {
+
+			_, err := tx.SysRoleMenu.UpdateOneID(rmitem.ID).SetDeletedAt(time.Now()).Save(ctx)
+
+			if err != nil {
+				return err
+			}
+		}
+
+		rminput := a.RoleModel.ToEntUpdateSysRoleInput(&item)
+		_, err := tx.SysRole.UpdateOneID(id).SetInput(*rminput).Save(ctx)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+	/*
 	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
 		addRoleMenus, delRoleMenus := a.compareRoleMenus(ctx, oldItem.RoleMenus, item.RoleMenus)
 		for _, rmitem := range addRoleMenus {
@@ -143,7 +173,8 @@ func (a *Role) Update(ctx context.Context, id string, item schema.Role) error {
 		}
 
 		return a.RoleModel.Update(ctx, id, item)
-	})
+	})*/
+
 	if err != nil {
 		return err
 	}
@@ -188,14 +219,15 @@ func (a *Role) Delete(ctx context.Context, id string) error {
 		return errors.New400Response("该角色已被赋予用户，不允许删除")
 	}
 
-	err = a.TransModel.Exec(ctx, func(ctx context.Context) error {
-		err := a.RoleMenuModel.DeleteByRoleID(ctx, id)
+	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
+		_, err := tx.SysRoleMenu.Update().Where(sysrolemenu.RoleIDEQ(id)).SetDeletedAt(time.Now()).SetIsDel(true).Save(
+			ctx)
 		if err != nil {
 			return err
 		}
-
-		return a.RoleModel.Delete(ctx, id)
+		return nil
 	})
+
 	if err != nil {
 		return err
 	}
