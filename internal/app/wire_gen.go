@@ -6,22 +6,23 @@
 package app
 
 import (
+
 	"github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
 	"github.com/wanhello/omgind/internal/app/service.ent"
 	"github.com/wanhello/omgind/internal/router"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
-)
 
-import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 	_ "github.com/wanhello/omgind/internal/app/swagger"
+
 )
 
 // Injectors from wire.go:
 
 // BuildInjector 生成注入器
 func BuildInjector() (*Injector, func(), error) {
+
 	auther, cleanup, err := InitAuth()
 	if err != nil {
 		return nil, nil, err
@@ -31,6 +32,7 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
+
 	role := &repo_ent.Role{
 		EntCli: client,
 	}

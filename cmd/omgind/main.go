@@ -11,6 +11,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/wanhello/omgind/internal/app"
@@ -43,6 +44,9 @@ func main() {
 	app.Commands = []*cli.Command{
 		newWebCmd(ctx),
 	}
+
+	fmt.Println(" 000000000000000 ")
+
 	err := app.Run(os.Args)
 	if err != nil {
 		logger.WithContext(ctx).Errorf(err.Error())

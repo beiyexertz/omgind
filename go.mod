@@ -18,6 +18,7 @@ require (
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-redis/redis_rate v6.5.0+incompatible
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.5.1 // indirect
 	github.com/google/gops v0.3.12
 	github.com/google/uuid v1.2.0

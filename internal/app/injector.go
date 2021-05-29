@@ -18,7 +18,6 @@ type Injector struct {
 	Engine         *gin.Engine
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
-	//MenuSrv        *service.Menu
 	MenuSrv        *service_ent.Menu
 	RedisCli       redis.Cmdable
 	//InfluxDb       influxdb2.Client

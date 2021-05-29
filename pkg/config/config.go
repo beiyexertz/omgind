@@ -19,7 +19,7 @@ type Config struct {
 	CORS         CORSConfig        `mapstructure:"CORS" json:"CORS"`
 	GZIP         GZIPConfig        `mapstructure:"GZIP" json:"GZIP"`
 	Redis        RedisConfig       `mapstructure:"Redis" json:"redis"`
-	Gorm         GormConfig        `mapstructure:"Gorm" json:"gorm"`
+	//Gorm         GormConfig        `mapstructure:"Gorm" json:"gorm"`
 	Ent          EntConfig         `mapstructure:"Ent" json:"ent"`
 	MySQL        MySQLConfig       `mapstructure:"MySQL" json:"mysql"`
 	Postgres     PostgresConfig    `mapstructure:"Postgres" json:"postgres"`
