@@ -234,7 +234,7 @@ var (
 			},
 			{
 				Name:    "sysmenu_pid_name",
-				Unique:  false,
+				Unique:  true,
 				Columns: []*schema.Column{SysMenusColumns[12], SysMenusColumns[8]},
 			},
 		},
