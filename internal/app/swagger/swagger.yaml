@@ -158,6 +158,7 @@ definitions:
         description: 唯一标识
         type: string
       is_show:
+        description: 是否显示
         type: boolean
       memo:
         description: 备注
@@ -174,9 +175,6 @@ definitions:
       router:
         description: 访问路由
         type: string
-      show_status:
-        description: 显示状态(1:显示 2:隐藏)
-        type: integer
       sort:
         description: 排序值
         type: integer
@@ -188,7 +186,6 @@ definitions:
         type: string
     required:
     - name
-    - show_status
     - status
     type: object
   schema.MenuAction:
@@ -265,9 +262,6 @@ definitions:
       router:
         description: 访问路由
         type: string
-      show_status:
-        description: 显示状态(1:显示 2:隐藏)
-        type: integer
       sort:
         description: 排序值
         type: integer
@@ -987,10 +981,10 @@ paths:
         in: query
         name: status
         type: integer
-      - description: 显示状态(1:显示 2:隐藏)
+      - description: 显示状态(true:显示 false:隐藏)
         in: query
-        name: showStatus
-        type: integer
+        name: isShow
+        type: boolean
       - description: 父级ID
         in: query
         name: parentID

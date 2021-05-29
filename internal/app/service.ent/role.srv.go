@@ -6,6 +6,7 @@ import (
 
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
+
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
@@ -70,8 +71,6 @@ func (a *Role) Create(ctx context.Context, item schema.Role) (*schema.IDResult, 
 
 	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
 		role_input := a.RoleModel.ToEntCreateSysRoleInput(&item)
-		role_input.CreatedAt = nil
-		role_input.UpdatedAt = nil
 
 		arole, err := tx.SysRole.Create().SetInput(*role_input).Save(ctx)
 		if err != nil {
@@ -87,6 +86,7 @@ func (a *Role) Create(ctx context.Context, item schema.Role) (*schema.IDResult, 
 				return err
 			}
 		}
+		item.ID = arole.ID
 		return nil
 	})
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gotidy/ptr"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/pkg/helper/hash"
 	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
@@ -20,7 +21,7 @@ func TestUser(t *testing.T) {
 	// post /menus
 	addMenuItem := &schema.Menu{
 		Name:       uid.MustString(),
-		ShowStatus: 1,
+		IsShow: 	ptr.Bool(true),
 		Status:     1,
 	}
 	engine.ServeHTTP(w, newPostRequest(apiPrefix+"v1/menus", addMenuItem))

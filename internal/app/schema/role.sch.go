@@ -11,8 +11,8 @@ type Role struct {
 	Status int    `json:"status" binding:"required,max=2,min=1"` // 状态(1:启用 2:禁用)
 
 	Creator   string    `json:"creator" `                           // 创建者
-	CreatedAt time.Time `json:"created_at" `                        // 创建时间
-	UpdatedAt time.Time `json:"updated_at" `                        // 更新时间
+	CreatedAt *time.Time `json:"created_at" `                        // 创建时间
+	UpdatedAt *time.Time `json:"updated_at" `                        // 更新时间
 	RoleMenus RoleMenus `json:"role_menus" binding:"required,gt=0"` // 角色菜单列表
 }
 

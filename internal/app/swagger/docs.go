@@ -755,9 +755,9 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
-                        "description": "显示状态(1:显示 2:隐藏)",
-                        "name": "showStatus",
+                        "type": "boolean",
+                        "description": "显示状态(true:显示 false:隐藏)",
+                        "name": "isShow",
                         "in": "query"
                     },
                     {
@@ -2396,7 +2396,6 @@ var doc = `{
             "type": "object",
             "required": [
                 "name",
-                "show_status",
                 "status"
             ],
             "properties": {
@@ -2424,6 +2423,7 @@ var doc = `{
                     "type": "string"
                 },
                 "is_show": {
+                    "description": "是否显示",
                     "type": "boolean"
                 },
                 "memo": {
@@ -2445,10 +2445,6 @@ var doc = `{
                 "router": {
                     "description": "访问路由",
                     "type": "string"
-                },
-                "show_status": {
-                    "description": "显示状态(1:显示 2:隐藏)",
-                    "type": "integer"
                 },
                 "sort": {
                     "description": "排序值",
@@ -2565,10 +2561,6 @@ var doc = `{
                 "router": {
                     "description": "访问路由",
                     "type": "string"
-                },
-                "show_status": {
-                    "description": "显示状态(1:显示 2:隐藏)",
-                    "type": "integer"
                 },
                 "sort": {
                     "description": "排序值",
