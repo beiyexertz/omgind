@@ -1,6 +1,6 @@
 package config
 
-// Gorm gorm配置参数
+// Ent 配置参数
 type EntConfig struct {
 	Debug             bool
 	DBType            string
