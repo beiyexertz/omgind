@@ -53,6 +53,6 @@ func (SysMenu) Fields() []ent.Field {
 func (sm SysMenu) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("parent_id"),
-		index.Fields("parent_id", "name"),
+		index.Fields("parent_id", "name").Unique(),
 	}
 }

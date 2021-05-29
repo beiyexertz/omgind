@@ -21,8 +21,8 @@ type Menu struct {
 	Memo       string      `json:"memo"`                                       // 备注
 	IsShow 	   *bool       `json:"is_show"`
 	Creator    string      `json:"creator" `                                   // 创建者
-	CreatedAt  time.Time   `json:"created_at" `                                // 创建时间
-	UpdatedAt  time.Time   `json:"updated_at" `                                // 更新时间
+	CreatedAt  *time.Time   `json:"created_at" `                                // 创建时间
+	UpdatedAt  *time.Time   `json:"updated_at" `                                // 更新时间
 	Actions    MenuActions `json:"actions" `                                   // 动作列表
 }
 

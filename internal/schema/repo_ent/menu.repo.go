@@ -140,8 +140,6 @@ func (a *Menu) Get(ctx context.Context, id string, opts ...schema.MenuQueryOptio
 
 // Create 创建数据
 func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.Menu, error) {
-	item.CreatedAt = time.Now()
-	item.UpdatedAt = time.Now()
 
 	iteminput := a.ToEntCreateSysMenuInput(&item)
 	iteminput.CreatedAt = nil
