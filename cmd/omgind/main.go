@@ -45,7 +45,7 @@ func main() {
 		newWebCmd(ctx),
 	}
 
-	fmt.Println(" 000000000000000 ")
+	fmt.Println(" starting to run ...")
 
 	err := app.Run(os.Args)
 	if err != nil {
