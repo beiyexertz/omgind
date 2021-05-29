@@ -135,6 +135,7 @@ func (a *SignIn) GetUserInfo(c *gin.Context) {
 
 // QueryUserMenuTree 查询当前用户菜单树
 func (a *SignIn) QueryUserMenuTree(c *gin.Context) {
+
 	ctx := c.Request.Context()
 	menus, err := a.SigninSrv.QueryUserMenuTree(ctx, ginx.GetUserID(c))
 	if err != nil {

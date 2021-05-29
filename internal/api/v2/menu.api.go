@@ -1,8 +1,6 @@
 package api_v2
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
@@ -47,8 +45,6 @@ func (a *Menu) QueryTree(c *gin.Context) {
 		ginx.ResError(c, err)
 		return
 	}
-
-	fmt.Printf(" =====+++ --------- %+v \n", params )
 
 	result, err := a.MenuSrv.Query(ctx, params, schema.MenuQueryOptions{
 		OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByDESC)),

@@ -3,7 +3,7 @@
 - name: 首页
   icon: dashboard
   router: "/dashboard"
-  sort: 9
+  sort: 1
 - name: DEMO
   icon: tag
   router: "/example/demo"
@@ -44,12 +44,12 @@
 
 - name: 系统管理
   icon: setting
-  sort: 7
+  sort: 39
   children:
     - name: 角色管理
       icon: audit
       router: "/system/role"
-      sort: 8
+      sort: 49
       actions:
         - code: add
           name: 新增
@@ -90,7 +90,7 @@
     - name: 用户管理
       icon: user
       router: "/system/user"
-      sort: 7
+      sort: 59
       actions:
         - code: add
           name: 新增
@@ -131,7 +131,7 @@
     - name: 数据字典
       icon: key
       router: "/system/dict"
-      sort: 6
+      sort: 69
       actions:
         - code: add
           name: 新增
@@ -173,7 +173,7 @@
     - name: 菜单管理
       icon: solution
       router: "/dev/menu"
-      sort: 9
+      sort: 999
       actions:
         - code: add
           name: 新增

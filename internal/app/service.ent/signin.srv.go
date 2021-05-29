@@ -1,9 +1,10 @@
 package service_ent
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"sort"
-	"context"
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -169,14 +170,20 @@ func (a *SignIn) GetSignInInfo(ctx context.Context, userID string) (*schema.User
 
 // QueryUserMenuTree 查询当前用户的权限菜单树
 func (a *SignIn) QueryUserMenuTree(ctx context.Context, userID string) (schema.MenuTrees, error) {
+
+	fmt.Println(" 0 ----------------- ", userID)
+
 	isRoot := schema.CheckIsRootUser(ctx, userID)
 	// 如果是root用户，则查询所有显示的菜单树
 	if isRoot {
 		result, err := a.MenuModel.Query(ctx, schema.MenuQueryParam{
 			Status: 1,
 		}, schema.MenuQueryOptions{
-			OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByDESC)),
+			OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByASC)),
 		})
+		fmt.Println(" 0 - --- err ", err)
+		fmt.Println(" 0 - --- result ", result)
+
 		if err != nil {
 			return nil, err
 		}

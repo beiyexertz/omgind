@@ -2,7 +2,6 @@ package service_ent
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"time"
 
@@ -34,7 +33,7 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 	result, err := a.MenuModel.Query(ctx, schema.MenuQueryParam{
 		PaginationParam: schema.PaginationParam{OnlyCount: true},
 	})
-	
+
 	if err != nil {
 		return err
 	} else if result.PageResult.Total > 0 {

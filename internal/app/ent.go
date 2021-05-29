@@ -39,7 +39,7 @@ func InitEntClient() (*ent.Client, func(), error) {
 		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
 			start := time.Now()
 			defer func() {
-				log.Printf("Op=%s\tType=%s\tTime=%s\tConcreteType=%T\n", m.Op(), m.Type(), time.Since(start), m)
+				log.Printf("Op=%s\tType=%s\tTime=%s\tConcreteType=%T\n", m.Op(), m.Type(), time.Since(start), m )
 			}()
 			return next.Mutate(ctx, m)
 		})
