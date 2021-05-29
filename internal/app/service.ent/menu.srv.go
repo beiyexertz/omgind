@@ -107,6 +107,9 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 		sitem.ParentPath = parentPath
 
 		menuinput := a.MenuModel.ToEntCreateSysMenuInput(&sitem)
+		menuinput.CreatedAt = nil
+		menuinput.UpdatedAt = nil
+
 		amenu, err := a.MenuModel.EntCli.SysMenu.Create().SetInput(*menuinput).Save(ctx)
 		if err != nil {
 			return err

@@ -132,8 +132,6 @@
     # 存储到redis数据库中的键名前缀
     RedisPrefix = "auth_"
 
-#  &{Height:70 Width:180 NoiseCount:5 ShowLineOptions:2 Length:4 Source:1234567890qwertyuioplkjhgfdsazxcvbnm BgColor:0xc0000baedc Fonts:[wqy-microhei.ttc 3Dumb.ttf ApothecaryFont.ttf Comismsh.ttf DENNEthree-dee.ttf DeborahFancyDress.ttf Flim-Flam.ttf RitaSmith.ttf actionj.ttf] fontsArray:[]}
-#  &{Height:70 Width:180 NoiseCount:5 ShowLineOptions:8 Length:4 Source:1234567890qwertyuioplkjhgfdsazxcvbnm BgColor:0xc00064771c Fonts:[wqy-microhei.ttc 3Dumb.ttf ApothecaryFont.ttf Comismsh.ttf DENNEthree-dee.ttf DeborahFancyDress.ttf Flim-Flam.ttf RitaSmith.ttf actionj.ttf] fontsArray:[]}
 [Captcha]
 
     # 存储方式(支持：memory/redis)
@@ -187,7 +185,7 @@
     # 允许跨域请求的域名列表(*表示全部允许)
     AllowOrigins = ["*"]
     # 允许跨域请求的请求方式列表
-    AllowMethods = ["GET","POST","PUT","DELETE","PATCH"]
+    AllowMethods = ["GET", "POST", "PUT", "DELETE", "PATCH"]
     # 允许客户端与跨域请求一起使用的非简单标头的列表
     AllowHeaders = []
     # 请求是否可以包含cookie，HTTP身份验证或客户端SSL证书等用户凭据
@@ -223,7 +221,7 @@
     # 是否开启调试模式
     Debug = true
     # 数据库类型(目前支持的数据库类型：mysql/sqlite3/postgres)
-    DBType = "sqlite3"
+    DBType = "mysql"
     # 设置连接可以重用的最长时间(单位：秒)
     MaxLifetime = 7200
     # 设置数据库的最大打开连接数
