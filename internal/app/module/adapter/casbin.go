@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
+	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/logger"
 
 	casbinModel "github.com/casbin/casbin/v2/model"
@@ -20,11 +20,11 @@ var CasbinAdapterSet = wire.NewSet(wire.Struct(new(CasbinAdapter), "*"), wire.Bi
 
 // CasbinAdapter casbin适配器
 type CasbinAdapter struct {
-	RoleModel         *repo.Role
-	RoleMenuModel     *repo.RoleMenu
-	MenuResourceModel *repo.MenuActionResource
-	UserModel         *repo.User
-	UserRoleModel     *repo.UserRole
+	RoleModel         *repo_ent.Role
+	RoleMenuModel     *repo_ent.RoleMenu
+	MenuResourceModel *repo_ent.MenuActionResource
+	UserModel         *repo_ent.User
+	UserRoleModel     *repo_ent.UserRole
 }
 
 // LoadPolicy loads all policy rules from the storage.

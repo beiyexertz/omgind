@@ -7,7 +7,6 @@ package app
 
 import (
 	"github.com/wanhello/omgind/internal/api/v2"
-	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
 	"github.com/wanhello/omgind/internal/app/service.ent"
 	"github.com/wanhello/omgind/internal/router"
@@ -27,25 +26,25 @@ func BuildInjector() (*Injector, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	db, cleanup2, err := InitGormDB()
+	client, cleanup2, err := InitEntClient()
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	role := &repo.Role{
-		DB: db,
+	role := &repo_ent.Role{
+		EntCli: client,
 	}
-	roleMenu := &repo.RoleMenu{
-		DB: db,
+	roleMenu := &repo_ent.RoleMenu{
+		EntCli: client,
 	}
-	menuActionResource := &repo.MenuActionResource{
-		DB: db,
+	menuActionResource := &repo_ent.MenuActionResource{
+		EntCli: client,
 	}
-	user := &repo.User{
-		DB: db,
+	user := &repo_ent.User{
+		EntCli: client,
 	}
-	userRole := &repo.UserRole{
-		DB: db,
+	userRole := &repo_ent.UserRole{
+		EntCli: client,
 	}
 	casbinAdapter := &adapter.CasbinAdapter{
 		RoleModel:         role,
@@ -56,13 +55,6 @@ func BuildInjector() (*Injector, func(), error) {
 	}
 	syncedEnforcer, cleanup3, err := InitCasbin(casbinAdapter)
 	if err != nil {
-		cleanup2()
-		cleanup()
-		return nil, nil, err
-	}
-	client, cleanup4, err := InitEntClient()
-	if err != nil {
-		cleanup3()
 		cleanup2()
 		cleanup()
 		return nil, nil, err
@@ -95,50 +87,34 @@ func BuildInjector() (*Injector, func(), error) {
 	menuAction := &repo_ent.MenuAction{
 		EntCli: client,
 	}
-	repo_entMenuActionResource := &repo_ent.MenuActionResource{
-		EntCli: client,
-	}
 	service_entMenu := &service_ent.Menu{
 		MenuModel:               menu,
 		MenuActionModel:         menuAction,
-		MenuActionResourceModel: repo_entMenuActionResource,
+		MenuActionResourceModel: menuActionResource,
 	}
 	api_v2Menu := &api_v2.Menu{
 		MenuSrv: service_entMenu,
 	}
-	repo_entRole := &repo_ent.Role{
-		EntCli: client,
-	}
-	repo_entRoleMenu := &repo_ent.RoleMenu{
-		EntCli: client,
-	}
-	repo_entUser := &repo_ent.User{
-		EntCli: client,
-	}
 	service_entRole := &service_ent.Role{
 		Enforcer:      syncedEnforcer,
-		RoleModel:     repo_entRole,
-		RoleMenuModel: repo_entRoleMenu,
-		UserModel:     repo_entUser,
+		RoleModel:     role,
+		RoleMenuModel: roleMenu,
+		UserModel:     user,
 	}
 	api_v2Role := &api_v2.Role{
 		RoleSrv: service_entRole,
 	}
-	repo_entUserRole := &repo_ent.UserRole{
-		EntCli: client,
-	}
 	service_entUser := &service_ent.User{
 		Enforcer:      syncedEnforcer,
-		UserModel:     repo_entUser,
-		UserRoleModel: repo_entUserRole,
-		RoleModel:     repo_entRole,
+		UserModel:     user,
+		UserRoleModel: userRole,
+		RoleModel:     role,
 	}
 	api_v2User := &api_v2.User{
 		UserSrv: service_entUser,
 	}
-	cmdable, cleanup5, err := InitRedisCli()
+	cmdable, cleanup4, err := InitRedisCli()
 	if err != nil {
-		cleanup4()
 		cleanup3()
 		cleanup2()
 		cleanup()
@@ -147,10 +123,10 @@ func BuildInjector() (*Injector, func(), error) {
 	vcode := InitVcode(cmdable)
 	signIn := &service_ent.SignIn{
 		Auth:            auther,
-		UserModel:       repo_entUser,
-		UserRoleModel:   repo_entUserRole,
-		RoleModel:       repo_entRole,
-		RoleMenuModel:   repo_entRoleMenu,
+		UserModel:       user,
+		UserRoleModel:   userRole,
+		RoleModel:       role,
+		RoleMenuModel:   roleMenu,
 		MenuModel:       menu,
 		MenuActionModel: menuAction,
 		Vcode:           vcode,
@@ -178,7 +154,6 @@ func BuildInjector() (*Injector, func(), error) {
 		RedisCli:       cmdable,
 	}
 	return injector, func() {
-		cleanup5()
 		cleanup4()
 		cleanup3()
 		cleanup2()
