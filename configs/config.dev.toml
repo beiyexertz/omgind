@@ -139,7 +139,7 @@
     # 数字长度
     Length = 4
     # 图片宽度
-    Width = 400
+    Width = 500
     # 图片高度
     Height = 160
 
@@ -148,7 +148,7 @@
     
     # 干扰线 ShowLineOptions := OptionShowHollowLine | OptionShowSlimeLine | OptionShowSineLine . 
     # 2 | 4 | 8
-    showLineOptions = 8
+    showLineOptions = 0
 
     # 字符源
     Source = "23456789qwertyuiopasdfghjkzxcvbnmQWERTYUPASDFGHJKLZXCVBNM"
