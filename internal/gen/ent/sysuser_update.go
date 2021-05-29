@@ -109,12 +109,6 @@ func (suu *SysUserUpdate) AddStatus(i int) *SysUserUpdate {
 	return suu
 }
 
-// SetUserName sets the "user_name" field.
-func (suu *SysUserUpdate) SetUserName(s string) *SysUserUpdate {
-	suu.mutation.SetUserName(s)
-	return suu
-}
-
 // SetRealName sets the "real_name" field.
 func (suu *SysUserUpdate) SetRealName(s string) *SysUserUpdate {
 	suu.mutation.SetRealName(s)
@@ -280,11 +274,6 @@ func (suu *SysUserUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (suu *SysUserUpdate) check() error {
-	if v, ok := suu.mutation.UserName(); ok {
-		if err := sysuser.UserNameValidator(v); err != nil {
-			return &ValidationError{Name: "user_name", err: fmt.Errorf("ent: validator failed for field \"user_name\": %w", err)}
-		}
-	}
 	if v, ok := suu.mutation.RealName(); ok {
 		if err := sysuser.RealNameValidator(v); err != nil {
 			return &ValidationError{Name: "real_name", err: fmt.Errorf("ent: validator failed for field \"real_name\": %w", err)}
@@ -389,13 +378,6 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldStatus,
-		})
-	}
-	if value, ok := suu.mutation.UserName(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: sysuser.FieldUserName,
 		})
 	}
 	if value, ok := suu.mutation.RealName(); ok {
@@ -563,12 +545,6 @@ func (suuo *SysUserUpdateOne) SetNillableStatus(i *int) *SysUserUpdateOne {
 // AddStatus adds i to the "status" field.
 func (suuo *SysUserUpdateOne) AddStatus(i int) *SysUserUpdateOne {
 	suuo.mutation.AddStatus(i)
-	return suuo
-}
-
-// SetUserName sets the "user_name" field.
-func (suuo *SysUserUpdateOne) SetUserName(s string) *SysUserUpdateOne {
-	suuo.mutation.SetUserName(s)
 	return suuo
 }
 
@@ -744,11 +720,6 @@ func (suuo *SysUserUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (suuo *SysUserUpdateOne) check() error {
-	if v, ok := suuo.mutation.UserName(); ok {
-		if err := sysuser.UserNameValidator(v); err != nil {
-			return &ValidationError{Name: "user_name", err: fmt.Errorf("ent: validator failed for field \"user_name\": %w", err)}
-		}
-	}
 	if v, ok := suuo.mutation.RealName(); ok {
 		if err := sysuser.RealNameValidator(v); err != nil {
 			return &ValidationError{Name: "real_name", err: fmt.Errorf("ent: validator failed for field \"real_name\": %w", err)}
@@ -870,13 +841,6 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 			Type:   field.TypeInt,
 			Value:  value,
 			Column: sysuser.FieldStatus,
-		})
-	}
-	if value, ok := suuo.mutation.UserName(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: sysuser.FieldUserName,
 		})
 	}
 	if value, ok := suuo.mutation.RealName(); ok {

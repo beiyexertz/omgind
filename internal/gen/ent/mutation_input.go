@@ -914,7 +914,6 @@ type UpdateSysUserInput struct {
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
 	Status         *int
-	UserName       *string
 	RealName       *string
 	ClearRealName  bool
 	FirstName      *string
@@ -946,9 +945,6 @@ func (i *UpdateSysUserInput) Mutate(m *SysUserMutation) {
 	}
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
-	}
-	if v := i.UserName; v != nil {
-		m.SetUserName(*v)
 	}
 	if i.ClearRealName {
 		m.ClearRealName()

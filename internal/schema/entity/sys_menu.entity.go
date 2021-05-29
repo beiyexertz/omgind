@@ -30,7 +30,7 @@ func (SysMenu) Fields() []ent.Field {
 			StructTag(`json:"name,omitempty"`).Comment("菜单名称"),
 		field.String("icon").StorageKey("icon").MaxLen(256).
 			StructTag(`json:"icon,omitempty"`).Comment("菜单图标"),
-		field.String("router").StorageKey("router").MaxLen(1024).NotEmpty().
+		field.String("router").StorageKey("router").MaxLen(4096).
 			StructTag(`json:"router,omitempty"`).Comment("前端路由"),
 		field.Bool("is_show").Default(true).StorageKey("is_show").StructTag(`json:"is_show,omitempty"`).Comment("是否显示"),
 

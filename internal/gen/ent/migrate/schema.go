@@ -180,7 +180,7 @@ var (
 		{Name: "status", Type: field.TypeInt, Default: 1},
 		{Name: "name", Type: field.TypeString, Size: 64},
 		{Name: "icon", Type: field.TypeString, Size: 256},
-		{Name: "router", Type: field.TypeString, Size: 1024},
+		{Name: "router", Type: field.TypeString, Size: 4096},
 		{Name: "is_show", Type: field.TypeBool, Default: true},
 		{Name: "pid", Type: field.TypeString, Nullable: true, Size: 36},
 		{Name: "ppath", Type: field.TypeString, Nullable: true, Size: 160},

@@ -294,21 +294,7 @@ func init() {
 	// sysmenuDescRouter is the schema descriptor for router field.
 	sysmenuDescRouter := sysmenuFields[2].Descriptor()
 	// sysmenu.RouterValidator is a validator for the "router" field. It is called by the builders before save.
-	sysmenu.RouterValidator = func() func(string) error {
-		validators := sysmenuDescRouter.Validators
-		fns := [...]func(string) error{
-			validators[0].(func(string) error),
-			validators[1].(func(string) error),
-		}
-		return func(router string) error {
-			for _, fn := range fns {
-				if err := fn(router); err != nil {
-					return err
-				}
-			}
-			return nil
-		}
-	}()
+	sysmenu.RouterValidator = sysmenuDescRouter.Validators[0].(func(string) error)
 	// sysmenuDescIsShow is the schema descriptor for is_show field.
 	sysmenuDescIsShow := sysmenuFields[3].Descriptor()
 	// sysmenu.DefaultIsShow holds the default value on creation for the is_show field.
