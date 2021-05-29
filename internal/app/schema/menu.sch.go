@@ -1,7 +1,6 @@
 package schema
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -118,7 +117,7 @@ func (a Menus) ToTree() MenuTrees {
 		}
 	}
 
-	fmt.Printf(" ========== %+v \n ", list[0].IsShow)
+	//fmt.Printf(" ========== %t \n ", *list[0].IsShow)
 
 	return list.ToTree()
 }

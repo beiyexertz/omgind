@@ -47,7 +47,7 @@ func (a *Menu) QueryTree(c *gin.Context) {
 	}
 
 	result, err := a.MenuSrv.Query(ctx, params, schema.MenuQueryOptions{
-		OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByDESC)),
+		OrderFields: schema.NewOrderFields(schema.NewOrderField("sort", schema.OrderByASC)),
 	})
 	if err != nil {
 		ginx.ResError(c, err)
