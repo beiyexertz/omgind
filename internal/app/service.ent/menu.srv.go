@@ -87,12 +87,8 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 			Router:     tritem.Router,
 			ParentID:   parentID,
 			Status:     1,
-			ShowStatus: 1,
 			IsShow:     tritem.IsShow,
 			Actions:    tritem.Actions,
-		}
-		if v := tritem.ShowStatus; v > 0 {
-			sitem.ShowStatus = v
 		}
 
 		if err := a.checkName(ctx, sitem); err != nil {
@@ -126,6 +122,7 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 		}
 
 	}
+
 	//return nil
 	//})
 

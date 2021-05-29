@@ -44,8 +44,8 @@ func (a *Menu) Query(ctx context.Context, params schema.MenuQueryParam, opts ...
 	if v := params.PrefixParentPath; v != "" {
 		db = db.Where("parent_path LIKE ?", v+"%")
 	}
-	if v := params.ShowStatus; v != 0 {
-		db = db.Where("show_status=?", v)
+	if v := params.IsShow; v != nil {
+		db = db.Where("is_show=?", v)
 	}
 	if v := params.Status; v != 0 {
 		db = db.Where("status=?", v)

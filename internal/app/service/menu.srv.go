@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gotidy/ptr"
 	"github.com/wanhello/omgind/internal/app/contextx"
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -72,11 +73,8 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 				Router:     item.Router,
 				ParentID:   parentID,
 				Status:     1,
-				ShowStatus: 1,
+				IsShow:     ptr.Bool(true),
 				Actions:    item.Actions,
-			}
-			if v := item.ShowStatus; v > 0 {
-				sitem.ShowStatus = v
 			}
 
 			nsitem, err := a.Create(ctx, sitem)

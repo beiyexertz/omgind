@@ -1,6 +1,7 @@
 package schema
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -16,10 +17,9 @@ type Menu struct {
 	Router     string      `json:"router"`                                     // 访问路由
 	ParentID   string      `json:"parent_id"`                                  // 父级ID
 	ParentPath string      `json:"parent_path"`                                // 父级路径
-	ShowStatus int         `json:"show_status" binding:"required,max=2,min=1"` // 显示状态(1:显示 2:隐藏)
 	Status     int         `json:"status" binding:"required,max=2,min=1"`      // 状态(1:启用 2:禁用)
 	Memo       string      `json:"memo"`                                       // 备注
-	IsShow 	   *bool       `json:"is_show"`
+	IsShow 	   *bool       `json:"is_show"` // 是否显示
 	Creator    string      `json:"creator" `                                   // 创建者
 	CreatedAt  *time.Time   `json:"created_at" `                                // 创建时间
 	UpdatedAt  *time.Time   `json:"updated_at" `                                // 更新时间
@@ -38,8 +38,7 @@ type MenuQueryParam struct {
 	PrefixParentPath string   `form:"-"`          // 父级路径(前缀模糊查询)
 	QueryValue       string   `form:"queryValue"` // 模糊查询
 	ParentID         *string  `form:"parentID"`   // 父级内码
-	ShowStatus       int      `form:"showStatus"` // 显示状态(1:显示 2:隐藏)
-	IsShow			 *bool 	  `form:"is_show"`
+	IsShow			 *bool 	  `form:"isShow"`
 	Status           int      `form:"status"`     // 状态(1:启用 2:禁用)
 }
 
@@ -102,6 +101,7 @@ func (a Menus) SplitParentIDs() []string {
 
 // ToTree 转换为菜单树
 func (a Menus) ToTree() MenuTrees {
+
 	list := make(MenuTrees, len(a))
 	for i, item := range a {
 		list[i] = &MenuTree{
@@ -112,11 +112,14 @@ func (a Menus) ToTree() MenuTrees {
 			ParentID:   item.ParentID,
 			ParentPath: item.ParentPath,
 			Sort:       item.Sort,
-			ShowStatus: item.ShowStatus,
+			IsShow: 	item.IsShow,
 			Status:     item.Status,
 			Actions:    item.Actions,
 		}
 	}
+
+	fmt.Printf(" ========== %+v \n ", list[0].IsShow)
+
 	return list.ToTree()
 }
 
@@ -127,6 +130,7 @@ func (a Menus) FillMenuAction(mActions map[string]MenuActions) Menus {
 			item.Actions = v
 		}
 	}
+
 	return a
 }
 
@@ -141,7 +145,6 @@ type MenuTree struct {
 	ParentID   string      `yaml:"-" json:"parent_id"`                           // 父级ID
 	ParentPath string      `yaml:"-" json:"parent_path"`                         // 父级路径
 	Sort       int         `yaml:"sort" json:"sort"`                             // 排序值
-	ShowStatus int         `yaml:"-" json:"show_status"`                         // 显示状态(1:显示 2:隐藏)
 	IsShow 	   *bool       `json:"is_show"`
 	Status     int         `yaml:"-" json:"status"`                              // 状态(1:启用 2:禁用)
 	Actions    MenuActions `yaml:"actions,omitempty" json:"actions"`             // 动作列表
