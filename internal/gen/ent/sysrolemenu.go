@@ -32,7 +32,7 @@ type SysRoleMenu struct {
 	// 角色ID, sys_role.id
 	RoleID string `json:"role_id,omitempty"`
 	// MenuID holds the value of the "menu_id" field.
-	// 菜单ID, sys_menu.id
+	// 菜单ID
 	MenuID string `json:"menu_id,omitempty"`
 	// ActionID holds the value of the "action_id" field.
 	// 菜单ID, sys_menu_action.id

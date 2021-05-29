@@ -2,6 +2,7 @@ package service_ent
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
@@ -33,6 +34,7 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 	result, err := a.MenuModel.Query(ctx, schema.MenuQueryParam{
 		PaginationParam: schema.PaginationParam{OnlyCount: true},
 	})
+	fmt.Println(" ------- ===== result.PageResult.Total: ", result.PageResult.Total)
 	if err != nil {
 		return err
 	} else if result.PageResult.Total > 0 {
@@ -41,16 +43,23 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 	}
 
 	data, err := a.readData(dataFile)
+	//fmt.Printf(" ------- ===== data: %+v \n", data)
+	//fmt.Println(" ------- ===== err: \n", err)
+
 	if err != nil {
 		return err
 	}
-	err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
-		err = a.createMenus(ctx, tx, "", data)
-		if err != nil {
-			return err
-		}
-		return nil
-	})
+
+	//err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
+	//	err = a.createMenus(ctx, tx, "", data)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	return nil
+	//})
+
+	err = a.createMenus(ctx, "", data)
+
 	return err
 }
 
@@ -68,7 +77,8 @@ func (a *Menu) readData(name string) (schema.MenuTrees, error) {
 	return data, err
 }
 
-func (a *Menu) createMenus(ctx context.Context, tx *ent.Tx, parentID string, list schema.MenuTrees) error {
+func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.MenuTrees) error {
+
 
 	for _, tritem := range list {
 		sitem := schema.Menu{
@@ -97,24 +107,27 @@ func (a *Menu) createMenus(ctx context.Context, tx *ent.Tx, parentID string, lis
 		sitem.ParentPath = parentPath
 
 		menuinput := a.MenuModel.ToEntCreateSysMenuInput(&sitem)
-		amenu, err := tx.SysMenu.Create().SetInput(*menuinput).Save(ctx)
+		amenu, err := a.MenuModel.EntCli.SysMenu.Create().SetInput(*menuinput).Save(ctx)
 		if err != nil {
 			return err
 		}
 		// 保存actions
-		err = a.createActions(ctx, tx, amenu.ID, sitem.Actions)
+		err = a.createActions(ctx, amenu.ID, sitem.Actions)
 		if err != nil {
 			return err
 		}
 
 		if tritem.Children != nil && len(*tritem.Children) > 0 {
-			err := a.createMenus(ctx, tx, amenu.ID, *tritem.Children)
+			err := a.createMenus(ctx, amenu.ID, *tritem.Children)
+
 			if err != nil {
 				return err
 			}
 		}
 
 	}
+	//return nil
+	//})
 
 	return nil
 }
@@ -213,7 +226,7 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 		}
 
 		// 保存actions
-		err = a.createActions(ctx, tx, amenu.ID, item.Actions)
+		err = a.createActions(ctx, amenu.ID, item.Actions)
 		if err != nil {
 			return err
 		}
@@ -229,14 +242,14 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 }
 
 // 创建动作数据
-func (a *Menu) createActions(ctx context.Context, tx *ent.Tx, menuID string, items schema.MenuActions) error {
+func (a *Menu) createActions(ctx context.Context, menuID string, items schema.MenuActions) error {
 
 	for _, actitem := range items {
 		actitem.MenuID = menuID
 		mainput := a.MenuActionModel.ToEntCreateSysMenuActionInput(actitem)
 		mainput.MenuID = menuID
 
-		anaction, err := tx.SysMenuAction.Create().SetInput(*mainput).Save(ctx)
+		anaction, err := a.MenuActionModel.EntCli.SysMenuAction.Create().SetInput(*mainput).Save(ctx)
 		if err != nil {
 			return err
 		}
@@ -246,7 +259,7 @@ func (a *Menu) createActions(ctx context.Context, tx *ent.Tx, menuID string, ite
 			marinput := a.MenuActionResourceModel.ToEntCreateSysMenuActionResourceInput(ritem)
 			marinput.ActionID = anaction.ID
 
-			_, err := tx.SysMenuActionResource.Create().SetInput(*marinput).Save(ctx)
+			_, err := a.MenuActionResourceModel.EntCli.SysMenuActionResource.Create().SetInput(*marinput).Save(ctx)
 			if err != nil {
 				return err
 			}
@@ -329,7 +342,7 @@ func (a *Menu) updateActions(ctx context.Context, tx *ent.Tx, menuID string, old
 	newItems schema.MenuActions) error {
 	addActions, delActions, updateActions := a.compareActions(ctx, oldItems, newItems)
 
-	err := a.createActions(ctx, tx, menuID, addActions)
+	err := a.createActions(ctx, menuID, addActions)
 	if err != nil {
 		return err
 	}

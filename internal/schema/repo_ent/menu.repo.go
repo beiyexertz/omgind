@@ -131,6 +131,7 @@ func (a *Menu) Query(ctx context.Context, params schema.MenuQueryParam, opts ...
 func (a *Menu) Get(ctx context.Context, id string, opts ...schema.MenuQueryOptions) (*schema.Menu, error) {
 
 	menu, err := a.EntCli.SysMenu.Query().Where(sysmenu.IDEQ(id)).Only(ctx)
+
 	if err != nil {
 		return nil, err
 	}

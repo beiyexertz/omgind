@@ -38,7 +38,7 @@ type SysMenuAction struct {
 	// 删除时间,
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// MenuID holds the value of the "menu_id" field.
-	// 菜单ID, sys_menu.id
+	// 菜单ID
 	MenuID string `json:"menu_id,omitempty"`
 	// Code holds the value of the "code" field.
 	// 动作编号

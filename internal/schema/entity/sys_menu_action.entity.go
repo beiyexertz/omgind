@@ -25,7 +25,7 @@ func (ma SysMenuAction) Mixin() []ent.Mixin {
 func (SysMenuAction) Fields() []ent.Field {
 	return []ent.Field{
 
-		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID, sys_menu.id"),
+		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID"),
 		field.String("code").MaxLen(128).NotEmpty().Comment("动作编号"),
 		field.String("name").MaxLen(128).NotEmpty().Comment("动作名称"),
 	}

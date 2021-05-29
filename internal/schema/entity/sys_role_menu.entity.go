@@ -23,7 +23,7 @@ func (SysRoleMenu) Fields() []ent.Field {
 	return []ent.Field{
 
 		field.String("role_id").MaxLen(36).NotEmpty().Comment("角色ID, sys_role.id"),
-		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID, sys_menu.id"),
+		field.String("menu_id").MaxLen(36).NotEmpty().Comment("菜单ID"),
 		field.String("action_id").MaxLen(36).Nillable().Optional().Comment("菜单ID, sys_menu_action.id"),
 	}
 }
