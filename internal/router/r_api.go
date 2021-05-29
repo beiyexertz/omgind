@@ -11,57 +11,44 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	g := app.Group("/api")
 
 	g.Use(middleware.UserAuthMiddleware(a.Auth,
-		middleware.AllowPathPrefixSkipper("/api/v1/pub/signin"),
+		middleware.AllowPathPrefixSkipper("/api/v2/pub/signin"),
 	))
 
 	g.Use(middleware.CasbinMiddleware(a.CasbinEnforcer,
-		middleware.AllowPathPrefixSkipper("/api/v1/pub"),
+		middleware.AllowPathPrefixSkipper("/api/v2/pub"),
 	))
 
 	g.Use(middleware.RateLimiterMiddleware())
 
-	v1 := g.Group("/v1")
+	v2 := g.Group("/v2")
 	{
-		pub := v1.Group("/pub")
+		pub := v2.Group("/pub")
 		{
 			gSignIn := pub.Group("/signin")
 			{
-				gSignIn.GET("captchaid", a.SignInAPI.GetCaptcha)
-				gSignIn.GET("captcha", a.SignInAPI.ResCaptcha)
-				gSignIn.POST("", a.SignInAPI.SignIn)
-				gSignIn.POST("exit", a.SignInAPI.SignOut)
+				gSignIn.GET("captchaid", a.SignInAPIV2.GetCaptcha)
+				gSignIn.GET("captcha", a.SignInAPIV2.ResCaptcha)
+				gSignIn.POST("", a.SignInAPIV2.SignIn)
+				gSignIn.POST("exit", a.SignInAPIV2.SignOut)
 			}
 
 			gCurrent := pub.Group("current")
 			{
-				gCurrent.PUT("password", a.SignInAPI.UpdatePassword)
-				gCurrent.GET("user", a.SignInAPI.GetUserInfo)
-				gCurrent.GET("menutree", a.SignInAPI.QueryUserMenuTree)
+				gCurrent.PUT("password", a.SignInAPIV2.UpdatePassword)
+				gCurrent.GET("user", a.SignInAPIV2.GetUserInfo)
+				gCurrent.GET("menutree", a.SignInAPIV2.QueryUserMenuTree)
 			}
-			pub.POST("/refresh-token", a.SignInAPI.RefreshToken)
+			pub.POST("/refresh-token", a.SignInAPIV2.RefreshToken)
 		}
 
-		a.initMenuRouterV1(v1, a.MenuAPI, "menus")
-		v1.GET("/menus.tree", a.MenuAPI.QueryTree)
+		a.initMenuRouterV2(v2, a.MenuAPIV2, "menus")
+		v2.GET("/menus.tree", a.MenuAPIV2.QueryTree)
 
-		a.initRoleRouterV1(v1, a.RoleAPI, "roles")
-		v1.GET("/roles.select", a.RoleAPI.QuerySelect)
+		a.initRoleRouterV2(v2, a.RoleAPIV2, "roles")
+		v2.GET("/roles.select", a.RoleAPIV2.QuerySelect)
 
-		a.initUserRouterV1(v1, a.UserAPI, "users")
+		a.initUserRouterV2(v2, a.UserAPIV2, "users")
 
-		//gDictItem := v1.Group("dict-items")
-		//{
-		//	gDictItem.GET("", a.DictItemAPI.Query)
-		//	gDictItem.GET(":id", a.DictItemAPI.Get)
-		//	gDictItem.POST("", a.DictItemAPI.Create)
-		//	gDictItem.PUT(":id", a.DictItemAPI.Update)
-		//	gDictItem.DELETE(":id", a.DictItemAPI.Delete)
-		//}
-
-	}
-
-	v2 := g.Group("/v2")
-	{
 		a.initDictRouterV2(v2, a.DictApiV2, "dicts")
 		a.initDemoRouterV2(v2, a.DemoAPIV2, "demos")
 

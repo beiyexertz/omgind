@@ -34,7 +34,7 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 	result, err := a.MenuModel.Query(ctx, schema.MenuQueryParam{
 		PaginationParam: schema.PaginationParam{OnlyCount: true},
 	})
-	fmt.Println(" ------- ===== result.PageResult.Total: ", result.PageResult.Total)
+	
 	if err != nil {
 		return err
 	} else if result.PageResult.Total > 0 {

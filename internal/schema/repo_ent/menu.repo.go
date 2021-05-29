@@ -62,7 +62,7 @@ func (a *Menu) getQueryOption(opts ...schema.MenuQueryOptions) schema.MenuQueryO
 func (a *Menu) Query(ctx context.Context, params schema.MenuQueryParam, opts ...schema.MenuQueryOptions) (*schema.MenuQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysMenu.Query()
+	query := a.EntCli.SysMenu.Query().Where(sysmenu.DeletedAtIsNil())
 
 	if v := params.IDs; len(v) > 0 {
 		query = query.Where(sysmenu.IDIn(v...))

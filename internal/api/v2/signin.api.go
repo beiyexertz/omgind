@@ -1,16 +1,15 @@
-package api_v1
+package api_v2
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/internal/app/service"
+	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
 	"github.com/wanhello/omgind/pkg/vcode"
-
-	"github.com/gin-gonic/gin"
-	"github.com/google/wire"
 )
 
 // SignInSet 注入SignIn
@@ -18,7 +17,7 @@ var SignInSet = wire.NewSet(wire.Struct(new(SignIn), "*"))
 
 // SignIn 登录管理
 type SignIn struct {
-	SigninSrv *service.SignIn
+	SigninSrv *service_ent.SignIn
 	Vcode     *vcode.Vcode
 }
 

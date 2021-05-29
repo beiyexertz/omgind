@@ -6,11 +6,9 @@
 package app
 
 import (
-	"github.com/wanhello/omgind/internal/api/v1"
 	"github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/internal/app/model/gormx/repo"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
-	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/internal/app/service.ent"
 	"github.com/wanhello/omgind/internal/router"
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
@@ -62,78 +60,8 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	demo := &repo.Demo{
-		DB: db,
-	}
-	serviceDemo := &service.Demo{
-		DemoModel: demo,
-	}
-	api_v1Demo := &api_v1.Demo{
-		DemoSrv: serviceDemo,
-	}
-	menu := &repo.Menu{
-		DB: db,
-	}
-	menuAction := &repo.MenuAction{
-		DB: db,
-	}
-	cmdable, cleanup4, err := InitRedisCli()
+	client, cleanup4, err := InitEntClient()
 	if err != nil {
-		cleanup3()
-		cleanup2()
-		cleanup()
-		return nil, nil, err
-	}
-	vcode := InitVcode(cmdable)
-	signIn := &service.SignIn{
-		Auth:            auther,
-		UserModel:       user,
-		UserRoleModel:   userRole,
-		RoleModel:       role,
-		RoleMenuModel:   roleMenu,
-		MenuModel:       menu,
-		MenuActionModel: menuAction,
-		Vcode:           vcode,
-	}
-	api_v1SignIn := &api_v1.SignIn{
-		SigninSrv: signIn,
-		Vcode:     vcode,
-	}
-	trans := &repo.Trans{
-		DB: db,
-	}
-	serviceMenu := &service.Menu{
-		TransModel:              trans,
-		MenuModel:               menu,
-		MenuActionModel:         menuAction,
-		MenuActionResourceModel: menuActionResource,
-	}
-	api_v1Menu := &api_v1.Menu{
-		MenuSrv: serviceMenu,
-	}
-	serviceRole := &service.Role{
-		Enforcer:      syncedEnforcer,
-		TransModel:    trans,
-		RoleModel:     role,
-		RoleMenuModel: roleMenu,
-		UserModel:     user,
-	}
-	api_v1Role := &api_v1.Role{
-		RoleSrv: serviceRole,
-	}
-	serviceUser := &service.User{
-		Enforcer:      syncedEnforcer,
-		TransModel:    trans,
-		UserModel:     user,
-		UserRoleModel: userRole,
-		RoleModel:     role,
-	}
-	api_v1User := &api_v1.User{
-		UserSrv: serviceUser,
-	}
-	client, cleanup5, err := InitEntClient()
-	if err != nil {
-		cleanup4()
 		cleanup3()
 		cleanup2()
 		cleanup()
@@ -152,41 +80,96 @@ func BuildInjector() (*Injector, func(), error) {
 	api_v2Dict := &api_v2.Dict{
 		DictSrv: service_entDict,
 	}
-	repo_entDemo := &repo_ent.Demo{
+	demo := &repo_ent.Demo{
 		EntCli: client,
 	}
 	service_entDemo := &service_ent.Demo{
-		DemoModel: repo_entDemo,
+		DemoModel: demo,
 	}
 	api_v2Demo := &api_v2.Demo{
 		DemoSrv: service_entDemo,
 	}
-	routerRouter := &router.Router{
-		Auth:           auther,
-		CasbinEnforcer: syncedEnforcer,
-		DemoAPI:        api_v1Demo,
-		SignInAPI:      api_v1SignIn,
-		MenuAPI:        api_v1Menu,
-		RoleAPI:        api_v1Role,
-		UserAPI:        api_v1User,
-		DictApiV2:      api_v2Dict,
-		DemoAPIV2:      api_v2Demo,
-	}
-	engine := InitGinEngine(routerRouter)
-	repo_entMenu := &repo_ent.Menu{
+	menu := &repo_ent.Menu{
 		EntCli: client,
 	}
-	repo_entMenuAction := &repo_ent.MenuAction{
+	menuAction := &repo_ent.MenuAction{
 		EntCli: client,
 	}
 	repo_entMenuActionResource := &repo_ent.MenuActionResource{
 		EntCli: client,
 	}
 	service_entMenu := &service_ent.Menu{
-		MenuModel:               repo_entMenu,
-		MenuActionModel:         repo_entMenuAction,
+		MenuModel:               menu,
+		MenuActionModel:         menuAction,
 		MenuActionResourceModel: repo_entMenuActionResource,
 	}
+	api_v2Menu := &api_v2.Menu{
+		MenuSrv: service_entMenu,
+	}
+	repo_entRole := &repo_ent.Role{
+		EntCli: client,
+	}
+	repo_entRoleMenu := &repo_ent.RoleMenu{
+		EntCli: client,
+	}
+	repo_entUser := &repo_ent.User{
+		EntCli: client,
+	}
+	service_entRole := &service_ent.Role{
+		Enforcer:      syncedEnforcer,
+		RoleModel:     repo_entRole,
+		RoleMenuModel: repo_entRoleMenu,
+		UserModel:     repo_entUser,
+	}
+	api_v2Role := &api_v2.Role{
+		RoleSrv: service_entRole,
+	}
+	repo_entUserRole := &repo_ent.UserRole{
+		EntCli: client,
+	}
+	service_entUser := &service_ent.User{
+		Enforcer:      syncedEnforcer,
+		UserModel:     repo_entUser,
+		UserRoleModel: repo_entUserRole,
+		RoleModel:     repo_entRole,
+	}
+	api_v2User := &api_v2.User{
+		UserSrv: service_entUser,
+	}
+	cmdable, cleanup5, err := InitRedisCli()
+	if err != nil {
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	vcode := InitVcode(cmdable)
+	signIn := &service_ent.SignIn{
+		Auth:            auther,
+		UserModel:       repo_entUser,
+		UserRoleModel:   repo_entUserRole,
+		RoleModel:       repo_entRole,
+		RoleMenuModel:   repo_entRoleMenu,
+		MenuModel:       menu,
+		MenuActionModel: menuAction,
+		Vcode:           vcode,
+	}
+	api_v2SignIn := &api_v2.SignIn{
+		SigninSrv: signIn,
+		Vcode:     vcode,
+	}
+	routerRouter := &router.Router{
+		Auth:           auther,
+		CasbinEnforcer: syncedEnforcer,
+		DictApiV2:      api_v2Dict,
+		DemoAPIV2:      api_v2Demo,
+		MenuAPIV2:      api_v2Menu,
+		RoleAPIV2:      api_v2Role,
+		UserAPIV2:      api_v2User,
+		SignInAPIV2:    api_v2SignIn,
+	}
+	engine := InitGinEngine(routerRouter)
 	injector := &Injector{
 		Engine:         engine,
 		Auth:           auther,

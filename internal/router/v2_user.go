@@ -2,10 +2,10 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	api_v1 "github.com/wanhello/omgind/internal/api/v1"
+	api_v2 "github.com/wanhello/omgind/internal/api/v2"
 )
 
-func (r *Router) initUserRouterV1(urg *gin.RouterGroup, api *api_v1.User, pathcomp string) {
+func (r *Router) initUserRouterV2(urg *gin.RouterGroup, api *api_v2.User, pathcomp string) {
 
 	gUser := urg.Group(pathcomp)
 	{

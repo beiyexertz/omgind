@@ -4,7 +4,6 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"github.com/wanhello/omgind/internal/api/v1"
 	api_v2 "github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/pkg/auth"
 )
@@ -24,14 +23,15 @@ type IRouter interface {
 type Router struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
-	DemoAPI        *api_v1.Demo
-	SignInAPI      *api_v1.SignIn
-	MenuAPI        *api_v1.Menu
-	RoleAPI        *api_v1.Role
-	UserAPI        *api_v1.User
 
 	DictApiV2 *api_v2.Dict
 	DemoAPIV2 *api_v2.Demo
+	MenuAPIV2 *api_v2.Menu
+	RoleAPIV2 *api_v2.Role
+	UserAPIV2 *api_v2.User
+
+	SignInAPIV2 *api_v2.SignIn
+
 }
 
 // Register 注册路由
