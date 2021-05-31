@@ -7,23 +7,6 @@ import (
 	"github.com/wanhello/omgind/internal/schema/mixin"
 )
 
-/*
-
-// LogItem 存储日志项
-type LogItem struct {
-	ID         uint      `gorm:"column:id;primary_key;auto_increment;"` // id
-	Level      string    `gorm:"column:level;size:20;index;"`           // 日志级别
-	TraceID    string    `gorm:"column:trace_id;size:128;index;"`       // 跟踪ID
-	UserID     string    `gorm:"column:user_id;size:36;index;"`         // 用户ID
-	Tag        string    `gorm:"column:tag;size:128;index;"`            // Tag
-	Version    string    `gorm:"column:version;index;size:64;"`         // 版本号
-	Message    string    `gorm:"column:message;size:1024;"`             // 消息
-	Data       string    `gorm:"column:data;type:text;"`                // 日志数据(json)
-	ErrorStack string    `gorm:"column:error_stack;type:text;"`         // Error Stack
-	CreatedAt  time.Time `gorm:"column:created_at;index"`               // 创建时间
-}
-
-*/
 
 type SysLogging struct {
 	ent.Schema
@@ -55,7 +38,7 @@ func (SysLogging) Fields() []ent.Field {
 }
 
 func (SysLogging) Indexes() []ent.Index {
-	
+
 	return []ent.Index{
 		index.Fields("level"),
 		index.Fields("trace_id"),

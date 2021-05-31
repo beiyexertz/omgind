@@ -168,6 +168,65 @@ var (
 			},
 		},
 	}
+	// SysLoggingsColumns holds the columns for the "sys_loggings" table.
+	SysLoggingsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Size: 36},
+		{Name: "is_del", Type: field.TypeBool, Default: false},
+		{Name: "memo", Type: field.TypeString, Size: 1024, Default: ""},
+		{Name: "level", Type: field.TypeString, Size: 32},
+		{Name: "trace_id", Type: field.TypeString, Size: 128},
+		{Name: "user_id", Type: field.TypeString, Size: 128},
+		{Name: "tag", Type: field.TypeString, Size: 128},
+		{Name: "version", Type: field.TypeString, Size: 64},
+		{Name: "message", Type: field.TypeString},
+		{Name: "data", Type: field.TypeString},
+		{Name: "error_stack", Type: field.TypeString},
+		{Name: "crtd_at", Type: field.TypeTime},
+	}
+	// SysLoggingsTable holds the schema information for the "sys_loggings" table.
+	SysLoggingsTable = &schema.Table{
+		Name:        "sys_loggings",
+		Columns:     SysLoggingsColumns,
+		PrimaryKey:  []*schema.Column{SysLoggingsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "syslogging_id",
+				Unique:  true,
+				Columns: []*schema.Column{SysLoggingsColumns[0]},
+			},
+			{
+				Name:    "syslogging_is_del",
+				Unique:  false,
+				Columns: []*schema.Column{SysLoggingsColumns[1]},
+			},
+			{
+				Name:    "syslogging_level",
+				Unique:  false,
+				Columns: []*schema.Column{SysLoggingsColumns[3]},
+			},
+			{
+				Name:    "syslogging_trace_id",
+				Unique:  false,
+				Columns: []*schema.Column{SysLoggingsColumns[4]},
+			},
+			{
+				Name:    "syslogging_user_id",
+				Unique:  false,
+				Columns: []*schema.Column{SysLoggingsColumns[5]},
+			},
+			{
+				Name:    "syslogging_tag",
+				Unique:  false,
+				Columns: []*schema.Column{SysLoggingsColumns[6]},
+			},
+			{
+				Name:    "syslogging_crtd_at",
+				Unique:  false,
+				Columns: []*schema.Column{SysLoggingsColumns[11]},
+			},
+		},
+	}
 	// SysMenusColumns holds the columns for the "sys_menus" table.
 	SysMenusColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Size: 36},
@@ -624,6 +683,7 @@ var (
 		SysDictsTable,
 		SysDictItemsTable,
 		SysJwtBlocksTable,
+		SysLoggingsTable,
 		SysMenusTable,
 		SysMenuActionsTable,
 		SysMenuActionResourcesTable,
