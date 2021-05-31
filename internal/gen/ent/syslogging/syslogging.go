@@ -34,7 +34,7 @@ const (
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "crtd_at"
 	// Table holds the table name of the syslogging in the database.
-	Table = "sys_loggings"
+	Table = "sys_logging"
 )
 
 // Columns holds all SQL columns for syslogging fields.

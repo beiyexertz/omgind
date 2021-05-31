@@ -312,7 +312,7 @@ type CreateSysLoggingInput struct {
 	Tag        string
 	Version    string
 	Message    string
-	Data       string
+	Data       *string
 	ErrorStack string
 	CreatedAt  *time.Time
 }
@@ -331,7 +331,9 @@ func (i *CreateSysLoggingInput) Mutate(m *SysLoggingCreate) {
 	m.SetTag(i.Tag)
 	m.SetVersion(i.Version)
 	m.SetMessage(i.Message)
-	m.SetData(i.Data)
+	if v := i.Data; v != nil {
+		m.SetData(*v)
+	}
 	m.SetErrorStack(i.ErrorStack)
 	if v := i.CreatedAt; v != nil {
 		m.SetCreatedAt(*v)
@@ -354,7 +356,6 @@ type UpdateSysLoggingInput struct {
 	Tag        *string
 	Version    *string
 	Message    *string
-	Data       *string
 	ErrorStack *string
 }
 
@@ -383,9 +384,6 @@ func (i *UpdateSysLoggingInput) Mutate(m *SysLoggingMutation) {
 	}
 	if v := i.Message; v != nil {
 		m.SetMessage(*v)
-	}
-	if v := i.Data; v != nil {
-		m.SetData(*v)
 	}
 	if v := i.ErrorStack; v != nil {
 		m.SetErrorStack(*v)

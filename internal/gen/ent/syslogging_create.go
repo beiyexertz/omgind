@@ -90,6 +90,14 @@ func (slc *SysLoggingCreate) SetData(s string) *SysLoggingCreate {
 	return slc
 }
 
+// SetNillableData sets the "data" field if the given value is not nil.
+func (slc *SysLoggingCreate) SetNillableData(s *string) *SysLoggingCreate {
+	if s != nil {
+		slc.SetData(*s)
+	}
+	return slc
+}
+
 // SetErrorStack sets the "error_stack" field.
 func (slc *SysLoggingCreate) SetErrorStack(s string) *SysLoggingCreate {
 	slc.mutation.SetErrorStack(s)
@@ -250,9 +258,6 @@ func (slc *SysLoggingCreate) check() error {
 	if _, ok := slc.mutation.Message(); !ok {
 		return &ValidationError{Name: "message", err: errors.New("ent: missing required field \"message\"")}
 	}
-	if _, ok := slc.mutation.Data(); !ok {
-		return &ValidationError{Name: "data", err: errors.New("ent: missing required field \"data\"")}
-	}
 	if _, ok := slc.mutation.ErrorStack(); !ok {
 		return &ValidationError{Name: "error_stack", err: errors.New("ent: missing required field \"error_stack\"")}
 	}
@@ -363,7 +368,7 @@ func (slc *SysLoggingCreate) createSpec() (*SysLogging, *sqlgraph.CreateSpec) {
 			Value:  value,
 			Column: syslogging.FieldData,
 		})
-		_node.Data = value
+		_node.Data = &value
 	}
 	if value, ok := slc.mutation.ErrorStack(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

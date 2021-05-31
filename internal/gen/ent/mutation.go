@@ -2855,7 +2855,7 @@ func (m *SysLoggingMutation) Data() (r string, exists bool) {
 // OldData returns the old "data" field's value of the SysLogging entity.
 // If the SysLogging object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysLoggingMutation) OldData(ctx context.Context) (v string, err error) {
+func (m *SysLoggingMutation) OldData(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldData is only allowed on UpdateOne operations")
 	}
@@ -2869,9 +2869,22 @@ func (m *SysLoggingMutation) OldData(ctx context.Context) (v string, err error) 
 	return oldValue.Data, nil
 }
 
+// ClearData clears the value of the "data" field.
+func (m *SysLoggingMutation) ClearData() {
+	m.data = nil
+	m.clearedFields[syslogging.FieldData] = struct{}{}
+}
+
+// DataCleared returns if the "data" field was cleared in this mutation.
+func (m *SysLoggingMutation) DataCleared() bool {
+	_, ok := m.clearedFields[syslogging.FieldData]
+	return ok
+}
+
 // ResetData resets all changes to the "data" field.
 func (m *SysLoggingMutation) ResetData() {
 	m.data = nil
+	delete(m.clearedFields, syslogging.FieldData)
 }
 
 // SetErrorStack sets the "error_stack" field.
@@ -3170,7 +3183,11 @@ func (m *SysLoggingMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *SysLoggingMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(syslogging.FieldData) {
+		fields = append(fields, syslogging.FieldData)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -3183,6 +3200,11 @@ func (m *SysLoggingMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *SysLoggingMutation) ClearField(name string) error {
+	switch name {
+	case syslogging.FieldData:
+		m.ClearData()
+		return nil
+	}
 	return fmt.Errorf("unknown SysLogging nullable field %s", name)
 }
 

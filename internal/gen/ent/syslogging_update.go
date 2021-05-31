@@ -90,12 +90,6 @@ func (slu *SysLoggingUpdate) SetMessage(s string) *SysLoggingUpdate {
 	return slu
 }
 
-// SetData sets the "data" field.
-func (slu *SysLoggingUpdate) SetData(s string) *SysLoggingUpdate {
-	slu.mutation.SetData(s)
-	return slu
-}
-
 // SetErrorStack sets the "error_stack" field.
 func (slu *SysLoggingUpdate) SetErrorStack(s string) *SysLoggingUpdate {
 	slu.mutation.SetErrorStack(s)
@@ -273,10 +267,9 @@ func (slu *SysLoggingUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: syslogging.FieldMessage,
 		})
 	}
-	if value, ok := slu.mutation.Data(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+	if slu.mutation.DataCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Value:  value,
 			Column: syslogging.FieldData,
 		})
 	}
@@ -367,12 +360,6 @@ func (sluo *SysLoggingUpdateOne) SetVersion(s string) *SysLoggingUpdateOne {
 // SetMessage sets the "message" field.
 func (sluo *SysLoggingUpdateOne) SetMessage(s string) *SysLoggingUpdateOne {
 	sluo.mutation.SetMessage(s)
-	return sluo
-}
-
-// SetData sets the "data" field.
-func (sluo *SysLoggingUpdateOne) SetData(s string) *SysLoggingUpdateOne {
-	sluo.mutation.SetData(s)
 	return sluo
 }
 
@@ -577,10 +564,9 @@ func (sluo *SysLoggingUpdateOne) sqlSave(ctx context.Context) (_node *SysLogging
 			Column: syslogging.FieldMessage,
 		})
 	}
-	if value, ok := sluo.mutation.Data(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+	if sluo.mutation.DataCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Value:  value,
 			Column: syslogging.FieldData,
 		})
 	}

@@ -42,7 +42,7 @@ type SysLogging struct {
 	Message string `json:"message,omitempty"`
 	// Data holds the value of the "data" field.
 	// 日志数据(json string)
-	Data string `json:"data,omitempty"`
+	Data *string `json:"data,omitempty"`
 	// ErrorStack holds the value of the "error_stack" field.
 	// 日志数据(json string)
 	ErrorStack string `json:"error_stack,omitempty"`
@@ -135,7 +135,8 @@ func (sl *SysLogging) assignValues(columns []string, values []interface{}) error
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field data", values[i])
 			} else if value.Valid {
-				sl.Data = value.String
+				sl.Data = new(string)
+				*sl.Data = value.String
 			}
 		case syslogging.FieldErrorStack:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -193,8 +194,10 @@ func (sl *SysLogging) String() string {
 	builder.WriteString(sl.Version)
 	builder.WriteString(", message=")
 	builder.WriteString(sl.Message)
-	builder.WriteString(", data=")
-	builder.WriteString(sl.Data)
+	if v := sl.Data; v != nil {
+		builder.WriteString(", data=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", error_stack=")
 	builder.WriteString(sl.ErrorStack)
 	builder.WriteString(", created_at=")

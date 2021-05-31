@@ -1057,6 +1057,20 @@ func DataHasSuffix(v string) predicate.SysLogging {
 	})
 }
 
+// DataIsNil applies the IsNil predicate on the "data" field.
+func DataIsNil() predicate.SysLogging {
+	return predicate.SysLogging(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldData)))
+	})
+}
+
+// DataNotNil applies the NotNil predicate on the "data" field.
+func DataNotNil() predicate.SysLogging {
+	return predicate.SysLogging(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldData)))
+	})
+}
+
 // DataEqualFold applies the EqualFold predicate on the "data" field.
 func DataEqualFold(v string) predicate.SysLogging {
 	return predicate.SysLogging(func(s *sql.Selector) {

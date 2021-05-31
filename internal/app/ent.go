@@ -17,7 +17,7 @@ import (
 
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/pkg/global"
-	
+
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
