@@ -1,4 +1,4 @@
-package middleware
+package healthchek
 
 import (
 	"net/http"

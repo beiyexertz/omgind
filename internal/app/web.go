@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/wanhello/omgind/internal/app/middleware"
+	"github.com/wanhello/omgind/internal/app/middleware/healthchek"
 	"github.com/wanhello/omgind/internal/router"
 	"github.com/wanhello/omgind/pkg/global"
 
@@ -20,6 +21,8 @@ func InitGinEngine(r router.IRouter) *gin.Engine {
 	app.NoRoute(middleware.NoRouteHandler())
 
 	prefixes := r.Prefixes()
+
+	app.Use(healthchek.Default())
 
 	// Trace ID
 	app.Use(middleware.TraceMiddleware(middleware.AllowPathPrefixNoSkipper(prefixes...)))
