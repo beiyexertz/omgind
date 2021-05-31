@@ -49,14 +49,6 @@ func (a *Menu) InitData(ctx context.Context, dataFile string) error {
 		return err
 	}
 
-	//err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
-	//	err = a.createMenus(ctx, tx, "", data)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	return nil
-	//})
-
 	err = a.createMenus(ctx, "", data)
 
 	return err
@@ -126,6 +118,33 @@ func (a *Menu) createMenus(ctx context.Context, parentID string, list schema.Men
 	//return nil
 	//})
 
+	return nil
+}
+
+// 创建动作数据
+func (a *Menu) createActions(ctx context.Context, menuID string, items schema.MenuActions) error {
+
+	for _, actitem := range items {
+		actitem.MenuID = menuID
+		mainput := a.MenuActionModel.ToEntCreateSysMenuActionInput(actitem)
+		mainput.MenuID = menuID
+
+		anaction, err := a.MenuActionModel.EntCli.SysMenuAction.Create().SetInput(*mainput).Save(ctx)
+		if err != nil {
+			return err
+		}
+		// 保存 resources
+		for _, ritem := range actitem.Resources {
+			ritem.ActionID = actitem.ID
+			marinput := a.MenuActionResourceModel.ToEntCreateSysMenuActionResourceInput(ritem)
+			marinput.ActionID = anaction.ID
+
+			_, err := a.MenuActionResourceModel.EntCli.SysMenuActionResource.Create().SetInput(*marinput).Save(ctx)
+			if err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }
 
@@ -223,7 +242,7 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 		}
 
 		// 保存actions
-		err = a.createActions(ctx, amenu.ID, item.Actions)
+		err = a.createActionsTx(ctx, tx, amenu.ID, item.Actions)
 		if err != nil {
 			return err
 		}
@@ -239,14 +258,14 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 }
 
 // 创建动作数据
-func (a *Menu) createActions(ctx context.Context, menuID string, items schema.MenuActions) error {
+func (a *Menu) createActionsTx(ctx context.Context, tx *ent.Tx, menuID string, items schema.MenuActions) error {
 
 	for _, actitem := range items {
 		actitem.MenuID = menuID
 		mainput := a.MenuActionModel.ToEntCreateSysMenuActionInput(actitem)
 		mainput.MenuID = menuID
 
-		anaction, err := a.MenuActionModel.EntCli.SysMenuAction.Create().SetInput(*mainput).Save(ctx)
+		anaction, err := tx.SysMenuAction.Create().SetInput(*mainput).Save(ctx)
 		if err != nil {
 			return err
 		}
@@ -256,7 +275,7 @@ func (a *Menu) createActions(ctx context.Context, menuID string, items schema.Me
 			marinput := a.MenuActionResourceModel.ToEntCreateSysMenuActionResourceInput(ritem)
 			marinput.ActionID = anaction.ID
 
-			_, err := a.MenuActionResourceModel.EntCli.SysMenuActionResource.Create().SetInput(*marinput).Save(ctx)
+			_, err := tx.SysMenuActionResource.Create().SetInput(*marinput).Save(ctx)
 			if err != nil {
 				return err
 			}
