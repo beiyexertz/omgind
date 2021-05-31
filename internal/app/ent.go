@@ -12,7 +12,6 @@ import (
 
 	entsql "entgo.io/ent/dialect/sql"
 	"github.com/rs/zerolog"
-	"github.com/simukti/sqldb-logger/logadapter/zerologadapter"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/pkg/global"
 
