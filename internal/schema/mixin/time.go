@@ -45,6 +45,18 @@ func (TimeMixin) Indexes() []ent.Index {
 	}
 }
 
+func FieldCreateAt() ent.Field {
+	return field.Time("created_at").
+		StorageKey("crtd_at").
+		//StructTag(`json:"created_at,omitempty" sql:"crtd_at"`).
+		Immutable().
+		Default(time.Now).Comment("创建时间,由程序自动生成")
+}
+
+func IndexCreateAt() ent.Index {
+	return index.Fields("created_at")
+}
+
 // TODO:: Hooks
 //func (TimeMixin) Hooks() []ent.Hook {
 //	return []ent.Hook{
