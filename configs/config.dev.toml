@@ -77,11 +77,11 @@
     # 设置空闲连接池中的最大连接数
     MaxIdleConns = 1
     # 数据库表名
-    Table = "g_logger"
+    Table = "sys_logging"
 
 [LogMongoHook]
     # 数据库表名
-    Collection = "g_logger"
+    Collection = "sys_logging"
 
 # 服务监控(GOPS:https://github.com/google/gops)
 [Monitor]

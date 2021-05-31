@@ -17,7 +17,7 @@ import (
 
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/pkg/global"
-
+	
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
@@ -78,6 +78,12 @@ func NewEntClient() (*ent.Client, func(), error) {
 
 	// logging to db
 	loggerAdapter := zerologadapter.New(zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout, NoColor: false}))
+
+	////
+	//logger := logrus.New()
+	//logger.Level = logrus.DebugLevel
+	//logger.Formatter = &logrus.JSONFormatter{}
+	//loggerAdapter := logrusadapter.New(logger)
 
 	db = sqldblogger.OpenDriver(dsn, db.Driver(), loggerAdapter)
 

@@ -2,6 +2,8 @@ package entity
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"github.com/wanhello/omgind/internal/schema/mixin"
@@ -10,6 +12,12 @@ import (
 
 type SysLogging struct {
 	ent.Schema
+}
+
+func (SysLogging) Annotations() []schema.Annotation  {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "sys_logging"},
+	}
 }
 
 func (SysLogging) Mixin() []ent.Mixin {
