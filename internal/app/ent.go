@@ -11,8 +11,12 @@ import (
 	"database/sql"
 
 	entsql "entgo.io/ent/dialect/sql"
+	"github.com/rs/zerolog"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/pkg/global"
+
+	sqldblogger "github.com/simukti/sqldb-logger"
+	"github.com/simukti/sqldb-logger/logadapter/zerologadapter"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx/v4/stdlib"
@@ -72,7 +76,11 @@ func NewEntClient() (*ent.Client, func(), error) {
 		return nil, func() {}, err
 	}
 
-	drv := entsql.OpenDB(cfg.Ent.DBType, db)
+	// logging to db
+	loggerAdapter := zerologadapter.New(zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout, NoColor: false}))
+	sqldb = sqldblogger.OpenDriver(dsn, db.Driver(), loggerAdapter)
+
+	drv := entsql.OpenDB(cfg.Ent.DBType, sqldb)
 
 	cleanFunc := func() {
 		drv.Close()
