@@ -41,6 +41,7 @@ require (
 	github.com/rs/zerolog v1.20.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/simukti/sqldb-logger v0.0.0-20201125162808-c35f87e285f2
+	github.com/simukti/sqldb-logger/logadapter/zapadapter v0.0.0-20201125162808-c35f87e285f2
 	github.com/simukti/sqldb-logger/logadapter/zerologadapter v0.0.0-20201125162808-c35f87e285f2
 	github.com/sirupsen/logrus v1.6.0
 	github.com/streadway/amqp v1.0.0
