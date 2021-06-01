@@ -2,7 +2,6 @@ package repo_ent
 
 import (
 	"context"
-	"log"
 	"strings"
 	"time"
 
@@ -75,23 +74,20 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 		query = query.Where(sysuser.StatusEQ(v))
 	}
 	if v := params.RoleIDs; len(v) > 0 {
-		// TODO::  subquery  子查询
-
-		log.Printf(" =000000 ---- subquery -- v %+v ", v)
-
+		//log.Printf(" =000000 ---- subquery -- v %+v ", v)
 		query = query.Where(func(s *sql.Selector) {
-			urq := sql.Table(sysuserrole.Table)
+			ur_t := sql.Table(sysuserrole.Table)
 			s.Where(sql.In(
 					s.C(sysuser.FieldID),
 					sql.Select(
-							urq.C(sysuserrole.FieldUserID),
-						).From(urq).Where(
-							sql.In(urq.C(sysuserrole.FieldRoleID), strings.Join(v, ",")),
+						ur_t.C(sysuserrole.FieldUserID),
+						).From(ur_t).Where(
+							sql.In(ur_t.C(sysuserrole.FieldRoleID), strings.Join(v, ",")),
 						),
 				))
 		})
-
 	}
+
 	if v := params.QueryValue; v != "" {
 		query = query.Where(sysuser.Or(
 			sysuser.UserNameContains(v), sysuser.RealNameContains(v),

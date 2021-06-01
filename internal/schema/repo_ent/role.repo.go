@@ -4,10 +4,12 @@ import (
 	"context"
 	"time"
 
+	"entgo.io/ent/dialect/sql"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrole"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 )
@@ -74,13 +76,14 @@ func (a *Role) Query(ctx context.Context, params schema.RoleQueryParam, opts ...
 	}
 	if v := params.UserID; v != "" {
 		// TODO::  subquery  子查询
+		query = query.Where(func(s *sql.Selector) {
+			ur_t := sql.Table(sysuserrole.Table)
+			s.Where( sql.In(
+				s.C(sysrole.FieldID), sql.Select(ur_t.C(sysuserrole.FieldUserID)).From(ur_t).Where(sql.And(  )),
+				),
+			)
+		})
 
-		//query = query.Where(func(s *sql.Selector) {
-		//	ur_table := sql.Table(sysuserrole.Table)
-		//	//var sb strings.Builder
-		//	s.Where()
-		//})
-		
 		//subQuery := entity.GetUserRoleDB(ctx, a.DB).
 		//	Where("deleted_at is null").
 		//	Where("user_id=?", v).
