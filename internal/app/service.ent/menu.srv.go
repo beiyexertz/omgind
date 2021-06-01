@@ -240,7 +240,7 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 		if err != nil {
 			return err
 		}
-
+		item.ID = amenu.ID
 		// 保存actions
 		err = a.createActionsTx(ctx, tx, amenu.ID, item.Actions)
 		if err != nil {
@@ -518,7 +518,10 @@ func (a *Menu) Delete(ctx context.Context, id string) error {
 		if err != nil {
 			return err
 		}
-
+		err = tx.SysMenu.DeleteOneID(id).Exec(ctx)
+		if err != nil {
+			return err
+		}
 		return nil
 	})
 	return err

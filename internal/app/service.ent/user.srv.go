@@ -89,7 +89,6 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 	pword, _ := hash.MakePassword(item.Password)
 	item.Password = pword
 
-	item.ID = uid.MustString()
 	err = repo_ent.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
 
 		userInput := a.UserModel.ToEntCreateSysUserInput(&item)
@@ -100,6 +99,7 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 		if err != nil {
 			return err
 		}
+		item.ID = auser.ID
 		for _, urItem := range item.UserRoles {
 			urItem.UserID = auser.ID
 
