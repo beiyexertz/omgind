@@ -11,7 +11,6 @@ import (
 	"github.com/wanhello/omgind/internal/schema/repo_ent"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/hash"
-	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 )
 
 // UserSet 注入User
