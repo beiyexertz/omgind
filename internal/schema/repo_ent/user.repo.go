@@ -78,13 +78,12 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 		query = query.Where(func(s *sql.Selector) {
 			sur_t := sql.Table(sysuserrole.Table)
 			s.Where(sql.In(
-					s.C(sysuser.FieldID),
-					sql.Select(
-						sysuserrole.FieldUserID).
-						From(sur_t).
-						Where(
-							sql.In(sysuserrole.FieldRoleID, strings.Join(v, ",")),
-						),
+					sysuser.FieldID,
+					sql.Select(sysuserrole.FieldUserID).
+					From(sur_t).
+					Where(
+						sql.In(sysuserrole.FieldRoleID, strings.Join(v, ",")),
+					),
 				))
 		})
 	}

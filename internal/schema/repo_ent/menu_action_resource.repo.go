@@ -4,7 +4,9 @@ import (
 	"context"
 	"time"
 
+	"entgo.io/ent/dialect/sql"
 	"github.com/google/wire"
+	"github.com/wanhello/omgind/internal/gen/ent/sysmenuaction"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 
@@ -173,13 +175,17 @@ func (a *MenuActionResource) DeleteByActionID(ctx context.Context, actionID stri
 
 // DeleteByMenuID 根据菜单ID删除数据
 func (a *MenuActionResource) DeleteByMenuID(ctx context.Context, menuID string) error {
-	// TODO:: subquery
-	a.EntCli.SysMenuActionResource.Query().Where(
-
+	_, err := a.EntCli.SysMenuActionResource.Update().Where(func(s *sql.Selector) {
+		sma_t := sql.Table(sysmenuaction.Table)
+		s.Where(
+			sql.In(
+				sysmenuactionresource.FieldActionID,
+				sql.Select(sysmenuaction.FieldID).
+				From(sma_t).
+				Where(sql.EQ(sysmenuaction.FieldMenuID, menuID)),
+			),
 		)
-
-	//subQuery := entity.GetMenuActionDB(ctx, a.DB).Where("menu_id=?", menuID).Select("id").SubQuery()
-	//result := entity.GetMenuActionResourceDB(ctx, a.DB).Where("action_id IN ?", subQuery).Delete(entity.MenuActionResource{})
-	//return errors.WithStack(result.Error)
-	return nil
+	}).SetIsDel(true).SetDeletedAt(time.Now()).Save(ctx)
+	
+	return errors.WithStack(err)
 }
