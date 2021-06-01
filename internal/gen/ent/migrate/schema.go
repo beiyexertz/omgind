@@ -181,7 +181,7 @@ var (
 		{Name: "version", Type: field.TypeString, Size: 64},
 		{Name: "message", Type: field.TypeString},
 		{Name: "data", Type: field.TypeString, Nullable: true, Size: 2147483647},
-		{Name: "error_stack", Type: field.TypeString},
+		{Name: "error_stack", Type: field.TypeString, Size: 2147483647},
 		{Name: "crtd_at", Type: field.TypeTime},
 	}
 	// SysLoggingTable holds the schema information for the "sys_logging" table.

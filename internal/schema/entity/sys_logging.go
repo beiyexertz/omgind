@@ -39,7 +39,7 @@ func (SysLogging) Fields() []ent.Field {
 		field.String("version").MaxLen(64).Comment("版本号"),
 		field.String("message").Comment("消息"),
 		field.Text("data").Immutable().Optional().Nillable().Comment("日志数据(json string)"),
-		field.String("error_stack").Comment("日志数据(json string)"),
+		field.Text("error_stack").Comment("日志数据(json string)"),
 
 		mixin.FieldCreateAt(),
 	}

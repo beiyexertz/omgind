@@ -2,10 +2,13 @@ package repo_ent
 
 import (
 	"context"
+	"log"
 	"time"
 
+	"entgo.io/ent/dialect/sql"
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuser"
+	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 
 	"github.com/wanhello/omgind/internal/app/schema"
@@ -72,6 +75,15 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 	}
 	if v := params.RoleIDs; len(v) > 0 {
 		// TODO::  subquery  子查询
+		query = query.Where(func(s *sql.Selector) {
+			rsq := sql.Table(sysuserrole.Table)
+			s.Where(sql.In(
+				s.C(sysuser.FieldID),
+				sql.Select(rsq.C(sysuserrole.FieldUserID)).From(rsq),
+				))
+		})
+
+		log.Fatalln(" =000000 ---- subquery -- ", query)
 
 		//subQuery := entity.GetUserRoleDB(ctx, a.DB).
 		//	Select("user_id").
