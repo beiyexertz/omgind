@@ -154,6 +154,8 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) (*schema
 
 	item.UpdatedAt = time.Now()
 	iteminput := a.ToEntUpdateSysDictInput(&item)
+	iteminput.UpdatedAt = nil
+
 	dict, err := oitem.Update().SetInput(*iteminput).Save(ctx)
 	if err != nil {
 		return nil, err

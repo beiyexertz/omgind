@@ -154,8 +154,11 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 
 		// 添加
 		for _, itm := range addItems {
+
 			itm.DictID = id
 			inpt := a.DictItemModel.ToEntCreateSysDictItemInput(itm)
+			itm.DictID = id
+
 			inpt.CreatedAt = nil
 			inpt.UpdatedAt = nil
 			_, err := tx.SysDictItem.Create().SetInput(*inpt).Save(ctx)
@@ -213,6 +216,9 @@ func (a *Dict) compareDictItems(ctx context.Context, oldItems, newItems schema.D
 
 	mOldItems := oldItems.ToMap()
 	mNewItems := newItems.ToMap()
+
+	//log.Printf(" ------ 000--newItems: %+v ", newItems)
+	//log.Printf(" ------ 000--oldItems: %+v ", newItems)
 
 	for k, item := range mNewItems {
 		if _, ok := mOldItems[k]; ok {
