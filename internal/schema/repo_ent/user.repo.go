@@ -90,7 +90,7 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 						),
 				))
 		})
-		
+
 	}
 	if v := params.QueryValue; v != "" {
 		query = query.Where(sysuser.Or(
