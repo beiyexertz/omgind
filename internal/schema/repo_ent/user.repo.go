@@ -3,6 +3,7 @@ package repo_ent
 import (
 	"context"
 	"log"
+	"strings"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -75,21 +76,21 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 	}
 	if v := params.RoleIDs; len(v) > 0 {
 		// TODO::  subquery  子查询
+
+		log.Printf(" =000000 ---- subquery -- v %+v ", v)
+
 		query = query.Where(func(s *sql.Selector) {
-			rsq := sql.Table(sysuserrole.Table)
+			urq := sql.Table(sysuserrole.Table)
 			s.Where(sql.In(
-				s.C(sysuser.FieldID),
-				sql.Select(rsq.C(sysuserrole.FieldUserID)).From(rsq),
+					s.C(sysuser.FieldID),
+					sql.Select(
+							urq.C(sysuserrole.FieldUserID),
+						).From(urq).Where(
+							sql.In(urq.C(sysuserrole.FieldRoleID), strings.Join(v, ",")),
+						),
 				))
 		})
-
-		log.Fatalln(" =000000 ---- subquery -- ", query)
-
-		//subQuery := entity.GetUserRoleDB(ctx, a.DB).
-		//	Select("user_id").
-		//	Where("role_id IN (?)", v).
-		//	SubQuery()
-		//db = db.Where("id IN ?", subQuery)
+		
 	}
 	if v := params.QueryValue; v != "" {
 		query = query.Where(sysuser.Or(
