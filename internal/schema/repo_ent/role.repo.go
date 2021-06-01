@@ -66,7 +66,7 @@ func (a *Role) Query(ctx context.Context, params schema.RoleQueryParam, opts ...
 
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysRole.Query()
+	query := a.EntCli.SysRole.Query().Where(sysrole.DeletedAtIsNil())
 
 	if v := params.IDs; len(v) > 0 {
 		query = query.Where(sysrole.IDIn(v...))

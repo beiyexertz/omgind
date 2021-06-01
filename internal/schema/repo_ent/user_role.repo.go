@@ -46,7 +46,7 @@ func (a *UserRole) getQueryOption(opts ...schema.UserRoleQueryOptions) schema.Us
 func (a *UserRole) Query(ctx context.Context, params schema.UserRoleQueryParam, opts ...schema.UserRoleQueryOptions) (*schema.UserRoleQueryResult, error) {
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysUserRole.Query()
+	query := a.EntCli.SysUserRole.Query().Where(sysuserrole.DeletedAtIsNil())
 
 	if v := params.UserID; v != "" {
 		query = query.Where(sysuserrole.UserIDEQ(v))

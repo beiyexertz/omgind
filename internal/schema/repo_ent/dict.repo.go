@@ -61,7 +61,7 @@ func (a *Dict) Query(ctx context.Context, params schema.DictQueryParam, opts ...
 
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.SysDict.Query()
+	query := a.EntCli.SysDict.Query().Where(sysdict.DeletedAtIsNil())
 
 	if v := params.IDs; len(v) > 0 {
 		query = query.Where(sysdict.IDIn(v...))

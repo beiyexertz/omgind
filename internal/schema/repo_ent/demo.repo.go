@@ -60,7 +60,7 @@ func (a *Demo) Query(ctx context.Context, params schema.DemoQueryParam, opts ...
 
 	opt := a.getQueryOption(opts...)
 
-	query := a.EntCli.XxxDemo.Query()
+	query := a.EntCli.XxxDemo.Query().Where(xxxdemo.DeletedAtIsNil())
 
 	if v := params.Code; v != "" {
 		query = query.Where(xxxdemo.CodeEQ(v))
