@@ -76,13 +76,14 @@ func (a *User) Query(ctx context.Context, params schema.UserQueryParam, opts ...
 	if v := params.RoleIDs; len(v) > 0 {
 		//log.Printf(" =000000 ---- subquery -- v %+v ", v)
 		query = query.Where(func(s *sql.Selector) {
-			ur_t := sql.Table(sysuserrole.Table)
+			sur_t := sql.Table(sysuserrole.Table)
 			s.Where(sql.In(
 					s.C(sysuser.FieldID),
 					sql.Select(
-						ur_t.C(sysuserrole.FieldUserID),
-						).From(ur_t).Where(
-							sql.In(ur_t.C(sysuserrole.FieldRoleID), strings.Join(v, ",")),
+						sysuserrole.FieldUserID).
+						From(sur_t).
+						Where(
+							sql.In(sysuserrole.FieldRoleID, strings.Join(v, ",")),
 						),
 				))
 		})

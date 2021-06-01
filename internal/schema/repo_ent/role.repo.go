@@ -75,20 +75,16 @@ func (a *Role) Query(ctx context.Context, params schema.RoleQueryParam, opts ...
 		query = query.Where(sysrole.NameEQ(v))
 	}
 	if v := params.UserID; v != "" {
-		// TODO::  subquery  子查询
 		query = query.Where(func(s *sql.Selector) {
-			ur_t := sql.Table(sysuserrole.Table)
+			sur_t := sql.Table(sysuserrole.Table)
 			s.Where( sql.In(
-				s.C(sysrole.FieldID), sql.Select(ur_t.C(sysuserrole.FieldUserID)).From(ur_t).Where(sql.And(  )),
+				sysrole.FieldID,
+				sql.Select(sysuserrole.FieldRoleID).
+					From(sur_t).
+					Where(sql.EQ(sysuserrole.FieldUserID, v)),
 				),
 			)
 		})
-
-		//subQuery := entity.GetUserRoleDB(ctx, a.DB).
-		//	Where("deleted_at is null").
-		//	Where("user_id=?", v).
-		//	Select("role_id").SubQuery()
-		//db = db.Where("id IN ?", subQuery)
 	}
 	
 	if v := params.QueryValue; v != "" {
