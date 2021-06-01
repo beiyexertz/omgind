@@ -2,6 +2,7 @@ package repo_ent
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -72,15 +73,28 @@ func (a *MenuActionResource) Query(ctx context.Context, params schema.MenuAction
 
 	if v := params.MenuID; v != "" {
 		// TODO::
-
+		query = query.Where(func(s *sql.Selector) {
+			sma_t := sql.Table(sysmenuaction.Table)
+			s.Where(sql.In(
+				sysmenuactionresource.FieldActionID,
+				sql.Select(sysmenuaction.FieldID).From(sma_t).Where(sql.EQ(sysmenuaction.FieldMenuID, v)),
+				))
+		})
 		//subQuery := entity.GetMenuActionDB(ctx, a.DB).
 		//	Where("menu_id=?", v).
 		//	Select("id").SubQuery()
 		//db = db.Where("action_id IN ?", subQuery)
-
 	}
 	if v := params.MenuIDs; len(v) > 0 {
 		// TODO::
+		query = query.Where(func(s *sql.Selector) {
+			sma_t := sql.Table(sysmenuaction.Table)
+			s.Where(sql.In(
+				sysmenuactionresource.FieldActionID,
+				sql.Select(sysmenuaction.FieldID).From(sma_t).Where(sql.In(sysmenuaction.FieldMenuID, strings.Join(v,
+					","))),
+				))
+		})
 		//subQuery := entity.GetMenuActionDB(ctx, a.DB).Where("menu_id IN (?)", v).Select("id").SubQuery()
 		//db = db.Where("action_id IN ?", subQuery)
 	}
@@ -186,6 +200,6 @@ func (a *MenuActionResource) DeleteByMenuID(ctx context.Context, menuID string) 
 			),
 		)
 	}).SetIsDel(true).SetDeletedAt(time.Now()).Save(ctx)
-	
+
 	return errors.WithStack(err)
 }
