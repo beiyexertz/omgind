@@ -339,6 +339,12 @@ func (a *Menu) Update(ctx context.Context, id string, item schema.Menu) error {
 	}
 	err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
 
+		menuinput := a.MenuModel.ToEntUpdateSysMenuInput(&item)
+		_, err = tx.SysMenu.UpdateOneID(id).SetInput(*menuinput).Save(ctx)
+		if err != nil {
+			return err
+		}
+		
 		err := a.updateActions(ctx, tx, id, oldItem.Actions, item.Actions)
 		if err != nil {
 			return err
