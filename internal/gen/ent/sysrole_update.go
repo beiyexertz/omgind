@@ -42,14 +42,14 @@ func (sru *SysRoleUpdate) SetNillableIsDel(b *bool) *SysRoleUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (sru *SysRoleUpdate) SetStatus(i int) *SysRoleUpdate {
+func (sru *SysRoleUpdate) SetStatus(i int16) *SysRoleUpdate {
 	sru.mutation.ResetStatus()
 	sru.mutation.SetStatus(i)
 	return sru
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sru *SysRoleUpdate) SetNillableStatus(i *int) *SysRoleUpdate {
+func (sru *SysRoleUpdate) SetNillableStatus(i *int16) *SysRoleUpdate {
 	if i != nil {
 		sru.SetStatus(*i)
 	}
@@ -57,20 +57,20 @@ func (sru *SysRoleUpdate) SetNillableStatus(i *int) *SysRoleUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (sru *SysRoleUpdate) AddStatus(i int) *SysRoleUpdate {
+func (sru *SysRoleUpdate) AddStatus(i int16) *SysRoleUpdate {
 	sru.mutation.AddStatus(i)
 	return sru
 }
 
 // SetSort sets the "sort" field.
-func (sru *SysRoleUpdate) SetSort(i int) *SysRoleUpdate {
+func (sru *SysRoleUpdate) SetSort(i int32) *SysRoleUpdate {
 	sru.mutation.ResetSort()
 	sru.mutation.SetSort(i)
 	return sru
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sru *SysRoleUpdate) SetNillableSort(i *int) *SysRoleUpdate {
+func (sru *SysRoleUpdate) SetNillableSort(i *int32) *SysRoleUpdate {
 	if i != nil {
 		sru.SetSort(*i)
 	}
@@ -78,7 +78,7 @@ func (sru *SysRoleUpdate) SetNillableSort(i *int) *SysRoleUpdate {
 }
 
 // AddSort adds i to the "sort" field.
-func (sru *SysRoleUpdate) AddSort(i int) *SysRoleUpdate {
+func (sru *SysRoleUpdate) AddSort(i int32) *SysRoleUpdate {
 	sru.mutation.AddSort(i)
 	return sru
 }
@@ -242,28 +242,28 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sru.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysrole.FieldStatus,
 		})
 	}
 	if value, ok := sru.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysrole.FieldStatus,
 		})
 	}
 	if value, ok := sru.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysrole.FieldSort,
 		})
 	}
 	if value, ok := sru.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysrole.FieldSort,
 		})
@@ -336,14 +336,14 @@ func (sruo *SysRoleUpdateOne) SetNillableIsDel(b *bool) *SysRoleUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (sruo *SysRoleUpdateOne) SetStatus(i int) *SysRoleUpdateOne {
+func (sruo *SysRoleUpdateOne) SetStatus(i int16) *SysRoleUpdateOne {
 	sruo.mutation.ResetStatus()
 	sruo.mutation.SetStatus(i)
 	return sruo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sruo *SysRoleUpdateOne) SetNillableStatus(i *int) *SysRoleUpdateOne {
+func (sruo *SysRoleUpdateOne) SetNillableStatus(i *int16) *SysRoleUpdateOne {
 	if i != nil {
 		sruo.SetStatus(*i)
 	}
@@ -351,20 +351,20 @@ func (sruo *SysRoleUpdateOne) SetNillableStatus(i *int) *SysRoleUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (sruo *SysRoleUpdateOne) AddStatus(i int) *SysRoleUpdateOne {
+func (sruo *SysRoleUpdateOne) AddStatus(i int16) *SysRoleUpdateOne {
 	sruo.mutation.AddStatus(i)
 	return sruo
 }
 
 // SetSort sets the "sort" field.
-func (sruo *SysRoleUpdateOne) SetSort(i int) *SysRoleUpdateOne {
+func (sruo *SysRoleUpdateOne) SetSort(i int32) *SysRoleUpdateOne {
 	sruo.mutation.ResetSort()
 	sruo.mutation.SetSort(i)
 	return sruo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sruo *SysRoleUpdateOne) SetNillableSort(i *int) *SysRoleUpdateOne {
+func (sruo *SysRoleUpdateOne) SetNillableSort(i *int32) *SysRoleUpdateOne {
 	if i != nil {
 		sruo.SetSort(*i)
 	}
@@ -372,7 +372,7 @@ func (sruo *SysRoleUpdateOne) SetNillableSort(i *int) *SysRoleUpdateOne {
 }
 
 // AddSort adds i to the "sort" field.
-func (sruo *SysRoleUpdateOne) AddSort(i int) *SysRoleUpdateOne {
+func (sruo *SysRoleUpdateOne) AddSort(i int32) *SysRoleUpdateOne {
 	sruo.mutation.AddSort(i)
 	return sruo
 }
@@ -560,28 +560,28 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	}
 	if value, ok := sruo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysrole.FieldStatus,
 		})
 	}
 	if value, ok := sruo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysrole.FieldStatus,
 		})
 	}
 	if value, ok := sruo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysrole.FieldSort,
 		})
 	}
 	if value, ok := sruo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysrole.FieldSort,
 		})

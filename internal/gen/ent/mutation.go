@@ -56,13 +56,13 @@ type SysDictMutation struct {
 	id            *string
 	is_del        *bool
 	memo          *string
-	sort          *int
-	addsort       *int
+	sort          *int32
+	addsort       *int32
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	name_cn       *string
 	name_en       *string
 	clearedFields map[string]struct{}
@@ -229,13 +229,13 @@ func (m *SysDictMutation) ResetMemo() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysDictMutation) SetSort(i int) {
+func (m *SysDictMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysDictMutation) Sort() (r int, exists bool) {
+func (m *SysDictMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -246,7 +246,7 @@ func (m *SysDictMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysDict entity.
 // If the SysDict object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysDictMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -261,7 +261,7 @@ func (m *SysDictMutation) OldSort(ctx context.Context) (v int, err error) {
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysDictMutation) AddSort(i int) {
+func (m *SysDictMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -270,7 +270,7 @@ func (m *SysDictMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysDictMutation) AddedSort() (r int, exists bool) {
+func (m *SysDictMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -406,13 +406,13 @@ func (m *SysDictMutation) ResetDeletedAt() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysDictMutation) SetStatus(i int) {
+func (m *SysDictMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysDictMutation) Status() (r int, exists bool) {
+func (m *SysDictMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -423,7 +423,7 @@ func (m *SysDictMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysDict entity.
 // If the SysDict object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysDictMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -438,7 +438,7 @@ func (m *SysDictMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysDictMutation) AddStatus(i int) {
+func (m *SysDictMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -447,7 +447,7 @@ func (m *SysDictMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysDictMutation) AddedStatus() (r int, exists bool) {
+func (m *SysDictMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -652,7 +652,7 @@ func (m *SysDictMutation) SetField(name string, value ent.Value) error {
 		m.SetMemo(v)
 		return nil
 	case sysdict.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -680,7 +680,7 @@ func (m *SysDictMutation) SetField(name string, value ent.Value) error {
 		m.SetDeletedAt(v)
 		return nil
 	case sysdict.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -736,14 +736,14 @@ func (m *SysDictMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysDictMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysdict.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
 		return nil
 	case sysdict.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -872,8 +872,8 @@ type SysDictItemMutation struct {
 	id            *string
 	is_del        *bool
 	memo          *string
-	sort          *int
-	addsort       *int
+	sort          *int32
+	addsort       *int32
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
@@ -1047,13 +1047,13 @@ func (m *SysDictItemMutation) ResetMemo() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysDictItemMutation) SetSort(i int) {
+func (m *SysDictItemMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysDictItemMutation) Sort() (r int, exists bool) {
+func (m *SysDictItemMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -1064,7 +1064,7 @@ func (m *SysDictItemMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysDictItem entity.
 // If the SysDictItem object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictItemMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysDictItemMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -1079,7 +1079,7 @@ func (m *SysDictItemMutation) OldSort(ctx context.Context) (v int, err error) {
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysDictItemMutation) AddSort(i int) {
+func (m *SysDictItemMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -1088,7 +1088,7 @@ func (m *SysDictItemMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysDictItemMutation) AddedSort() (r int, exists bool) {
+func (m *SysDictItemMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -1533,7 +1533,7 @@ func (m *SysDictItemMutation) SetField(name string, value ent.Value) error {
 		m.SetMemo(v)
 		return nil
 	case sysdictitem.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1629,7 +1629,7 @@ func (m *SysDictItemMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysDictItemMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysdictitem.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1778,8 +1778,8 @@ type SysJwtBlockMutation struct {
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	jwt           *string
 	clearedFields map[string]struct{}
 	done          bool
@@ -2066,13 +2066,13 @@ func (m *SysJwtBlockMutation) ResetDeletedAt() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysJwtBlockMutation) SetStatus(i int) {
+func (m *SysJwtBlockMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysJwtBlockMutation) Status() (r int, exists bool) {
+func (m *SysJwtBlockMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -2083,7 +2083,7 @@ func (m *SysJwtBlockMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysJwtBlock entity.
 // If the SysJwtBlock object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysJwtBlockMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysJwtBlockMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -2098,7 +2098,7 @@ func (m *SysJwtBlockMutation) OldStatus(ctx context.Context) (v int, err error) 
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysJwtBlockMutation) AddStatus(i int) {
+func (m *SysJwtBlockMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -2107,7 +2107,7 @@ func (m *SysJwtBlockMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysJwtBlockMutation) AddedStatus() (r int, exists bool) {
+func (m *SysJwtBlockMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -2283,7 +2283,7 @@ func (m *SysJwtBlockMutation) SetField(name string, value ent.Value) error {
 		m.SetDeletedAt(v)
 		return nil
 	case sysjwtblock.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2327,7 +2327,7 @@ func (m *SysJwtBlockMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysJwtBlockMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysjwtblock.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3305,13 +3305,13 @@ type SysMenuMutation struct {
 	id            *string
 	is_del        *bool
 	memo          *string
-	sort          *int
-	addsort       *int
+	sort          *int32
+	addsort       *int32
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	name          *string
 	icon          *string
 	router        *string
@@ -3482,13 +3482,13 @@ func (m *SysMenuMutation) ResetMemo() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysMenuMutation) SetSort(i int) {
+func (m *SysMenuMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysMenuMutation) Sort() (r int, exists bool) {
+func (m *SysMenuMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -3499,7 +3499,7 @@ func (m *SysMenuMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysMenu entity.
 // If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysMenuMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -3514,7 +3514,7 @@ func (m *SysMenuMutation) OldSort(ctx context.Context) (v int, err error) {
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysMenuMutation) AddSort(i int) {
+func (m *SysMenuMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -3523,7 +3523,7 @@ func (m *SysMenuMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysMenuMutation) AddedSort() (r int, exists bool) {
+func (m *SysMenuMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -3659,13 +3659,13 @@ func (m *SysMenuMutation) ResetDeletedAt() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysMenuMutation) SetStatus(i int) {
+func (m *SysMenuMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysMenuMutation) Status() (r int, exists bool) {
+func (m *SysMenuMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -3676,7 +3676,7 @@ func (m *SysMenuMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysMenu entity.
 // If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysMenuMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -3691,7 +3691,7 @@ func (m *SysMenuMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysMenuMutation) AddStatus(i int) {
+func (m *SysMenuMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -3700,7 +3700,7 @@ func (m *SysMenuMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysMenuMutation) AddedStatus() (r int, exists bool) {
+func (m *SysMenuMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -4103,7 +4103,7 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		m.SetMemo(v)
 		return nil
 	case sysmenu.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4131,7 +4131,7 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		m.SetDeletedAt(v)
 		return nil
 	case sysmenu.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4215,14 +4215,14 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysmenu.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
 		return nil
 	case sysmenu.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4374,10 +4374,10 @@ type SysMenuActionMutation struct {
 	typ           string
 	id            *string
 	is_del        *bool
-	sort          *int
-	addsort       *int
-	status        *int
-	addstatus     *int
+	sort          *int32
+	addsort       *int32
+	status        *int16
+	addstatus     *int16
 	memo          *string
 	created_at    *time.Time
 	updated_at    *time.Time
@@ -4513,13 +4513,13 @@ func (m *SysMenuActionMutation) ResetIsDel() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysMenuActionMutation) SetSort(i int) {
+func (m *SysMenuActionMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysMenuActionMutation) Sort() (r int, exists bool) {
+func (m *SysMenuActionMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -4530,7 +4530,7 @@ func (m *SysMenuActionMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysMenuAction entity.
 // If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuActionMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysMenuActionMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -4545,7 +4545,7 @@ func (m *SysMenuActionMutation) OldSort(ctx context.Context) (v int, err error) 
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysMenuActionMutation) AddSort(i int) {
+func (m *SysMenuActionMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -4554,7 +4554,7 @@ func (m *SysMenuActionMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysMenuActionMutation) AddedSort() (r int, exists bool) {
+func (m *SysMenuActionMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -4569,13 +4569,13 @@ func (m *SysMenuActionMutation) ResetSort() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysMenuActionMutation) SetStatus(i int) {
+func (m *SysMenuActionMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysMenuActionMutation) Status() (r int, exists bool) {
+func (m *SysMenuActionMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -4586,7 +4586,7 @@ func (m *SysMenuActionMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysMenuAction entity.
 // If the SysMenuAction object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuActionMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysMenuActionMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -4601,7 +4601,7 @@ func (m *SysMenuActionMutation) OldStatus(ctx context.Context) (v int, err error
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysMenuActionMutation) AddStatus(i int) {
+func (m *SysMenuActionMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -4610,7 +4610,7 @@ func (m *SysMenuActionMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysMenuActionMutation) AddedStatus() (r int, exists bool) {
+func (m *SysMenuActionMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -5008,14 +5008,14 @@ func (m *SysMenuActionMutation) SetField(name string, value ent.Value) error {
 		m.SetIsDel(v)
 		return nil
 	case sysmenuaction.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSort(v)
 		return nil
 	case sysmenuaction.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5106,14 +5106,14 @@ func (m *SysMenuActionMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysMenuActionMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysmenuaction.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
 		return nil
 	case sysmenuaction.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5244,14 +5244,14 @@ type SysMenuActionResourceMutation struct {
 	typ           string
 	id            *string
 	is_del        *bool
-	sort          *int
-	addsort       *int
+	sort          *int32
+	addsort       *int32
 	memo          *string
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	method        *string
 	_path         *string
 	action_id     *string
@@ -5383,13 +5383,13 @@ func (m *SysMenuActionResourceMutation) ResetIsDel() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysMenuActionResourceMutation) SetSort(i int) {
+func (m *SysMenuActionResourceMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysMenuActionResourceMutation) Sort() (r int, exists bool) {
+func (m *SysMenuActionResourceMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -5400,7 +5400,7 @@ func (m *SysMenuActionResourceMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysMenuActionResource entity.
 // If the SysMenuActionResource object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuActionResourceMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysMenuActionResourceMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -5415,7 +5415,7 @@ func (m *SysMenuActionResourceMutation) OldSort(ctx context.Context) (v int, err
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysMenuActionResourceMutation) AddSort(i int) {
+func (m *SysMenuActionResourceMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -5424,7 +5424,7 @@ func (m *SysMenuActionResourceMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysMenuActionResourceMutation) AddedSort() (r int, exists bool) {
+func (m *SysMenuActionResourceMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -5596,13 +5596,13 @@ func (m *SysMenuActionResourceMutation) ResetDeletedAt() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysMenuActionResourceMutation) SetStatus(i int) {
+func (m *SysMenuActionResourceMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysMenuActionResourceMutation) Status() (r int, exists bool) {
+func (m *SysMenuActionResourceMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -5613,7 +5613,7 @@ func (m *SysMenuActionResourceMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysMenuActionResource entity.
 // If the SysMenuActionResource object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuActionResourceMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysMenuActionResourceMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -5628,7 +5628,7 @@ func (m *SysMenuActionResourceMutation) OldStatus(ctx context.Context) (v int, e
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysMenuActionResourceMutation) AddStatus(i int) {
+func (m *SysMenuActionResourceMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -5637,7 +5637,7 @@ func (m *SysMenuActionResourceMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysMenuActionResourceMutation) AddedStatus() (r int, exists bool) {
+func (m *SysMenuActionResourceMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -5878,7 +5878,7 @@ func (m *SysMenuActionResourceMutation) SetField(name string, value ent.Value) e
 		m.SetIsDel(v)
 		return nil
 	case sysmenuactionresource.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5913,7 +5913,7 @@ func (m *SysMenuActionResourceMutation) SetField(name string, value ent.Value) e
 		m.SetDeletedAt(v)
 		return nil
 	case sysmenuactionresource.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5976,14 +5976,14 @@ func (m *SysMenuActionResourceMutation) AddedField(name string) (ent.Value, bool
 func (m *SysMenuActionResourceMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysmenuactionresource.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
 		return nil
 	case sysmenuactionresource.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -6114,10 +6114,10 @@ type SysRoleMutation struct {
 	typ           string
 	id            *string
 	is_del        *bool
-	status        *int
-	addstatus     *int
-	sort          *int
-	addsort       *int
+	status        *int16
+	addstatus     *int16
+	sort          *int32
+	addsort       *int32
 	memo          *string
 	created_at    *time.Time
 	updated_at    *time.Time
@@ -6251,13 +6251,13 @@ func (m *SysRoleMutation) ResetIsDel() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysRoleMutation) SetStatus(i int) {
+func (m *SysRoleMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysRoleMutation) Status() (r int, exists bool) {
+func (m *SysRoleMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -6268,7 +6268,7 @@ func (m *SysRoleMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysRole entity.
 // If the SysRole object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysRoleMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysRoleMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -6283,7 +6283,7 @@ func (m *SysRoleMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysRoleMutation) AddStatus(i int) {
+func (m *SysRoleMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -6292,7 +6292,7 @@ func (m *SysRoleMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysRoleMutation) AddedStatus() (r int, exists bool) {
+func (m *SysRoleMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -6307,13 +6307,13 @@ func (m *SysRoleMutation) ResetStatus() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysRoleMutation) SetSort(i int) {
+func (m *SysRoleMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysRoleMutation) Sort() (r int, exists bool) {
+func (m *SysRoleMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -6324,7 +6324,7 @@ func (m *SysRoleMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysRole entity.
 // If the SysRole object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysRoleMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysRoleMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -6339,7 +6339,7 @@ func (m *SysRoleMutation) OldSort(ctx context.Context) (v int, err error) {
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysRoleMutation) AddSort(i int) {
+func (m *SysRoleMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -6348,7 +6348,7 @@ func (m *SysRoleMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysRoleMutation) AddedSort() (r int, exists bool) {
+func (m *SysRoleMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -6660,14 +6660,14 @@ func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
 		m.SetIsDel(v)
 		return nil
 	case sysrole.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
 		return nil
 	case sysrole.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -6744,14 +6744,14 @@ func (m *SysRoleMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysRoleMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysrole.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
 		return nil
 	case sysrole.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -7534,13 +7534,13 @@ type SysUserMutation struct {
 	typ           string
 	id            *string
 	is_del        *bool
-	sort          *int
-	addsort       *int
+	sort          *int32
+	addsort       *int32
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	user_name     *string
 	real_name     *string
 	first_name    *string
@@ -7677,13 +7677,13 @@ func (m *SysUserMutation) ResetIsDel() {
 }
 
 // SetSort sets the "sort" field.
-func (m *SysUserMutation) SetSort(i int) {
+func (m *SysUserMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *SysUserMutation) Sort() (r int, exists bool) {
+func (m *SysUserMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -7694,7 +7694,7 @@ func (m *SysUserMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *SysUserMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -7709,7 +7709,7 @@ func (m *SysUserMutation) OldSort(ctx context.Context) (v int, err error) {
 }
 
 // AddSort adds i to the "sort" field.
-func (m *SysUserMutation) AddSort(i int) {
+func (m *SysUserMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -7718,7 +7718,7 @@ func (m *SysUserMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *SysUserMutation) AddedSort() (r int, exists bool) {
+func (m *SysUserMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -7854,13 +7854,13 @@ func (m *SysUserMutation) ResetDeletedAt() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysUserMutation) SetStatus(i int) {
+func (m *SysUserMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysUserMutation) Status() (r int, exists bool) {
+func (m *SysUserMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -7871,7 +7871,7 @@ func (m *SysUserMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysUserMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -7886,7 +7886,7 @@ func (m *SysUserMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysUserMutation) AddStatus(i int) {
+func (m *SysUserMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -7895,7 +7895,7 @@ func (m *SysUserMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysUserMutation) AddedStatus() (r int, exists bool) {
+func (m *SysUserMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -8383,7 +8383,7 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		m.SetIsDel(v)
 		return nil
 	case sysuser.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -8411,7 +8411,7 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		m.SetDeletedAt(v)
 		return nil
 	case sysuser.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -8509,14 +8509,14 @@ func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 func (m *SysUserMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case sysuser.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSort(v)
 		return nil
 	case sysuser.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9263,8 +9263,8 @@ type XxxDemoMutation struct {
 	id            *string
 	is_del        *bool
 	memo          *string
-	sort          *int
-	addsort       *int
+	sort          *int32
+	addsort       *int32
 	created_at    *time.Time
 	updated_at    *time.Time
 	deleted_at    *time.Time
@@ -9436,13 +9436,13 @@ func (m *XxxDemoMutation) ResetMemo() {
 }
 
 // SetSort sets the "sort" field.
-func (m *XxxDemoMutation) SetSort(i int) {
+func (m *XxxDemoMutation) SetSort(i int32) {
 	m.sort = &i
 	m.addsort = nil
 }
 
 // Sort returns the value of the "sort" field in the mutation.
-func (m *XxxDemoMutation) Sort() (r int, exists bool) {
+func (m *XxxDemoMutation) Sort() (r int32, exists bool) {
 	v := m.sort
 	if v == nil {
 		return
@@ -9453,7 +9453,7 @@ func (m *XxxDemoMutation) Sort() (r int, exists bool) {
 // OldSort returns the old "sort" field's value of the XxxDemo entity.
 // If the XxxDemo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *XxxDemoMutation) OldSort(ctx context.Context) (v int, err error) {
+func (m *XxxDemoMutation) OldSort(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldSort is only allowed on UpdateOne operations")
 	}
@@ -9468,7 +9468,7 @@ func (m *XxxDemoMutation) OldSort(ctx context.Context) (v int, err error) {
 }
 
 // AddSort adds i to the "sort" field.
-func (m *XxxDemoMutation) AddSort(i int) {
+func (m *XxxDemoMutation) AddSort(i int32) {
 	if m.addsort != nil {
 		*m.addsort += i
 	} else {
@@ -9477,7 +9477,7 @@ func (m *XxxDemoMutation) AddSort(i int) {
 }
 
 // AddedSort returns the value that was added to the "sort" field in this mutation.
-func (m *XxxDemoMutation) AddedSort() (r int, exists bool) {
+func (m *XxxDemoMutation) AddedSort() (r int32, exists bool) {
 	v := m.addsort
 	if v == nil {
 		return
@@ -9859,7 +9859,7 @@ func (m *XxxDemoMutation) SetField(name string, value ent.Value) error {
 		m.SetMemo(v)
 		return nil
 	case xxxdemo.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9943,7 +9943,7 @@ func (m *XxxDemoMutation) AddedField(name string) (ent.Value, bool) {
 func (m *XxxDemoMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case xxxdemo.FieldSort:
-		v, ok := value.(int)
+		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

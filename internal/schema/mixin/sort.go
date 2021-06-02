@@ -15,7 +15,7 @@ type SortMixin struct {
 
 func (m SortMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("sort").
+		field.Int32("sort").
 			Default(9999).
 			StructTag(`json:"sort,omitempty"`).
 			Comment("排序, 在数据库里的排序"),

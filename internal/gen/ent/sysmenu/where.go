@@ -107,7 +107,7 @@ func Memo(v string) predicate.SysMenu {
 }
 
 // Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
-func Sort(v int) predicate.SysMenu {
+func Sort(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldSort), v))
 	})
@@ -135,7 +135,7 @@ func DeletedAt(v time.Time) predicate.SysMenu {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int) predicate.SysMenu {
+func Status(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
@@ -309,21 +309,21 @@ func MemoContainsFold(v string) predicate.SysMenu {
 }
 
 // SortEQ applies the EQ predicate on the "sort" field.
-func SortEQ(v int) predicate.SysMenu {
+func SortEQ(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldSort), v))
 	})
 }
 
 // SortNEQ applies the NEQ predicate on the "sort" field.
-func SortNEQ(v int) predicate.SysMenu {
+func SortNEQ(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldSort), v))
 	})
 }
 
 // SortIn applies the In predicate on the "sort" field.
-func SortIn(vs ...int) predicate.SysMenu {
+func SortIn(vs ...int32) predicate.SysMenu {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -340,7 +340,7 @@ func SortIn(vs ...int) predicate.SysMenu {
 }
 
 // SortNotIn applies the NotIn predicate on the "sort" field.
-func SortNotIn(vs ...int) predicate.SysMenu {
+func SortNotIn(vs ...int32) predicate.SysMenu {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -357,28 +357,28 @@ func SortNotIn(vs ...int) predicate.SysMenu {
 }
 
 // SortGT applies the GT predicate on the "sort" field.
-func SortGT(v int) predicate.SysMenu {
+func SortGT(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldSort), v))
 	})
 }
 
 // SortGTE applies the GTE predicate on the "sort" field.
-func SortGTE(v int) predicate.SysMenu {
+func SortGTE(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldSort), v))
 	})
 }
 
 // SortLT applies the LT predicate on the "sort" field.
-func SortLT(v int) predicate.SysMenu {
+func SortLT(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldSort), v))
 	})
 }
 
 // SortLTE applies the LTE predicate on the "sort" field.
-func SortLTE(v int) predicate.SysMenu {
+func SortLTE(v int32) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldSort), v))
 	})
@@ -627,21 +627,21 @@ func DeletedAtNotNil() predicate.SysMenu {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int) predicate.SysMenu {
+func StatusEQ(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int) predicate.SysMenu {
+func StatusNEQ(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldStatus), v))
 	})
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int) predicate.SysMenu {
+func StatusIn(vs ...int16) predicate.SysMenu {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -658,7 +658,7 @@ func StatusIn(vs ...int) predicate.SysMenu {
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int) predicate.SysMenu {
+func StatusNotIn(vs ...int16) predicate.SysMenu {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -675,28 +675,28 @@ func StatusNotIn(vs ...int) predicate.SysMenu {
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int) predicate.SysMenu {
+func StatusGT(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldStatus), v))
 	})
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int) predicate.SysMenu {
+func StatusGTE(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldStatus), v))
 	})
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int) predicate.SysMenu {
+func StatusLT(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldStatus), v))
 	})
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int) predicate.SysMenu {
+func StatusLTE(v int16) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldStatus), v))
 	})

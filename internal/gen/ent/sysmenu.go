@@ -24,7 +24,7 @@ type SysMenu struct {
 	Memo string `json:"memo,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int `json:"sort,omitempty"`
+	Sort int32 `json:"sort,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -36,7 +36,7 @@ type SysMenu struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int `json:"status,omitempty"`
+	Status int16 `json:"status,omitempty"`
 	// Name holds the value of the "name" field.
 	// 菜单名称
 	Name string `json:"name,omitempty"`
@@ -107,7 +107,7 @@ func (sm *SysMenu) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				sm.Sort = int(value.Int64)
+				sm.Sort = int32(value.Int64)
 			}
 		case sysmenu.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -132,7 +132,7 @@ func (sm *SysMenu) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sm.Status = int(value.Int64)
+				sm.Status = int16(value.Int64)
 			}
 		case sysmenu.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {

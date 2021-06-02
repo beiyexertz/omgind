@@ -10,11 +10,11 @@ import (
 type CreateSysDictInput struct {
 	IsDel     *bool
 	Memo      *string
-	Sort      *int
+	Sort      *int32
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
-	Status    *int
+	Status    *int16
 	NameCn    string
 	NameEn    string
 }
@@ -56,11 +56,11 @@ func (c *SysDictCreate) SetInput(i CreateSysDictInput) *SysDictCreate {
 type UpdateSysDictInput struct {
 	IsDel          *bool
 	Memo           *string
-	Sort           *int
+	Sort           *int32
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
-	Status         *int
+	Status         *int16
 	NameCn         *string
 	NameEn         *string
 }
@@ -112,7 +112,7 @@ func (u *SysDictUpdateOne) SetInput(i UpdateSysDictInput) *SysDictUpdateOne {
 type CreateSysDictItemInput struct {
 	IsDel     *bool
 	Memo      *string
-	Sort      *int
+	Sort      *int32
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
@@ -158,7 +158,7 @@ func (c *SysDictItemCreate) SetInput(i CreateSysDictItemInput) *SysDictItemCreat
 type UpdateSysDictItemInput struct {
 	IsDel          *bool
 	Memo           *string
-	Sort           *int
+	Sort           *int32
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
@@ -221,7 +221,7 @@ type CreateSysJwtBlockInput struct {
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
-	Status    *int
+	Status    *int16
 	Jwt       string
 }
 
@@ -261,7 +261,7 @@ type UpdateSysJwtBlockInput struct {
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
-	Status         *int
+	Status         *int16
 	Jwt            *string
 }
 
@@ -406,11 +406,11 @@ func (u *SysLoggingUpdateOne) SetInput(i UpdateSysLoggingInput) *SysLoggingUpdat
 type CreateSysMenuInput struct {
 	IsDel      *bool
 	Memo       *string
-	Sort       *int
+	Sort       *int32
 	CreatedAt  *time.Time
 	UpdatedAt  *time.Time
 	DeletedAt  *time.Time
-	Status     *int
+	Status     *int16
 	Name       string
 	Icon       string
 	Router     string
@@ -466,11 +466,11 @@ func (c *SysMenuCreate) SetInput(i CreateSysMenuInput) *SysMenuCreate {
 type UpdateSysMenuInput struct {
 	IsDel           *bool
 	Memo            *string
-	Sort            *int
+	Sort            *int32
 	UpdatedAt       *time.Time
 	DeletedAt       *time.Time
 	ClearDeletedAt  bool
-	Status          *int
+	Status          *int16
 	Name            *string
 	Icon            *string
 	Router          *string
@@ -545,8 +545,8 @@ func (u *SysMenuUpdateOne) SetInput(i UpdateSysMenuInput) *SysMenuUpdateOne {
 // CreateSysMenuActionInput represents a mutation input for creating sysmenuactions.
 type CreateSysMenuActionInput struct {
 	IsDel     *bool
-	Sort      *int
-	Status    *int
+	Sort      *int32
+	Status    *int16
 	Memo      *string
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
@@ -593,8 +593,8 @@ func (c *SysMenuActionCreate) SetInput(i CreateSysMenuActionInput) *SysMenuActio
 // UpdateSysMenuActionInput represents a mutation input for updating sysmenuactions.
 type UpdateSysMenuActionInput struct {
 	IsDel          *bool
-	Sort           *int
-	Status         *int
+	Sort           *int32
+	Status         *int16
 	Memo           *string
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
@@ -653,12 +653,12 @@ func (u *SysMenuActionUpdateOne) SetInput(i UpdateSysMenuActionInput) *SysMenuAc
 // CreateSysMenuActionResourceInput represents a mutation input for creating sysmenuactionresources.
 type CreateSysMenuActionResourceInput struct {
 	IsDel     *bool
-	Sort      *int
+	Sort      *int32
 	Memo      *string
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
-	Status    *int
+	Status    *int16
 	Method    string
 	Path      string
 	ActionID  string
@@ -701,12 +701,12 @@ func (c *SysMenuActionResourceCreate) SetInput(i CreateSysMenuActionResourceInpu
 // UpdateSysMenuActionResourceInput represents a mutation input for updating sysmenuactionresources.
 type UpdateSysMenuActionResourceInput struct {
 	IsDel          *bool
-	Sort           *int
+	Sort           *int32
 	Memo           *string
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
-	Status         *int
+	Status         *int16
 	Method         *string
 	Path           *string
 	ActionID       *string
@@ -761,8 +761,8 @@ func (u *SysMenuActionResourceUpdateOne) SetInput(i UpdateSysMenuActionResourceI
 // CreateSysRoleInput represents a mutation input for creating sysroles.
 type CreateSysRoleInput struct {
 	IsDel     *bool
-	Status    *int
-	Sort      *int
+	Status    *int16
+	Sort      *int32
 	Memo      *string
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
@@ -805,8 +805,8 @@ func (c *SysRoleCreate) SetInput(i CreateSysRoleInput) *SysRoleCreate {
 // UpdateSysRoleInput represents a mutation input for updating sysroles.
 type UpdateSysRoleInput struct {
 	IsDel          *bool
-	Status         *int
-	Sort           *int
+	Status         *int16
+	Sort           *int32
 	Memo           *string
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
@@ -947,11 +947,11 @@ func (u *SysRoleMenuUpdateOne) SetInput(i UpdateSysRoleMenuInput) *SysRoleMenuUp
 // CreateSysUserInput represents a mutation input for creating sysusers.
 type CreateSysUserInput struct {
 	IsDel     *bool
-	Sort      *int
+	Sort      *int32
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
-	Status    *int
+	Status    *int16
 	UserName  string
 	RealName  *string
 	FirstName *string
@@ -1009,11 +1009,11 @@ func (c *SysUserCreate) SetInput(i CreateSysUserInput) *SysUserCreate {
 // UpdateSysUserInput represents a mutation input for updating sysusers.
 type UpdateSysUserInput struct {
 	IsDel          *bool
-	Sort           *int
+	Sort           *int32
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool
-	Status         *int
+	Status         *int16
 	RealName       *string
 	ClearRealName  bool
 	FirstName      *string
@@ -1172,7 +1172,7 @@ func (u *SysUserRoleUpdateOne) SetInput(i UpdateSysUserRoleInput) *SysUserRoleUp
 type CreateXxxDemoInput struct {
 	IsDel     *bool
 	Memo      *string
-	Sort      *int
+	Sort      *int32
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
 	DeletedAt *time.Time
@@ -1218,7 +1218,7 @@ func (c *XxxDemoCreate) SetInput(i CreateXxxDemoInput) *XxxDemoCreate {
 type UpdateXxxDemoInput struct {
 	IsDel          *bool
 	Memo           *string
-	Sort           *int
+	Sort           *int32
 	UpdatedAt      *time.Time
 	DeletedAt      *time.Time
 	ClearDeletedAt bool

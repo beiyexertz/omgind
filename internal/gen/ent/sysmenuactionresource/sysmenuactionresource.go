@@ -64,7 +64,7 @@ var (
 	// DefaultIsDel holds the default value on creation for the "is_del" field.
 	DefaultIsDel bool
 	// DefaultSort holds the default value on creation for the "sort" field.
-	DefaultSort int
+	DefaultSort int32
 	// DefaultMemo holds the default value on creation for the "memo" field.
 	DefaultMemo string
 	// MemoValidator is a validator for the "memo" field. It is called by the builders before save.
@@ -76,7 +76,7 @@ var (
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int
+	DefaultStatus int16
 	// MethodValidator is a validator for the "method" field. It is called by the builders before save.
 	MethodValidator func(string) error
 	// PathValidator is a validator for the "path" field. It is called by the builders before save.

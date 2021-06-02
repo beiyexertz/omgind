@@ -42,14 +42,14 @@ func (smau *SysMenuActionUpdate) SetNillableIsDel(b *bool) *SysMenuActionUpdate 
 }
 
 // SetSort sets the "sort" field.
-func (smau *SysMenuActionUpdate) SetSort(i int) *SysMenuActionUpdate {
+func (smau *SysMenuActionUpdate) SetSort(i int32) *SysMenuActionUpdate {
 	smau.mutation.ResetSort()
 	smau.mutation.SetSort(i)
 	return smau
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smau *SysMenuActionUpdate) SetNillableSort(i *int) *SysMenuActionUpdate {
+func (smau *SysMenuActionUpdate) SetNillableSort(i *int32) *SysMenuActionUpdate {
 	if i != nil {
 		smau.SetSort(*i)
 	}
@@ -57,20 +57,20 @@ func (smau *SysMenuActionUpdate) SetNillableSort(i *int) *SysMenuActionUpdate {
 }
 
 // AddSort adds i to the "sort" field.
-func (smau *SysMenuActionUpdate) AddSort(i int) *SysMenuActionUpdate {
+func (smau *SysMenuActionUpdate) AddSort(i int32) *SysMenuActionUpdate {
 	smau.mutation.AddSort(i)
 	return smau
 }
 
 // SetStatus sets the "status" field.
-func (smau *SysMenuActionUpdate) SetStatus(i int) *SysMenuActionUpdate {
+func (smau *SysMenuActionUpdate) SetStatus(i int16) *SysMenuActionUpdate {
 	smau.mutation.ResetStatus()
 	smau.mutation.SetStatus(i)
 	return smau
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smau *SysMenuActionUpdate) SetNillableStatus(i *int) *SysMenuActionUpdate {
+func (smau *SysMenuActionUpdate) SetNillableStatus(i *int16) *SysMenuActionUpdate {
 	if i != nil {
 		smau.SetStatus(*i)
 	}
@@ -78,7 +78,7 @@ func (smau *SysMenuActionUpdate) SetNillableStatus(i *int) *SysMenuActionUpdate 
 }
 
 // AddStatus adds i to the "status" field.
-func (smau *SysMenuActionUpdate) AddStatus(i int) *SysMenuActionUpdate {
+func (smau *SysMenuActionUpdate) AddStatus(i int16) *SysMenuActionUpdate {
 	smau.mutation.AddStatus(i)
 	return smau
 }
@@ -264,28 +264,28 @@ func (smau *SysMenuActionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if value, ok := smau.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysmenuaction.FieldSort,
 		})
 	}
 	if value, ok := smau.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysmenuaction.FieldSort,
 		})
 	}
 	if value, ok := smau.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysmenuaction.FieldStatus,
 		})
 	}
 	if value, ok := smau.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysmenuaction.FieldStatus,
 		})
@@ -372,14 +372,14 @@ func (smauo *SysMenuActionUpdateOne) SetNillableIsDel(b *bool) *SysMenuActionUpd
 }
 
 // SetSort sets the "sort" field.
-func (smauo *SysMenuActionUpdateOne) SetSort(i int) *SysMenuActionUpdateOne {
+func (smauo *SysMenuActionUpdateOne) SetSort(i int32) *SysMenuActionUpdateOne {
 	smauo.mutation.ResetSort()
 	smauo.mutation.SetSort(i)
 	return smauo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (smauo *SysMenuActionUpdateOne) SetNillableSort(i *int) *SysMenuActionUpdateOne {
+func (smauo *SysMenuActionUpdateOne) SetNillableSort(i *int32) *SysMenuActionUpdateOne {
 	if i != nil {
 		smauo.SetSort(*i)
 	}
@@ -387,20 +387,20 @@ func (smauo *SysMenuActionUpdateOne) SetNillableSort(i *int) *SysMenuActionUpdat
 }
 
 // AddSort adds i to the "sort" field.
-func (smauo *SysMenuActionUpdateOne) AddSort(i int) *SysMenuActionUpdateOne {
+func (smauo *SysMenuActionUpdateOne) AddSort(i int32) *SysMenuActionUpdateOne {
 	smauo.mutation.AddSort(i)
 	return smauo
 }
 
 // SetStatus sets the "status" field.
-func (smauo *SysMenuActionUpdateOne) SetStatus(i int) *SysMenuActionUpdateOne {
+func (smauo *SysMenuActionUpdateOne) SetStatus(i int16) *SysMenuActionUpdateOne {
 	smauo.mutation.ResetStatus()
 	smauo.mutation.SetStatus(i)
 	return smauo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (smauo *SysMenuActionUpdateOne) SetNillableStatus(i *int) *SysMenuActionUpdateOne {
+func (smauo *SysMenuActionUpdateOne) SetNillableStatus(i *int16) *SysMenuActionUpdateOne {
 	if i != nil {
 		smauo.SetStatus(*i)
 	}
@@ -408,7 +408,7 @@ func (smauo *SysMenuActionUpdateOne) SetNillableStatus(i *int) *SysMenuActionUpd
 }
 
 // AddStatus adds i to the "status" field.
-func (smauo *SysMenuActionUpdateOne) AddStatus(i int) *SysMenuActionUpdateOne {
+func (smauo *SysMenuActionUpdateOne) AddStatus(i int16) *SysMenuActionUpdateOne {
 	smauo.mutation.AddStatus(i)
 	return smauo
 }
@@ -618,28 +618,28 @@ func (smauo *SysMenuActionUpdateOne) sqlSave(ctx context.Context) (_node *SysMen
 	}
 	if value, ok := smauo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysmenuaction.FieldSort,
 		})
 	}
 	if value, ok := smauo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysmenuaction.FieldSort,
 		})
 	}
 	if value, ok := smauo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysmenuaction.FieldStatus,
 		})
 	}
 	if value, ok := smauo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysmenuaction.FieldStatus,
 		})

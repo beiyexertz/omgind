@@ -56,14 +56,14 @@ func (sdu *SysDictUpdate) SetNillableMemo(s *string) *SysDictUpdate {
 }
 
 // SetSort sets the "sort" field.
-func (sdu *SysDictUpdate) SetSort(i int) *SysDictUpdate {
+func (sdu *SysDictUpdate) SetSort(i int32) *SysDictUpdate {
 	sdu.mutation.ResetSort()
 	sdu.mutation.SetSort(i)
 	return sdu
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sdu *SysDictUpdate) SetNillableSort(i *int) *SysDictUpdate {
+func (sdu *SysDictUpdate) SetNillableSort(i *int32) *SysDictUpdate {
 	if i != nil {
 		sdu.SetSort(*i)
 	}
@@ -71,7 +71,7 @@ func (sdu *SysDictUpdate) SetNillableSort(i *int) *SysDictUpdate {
 }
 
 // AddSort adds i to the "sort" field.
-func (sdu *SysDictUpdate) AddSort(i int) *SysDictUpdate {
+func (sdu *SysDictUpdate) AddSort(i int32) *SysDictUpdate {
 	sdu.mutation.AddSort(i)
 	return sdu
 }
@@ -103,14 +103,14 @@ func (sdu *SysDictUpdate) ClearDeletedAt() *SysDictUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (sdu *SysDictUpdate) SetStatus(i int) *SysDictUpdate {
+func (sdu *SysDictUpdate) SetStatus(i int16) *SysDictUpdate {
 	sdu.mutation.ResetStatus()
 	sdu.mutation.SetStatus(i)
 	return sdu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sdu *SysDictUpdate) SetNillableStatus(i *int) *SysDictUpdate {
+func (sdu *SysDictUpdate) SetNillableStatus(i *int16) *SysDictUpdate {
 	if i != nil {
 		sdu.SetStatus(*i)
 	}
@@ -118,7 +118,7 @@ func (sdu *SysDictUpdate) SetNillableStatus(i *int) *SysDictUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (sdu *SysDictUpdate) AddStatus(i int) *SysDictUpdate {
+func (sdu *SysDictUpdate) AddStatus(i int16) *SysDictUpdate {
 	sdu.mutation.AddStatus(i)
 	return sdu
 }
@@ -260,14 +260,14 @@ func (sdu *SysDictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sdu.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdict.FieldSort,
 		})
 	}
 	if value, ok := sdu.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdict.FieldSort,
 		})
@@ -294,14 +294,14 @@ func (sdu *SysDictUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sdu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})
 	}
 	if value, ok := sdu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})
@@ -368,14 +368,14 @@ func (sduo *SysDictUpdateOne) SetNillableMemo(s *string) *SysDictUpdateOne {
 }
 
 // SetSort sets the "sort" field.
-func (sduo *SysDictUpdateOne) SetSort(i int) *SysDictUpdateOne {
+func (sduo *SysDictUpdateOne) SetSort(i int32) *SysDictUpdateOne {
 	sduo.mutation.ResetSort()
 	sduo.mutation.SetSort(i)
 	return sduo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sduo *SysDictUpdateOne) SetNillableSort(i *int) *SysDictUpdateOne {
+func (sduo *SysDictUpdateOne) SetNillableSort(i *int32) *SysDictUpdateOne {
 	if i != nil {
 		sduo.SetSort(*i)
 	}
@@ -383,7 +383,7 @@ func (sduo *SysDictUpdateOne) SetNillableSort(i *int) *SysDictUpdateOne {
 }
 
 // AddSort adds i to the "sort" field.
-func (sduo *SysDictUpdateOne) AddSort(i int) *SysDictUpdateOne {
+func (sduo *SysDictUpdateOne) AddSort(i int32) *SysDictUpdateOne {
 	sduo.mutation.AddSort(i)
 	return sduo
 }
@@ -415,14 +415,14 @@ func (sduo *SysDictUpdateOne) ClearDeletedAt() *SysDictUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (sduo *SysDictUpdateOne) SetStatus(i int) *SysDictUpdateOne {
+func (sduo *SysDictUpdateOne) SetStatus(i int16) *SysDictUpdateOne {
 	sduo.mutation.ResetStatus()
 	sduo.mutation.SetStatus(i)
 	return sduo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sduo *SysDictUpdateOne) SetNillableStatus(i *int) *SysDictUpdateOne {
+func (sduo *SysDictUpdateOne) SetNillableStatus(i *int16) *SysDictUpdateOne {
 	if i != nil {
 		sduo.SetStatus(*i)
 	}
@@ -430,7 +430,7 @@ func (sduo *SysDictUpdateOne) SetNillableStatus(i *int) *SysDictUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (sduo *SysDictUpdateOne) AddStatus(i int) *SysDictUpdateOne {
+func (sduo *SysDictUpdateOne) AddStatus(i int16) *SysDictUpdateOne {
 	sduo.mutation.AddStatus(i)
 	return sduo
 }
@@ -596,14 +596,14 @@ func (sduo *SysDictUpdateOne) sqlSave(ctx context.Context) (_node *SysDict, err 
 	}
 	if value, ok := sduo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdict.FieldSort,
 		})
 	}
 	if value, ok := sduo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdict.FieldSort,
 		})
@@ -630,14 +630,14 @@ func (sduo *SysDictUpdateOne) sqlSave(ctx context.Context) (_node *SysDict, err 
 	}
 	if value, ok := sduo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})
 	}
 	if value, ok := sduo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})

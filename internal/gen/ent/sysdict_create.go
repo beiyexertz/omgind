@@ -49,13 +49,13 @@ func (sdc *SysDictCreate) SetNillableMemo(s *string) *SysDictCreate {
 }
 
 // SetSort sets the "sort" field.
-func (sdc *SysDictCreate) SetSort(i int) *SysDictCreate {
+func (sdc *SysDictCreate) SetSort(i int32) *SysDictCreate {
 	sdc.mutation.SetSort(i)
 	return sdc
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sdc *SysDictCreate) SetNillableSort(i *int) *SysDictCreate {
+func (sdc *SysDictCreate) SetNillableSort(i *int32) *SysDictCreate {
 	if i != nil {
 		sdc.SetSort(*i)
 	}
@@ -105,13 +105,13 @@ func (sdc *SysDictCreate) SetNillableDeletedAt(t *time.Time) *SysDictCreate {
 }
 
 // SetStatus sets the "status" field.
-func (sdc *SysDictCreate) SetStatus(i int) *SysDictCreate {
+func (sdc *SysDictCreate) SetStatus(i int16) *SysDictCreate {
 	sdc.mutation.SetStatus(i)
 	return sdc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sdc *SysDictCreate) SetNillableStatus(i *int) *SysDictCreate {
+func (sdc *SysDictCreate) SetNillableStatus(i *int16) *SysDictCreate {
 	if i != nil {
 		sdc.SetStatus(*i)
 	}
@@ -319,7 +319,7 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := sdc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdict.FieldSort,
 		})
@@ -351,7 +351,7 @@ func (sdc *SysDictCreate) createSpec() (*SysDict, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := sdc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysdict.FieldStatus,
 		})

@@ -24,7 +24,7 @@ type XxxDemo struct {
 	Memo string `json:"memo,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int `json:"sort,omitempty"`
+	Sort int32 `json:"sort,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -95,7 +95,7 @@ func (xd *XxxDemo) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				xd.Sort = int(value.Int64)
+				xd.Sort = int32(value.Int64)
 			}
 		case xxxdemo.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {

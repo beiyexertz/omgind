@@ -21,7 +21,7 @@ type SysMenuActionResource struct {
 	IsDel bool `json:"is_del,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int `json:"sort,omitempty"`
+	Sort int32 `json:"sort,omitempty"`
 	// Memo holds the value of the "memo" field.
 	// 备注
 	Memo string `json:"memo,omitempty"`
@@ -36,7 +36,7 @@ type SysMenuActionResource struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int `json:"status,omitempty"`
+	Status int16 `json:"status,omitempty"`
 	// Method holds the value of the "method" field.
 	// 资源HTTP请求方式(支持正则, get, delete, delete, put, patch )
 	Method string `json:"method,omitempty"`
@@ -92,7 +92,7 @@ func (smar *SysMenuActionResource) assignValues(columns []string, values []inter
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				smar.Sort = int(value.Int64)
+				smar.Sort = int32(value.Int64)
 			}
 		case sysmenuactionresource.FieldMemo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -123,7 +123,7 @@ func (smar *SysMenuActionResource) assignValues(columns []string, values []inter
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				smar.Status = int(value.Int64)
+				smar.Status = int16(value.Int64)
 			}
 		case sysmenuactionresource.FieldMethod:
 			if value, ok := values[i].(*sql.NullString); !ok {

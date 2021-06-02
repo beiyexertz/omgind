@@ -50,7 +50,7 @@ func init() {
 	// sysdictDescSort is the schema descriptor for sort field.
 	sysdictDescSort := sysdictMixinFields2[0].Descriptor()
 	// sysdict.DefaultSort holds the default value on creation for the sort field.
-	sysdict.DefaultSort = sysdictDescSort.Default.(int)
+	sysdict.DefaultSort = sysdictDescSort.Default.(int32)
 	// sysdictDescCreatedAt is the schema descriptor for created_at field.
 	sysdictDescCreatedAt := sysdictMixinFields3[0].Descriptor()
 	// sysdict.DefaultCreatedAt holds the default value on creation for the created_at field.
@@ -64,7 +64,7 @@ func init() {
 	// sysdictDescStatus is the schema descriptor for status field.
 	sysdictDescStatus := sysdictMixinFields4[0].Descriptor()
 	// sysdict.DefaultStatus holds the default value on creation for the status field.
-	sysdict.DefaultStatus = sysdictDescStatus.Default.(int)
+	sysdict.DefaultStatus = sysdictDescStatus.Default.(int16)
 	// sysdictDescNameCn is the schema descriptor for name_cn field.
 	sysdictDescNameCn := sysdictFields[0].Descriptor()
 	// sysdict.NameCnValidator is a validator for the "name_cn" field. It is called by the builders before save.
@@ -117,7 +117,7 @@ func init() {
 	// sysdictitemDescSort is the schema descriptor for sort field.
 	sysdictitemDescSort := sysdictitemMixinFields2[0].Descriptor()
 	// sysdictitem.DefaultSort holds the default value on creation for the sort field.
-	sysdictitem.DefaultSort = sysdictitemDescSort.Default.(int)
+	sysdictitem.DefaultSort = sysdictitemDescSort.Default.(int32)
 	// sysdictitemDescCreatedAt is the schema descriptor for created_at field.
 	sysdictitemDescCreatedAt := sysdictitemMixinFields3[0].Descriptor()
 	// sysdictitem.DefaultCreatedAt holds the default value on creation for the created_at field.
@@ -204,7 +204,7 @@ func init() {
 	// sysjwtblockDescStatus is the schema descriptor for status field.
 	sysjwtblockDescStatus := sysjwtblockMixinFields3[0].Descriptor()
 	// sysjwtblock.DefaultStatus holds the default value on creation for the status field.
-	sysjwtblock.DefaultStatus = sysjwtblockDescStatus.Default.(int)
+	sysjwtblock.DefaultStatus = sysjwtblockDescStatus.Default.(int16)
 	// sysjwtblockDescJwt is the schema descriptor for jwt field.
 	sysjwtblockDescJwt := sysjwtblockFields[0].Descriptor()
 	// sysjwtblock.JwtValidator is a validator for the "jwt" field. It is called by the builders before save.
@@ -316,7 +316,7 @@ func init() {
 	// sysmenuDescSort is the schema descriptor for sort field.
 	sysmenuDescSort := sysmenuMixinFields2[0].Descriptor()
 	// sysmenu.DefaultSort holds the default value on creation for the sort field.
-	sysmenu.DefaultSort = sysmenuDescSort.Default.(int)
+	sysmenu.DefaultSort = sysmenuDescSort.Default.(int32)
 	// sysmenuDescCreatedAt is the schema descriptor for created_at field.
 	sysmenuDescCreatedAt := sysmenuMixinFields3[0].Descriptor()
 	// sysmenu.DefaultCreatedAt holds the default value on creation for the created_at field.
@@ -330,7 +330,7 @@ func init() {
 	// sysmenuDescStatus is the schema descriptor for status field.
 	sysmenuDescStatus := sysmenuMixinFields4[0].Descriptor()
 	// sysmenu.DefaultStatus holds the default value on creation for the status field.
-	sysmenu.DefaultStatus = sysmenuDescStatus.Default.(int)
+	sysmenu.DefaultStatus = sysmenuDescStatus.Default.(int16)
 	// sysmenuDescName is the schema descriptor for name field.
 	sysmenuDescName := sysmenuFields[0].Descriptor()
 	// sysmenu.NameValidator is a validator for the "name" field. It is called by the builders before save.
@@ -409,11 +409,11 @@ func init() {
 	// sysmenuactionDescSort is the schema descriptor for sort field.
 	sysmenuactionDescSort := sysmenuactionMixinFields1[0].Descriptor()
 	// sysmenuaction.DefaultSort holds the default value on creation for the sort field.
-	sysmenuaction.DefaultSort = sysmenuactionDescSort.Default.(int)
+	sysmenuaction.DefaultSort = sysmenuactionDescSort.Default.(int32)
 	// sysmenuactionDescStatus is the schema descriptor for status field.
 	sysmenuactionDescStatus := sysmenuactionMixinFields2[0].Descriptor()
 	// sysmenuaction.DefaultStatus holds the default value on creation for the status field.
-	sysmenuaction.DefaultStatus = sysmenuactionDescStatus.Default.(int)
+	sysmenuaction.DefaultStatus = sysmenuactionDescStatus.Default.(int16)
 	// sysmenuactionDescMemo is the schema descriptor for memo field.
 	sysmenuactionDescMemo := sysmenuactionMixinFields3[0].Descriptor()
 	// sysmenuaction.DefaultMemo holds the default value on creation for the memo field.
@@ -524,7 +524,7 @@ func init() {
 	// sysmenuactionresourceDescSort is the schema descriptor for sort field.
 	sysmenuactionresourceDescSort := sysmenuactionresourceMixinFields1[0].Descriptor()
 	// sysmenuactionresource.DefaultSort holds the default value on creation for the sort field.
-	sysmenuactionresource.DefaultSort = sysmenuactionresourceDescSort.Default.(int)
+	sysmenuactionresource.DefaultSort = sysmenuactionresourceDescSort.Default.(int32)
 	// sysmenuactionresourceDescMemo is the schema descriptor for memo field.
 	sysmenuactionresourceDescMemo := sysmenuactionresourceMixinFields2[0].Descriptor()
 	// sysmenuactionresource.DefaultMemo holds the default value on creation for the memo field.
@@ -544,7 +544,7 @@ func init() {
 	// sysmenuactionresourceDescStatus is the schema descriptor for status field.
 	sysmenuactionresourceDescStatus := sysmenuactionresourceMixinFields4[0].Descriptor()
 	// sysmenuactionresource.DefaultStatus holds the default value on creation for the status field.
-	sysmenuactionresource.DefaultStatus = sysmenuactionresourceDescStatus.Default.(int)
+	sysmenuactionresource.DefaultStatus = sysmenuactionresourceDescStatus.Default.(int16)
 	// sysmenuactionresourceDescMethod is the schema descriptor for method field.
 	sysmenuactionresourceDescMethod := sysmenuactionresourceFields[0].Descriptor()
 	// sysmenuactionresource.MethodValidator is a validator for the "method" field. It is called by the builders before save.
@@ -639,11 +639,11 @@ func init() {
 	// sysroleDescStatus is the schema descriptor for status field.
 	sysroleDescStatus := sysroleMixinFields1[0].Descriptor()
 	// sysrole.DefaultStatus holds the default value on creation for the status field.
-	sysrole.DefaultStatus = sysroleDescStatus.Default.(int)
+	sysrole.DefaultStatus = sysroleDescStatus.Default.(int16)
 	// sysroleDescSort is the schema descriptor for sort field.
 	sysroleDescSort := sysroleMixinFields2[0].Descriptor()
 	// sysrole.DefaultSort holds the default value on creation for the sort field.
-	sysrole.DefaultSort = sysroleDescSort.Default.(int)
+	sysrole.DefaultSort = sysroleDescSort.Default.(int32)
 	// sysroleDescMemo is the schema descriptor for memo field.
 	sysroleDescMemo := sysroleMixinFields3[0].Descriptor()
 	// sysrole.DefaultMemo holds the default value on creation for the memo field.
@@ -798,7 +798,7 @@ func init() {
 	// sysuserDescSort is the schema descriptor for sort field.
 	sysuserDescSort := sysuserMixinFields1[0].Descriptor()
 	// sysuser.DefaultSort holds the default value on creation for the sort field.
-	sysuser.DefaultSort = sysuserDescSort.Default.(int)
+	sysuser.DefaultSort = sysuserDescSort.Default.(int32)
 	// sysuserDescCreatedAt is the schema descriptor for created_at field.
 	sysuserDescCreatedAt := sysuserMixinFields2[0].Descriptor()
 	// sysuser.DefaultCreatedAt holds the default value on creation for the created_at field.
@@ -812,7 +812,7 @@ func init() {
 	// sysuserDescStatus is the schema descriptor for status field.
 	sysuserDescStatus := sysuserMixinFields3[0].Descriptor()
 	// sysuser.DefaultStatus holds the default value on creation for the status field.
-	sysuser.DefaultStatus = sysuserDescStatus.Default.(int)
+	sysuser.DefaultStatus = sysuserDescStatus.Default.(int16)
 	// sysuserDescUserName is the schema descriptor for user_name field.
 	sysuserDescUserName := sysuserFields[0].Descriptor()
 	// sysuser.UserNameValidator is a validator for the "user_name" field. It is called by the builders before save.
@@ -981,7 +981,7 @@ func init() {
 	// xxxdemoDescSort is the schema descriptor for sort field.
 	xxxdemoDescSort := xxxdemoMixinFields2[0].Descriptor()
 	// xxxdemo.DefaultSort holds the default value on creation for the sort field.
-	xxxdemo.DefaultSort = xxxdemoDescSort.Default.(int)
+	xxxdemo.DefaultSort = xxxdemoDescSort.Default.(int32)
 	// xxxdemoDescCreatedAt is the schema descriptor for created_at field.
 	xxxdemoDescCreatedAt := xxxdemoMixinFields3[0].Descriptor()
 	// xxxdemo.DefaultCreatedAt holds the default value on creation for the created_at field.

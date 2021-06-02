@@ -49,13 +49,13 @@ func (xdc *XxxDemoCreate) SetNillableMemo(s *string) *XxxDemoCreate {
 }
 
 // SetSort sets the "sort" field.
-func (xdc *XxxDemoCreate) SetSort(i int) *XxxDemoCreate {
+func (xdc *XxxDemoCreate) SetSort(i int32) *XxxDemoCreate {
 	xdc.mutation.SetSort(i)
 	return xdc
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (xdc *XxxDemoCreate) SetNillableSort(i *int) *XxxDemoCreate {
+func (xdc *XxxDemoCreate) SetNillableSort(i *int32) *XxxDemoCreate {
 	if i != nil {
 		xdc.SetSort(*i)
 	}
@@ -319,7 +319,7 @@ func (xdc *XxxDemoCreate) createSpec() (*XxxDemo, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := xdc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: xxxdemo.FieldSort,
 		})

@@ -24,7 +24,7 @@ type SysDict struct {
 	Memo string `json:"memo,omitempty"`
 	// Sort holds the value of the "sort" field.
 	// 排序, 在数据库里的排序
-	Sort int `json:"sort,omitempty"`
+	Sort int32 `json:"sort,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	// 创建时间,由程序自动生成
 	CreatedAt time.Time `json:"created_at,omitempty"`
@@ -36,7 +36,7 @@ type SysDict struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int `json:"status,omitempty"`
+	Status int16 `json:"status,omitempty"`
 	// NameCn holds the value of the "name_cn" field.
 	// 字典名（中）
 	NameCn string `json:"name_cn,omitempty"`
@@ -95,7 +95,7 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
-				sd.Sort = int(value.Int64)
+				sd.Sort = int32(value.Int64)
 			}
 		case sysdict.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -120,7 +120,7 @@ func (sd *SysDict) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sd.Status = int(value.Int64)
+				sd.Status = int16(value.Int64)
 			}
 		case sysdict.FieldNameCn:
 			if value, ok := values[i].(*sql.NullString); !ok {

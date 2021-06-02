@@ -56,14 +56,14 @@ func (xdu *XxxDemoUpdate) SetNillableMemo(s *string) *XxxDemoUpdate {
 }
 
 // SetSort sets the "sort" field.
-func (xdu *XxxDemoUpdate) SetSort(i int) *XxxDemoUpdate {
+func (xdu *XxxDemoUpdate) SetSort(i int32) *XxxDemoUpdate {
 	xdu.mutation.ResetSort()
 	xdu.mutation.SetSort(i)
 	return xdu
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (xdu *XxxDemoUpdate) SetNillableSort(i *int) *XxxDemoUpdate {
+func (xdu *XxxDemoUpdate) SetNillableSort(i *int32) *XxxDemoUpdate {
 	if i != nil {
 		xdu.SetSort(*i)
 	}
@@ -71,7 +71,7 @@ func (xdu *XxxDemoUpdate) SetNillableSort(i *int) *XxxDemoUpdate {
 }
 
 // AddSort adds i to the "sort" field.
-func (xdu *XxxDemoUpdate) AddSort(i int) *XxxDemoUpdate {
+func (xdu *XxxDemoUpdate) AddSort(i int32) *XxxDemoUpdate {
 	xdu.mutation.AddSort(i)
 	return xdu
 }
@@ -260,14 +260,14 @@ func (xdu *XxxDemoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := xdu.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: xxxdemo.FieldSort,
 		})
 	}
 	if value, ok := xdu.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: xxxdemo.FieldSort,
 		})
@@ -368,14 +368,14 @@ func (xduo *XxxDemoUpdateOne) SetNillableMemo(s *string) *XxxDemoUpdateOne {
 }
 
 // SetSort sets the "sort" field.
-func (xduo *XxxDemoUpdateOne) SetSort(i int) *XxxDemoUpdateOne {
+func (xduo *XxxDemoUpdateOne) SetSort(i int32) *XxxDemoUpdateOne {
 	xduo.mutation.ResetSort()
 	xduo.mutation.SetSort(i)
 	return xduo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (xduo *XxxDemoUpdateOne) SetNillableSort(i *int) *XxxDemoUpdateOne {
+func (xduo *XxxDemoUpdateOne) SetNillableSort(i *int32) *XxxDemoUpdateOne {
 	if i != nil {
 		xduo.SetSort(*i)
 	}
@@ -383,7 +383,7 @@ func (xduo *XxxDemoUpdateOne) SetNillableSort(i *int) *XxxDemoUpdateOne {
 }
 
 // AddSort adds i to the "sort" field.
-func (xduo *XxxDemoUpdateOne) AddSort(i int) *XxxDemoUpdateOne {
+func (xduo *XxxDemoUpdateOne) AddSort(i int32) *XxxDemoUpdateOne {
 	xduo.mutation.AddSort(i)
 	return xduo
 }
@@ -596,14 +596,14 @@ func (xduo *XxxDemoUpdateOne) sqlSave(ctx context.Context) (_node *XxxDemo, err 
 	}
 	if value, ok := xduo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: xxxdemo.FieldSort,
 		})
 	}
 	if value, ok := xduo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: xxxdemo.FieldSort,
 		})

@@ -56,14 +56,14 @@ func (sdiu *SysDictItemUpdate) SetNillableMemo(s *string) *SysDictItemUpdate {
 }
 
 // SetSort sets the "sort" field.
-func (sdiu *SysDictItemUpdate) SetSort(i int) *SysDictItemUpdate {
+func (sdiu *SysDictItemUpdate) SetSort(i int32) *SysDictItemUpdate {
 	sdiu.mutation.ResetSort()
 	sdiu.mutation.SetSort(i)
 	return sdiu
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sdiu *SysDictItemUpdate) SetNillableSort(i *int) *SysDictItemUpdate {
+func (sdiu *SysDictItemUpdate) SetNillableSort(i *int32) *SysDictItemUpdate {
 	if i != nil {
 		sdiu.SetSort(*i)
 	}
@@ -71,7 +71,7 @@ func (sdiu *SysDictItemUpdate) SetNillableSort(i *int) *SysDictItemUpdate {
 }
 
 // AddSort adds i to the "sort" field.
-func (sdiu *SysDictItemUpdate) AddSort(i int) *SysDictItemUpdate {
+func (sdiu *SysDictItemUpdate) AddSort(i int32) *SysDictItemUpdate {
 	sdiu.mutation.AddSort(i)
 	return sdiu
 }
@@ -265,14 +265,14 @@ func (sdiu *SysDictItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sdiu.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdictitem.FieldSort,
 		})
 	}
 	if value, ok := sdiu.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdictitem.FieldSort,
 		})
@@ -387,14 +387,14 @@ func (sdiuo *SysDictItemUpdateOne) SetNillableMemo(s *string) *SysDictItemUpdate
 }
 
 // SetSort sets the "sort" field.
-func (sdiuo *SysDictItemUpdateOne) SetSort(i int) *SysDictItemUpdateOne {
+func (sdiuo *SysDictItemUpdateOne) SetSort(i int32) *SysDictItemUpdateOne {
 	sdiuo.mutation.ResetSort()
 	sdiuo.mutation.SetSort(i)
 	return sdiuo
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (sdiuo *SysDictItemUpdateOne) SetNillableSort(i *int) *SysDictItemUpdateOne {
+func (sdiuo *SysDictItemUpdateOne) SetNillableSort(i *int32) *SysDictItemUpdateOne {
 	if i != nil {
 		sdiuo.SetSort(*i)
 	}
@@ -402,7 +402,7 @@ func (sdiuo *SysDictItemUpdateOne) SetNillableSort(i *int) *SysDictItemUpdateOne
 }
 
 // AddSort adds i to the "sort" field.
-func (sdiuo *SysDictItemUpdateOne) AddSort(i int) *SysDictItemUpdateOne {
+func (sdiuo *SysDictItemUpdateOne) AddSort(i int32) *SysDictItemUpdateOne {
 	sdiuo.mutation.AddSort(i)
 	return sdiuo
 }
@@ -620,14 +620,14 @@ func (sdiuo *SysDictItemUpdateOne) sqlSave(ctx context.Context) (_node *SysDictI
 	}
 	if value, ok := sdiuo.mutation.Sort(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdictitem.FieldSort,
 		})
 	}
 	if value, ok := sdiuo.mutation.AddedSort(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysdictitem.FieldSort,
 		})

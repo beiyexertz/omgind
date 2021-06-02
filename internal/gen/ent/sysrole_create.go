@@ -35,13 +35,13 @@ func (src *SysRoleCreate) SetNillableIsDel(b *bool) *SysRoleCreate {
 }
 
 // SetStatus sets the "status" field.
-func (src *SysRoleCreate) SetStatus(i int) *SysRoleCreate {
+func (src *SysRoleCreate) SetStatus(i int16) *SysRoleCreate {
 	src.mutation.SetStatus(i)
 	return src
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (src *SysRoleCreate) SetNillableStatus(i *int) *SysRoleCreate {
+func (src *SysRoleCreate) SetNillableStatus(i *int16) *SysRoleCreate {
 	if i != nil {
 		src.SetStatus(*i)
 	}
@@ -49,13 +49,13 @@ func (src *SysRoleCreate) SetNillableStatus(i *int) *SysRoleCreate {
 }
 
 // SetSort sets the "sort" field.
-func (src *SysRoleCreate) SetSort(i int) *SysRoleCreate {
+func (src *SysRoleCreate) SetSort(i int32) *SysRoleCreate {
 	src.mutation.SetSort(i)
 	return src
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (src *SysRoleCreate) SetNillableSort(i *int) *SysRoleCreate {
+func (src *SysRoleCreate) SetNillableSort(i *int32) *SysRoleCreate {
 	if i != nil {
 		src.SetSort(*i)
 	}
@@ -297,7 +297,7 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := src.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysrole.FieldStatus,
 		})
@@ -305,7 +305,7 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := src.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysrole.FieldSort,
 		})

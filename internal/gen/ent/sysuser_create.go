@@ -35,13 +35,13 @@ func (suc *SysUserCreate) SetNillableIsDel(b *bool) *SysUserCreate {
 }
 
 // SetSort sets the "sort" field.
-func (suc *SysUserCreate) SetSort(i int) *SysUserCreate {
+func (suc *SysUserCreate) SetSort(i int32) *SysUserCreate {
 	suc.mutation.SetSort(i)
 	return suc
 }
 
 // SetNillableSort sets the "sort" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableSort(i *int) *SysUserCreate {
+func (suc *SysUserCreate) SetNillableSort(i *int32) *SysUserCreate {
 	if i != nil {
 		suc.SetSort(*i)
 	}
@@ -91,13 +91,13 @@ func (suc *SysUserCreate) SetNillableDeletedAt(t *time.Time) *SysUserCreate {
 }
 
 // SetStatus sets the "status" field.
-func (suc *SysUserCreate) SetStatus(i int) *SysUserCreate {
+func (suc *SysUserCreate) SetStatus(i int16) *SysUserCreate {
 	suc.mutation.SetStatus(i)
 	return suc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableStatus(i *int) *SysUserCreate {
+func (suc *SysUserCreate) SetNillableStatus(i *int16) *SysUserCreate {
 	if i != nil {
 		suc.SetStatus(*i)
 	}
@@ -391,7 +391,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := suc.mutation.Sort(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt32,
 			Value:  value,
 			Column: sysuser.FieldSort,
 		})
@@ -423,7 +423,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := suc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysuser.FieldStatus,
 		})

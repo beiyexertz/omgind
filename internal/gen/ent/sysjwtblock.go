@@ -33,7 +33,7 @@ type SysJwtBlock struct {
 	DeletedAt *time.Time `json:"deleted_at,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态,
-	Status int `json:"status,omitempty"`
+	Status int16 `json:"status,omitempty"`
 	// Jwt holds the value of the "jwt" field.
 	// jwt
 	Jwt string `json:"jwt,omitempty"`
@@ -108,7 +108,7 @@ func (sjb *SysJwtBlock) assignValues(columns []string, values []interface{}) err
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sjb.Status = int(value.Int64)
+				sjb.Status = int16(value.Int64)
 			}
 		case sysjwtblock.FieldJwt:
 			if value, ok := values[i].(*sql.NullString); !ok {
