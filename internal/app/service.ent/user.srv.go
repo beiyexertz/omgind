@@ -239,7 +239,7 @@ func (a *User) Delete(ctx context.Context, id string) error {
 }
 
 // UpdateStatus 更新状态
-func (a *User) UpdateStatus(ctx context.Context, id string, status int) error {
+func (a *User) UpdateStatus(ctx context.Context, id string, status int16) error {
 	oldItem, err := a.UserModel.Get(ctx, id)
 	if err != nil {
 		return err

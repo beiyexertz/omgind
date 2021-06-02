@@ -880,8 +880,8 @@ type SysDictItemMutation struct {
 	label         *string
 	value         *int
 	addvalue      *int
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	dict_id       *string
 	clearedFields map[string]struct{}
 	done          bool
@@ -1316,13 +1316,13 @@ func (m *SysDictItemMutation) ResetValue() {
 }
 
 // SetStatus sets the "status" field.
-func (m *SysDictItemMutation) SetStatus(i int) {
+func (m *SysDictItemMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *SysDictItemMutation) Status() (r int, exists bool) {
+func (m *SysDictItemMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -1333,7 +1333,7 @@ func (m *SysDictItemMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the SysDictItem entity.
 // If the SysDictItem object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictItemMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *SysDictItemMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -1348,7 +1348,7 @@ func (m *SysDictItemMutation) OldStatus(ctx context.Context) (v int, err error) 
 }
 
 // AddStatus adds i to the "status" field.
-func (m *SysDictItemMutation) AddStatus(i int) {
+func (m *SysDictItemMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -1357,7 +1357,7 @@ func (m *SysDictItemMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysDictItemMutation) AddedStatus() (r int, exists bool) {
+func (m *SysDictItemMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -1575,7 +1575,7 @@ func (m *SysDictItemMutation) SetField(name string, value ent.Value) error {
 		m.SetValue(v)
 		return nil
 	case sysdictitem.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1643,7 +1643,7 @@ func (m *SysDictItemMutation) AddField(name string, value ent.Value) error {
 		m.AddValue(v)
 		return nil
 	case sysdictitem.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9270,8 +9270,8 @@ type XxxDemoMutation struct {
 	deleted_at    *time.Time
 	code          *string
 	name          *string
-	status        *int
-	addstatus     *int
+	status        *int16
+	addstatus     *int16
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*XxxDemo, error)
@@ -9685,13 +9685,13 @@ func (m *XxxDemoMutation) ResetName() {
 }
 
 // SetStatus sets the "status" field.
-func (m *XxxDemoMutation) SetStatus(i int) {
+func (m *XxxDemoMutation) SetStatus(i int16) {
 	m.status = &i
 	m.addstatus = nil
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *XxxDemoMutation) Status() (r int, exists bool) {
+func (m *XxxDemoMutation) Status() (r int16, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -9702,7 +9702,7 @@ func (m *XxxDemoMutation) Status() (r int, exists bool) {
 // OldStatus returns the old "status" field's value of the XxxDemo entity.
 // If the XxxDemo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *XxxDemoMutation) OldStatus(ctx context.Context) (v int, err error) {
+func (m *XxxDemoMutation) OldStatus(ctx context.Context) (v int16, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -9717,7 +9717,7 @@ func (m *XxxDemoMutation) OldStatus(ctx context.Context) (v int, err error) {
 }
 
 // AddStatus adds i to the "status" field.
-func (m *XxxDemoMutation) AddStatus(i int) {
+func (m *XxxDemoMutation) AddStatus(i int16) {
 	if m.addstatus != nil {
 		*m.addstatus += i
 	} else {
@@ -9726,7 +9726,7 @@ func (m *XxxDemoMutation) AddStatus(i int) {
 }
 
 // AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *XxxDemoMutation) AddedStatus() (r int, exists bool) {
+func (m *XxxDemoMutation) AddedStatus() (r int16, exists bool) {
 	v := m.addstatus
 	if v == nil {
 		return
@@ -9901,7 +9901,7 @@ func (m *XxxDemoMutation) SetField(name string, value ent.Value) error {
 		m.SetName(v)
 		return nil
 	case xxxdemo.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -9950,7 +9950,7 @@ func (m *XxxDemoMutation) AddField(name string, value ent.Value) error {
 		m.AddSort(v)
 		return nil
 	case xxxdemo.FieldStatus:
-		v, ok := value.(int)
+		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

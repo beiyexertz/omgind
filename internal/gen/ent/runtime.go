@@ -1003,7 +1003,7 @@ func init() {
 	// xxxdemoDescStatus is the schema descriptor for status field.
 	xxxdemoDescStatus := xxxdemoFields[2].Descriptor()
 	// xxxdemo.DefaultStatus holds the default value on creation for the status field.
-	xxxdemo.DefaultStatus = xxxdemoDescStatus.Default.(int)
+	xxxdemo.DefaultStatus = xxxdemoDescStatus.Default.(int16)
 	// xxxdemoDescID is the schema descriptor for id field.
 	xxxdemoDescID := xxxdemoMixinFields0[0].Descriptor()
 	// xxxdemo.DefaultID holds the default value on creation for the id field.

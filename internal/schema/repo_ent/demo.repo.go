@@ -169,7 +169,7 @@ func (a *Demo) Delete(ctx context.Context, id string) error {
 }
 
 // UpdateStatus 更新状态
-func (a *Demo) UpdateStatus(ctx context.Context, id string, status int) error {
+func (a *Demo) UpdateStatus(ctx context.Context, id string, status int16) error {
 
 	_, err1 := a.EntCli.XxxDemo.Update().Where(xxxdemo.IDEQ(id)).SetStatus(status).Save(ctx)
 

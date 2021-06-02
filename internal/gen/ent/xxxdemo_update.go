@@ -115,14 +115,14 @@ func (xdu *XxxDemoUpdate) SetName(s string) *XxxDemoUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (xdu *XxxDemoUpdate) SetStatus(i int) *XxxDemoUpdate {
+func (xdu *XxxDemoUpdate) SetStatus(i int16) *XxxDemoUpdate {
 	xdu.mutation.ResetStatus()
 	xdu.mutation.SetStatus(i)
 	return xdu
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (xdu *XxxDemoUpdate) SetNillableStatus(i *int) *XxxDemoUpdate {
+func (xdu *XxxDemoUpdate) SetNillableStatus(i *int16) *XxxDemoUpdate {
 	if i != nil {
 		xdu.SetStatus(*i)
 	}
@@ -130,7 +130,7 @@ func (xdu *XxxDemoUpdate) SetNillableStatus(i *int) *XxxDemoUpdate {
 }
 
 // AddStatus adds i to the "status" field.
-func (xdu *XxxDemoUpdate) AddStatus(i int) *XxxDemoUpdate {
+func (xdu *XxxDemoUpdate) AddStatus(i int16) *XxxDemoUpdate {
 	xdu.mutation.AddStatus(i)
 	return xdu
 }
@@ -308,14 +308,14 @@ func (xdu *XxxDemoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := xdu.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: xxxdemo.FieldStatus,
 		})
 	}
 	if value, ok := xdu.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: xxxdemo.FieldStatus,
 		})
@@ -427,14 +427,14 @@ func (xduo *XxxDemoUpdateOne) SetName(s string) *XxxDemoUpdateOne {
 }
 
 // SetStatus sets the "status" field.
-func (xduo *XxxDemoUpdateOne) SetStatus(i int) *XxxDemoUpdateOne {
+func (xduo *XxxDemoUpdateOne) SetStatus(i int16) *XxxDemoUpdateOne {
 	xduo.mutation.ResetStatus()
 	xduo.mutation.SetStatus(i)
 	return xduo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (xduo *XxxDemoUpdateOne) SetNillableStatus(i *int) *XxxDemoUpdateOne {
+func (xduo *XxxDemoUpdateOne) SetNillableStatus(i *int16) *XxxDemoUpdateOne {
 	if i != nil {
 		xduo.SetStatus(*i)
 	}
@@ -442,7 +442,7 @@ func (xduo *XxxDemoUpdateOne) SetNillableStatus(i *int) *XxxDemoUpdateOne {
 }
 
 // AddStatus adds i to the "status" field.
-func (xduo *XxxDemoUpdateOne) AddStatus(i int) *XxxDemoUpdateOne {
+func (xduo *XxxDemoUpdateOne) AddStatus(i int16) *XxxDemoUpdateOne {
 	xduo.mutation.AddStatus(i)
 	return xduo
 }
@@ -644,14 +644,14 @@ func (xduo *XxxDemoUpdateOne) sqlSave(ctx context.Context) (_node *XxxDemo, err 
 	}
 	if value, ok := xduo.mutation.Status(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: xxxdemo.FieldStatus,
 		})
 	}
 	if value, ok := xduo.mutation.AddedStatus(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: xxxdemo.FieldStatus,
 		})

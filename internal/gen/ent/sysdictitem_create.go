@@ -117,7 +117,7 @@ func (sdic *SysDictItemCreate) SetValue(i int) *SysDictItemCreate {
 }
 
 // SetStatus sets the "status" field.
-func (sdic *SysDictItemCreate) SetStatus(i int) *SysDictItemCreate {
+func (sdic *SysDictItemCreate) SetStatus(i int16) *SysDictItemCreate {
 	sdic.mutation.SetStatus(i)
 	return sdic
 }
@@ -364,7 +364,7 @@ func (sdic *SysDictItemCreate) createSpec() (*SysDictItem, *sqlgraph.CreateSpec)
 	}
 	if value, ok := sdic.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: sysdictitem.FieldStatus,
 		})

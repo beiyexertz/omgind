@@ -37,7 +37,7 @@ func (xd XxxDemo) Fields() []ent.Field {
 		field.String("name").StorageKey("name").
 			MaxLen(128).StructTag(`json:"name,omitempty"`).Comment("名称"),
 
-		field.Int("status").StorageKey("status").StructTag(`json:"status,omitempty"`).Default(1).Comment("状态"),
+		field.Int16("status").StorageKey("status").StructTag(`json:"status,omitempty"`).Default(1).Comment("状态"),
 	}
 }
 

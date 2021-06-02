@@ -42,7 +42,7 @@ type SysDictItem struct {
 	Value int `json:"value,omitempty"`
 	// Status holds the value of the "status" field.
 	// 启用状态
-	Status int `json:"status,omitempty"`
+	Status int16 `json:"status,omitempty"`
 	// DictID holds the value of the "dict_id" field.
 	// sys_dict.id
 	DictID string `json:"dict_id,omitempty"`
@@ -135,7 +135,7 @@ func (sdi *SysDictItem) assignValues(columns []string, values []interface{}) err
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sdi.Status = int(value.Int64)
+				sdi.Status = int16(value.Int64)
 			}
 		case sysdictitem.FieldDictID:
 			if value, ok := values[i].(*sql.NullString); !ok {

@@ -180,7 +180,7 @@ func (a *Dict) Delete(ctx context.Context, id string) error {
 }
 
 // UpdateStatus 更新状态
-func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
+func (a *Dict) UpdateStatus(ctx context.Context, id string, status int16) error {
 
 	_, err1 := a.EntCli.SysDict.UpdateOneID(id).SetStatus(status).Save(ctx)
 

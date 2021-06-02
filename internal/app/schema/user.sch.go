@@ -39,7 +39,7 @@ type User struct {
 	Password  string `json:"password"`                              // 密码
 	Phone     string `json:"phone"`                                 // 手机号
 	Email     string `json:"email"`                                 // 邮箱
-	Status    int    `json:"status" binding:"required,max=2,min=1"` // 用户状态(1:启用 2:停用)
+	Status    int16    `json:"status" binding:"required,max=2,min=1"` // 用户状态(1:启用 2:停用)
 	Gender    int    `json:"gender" binding:"max=3,min=1"` // 性别(1:男,2:女)
 
 	Creator   string    `json:"creator" `                           // 创建者
@@ -63,7 +63,7 @@ type UserQueryParam struct {
 	PaginationParam
 	UserName   string   `form:"userName"`   // 用户名
 	QueryValue string   `form:"queryValue"` // 模糊查询
-	Status     int      `form:"status"`     // 用户状态(1:启用 2:停用)
+	Status     int16      `form:"status"`     // 用户状态(1:启用 2:停用)
 	RoleIDs    []string `form:"-"`          // 角色ID列表
 }
 

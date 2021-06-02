@@ -42,7 +42,7 @@ type XxxDemo struct {
 	Name string `json:"name,omitempty"`
 	// Status holds the value of the "status" field.
 	// 状态
-	Status int `json:"status,omitempty"`
+	Status int16 `json:"status,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -132,7 +132,7 @@ func (xd *XxxDemo) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				xd.Status = int(value.Int64)
+				xd.Status = int16(value.Int64)
 			}
 		}
 	}

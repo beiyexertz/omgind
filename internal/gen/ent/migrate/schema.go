@@ -77,7 +77,7 @@ var (
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
 		{Name: "label", Type: field.TypeString, Size: 128},
 		{Name: "val", Type: field.TypeInt},
-		{Name: "status", Type: field.TypeInt},
+		{Name: "status", Type: field.TypeInt16},
 		{Name: "dict_id", Type: field.TypeString, Size: 36},
 	}
 	// SysDictItemsTable holds the schema information for the "sys_dict_items" table.
@@ -638,7 +638,7 @@ var (
 		{Name: "dltd_at", Type: field.TypeTime, Nullable: true},
 		{Name: "code", Type: field.TypeString, Size: 128},
 		{Name: "name", Type: field.TypeString, Size: 128},
-		{Name: "status", Type: field.TypeInt, Default: 1},
+		{Name: "status", Type: field.TypeInt16, Default: 1},
 	}
 	// XxxDemosTable holds the schema information for the "xxx_demos" table.
 	XxxDemosTable = &schema.Table{

@@ -117,13 +117,13 @@ func (xdc *XxxDemoCreate) SetName(s string) *XxxDemoCreate {
 }
 
 // SetStatus sets the "status" field.
-func (xdc *XxxDemoCreate) SetStatus(i int) *XxxDemoCreate {
+func (xdc *XxxDemoCreate) SetStatus(i int16) *XxxDemoCreate {
 	xdc.mutation.SetStatus(i)
 	return xdc
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (xdc *XxxDemoCreate) SetNillableStatus(i *int) *XxxDemoCreate {
+func (xdc *XxxDemoCreate) SetNillableStatus(i *int16) *XxxDemoCreate {
 	if i != nil {
 		xdc.SetStatus(*i)
 	}
@@ -367,7 +367,7 @@ func (xdc *XxxDemoCreate) createSpec() (*XxxDemo, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := xdc.mutation.Status(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt,
+			Type:   field.TypeInt16,
 			Value:  value,
 			Column: xxxdemo.FieldStatus,
 		})

@@ -238,7 +238,7 @@ func (a *Role) Delete(ctx context.Context, id string) error {
 }
 
 // UpdateStatus 更新状态
-func (a *Role) UpdateStatus(ctx context.Context, id string, status int) error {
+func (a *Role) UpdateStatus(ctx context.Context, id string, status int16) error {
 	oldItem, err := a.RoleModel.Get(ctx, id)
 	if err != nil {
 		return err

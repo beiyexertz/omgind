@@ -118,7 +118,7 @@ type CreateSysDictItemInput struct {
 	DeletedAt *time.Time
 	Label     string
 	Value     int
-	Status    int
+	Status    int16
 	DictID    string
 }
 
@@ -164,7 +164,7 @@ type UpdateSysDictItemInput struct {
 	ClearDeletedAt bool
 	Label          *string
 	Value          *int
-	Status         *int
+	Status         *int16
 	DictID         *string
 }
 
@@ -1178,7 +1178,7 @@ type CreateXxxDemoInput struct {
 	DeletedAt *time.Time
 	Code      string
 	Name      string
-	Status    *int
+	Status    *int16
 }
 
 // Mutate applies the CreateXxxDemoInput on the XxxDemoCreate builder.
@@ -1224,7 +1224,7 @@ type UpdateXxxDemoInput struct {
 	ClearDeletedAt bool
 	Code           *string
 	Name           *string
-	Status         *int
+	Status         *int16
 }
 
 // Mutate applies the UpdateXxxDemoInput on the XxxDemoMutation.

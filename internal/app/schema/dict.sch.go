@@ -27,7 +27,7 @@ type DictQueryParam struct {
 	NameCn     string   `form:"-"`          // 字典名称(中)
 	NameEn     string   `form:"-"`          // 字典名称(英)
 	QueryValue string   `form:"queryValue"` // 模糊查询
-	Status     int      `form:"status"`     // 状态(1:启用 2:禁用)
+	Status     int16      `form:"status"`     // 状态(1:启用 2:禁用)
 	SqlRaw     string
 }
 

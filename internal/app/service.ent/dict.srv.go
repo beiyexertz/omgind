@@ -258,7 +258,7 @@ func (a *Dict) DeleteS(ctx context.Context, id string) error {
 	return err1
 }
 
-func (a *Dict) UpdateStatus(ctx context.Context, id string, status int) error {
+func (a *Dict) UpdateStatus(ctx context.Context, id string, status int16) error {
 
 	oldItem, err := a.DictModel.Get(ctx, id)
 	if err != nil {

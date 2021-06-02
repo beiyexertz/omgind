@@ -38,7 +38,7 @@ type MenuQueryParam struct {
 	QueryValue       string   `form:"queryValue"` // 模糊查询
 	ParentID         *string  `form:"parentID"`   // 父级内码
 	IsShow			 *bool 	  `form:"isShow"`
-	Status           int      `form:"status"`     // 状态(1:启用 2:禁用)
+	Status           int16      `form:"status"`     // 状态(1:启用 2:禁用)
 }
 
 // MenuQueryOptions 查询可选参数项
