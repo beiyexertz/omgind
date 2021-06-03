@@ -1,4 +1,4 @@
-package repo_ent
+package repo
 
 import (
 	"github.com/wanhello/omgind/internal/app/schema"

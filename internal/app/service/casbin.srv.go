@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"

@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysmenuactionresource"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/yaml"
 )
@@ -19,11 +19,11 @@ var MenuSet = wire.NewSet(wire.Struct(new(Menu), "*"))
 
 // Menu 菜单管理
 type Menu struct {
-	//TransModel              *repo_ent.Trans
+	//TransModel              *repo.Trans
 
-	MenuModel               *repo_ent.Menu
-	MenuActionModel         *repo_ent.MenuAction
-	MenuActionResourceModel *repo_ent.MenuActionResource
+	MenuModel               *repo.Menu
+	MenuActionModel         *repo.MenuAction
+	MenuActionResourceModel *repo.MenuActionResource
 
 }
 
@@ -233,7 +233,7 @@ func (a *Menu) Create(ctx context.Context, item schema.Menu) (*schema.IDResult, 
 	}
 	item.ParentPath = parentPath
 
-	err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
 
 		menuinput := a.MenuModel.ToEntCreateSysMenuInput(&item)
 		amenu, err := tx.SysMenu.Create().SetInput(*menuinput).Save(ctx)
@@ -337,7 +337,7 @@ func (a *Menu) Update(ctx context.Context, id string, item schema.Menu) error {
 	} else {
 		item.ParentPath = oldItem.ParentPath
 	}
-	err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
 
 		menuinput := a.MenuModel.ToEntUpdateSysMenuInput(&item)
 		_, err = tx.SysMenu.UpdateOneID(id).SetInput(*menuinput).Save(ctx)
@@ -503,7 +503,7 @@ func (a *Menu) Delete(ctx context.Context, id string) error {
 	} else if result.PageResult.Total > 0 {
 		return errors.ErrNotAllowDeleteWithChild
 	}
-	err = repo_ent.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.MenuModel.EntCli, func(tx *ent.Tx) error {
 
 		ma_result, err := a.MenuActionModel.Query(ctx, schema.MenuActionQueryParam{
 			MenuID: id,

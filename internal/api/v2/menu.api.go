@@ -5,7 +5,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 )
 
 // MenuSet 注入Menu
@@ -13,7 +13,7 @@ var MenuSet = wire.NewSet(wire.Struct(new(Menu), "*"))
 
 // Menu 菜单管理
 type Menu struct {
-	MenuSrv *service_ent.Menu
+	MenuSrv *service.Menu
 }
 
 // Query 查询数据

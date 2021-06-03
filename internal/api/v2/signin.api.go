@@ -5,7 +5,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/global"
 	"github.com/wanhello/omgind/pkg/logger"
@@ -17,7 +17,7 @@ var SignInSet = wire.NewSet(wire.Struct(new(SignIn), "*"))
 
 // SignIn 登录管理
 type SignIn struct {
-	SigninSrv *service_ent.SignIn
+	SigninSrv *service.SignIn
 	Vcode     *vcode.Vcode
 }
 

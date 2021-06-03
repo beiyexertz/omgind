@@ -7,7 +7,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/pkg/errors"
 )
 
@@ -16,7 +16,7 @@ var UserSet = wire.NewSet(wire.Struct(new(User), "*"))
 
 // User 用户管理
 type User struct {
-	UserSrv *service_ent.User
+	UserSrv *service.User
 }
 
 // Query 查询数据

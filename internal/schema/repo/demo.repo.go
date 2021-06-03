@@ -1,4 +1,4 @@
-package repo_ent
+package repo
 
 import (
 	"context"
@@ -21,7 +21,7 @@ type Demo struct {
 // ToSchemaDemo 转换为
 func (a *Demo) toSchemaDemo(xd *ent.XxxDemo) *schema.Demo {
 	item := new(schema.Demo)
-	structure.Copy(a, item)
+	structure.Copy(xd, item)
 	return item
 }
 
@@ -121,9 +121,6 @@ func (a *Demo) Get(ctx context.Context, id string, opts ...schema.DemoQueryOptio
 // Create 创建数据
 func (a *Demo) Create(ctx context.Context, item schema.Demo) (*schema.Demo, error) {
 
-	item.CreatedAt = time.Now()
-	item.UpdatedAt = time.Now()
-
 	iteminput := a.toEntCreateDemoInput(&item)
 	iteminput.CreatedAt = nil
 	iteminput.UpdatedAt = nil
@@ -144,7 +141,6 @@ func (a *Demo) Update(ctx context.Context, id string, item schema.Demo) (*schema
 		return nil, err
 	}
 
-	item.UpdatedAt = time.Now()
 	iteminput := a.toEntUpdateDemoInput(&item)
 	iteminput.UpdatedAt = nil
 	

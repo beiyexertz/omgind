@@ -5,8 +5,8 @@ package app
 
 import (
 	"github.com/wanhello/omgind/internal/api/v2"
-	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/app/service"
+	"github.com/wanhello/omgind/internal/schema/repo"
 
 	// "github.com/wanhello/omgind/internal/app/api_v2/mock"
 	"github.com/google/wire"
@@ -24,11 +24,11 @@ func BuildInjector() (*Injector, func(), error) {
 		InitVcode,
 		//InitInfluxDB,
 		//InitRabbitMQ,
-		repo_ent.RepoSet,
+		repo.RepoSet,
 		InitAuth,
 		InitCasbin,
 		InitGinEngine,
-		service_ent.ServiceEntSet,
+		service.ServiceSet,
 		api_v2.APIV2Set,
 		router.RouterSet,
 		adapter.CasbinAdapterSet,

@@ -5,7 +5,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 )
 
 // DemoSet 注入Demo
@@ -13,7 +13,7 @@ var DemoSet = wire.NewSet(wire.Struct(new(Demo), "*"))
 
 // Demo 示例程序
 type Demo struct {
-	DemoSrv *service_ent.Demo
+	DemoSrv *service.Demo
 }
 
 // Query 查询数据

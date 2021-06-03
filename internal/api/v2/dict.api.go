@@ -5,7 +5,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 )
 
 // DictSet 注入Dict
@@ -13,7 +13,7 @@ var DictSet = wire.NewSet(wire.Struct(new(Dict), "*"))
 
 // Dict 字典
 type Dict struct {
-	DictSrv *service_ent.Dict
+	DictSrv *service.Dict
 }
 
 // Query 查询数据

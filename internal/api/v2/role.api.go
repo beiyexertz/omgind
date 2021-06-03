@@ -7,7 +7,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/ginx"
 	"github.com/wanhello/omgind/internal/app/schema"
-	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 )
 
 // RoleSet 注入Role
@@ -15,7 +15,7 @@ var RoleSet = wire.NewSet(wire.Struct(new(Role), "*"))
 
 // Role 角色管理
 type Role struct {
-	RoleSrv *service_ent.Role
+	RoleSrv *service.Role
 }
 
 // Query 查询数据

@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysdictitem"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
 	"github.com/wanhello/omgind/pkg/errors"
 	uid "github.com/wanhello/omgind/pkg/helper/uid/ulid"
 )
@@ -17,8 +17,8 @@ var DictSet = wire.NewSet(wire.Struct(new(Dict), "*"))
 
 // Demo 示例程序
 type Dict struct {
-	DictModel     *repo_ent.Dict
-	DictItemModel *repo_ent.DictItem
+	DictModel     *repo.Dict
+	DictItemModel *repo.DictItem
 }
 
 // Query 查询数据
@@ -96,7 +96,7 @@ func (a *Dict) Create(ctx context.Context, item schema.Dict) (*schema.IDResult, 
 	}
 	item.ID = uid.MustString()
 
-	err := repo_ent.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
+	err := repo.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
 
 		dictInput := a.DictModel.ToEntCreateSysDictInput(&item)
 		dictInput.CreatedAt = nil
@@ -150,7 +150,7 @@ func (a *Dict) Update(ctx context.Context, id string, item schema.Dict) error {
 
 	addItems, delItems, updateItems := a.compareDictItems(ctx, oldItem.Items, item.Items)
 
-	err1 := repo_ent.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
+	err1 := repo.WithTx(ctx, a.DictModel.EntCli, func(tx *ent.Tx) error {
 
 		// 添加
 		for _, itm := range addItems {

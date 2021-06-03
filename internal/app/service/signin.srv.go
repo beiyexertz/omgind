@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
 	"github.com/wanhello/omgind/pkg/auth"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/hash"
@@ -20,12 +20,12 @@ var SignInSet = wire.NewSet(wire.Struct(new(SignIn), "*"))
 // SignIn 登录管理
 type SignIn struct {
 	Auth            auth.Auther
-	UserModel       *repo_ent.User
-	UserRoleModel   *repo_ent.UserRole
-	RoleModel       *repo_ent.Role
-	RoleMenuModel   *repo_ent.RoleMenu
-	MenuModel       *repo_ent.Menu
-	MenuActionModel *repo_ent.MenuAction
+	UserModel       *repo.User
+	UserRoleModel   *repo.UserRole
+	RoleModel       *repo.Role
+	RoleMenuModel   *repo.RoleMenu
+	MenuModel       *repo.Menu
+	MenuActionModel *repo.MenuAction
 	Vcode           *vcode.Vcode
 }
 

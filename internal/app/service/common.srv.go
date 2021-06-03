@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"github.com/wanhello/omgind/internal/app/schema"

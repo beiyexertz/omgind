@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/structure"
 )
@@ -16,7 +16,7 @@ var DemoSet = wire.NewSet(wire.Struct(new(Demo), "*"))
 
 // Demo 示例程序
 type Demo struct {
-	DemoModel *repo_ent.Demo
+	DemoModel *repo.Demo
 }
 
 // ToSchemaDemo 转换为

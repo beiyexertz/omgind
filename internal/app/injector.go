@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/go-redis/redis"
-	service_ent "github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/pkg/auth"
 
 	"github.com/casbin/casbin/v2"
@@ -18,7 +18,7 @@ type Injector struct {
 	Engine         *gin.Engine
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
-	MenuSrv        *service_ent.Menu
+	MenuSrv        *service.Menu
 	RedisCli       redis.Cmdable
 	//InfluxDb       influxdb2.Client
 	//RabbitMq       *amqp.Connection

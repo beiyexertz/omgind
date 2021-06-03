@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysuserrole"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
 	"github.com/wanhello/omgind/pkg/errors"
 	"github.com/wanhello/omgind/pkg/helper/hash"
 )
@@ -20,9 +20,9 @@ var UserSet = wire.NewSet(wire.Struct(new(User), "*"))
 type User struct {
 	Enforcer      *casbin.SyncedEnforcer
 
-	UserModel     *repo_ent.User
-	UserRoleModel *repo_ent.UserRole
-	RoleModel     *repo_ent.Role
+	UserModel     *repo.User
+	UserRoleModel *repo.UserRole
+	RoleModel     *repo.Role
 }
 
 // Query 查询数据
@@ -88,7 +88,7 @@ func (a *User) Create(ctx context.Context, item schema.User) (*schema.IDResult, 
 	pword, _ := hash.MakePassword(item.Password)
 	item.Password = pword
 
-	err = repo_ent.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
 
 		userInput := a.UserModel.ToEntCreateSysUserInput(&item)
 		userInput.CreatedAt = nil
@@ -163,7 +163,7 @@ func (a *User) Update(ctx context.Context, id string, item schema.User) error {
 	item.ID = oldItem.ID
 	item.Creator = oldItem.Creator
 	item.CreatedAt = oldItem.CreatedAt
-	err = repo_ent.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.UserModel.EntCli, func(tx *ent.Tx) error {
 		addUserRoles, delUserRoles := a.compareUserRoles(ctx, oldItem.UserRoles, item.UserRoles)
 
 		// 添加的

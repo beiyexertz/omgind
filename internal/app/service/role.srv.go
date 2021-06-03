@@ -1,4 +1,4 @@
-package service_ent
+package service
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/wanhello/omgind/internal/app/schema"
 	"github.com/wanhello/omgind/internal/gen/ent"
 	"github.com/wanhello/omgind/internal/gen/ent/sysrolemenu"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
 	"github.com/wanhello/omgind/pkg/errors"
 )
 
@@ -21,11 +21,11 @@ var RoleSet = wire.NewSet(wire.Struct(new(Role), "*"))
 type Role struct {
 	Enforcer      *casbin.SyncedEnforcer
 
-	//TransModel    *repo_ent.Trans
+	//TransModel    *repo.Trans
 
-	RoleModel     *repo_ent.Role
-	RoleMenuModel *repo_ent.RoleMenu
-	UserModel     *repo_ent.User
+	RoleModel     *repo.Role
+	RoleMenuModel *repo.RoleMenu
+	UserModel     *repo.User
 }
 
 // Query 查询数据
@@ -69,7 +69,7 @@ func (a *Role) Create(ctx context.Context, item schema.Role) (*schema.IDResult, 
 		return nil, err
 	}
 
-	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
 		role_input := a.RoleModel.ToEntCreateSysRoleInput(&item)
 
 		arole, err := tx.SysRole.Create().SetInput(*role_input).Save(ctx)
@@ -125,7 +125,7 @@ func (a *Role) Update(ctx context.Context, id string, item schema.Role) error {
 
 	item.Creator = oldItem.Creator
 
-	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
 		addRoleMenus, delRoleMenus := a.compareRoleMenus(ctx, oldItem.RoleMenus, item.RoleMenus)
 		for _, rmitem := range addRoleMenus {
 			rmitem.RoleID = id
@@ -220,7 +220,7 @@ func (a *Role) Delete(ctx context.Context, id string) error {
 		return errors.New400Response("该角色已被赋予用户，不允许删除")
 	}
 
-	err = repo_ent.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
+	err = repo.WithTx(ctx, a.RoleModel.EntCli, func(tx *ent.Tx) error {
 		_, err := tx.SysRoleMenu.Update().Where(sysrolemenu.RoleIDEQ(id)).SetDeletedAt(time.Now()).SetIsDel(true).Save(
 			ctx)
 		if err != nil {

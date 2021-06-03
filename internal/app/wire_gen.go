@@ -6,23 +6,23 @@
 package app
 
 import (
-
 	"github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
-	"github.com/wanhello/omgind/internal/app/service.ent"
+	"github.com/wanhello/omgind/internal/app/service"
 	"github.com/wanhello/omgind/internal/router"
-	"github.com/wanhello/omgind/internal/schema/repo_ent"
+	"github.com/wanhello/omgind/internal/schema/repo"
+)
 
+import (
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	_ "github.com/wanhello/omgind/internal/app/swagger"
-
 )
 
 // Injectors from wire.go:
 
 // BuildInjector 生成注入器
 func BuildInjector() (*Injector, func(), error) {
-
 	auther, cleanup, err := InitAuth()
 	if err != nil {
 		return nil, nil, err
@@ -32,20 +32,19 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-
-	role := &repo_ent.Role{
+	role := &repo.Role{
 		EntCli: client,
 	}
-	roleMenu := &repo_ent.RoleMenu{
+	roleMenu := &repo.RoleMenu{
 		EntCli: client,
 	}
-	menuActionResource := &repo_ent.MenuActionResource{
+	menuActionResource := &repo.MenuActionResource{
 		EntCli: client,
 	}
-	user := &repo_ent.User{
+	user := &repo.User{
 		EntCli: client,
 	}
-	userRole := &repo_ent.UserRole{
+	userRole := &repo.UserRole{
 		EntCli: client,
 	}
 	casbinAdapter := &adapter.CasbinAdapter{
@@ -61,59 +60,59 @@ func BuildInjector() (*Injector, func(), error) {
 		cleanup()
 		return nil, nil, err
 	}
-	dict := &repo_ent.Dict{
+	dict := &repo.Dict{
 		EntCli: client,
 	}
-	dictItem := &repo_ent.DictItem{
+	dictItem := &repo.DictItem{
 		EntCli: client,
 	}
-	service_entDict := &service_ent.Dict{
+	serviceDict := &service.Dict{
 		DictModel:     dict,
 		DictItemModel: dictItem,
 	}
 	api_v2Dict := &api_v2.Dict{
-		DictSrv: service_entDict,
+		DictSrv: serviceDict,
 	}
-	demo := &repo_ent.Demo{
+	demo := &repo.Demo{
 		EntCli: client,
 	}
-	service_entDemo := &service_ent.Demo{
+	serviceDemo := &service.Demo{
 		DemoModel: demo,
 	}
 	api_v2Demo := &api_v2.Demo{
-		DemoSrv: service_entDemo,
+		DemoSrv: serviceDemo,
 	}
-	menu := &repo_ent.Menu{
+	menu := &repo.Menu{
 		EntCli: client,
 	}
-	menuAction := &repo_ent.MenuAction{
+	menuAction := &repo.MenuAction{
 		EntCli: client,
 	}
-	service_entMenu := &service_ent.Menu{
+	serviceMenu := &service.Menu{
 		MenuModel:               menu,
 		MenuActionModel:         menuAction,
 		MenuActionResourceModel: menuActionResource,
 	}
 	api_v2Menu := &api_v2.Menu{
-		MenuSrv: service_entMenu,
+		MenuSrv: serviceMenu,
 	}
-	service_entRole := &service_ent.Role{
+	serviceRole := &service.Role{
 		Enforcer:      syncedEnforcer,
 		RoleModel:     role,
 		RoleMenuModel: roleMenu,
 		UserModel:     user,
 	}
 	api_v2Role := &api_v2.Role{
-		RoleSrv: service_entRole,
+		RoleSrv: serviceRole,
 	}
-	service_entUser := &service_ent.User{
+	serviceUser := &service.User{
 		Enforcer:      syncedEnforcer,
 		UserModel:     user,
 		UserRoleModel: userRole,
 		RoleModel:     role,
 	}
 	api_v2User := &api_v2.User{
-		UserSrv: service_entUser,
+		UserSrv: serviceUser,
 	}
 	cmdable, cleanup4, err := InitRedisCli()
 	if err != nil {
@@ -123,7 +122,7 @@ func BuildInjector() (*Injector, func(), error) {
 		return nil, nil, err
 	}
 	vcode := InitVcode(cmdable)
-	signIn := &service_ent.SignIn{
+	signIn := &service.SignIn{
 		Auth:            auther,
 		UserModel:       user,
 		UserRoleModel:   userRole,
@@ -152,7 +151,7 @@ func BuildInjector() (*Injector, func(), error) {
 		Engine:         engine,
 		Auth:           auther,
 		CasbinEnforcer: syncedEnforcer,
-		MenuSrv:        service_entMenu,
+		MenuSrv:        serviceMenu,
 		RedisCli:       cmdable,
 	}
 	return injector, func() {

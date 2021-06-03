@@ -12,8 +12,8 @@ type Demo struct {
 	Sort   int    `json:"sort,omitempty"`
 
 	Creator   string    `json:"creator" `    // 创建者
-	CreatedAt time.Time `json:"created_at" ` // 创建时间
-	UpdatedAt time.Time `json:"updated_at" ` // 更新时间
+	CreatedAt *time.Time `json:"created_at" ` // 创建时间
+	UpdatedAt *time.Time `json:"updated_at" ` // 更新时间
 }
 
 // DemoQueryParam 查询条件
