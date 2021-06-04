@@ -33,16 +33,16 @@ func (a *Demo) toSchemaDemos(xds ent.XxxDemos) []*schema.Demo {
 	return list
 }
 
-func (a *Demo) toEntCreateDemoInput(sd *schema.Demo) *ent.CreateXxxDemoInput {
+func (a *Demo) toEntCreateDemoInput(sch *schema.Demo) *ent.CreateXxxDemoInput {
 	createinput := new(ent.CreateXxxDemoInput)
-	structure.Copy(a, &createinput)
+	structure.Copy(sch, &createinput)
 
 	return createinput
 }
 
-func (a *Demo) toEntUpdateDemoInput(sd *schema.Demo) *ent.UpdateXxxDemoInput {
+func (a *Demo) toEntUpdateDemoInput(sch *schema.Demo) *ent.UpdateXxxDemoInput {
 	updateinput := new(ent.UpdateXxxDemoInput)
-	structure.Copy(a, &updateinput)
+	structure.Copy(sch, &updateinput)
 
 	return updateinput
 }
