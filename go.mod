@@ -23,6 +23,7 @@ require (
 	github.com/google/gops v0.3.12
 	github.com/google/uuid v1.2.0
 	github.com/google/wire v0.5.0
+	github.com/googollee/go-socket.io v1.6.0
 	github.com/gotidy/ptr v1.3.0
 	github.com/influxdata/influxdb-client-go/v2 v2.3.0
 	github.com/jackc/pgx/v4 v4.11.0
@@ -30,6 +31,7 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10
 	github.com/koding/multiconfig v0.0.0-20171124222453-69c27309b2d7
+	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/meehow/go-django-hashers v0.0.0-20171231135116-5e5d6afe52db
 	github.com/mojocn/base64Captcha v1.3.4

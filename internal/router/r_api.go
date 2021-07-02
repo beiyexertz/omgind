@@ -12,10 +12,12 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 
 	g.Use(middleware.UserAuthMiddleware(a.Auth,
 		middleware.AllowPathPrefixSkipper("/api/v2/pub/signin"),
+		middleware.AllowPathPrefixSkipper("/ws/"),
 	))
 
 	g.Use(middleware.CasbinMiddleware(a.CasbinEnforcer,
 		middleware.AllowPathPrefixSkipper("/api/v2/pub"),
+		middleware.AllowPathPrefixSkipper("/ws/"),
 	))
 
 	g.Use(middleware.RateLimiterMiddleware())
@@ -53,5 +55,8 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		a.initDemoRouterV2(v2, a.DemoAPIV2, "demos")
 
 	}
+
+	app.Any("/ws/", gin.WrapH(a.SockIO))
+	//app.POST("/ws/", gin.WrapH(a.SockIO))
 
 }

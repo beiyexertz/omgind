@@ -4,6 +4,7 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	socketio "github.com/googollee/go-socket.io"
 	api_v2 "github.com/wanhello/omgind/internal/api/v2"
 	"github.com/wanhello/omgind/pkg/auth"
 )
@@ -23,6 +24,8 @@ type IRouter interface {
 type Router struct {
 	Auth           auth.Auther
 	CasbinEnforcer *casbin.SyncedEnforcer
+
+	SockIO *socketio.Server
 
 	DictApiV2 *api_v2.Dict
 	DemoAPIV2 *api_v2.Demo

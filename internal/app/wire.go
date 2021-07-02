@@ -12,6 +12,7 @@ import (
 	"github.com/google/wire"
 	"github.com/wanhello/omgind/internal/app/module/adapter"
 	"github.com/wanhello/omgind/internal/router"
+	"github.com/wanhello/omgind/pkg/ws/sockio"
 
 )
 
@@ -33,6 +34,8 @@ func BuildInjector() (*Injector, func(), error) {
 		router.RouterSet,
 		adapter.CasbinAdapterSet,
 		InjectorSet,
+		sockio.ProviderSet,
+
 	)
 	return new(Injector), nil, nil
 }
