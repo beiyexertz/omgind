@@ -56,7 +56,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 
 	}
 
-	app.Any("/ws/", gin.WrapH(a.SockIO))
-	//app.POST("/ws/", gin.WrapH(a.SockIO))
+	app.GET("/ws/*any", gin.WrapH(a.SockIO))
+	app.POST("/ws/*any", gin.WrapH(a.SockIO))
 
 }

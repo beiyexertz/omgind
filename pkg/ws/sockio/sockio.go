@@ -4,6 +4,7 @@ package sockio
 import (
 	"log"
 	"time"
+	"net/http"
 
 	"github.com/google/wire"
 
@@ -12,12 +13,16 @@ import (
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/googollee/go-socket.io/engineio"
 	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/polling"
+
 	"github.com/googollee/go-socket.io/engineio/transport/websocket"
 )
 
 // ProviderSet 注入
 var ProviderSet = wire.NewSet(New)
+
+var allowOriginFunc = func(r *http.Request) bool {
+	return true
+}
 
 func New() (*socketio.Server, func(), error) {
 	cfg := global.CFG
@@ -25,8 +30,9 @@ func New() (*socketio.Server, func(), error) {
 	//log.Println(" --== cfg:", cfg)
 	//server := socketio.NewServer(nil)
 	transports := []transport.Transport{
-		polling.Default,
-		websocket.Default,
+		&websocket.Transport{
+			CheckOrigin: allowOriginFunc,
+		},
 	}
 	server := socketio.NewServer(&engineio.Options{
 		Transports:   transports,
@@ -36,6 +42,8 @@ func New() (*socketio.Server, func(), error) {
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
 		log.Println(" --== connected:", s.ID())
+		log.Println(" ------- ==== id: ", s.ID(), " connected at: ", time.Now().UnixNano())
+
 		s.Emit("ok", "welcome")
 		return nil
 	})
