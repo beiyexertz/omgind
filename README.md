@@ -40,7 +40,7 @@ go get -u github.com/swaggo/swag/cmd/swag
 ## 依赖框架
 
 - [Gin](https://gin-gonic.com/) -- The fastest full-featured web framework for Go.
-- [GORM](http://gorm.io/) -- The fantastic ORM library for Golang
+- [entgo](http://entgo.io/) -- The fantastic ORM library for Golang
 - [Casbin](https://casbin.org/) -- An authorization library that supports access control models like ACL, RBAC, ABAC in Golang
 - [Wire](https://github.com/google/wire) -- Compile-time Dependency Injection for Go
 
